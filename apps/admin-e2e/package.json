@@ -1,0 +1,10 @@
+{
+  "name": "@cms-concept-1/admin-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@cms-concept-1/admin"
+    ]
+  }
+}
