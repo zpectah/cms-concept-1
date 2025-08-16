@@ -1,0 +1,10 @@
+{
+  "name": "@cms-concept-1/client-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "implicitDependencies": [
+      "@cms-concept-1/client"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "articles": {
+    "listTitle": "Articles",
+    "newDetailTitle": "New article"
+  },
+  "attachments": {
+    "listTitle": "Attachments",
+    "newDetailTitle": "New attachment"
+  },
+  "categories": {
+    "listTitle": "Categories",
+    "newDetailTitle": "New category"
+  },
+  "members": {
+    "listTitle": "Members",
+    "newDetailTitle": "New member"
+  },
+  "menu": {
+    "listTitle": "Menu",
+    "newDetailTitle": "New menu"
+  },
+  "menuItems": {
+    "listTitle": "Menu items",
+    "newDetailTitle": "New menu item"
+  },
+  "messages": {
+    "listTitle": "Messages",
+    "newDetailTitle": "New message"
+  },
+  "pages": {
+    "listTitle": "Pages",
+    "newDetailTitle": "New page"
+  },
+  "tags": {
+    "listTitle": "Tags",
+    "newDetailTitle": "New tag"
+  },
+  "translations": {
+    "listTitle": "Translations",
+    "newDetailTitle": "New translation"
+  },
+  "users": {
+    "listTitle": "Users",
+    "newDetailTitle": "New user"
+  }
+}

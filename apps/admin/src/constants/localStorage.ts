@@ -1,0 +1,2 @@
+export const CMS_LOCALES_KEY = 'CMS_LOCALES';
+export const CMS_THEME_MODE_KEY = 'CMS_THEME_MODE';

@@ -1,6 +1,7 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(() => ({
   root: __dirname,
@@ -13,17 +14,31 @@ export default defineConfig(() => ({
     port: 4300,
     host: 'localhost',
   },
-  plugins: [react()],
+  plugins: [react(), tsconfigPaths()],
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
   // },
   build: {
-    outDir: './dist',
+    outDir: '../../dist/admin',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          axios: ['axios'],
+          emotion: ['@emotion/react', '@emotion/styled'],
+          i18n: ['i18next', 'i18next-http-backend', 'react-i18next'],
+          mui: ['@mui/icons-material', '@mui/material'],
+          react: ['react', 'react-dom', 'react-router-dom'],
+          'react-hook-form': ['react-hook-form', '@hookform/resolvers'],
+          zod: ['zod'],
+          zustand: ['zustand'],
+        },
+      },
     },
   },
   test: {

@@ -1,0 +1,5 @@
+export const LIST_ITEMS_PER_PAGE_DEFAULT = 10;
+
+export const LIST_ITEMS_PER_PAGE_OPTIONS = [5, 10, 15, 25, 50];
+
+export const LIST_ITEMS_SORT_ATTRIBUTE_DEFAULT = 'id';

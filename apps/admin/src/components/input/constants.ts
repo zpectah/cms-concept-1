@@ -1,0 +1,3 @@
+export const INPUT_NUMBER_NUMERIC_PATTERN = '[0-9]*';
+
+export const INPUT_TEXTAREA_DEFAULT_ROWS = 5;

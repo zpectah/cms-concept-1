@@ -1,0 +1,26 @@
+{
+  "label": {
+    "name": "Name",
+    "type": "Type",
+    "active": "Active",
+    "deleted": "Deleted",
+    "title": "Title",
+    "description": "Description",
+    "content": "Content",
+    "categories": "Categories",
+    "tags": "Tags",
+    "attachments": "Attachments",
+    "created": "Created",
+    "updated": "Updated",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "location": "Location"
+  },
+  "message": {
+    "error": {
+      "required": "Field is required",
+      "endDateBeforeStartDate": "End date must be after start date",
+      "emailFormat": "Email is in wrong format"
+    }
+  }
+}

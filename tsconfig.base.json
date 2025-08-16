@@ -1,4 +1,5 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
     "composite": true,
     "declarationMap": true,
@@ -16,6 +17,11 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["development"]
+    "customConditions": ["development"],
+    "baseUrl": ".",
+    "paths": {
+      "@common": ["libs/common/src/index.ts"]
+    },
+    "resolveJsonModule": true
   }
 }

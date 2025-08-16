@@ -1,0 +1,117 @@
+import { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslation } from 'react-i18next';
+import { modelKeys, newItemKey, ArticlesDetail } from '@common';
+import { getConfig } from '../../../utils';
+import { useFormDetailControl, useModelMenuItems } from '../../../helpers';
+import { useAppStore } from '../../../store';
+import { useViewLayoutContext } from '../../../components';
+import { useArticlesQuery } from '../../../hooks-query';
+import { ArticlesDetailFormSchema } from './schema';
+import { IArticlesDetailForm } from './types';
+import { getArticlesDetailFormDefaultValues, getArticlesTypeDefaultValue } from './helpers';
+
+export const useArticlesDetailForm = () => {
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const {
+    admin: { routes },
+  } = getConfig();
+  const { addToast } = useAppStore();
+  const { setTitle, openConfirmDialog } = useViewLayoutContext();
+  const { articlesDetailQuery, articlesPatchQuery } = useArticlesQuery(id);
+  const { typeFieldOptions } = useModelMenuItems(modelKeys.articles);
+  const { locales, locale, onLocaleChange } = useFormDetailControl();
+  const form = useForm<IArticlesDetailForm>({
+    resolver: zodResolver(ArticlesDetailFormSchema),
+    defaultValues: getArticlesDetailFormDefaultValues(locales),
+  });
+
+  const { data: detailData, ...detailQuery } = articlesDetailQuery;
+  const { mutate: patchMutate } = articlesPatchQuery;
+
+  const createHandler = (master: IArticlesDetailForm) => {
+    // TODO #submit
+
+    console.log('master create', master);
+  };
+
+  const patchHandler = (master: IArticlesDetailForm) => {
+    patchMutate(master as ArticlesDetail, {
+      onSuccess: () => {
+        navigate(`/${routes.articles.path}`);
+        addToast('Item was successfully deleted', 'success', 2500);
+        console.info('onSuccess', master);
+      },
+      onError: () => {
+        addToast('Something went wrong', 'error');
+        console.info('onError', master);
+      },
+    });
+  };
+
+  const deleteConfirmHandler = () => {
+    const master = Object.assign({
+      ...detailData,
+      deleted: true,
+    });
+
+    patchHandler(master);
+  };
+
+  const submitHandler: SubmitHandler<IArticlesDetailForm> = (data) => {
+    if (!data) return;
+
+    if (data.deleted === true) {
+      openConfirmDialog({
+        title: 'Smazat položku?', // TODO
+        content: 'Tato položka bude natrvalo smazána', // TODO
+        onConfirm: deleteConfirmHandler,
+      });
+
+      return;
+    }
+
+    const master = Object.assign({
+      ...data,
+    });
+
+    if (data.id === 0) {
+      createHandler(master);
+    } else {
+      patchHandler(master);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      if (id === newItemKey) {
+        setTitle(t('button.new.articles'));
+        form.reset(getArticlesDetailFormDefaultValues(locales));
+      } else if (detailData) {
+        if (form.formState.isDirty) return;
+
+        setTitle(detailData.name);
+        form.reset(detailData);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, detailData, form, locales]);
+
+  return {
+    form,
+    typeFieldOptions,
+    typeFieldDefault: getArticlesTypeDefaultValue(),
+    onSubmit: form.handleSubmit(submitHandler),
+    detailData,
+    detailQuery,
+    detailId: id,
+
+    locales,
+    locale,
+    onLocaleChange,
+  };
+};

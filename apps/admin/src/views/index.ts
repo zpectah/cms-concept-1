@@ -1,0 +1,8 @@
+export { default as ArticlesView } from './Articles';
+export { default as DashboardView } from './Dashboard';
+export { default as DemoView } from './Demo';
+export { default as ErrorView } from './Error';
+export { default as LoginView } from './Login';
+export { default as PasswordRecoveryView } from './PasswordRecovery';
+export { default as ProfileView } from './Profile';
+export { default as SettingsView } from './Settings';

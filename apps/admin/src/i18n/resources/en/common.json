@@ -1,0 +1,40 @@
+{
+  "button": {
+    "ok": "OK",
+    "confirm": "Confirm",
+    "new": {
+      "articles": "New article",
+      "attachments": "New attachment",
+      "categories": "New category",
+      "members": "New member",
+      "menu": "New menu",
+      "menuItems": "New menu item",
+      "messages": "New message",
+      "pages": "New page",
+      "tags": "New tag",
+      "translations": "New translation",
+      "users": "New user"
+    },
+    "create": "Create",
+    "update": "Update",
+    "reset": "Reset",
+    "return": "Return",
+    "cancel": "Cancel"
+  },
+  "routes": {
+    "articles": "Articles",
+    "attachments": "Attachments",
+    "categories": "Categories",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "members": "Members",
+    "menu": "Menu",
+    "messages": "Messages",
+    "pages": "Pages",
+    "passwordRecovery": "Password recovery",
+    "settings": "Settings",
+    "tags": "Tags",
+    "translations": "Translations",
+    "user": "Users"
+  }
+}

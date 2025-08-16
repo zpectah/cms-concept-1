@@ -1,0 +1,139 @@
+{
+  "version": "0.0.1",
+  "meta": {
+    "name": "project editable data name",
+    "description": "project editable data description"
+  },
+  "admin": {
+    "meta": {
+      "title": "CMS concept",
+      "description": "CMS description somewhere"
+    },
+    "locale": {
+      "default": "en",
+      "locales": ["en"],
+      "format": {
+        "en": {
+          "date": "DD.MM. YYYY",
+          "time": "HH:mm"
+        },
+        "cs": {
+          "date": "DD.MM. YYYY",
+          "time": "HH:mm"
+        }
+      }
+    },
+    "theme": {
+      "default": "light"
+    },
+    "routes": {
+      "demo": {
+        "path": "demo"
+      },
+      "articles": {
+        "path": "articles"
+      },
+      "attachments": {
+        "path": "attachments"
+      },
+      "categories": {
+        "path": "categories"
+      },
+      "dashboard": {
+        "path": "dashboard"
+      },
+      "login": {
+        "path": "login"
+      },
+      "members": {
+        "path": "members"
+      },
+      "pages": {
+        "path": "pages"
+      },
+      "passwordRecovery": {
+        "path": "password-recovery"
+      },
+      "settings": {
+        "path": "settings",
+        "panels": {
+          "global": "global",
+          "client": "client",
+          "languages": "language",
+          "maintenance": "maintenance"
+        }
+      },
+      "tags": {
+        "path": "tags"
+      },
+      "users": {
+        "path": "users"
+      },
+      "menu": {
+        "path": "menu"
+      },
+      "messages": {
+        "path": "messages"
+      },
+      "translations": {
+        "path": "translations"
+      },
+      "profile": {
+        "path": "profile"
+      }
+    }
+  },
+  "client": {
+    "meta": {
+      "title": "Client default title",
+      "description": "Client default description"
+    }
+  },
+  "model": {
+    "articles": {
+      "type": ["default", "event"],
+      "default": "default"
+    },
+    "attachments": {
+      "type": ["default"],
+      "default": "default"
+    },
+    "categories": {
+      "type": ["default"],
+      "default": "default"
+    },
+    "tags": {
+      "type": ["default"],
+      "default": "default"
+    },
+    "members": {
+      "type": ["default"],
+      "default": "default"
+    },
+    "menu": {
+      "type": ["default"],
+      "default": "default"
+    },
+    "menuItems": {
+      "type": ["default"],
+      "default": "default"
+    },
+    "messages": {
+      "type": ["default"],
+      "default": "default"
+    },
+    "pages": {
+      "type": ["default"],
+      "default": "default"
+    },
+    "translations": {
+      "type": ["default"],
+      "default": "default"
+    },
+    "users": {
+      "type": ["default"],
+      "default": "default"
+    }
+  },
+  "api": {}
+}
