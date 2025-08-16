@@ -14,6 +14,7 @@ interface AppStore {
   toasts: ToastsItem[];
   addToast: (title: string, severity?: ToastsItemSeverity, autoclose?: number | boolean) => void;
   removeToast: (id: string) => void;
+  // TODO #announcements
 }
 
 const useAppStore = create<AppStore>((set, getState) => {

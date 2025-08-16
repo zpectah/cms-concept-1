@@ -14,7 +14,7 @@ const Card = ({
     <MuiCard {...rest}>
       {cardHeaderProps && <CardHeader {...cardHeaderProps} />}
       {cardMediaProps && <CardMedia {...cardMediaProps} />}
-      <CardContent {...cardContentProps}>{children}</CardContent>
+      {(children || cardContentProps) && <CardContent {...cardContentProps}>{children}</CardContent>}
       {cardActions && <CardActions {...cardActionsProps}>{cardActions}</CardActions>}
     </MuiCard>
   );

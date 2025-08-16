@@ -1,37 +1,37 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ItemBase } from '@common';
-import { ListItemsSortOrder, ListItemsView, useListItemsControlProps } from './types';
+import { CheckboxState, ListItemsSelected, ListItemsSortOrder, ListItemsView, useListItemsControlProps } from './types';
 import { searchItems, sortItems } from './helpers';
-import { listItemsSortOrderKeys, listItemsViewKeys } from './enums';
+import { checkboxStateKeys, listItemsSortOrderKeys, listItemsViewKeys } from './enums';
 import { LIST_ITEMS_PER_PAGE_DEFAULT, LIST_ITEMS_SORT_ATTRIBUTE_DEFAULT } from './constants';
 import { useListItemsPagination } from './useListItemsPagination';
 
 export const useListItemsControl = <T extends ItemBase>({
   items = [],
-  initialView,
-  initialOrderBy,
-  initialSortBy,
+  initialView = listItemsViewKeys.table,
+  initialOrderBy = listItemsSortOrderKeys.desc,
+  initialSortBy = LIST_ITEMS_SORT_ATTRIBUTE_DEFAULT,
   searchKeys = [],
   itemsPerPage = LIST_ITEMS_PER_PAGE_DEFAULT,
   onRowSelect,
 }: useListItemsControlProps<T>) => {
-  const [view, setView] = useState<ListItemsView>(initialView ?? listItemsViewKeys.rows);
+  const [view, setView] = useState<ListItemsView>(initialView);
   const [query, setQuery] = useState<string>('');
-  const [orderBy, setOrderBy] = useState<ListItemsSortOrder>(initialOrderBy ?? listItemsSortOrderKeys.desc);
-  const [sortBy, setSortBy] = useState<keyof T>(initialSortBy ?? LIST_ITEMS_SORT_ATTRIBUTE_DEFAULT);
-  const [selected, setSelected] = useState<number[]>([]);
+  const [orderBy, setOrderBy] = useState<ListItemsSortOrder>(initialOrderBy);
+  const [sortBy, setSortBy] = useState<keyof T>(initialSortBy);
+  const [selected, setSelected] = useState<ListItemsSelected>([]);
 
   const rawRows = searchItems(items, query, searchKeys);
   const sortedRows = [...rawRows].sort(sortItems(sortBy, orderBy));
 
   const { rows, ...restOfPagination } = useListItemsPagination<T>(sortedRows, itemsPerPage);
 
+  const toggleViewHandler = useCallback(() => {
+    setView(view === listItemsViewKeys.table ? listItemsViewKeys.tiles : listItemsViewKeys.table);
+  }, [view]);
+
   const toggleOrderByHandler = useCallback(() => {
-    if (orderBy === listItemsSortOrderKeys.asc) {
-      setOrderBy(listItemsSortOrderKeys.desc);
-    } else {
-      setOrderBy(listItemsSortOrderKeys.asc);
-    }
+    setOrderBy(orderBy === listItemsSortOrderKeys.asc ? listItemsSortOrderKeys.desc : listItemsSortOrderKeys.asc);
   }, [orderBy]);
 
   const orderHandler = useCallback(
@@ -46,17 +46,9 @@ export const useListItemsControl = <T extends ItemBase>({
     [sortBy, toggleOrderByHandler]
   );
 
-  const toggleViewHandler = useCallback(() => {
-    if (view === listItemsViewKeys.rows) {
-      setView(listItemsViewKeys.tiles);
-    } else {
-      setView(listItemsViewKeys.rows);
-    }
-  }, [view]);
-
   const selectHandler = useCallback(
     (id: number) => {
-      const newSelected = [...selected];
+      const newSelected: ListItemsSelected = [...selected];
       const index = newSelected.indexOf(id);
 
       if (index > -1) {
@@ -72,7 +64,7 @@ export const useListItemsControl = <T extends ItemBase>({
   );
 
   const selectAllHandler = useCallback(() => {
-    let newSelected: number[] = [];
+    let newSelected: ListItemsSelected = [];
 
     if (selected.length >= 0) {
       newSelected = [];
@@ -81,9 +73,7 @@ export const useListItemsControl = <T extends ItemBase>({
       });
     }
 
-    if (selected.length === rawRows.length) {
-      newSelected = [];
-    }
+    if (selected.length === rawRows.length) newSelected = [];
 
     setSelected(newSelected);
     onRowSelect?.(newSelected);
@@ -91,16 +81,12 @@ export const useListItemsControl = <T extends ItemBase>({
 
   const deselectHandler = useCallback(() => setSelected([]), []);
 
-  const checkboxState = useMemo(() => {
-    let state = 'none';
+  const checkboxState = useMemo<CheckboxState>(() => {
+    if (selected.length === 0) return checkboxStateKeys.none;
+    if (selected.length === rawRows.length) return checkboxStateKeys.checked;
 
-    if (selected.length === 0) return state;
-
-    if (selected.length < rawRows.length) state = 'indeterminate';
-    if (selected.length === rawRows.length) state = 'checked';
-
-    return state;
-  }, [rawRows, selected]);
+    return checkboxStateKeys.indeterminate;
+  }, [rawRows.length, selected.length]);
 
   return {
     rows: rows,
@@ -118,6 +104,6 @@ export const useListItemsControl = <T extends ItemBase>({
     onSelect: selectHandler,
     onSelectAll: selectAllHandler,
     onDeselect: deselectHandler,
-    pagination: restOfPagination,
+    pagination: { ...restOfPagination },
   };
 };

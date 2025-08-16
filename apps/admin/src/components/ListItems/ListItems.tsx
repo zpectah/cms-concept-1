@@ -1,18 +1,6 @@
 import { useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Checkbox,
-  ToggleButtonGroup,
-  ToggleButton,
-  Stack,
-} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { ToggleButtonGroup, ToggleButton, Stack } from '@mui/material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import { ItemBase } from '@common';
@@ -23,10 +11,12 @@ import { ListItemsProps } from './types';
 import { listItemsSortOrderKeys, listItemsViewKeys } from './enums';
 import { useListItemsControl } from './useListItemsControl';
 import { LIST_ITEMS_PER_PAGE_OPTIONS } from './constants';
+import { TableView } from './TableView';
+import { TilesView } from './TilesView';
 
 const ListItems = <T extends ItemBase>({
   name,
-  initialView = listItemsViewKeys.rows,
+  initialView = listItemsViewKeys.table,
   isLoading, // TODO
   itemsPerPage,
   items = [],
@@ -40,6 +30,7 @@ const ListItems = <T extends ItemBase>({
   onRowDisable,
   onRowDetail,
   pathPrefix,
+  disableViewToggle,
 }: ListItemsProps<T>) => {
   const {
     rows,
@@ -101,11 +92,13 @@ const ListItems = <T extends ItemBase>({
   return (
     <Stack gap={2}>
       <Card>
-        <Stack>
-          <div>
-            <button onClick={onViewToggle}>toggle view: {view}</button>
-          </div>
-        </Stack>
+        {!disableViewToggle && (
+          <Stack>
+            <div>
+              <button onClick={onViewToggle}>toggle view: {view}</button>
+            </div>
+          </Stack>
+        )}
         <Stack>
           <Search value={query} onChange={(event) => onQueryChange(event.target.value)} fullWidth />
         </Stack>
@@ -169,85 +162,33 @@ const ListItems = <T extends ItemBase>({
       </Card>
 
       <div>
-        {view === 'rows' ? (
-          <div>
-            <TableContainer component={Paper} variant="outlined">
-              <Table aria-label={`${name} list table`}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell width="100">
-                      <Checkbox
-                        onClick={onSelectAll}
-                        indeterminate={checkboxState === 'indeterminate'}
-                        checked={checkboxState === 'checked'}
-                      />
-                    </TableCell>
-
-                    {columns?.map((col) => (
-                      <TableCell key={String(col.value)} variant="head" align="right">
-                        {col.label}
-                      </TableCell>
-                    ))}
-
-                    <TableCell align="right">&nbsp;</TableCell>
-                  </TableRow>
-                </TableHead>
-
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow key={row.id}>
-                      <TableCell>
-                        <Checkbox checked={selected.includes(row.id)} onClick={() => onSelect(row.id)} />
-                      </TableCell>
-
-                      {columns?.map((col) => {
-                        const rawValue = row[col.value as keyof T];
-                        const value = String(rawValue);
-
-                        return (
-                          <TableCell variant="body" key={String(col.value)} align="right">
-                            {col.isTitle ? (
-                              <Link
-                                to={`${pathPrefix}/${row.id}`}
-                                onClick={() => {
-                                  onRowDetail?.(row.id);
-                                }}
-                              >
-                                {value}
-                              </Link>
-                            ) : col?.renderValue ? (
-                              col?.renderValue(row)
-                            ) : (
-                              value
-                            )}
-                          </TableCell>
-                        );
-                      })}
-
-                      <TableCell align="right">
-                        <button onClick={() => rowDeleteHandler(row.id)}>delete</button>
-                        <button onClick={() => rowDisableHandler(row.id)}>disable</button>
-                        <button onClick={() => rowDetailHandler(row.id)}>detail</button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </div>
+        {view === listItemsViewKeys.table ? (
+          <TableView
+            name={name}
+            pathPrefix={pathPrefix}
+            rows={rows}
+            selected={selected}
+            onSelect={onSelect}
+            onDetail={rowDetailHandler}
+            onDelete={rowDeleteHandler}
+            onDisable={rowDisableHandler}
+            onSelectAll={onSelectAll}
+            columns={columns}
+            checkboxState={checkboxState}
+            isLoading={isLoading}
+          />
         ) : (
-          <div>
-            {/* TODO: prepare tiles view ... */}
-            {rows.map((item) => {
-              return (
-                <div key={item.id}>
-                  tile item
-                  <br />
-                  {item.id} / {item.name}
-                </div>
-              );
-            })}
-          </div>
+          <TilesView
+            name={name}
+            pathPrefix={pathPrefix}
+            rows={rows}
+            selected={selected}
+            onSelect={onSelect}
+            onDetail={rowDetailHandler}
+            onDelete={rowDeleteHandler}
+            onDisable={rowDisableHandler}
+            isLoading={isLoading}
+          />
         )}
       </div>
     </Stack>
