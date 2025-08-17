@@ -43,11 +43,11 @@ export const useArticlesDetailForm = () => {
     patchMutate(master as ArticlesDetail, {
       onSuccess: () => {
         navigate(`/${routes.articles.path}`);
-        addToast('Item was successfully deleted', 'success', 2500);
+        addToast(t('message.success.updateDetail'), 'success', 2500);
         console.info('onSuccess', master);
       },
       onError: () => {
-        addToast('Something went wrong', 'error');
+        addToast(t('message.error.common'), 'error');
         console.info('onError', master);
       },
     });
@@ -67,8 +67,8 @@ export const useArticlesDetailForm = () => {
 
     if (data.deleted === true) {
       openConfirmDialog({
-        title: 'Smazat položku?', // TODO
-        content: 'Tato položka bude natrvalo smazána', // TODO
+        title: t('message.confirm.deleteDetail.title'),
+        content: t('message.confirm.deleteDetail.content'),
         onConfirm: deleteConfirmHandler,
       });
 
@@ -109,7 +109,6 @@ export const useArticlesDetailForm = () => {
     detailData,
     detailQuery,
     detailId: id,
-
     locales,
     locale,
     onLocaleChange,

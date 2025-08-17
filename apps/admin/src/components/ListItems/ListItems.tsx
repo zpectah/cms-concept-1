@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ToggleButtonGroup, ToggleButton, Stack } from '@mui/material';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -33,6 +34,7 @@ const ListItems = <T extends ItemBase>({
   pathPrefix,
   disableViewToggle,
 }: ListItemsProps<T>) => {
+  const { t } = useTranslation();
   const {
     rows,
     rawRows,
@@ -74,22 +76,22 @@ const ListItems = <T extends ItemBase>({
 
   const disableSelectedHandler = useCallback(() => onDisableSelected?.(selected), [onDisableSelected, selected]);
 
+  const rowDeleteHandler = (id: number) => {
+    openConfirmDialog({
+      title: t('message.confirm.deleteRow.title'),
+      content: t('message.confirm.deleteRow.content'),
+      onConfirm: () => onRowDelete?.(id),
+    });
+  };
+
   const deleteSelectedHandler = useCallback(() => {
     openConfirmDialog({
-      title: 'Opravdu chcete smazat tyto položky?', // TODO #i18n
-      content: 'Tyto vybrané položky budou smazány', // TODO #i18n
+      title: t('message.confirm.deleteSelected.title'),
+      content: t('message.confirm.deleteSelected.content'),
       onConfirm: () => onDeleteSelected?.(selected),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onDeleteSelected, selected]);
-
-  const rowDeleteHandler = (id: number) => {
-    openConfirmDialog({
-      title: 'Opravdu chcete smazat tuto položku?', // TODO #i18n
-      content: 'Tato položk abude natrvalo smazána', // TODO #i18n
-      onConfirm: () => onRowDelete?.(id),
-    });
-  };
 
   return (
     <Stack gap={2}>

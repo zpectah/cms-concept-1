@@ -36,5 +36,33 @@
     "tags": "Tags",
     "translations": "Translations",
     "user": "Users"
+  },
+  "message": {
+    "confirm": {
+      "deleteDetail": {
+        "title": "Delete confirm",
+        "content": "Item wil be deleted after save, are you sure?"
+      },
+      "deleteRow": {
+        "title": "Delete confirm",
+        "content": "Are you sure you want to delete this item?"
+      },
+      "deleteSelected": {
+        "title": "Delete confirm",
+        "content": "Are you sure you want to delete selected items?"
+      }
+    },
+    "success": {
+      "createDetail": "Item was successfully created",
+      "updateDetail": "Item was successfully update",
+      "deleteDetail": "Item was successfully deleted",
+      "deleteRow": "Item was successfully deleted",
+      "deleteSelected": "Selected items was successfully deleted"
+    },
+    "info": {},
+    "warning": {},
+    "error": {
+      "common": "There was a problem during the update"
+    }
   }
 }
