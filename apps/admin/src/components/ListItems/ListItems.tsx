@@ -33,6 +33,8 @@ const ListItems = <T extends ItemBase>({
   onSelectAll,
   pathPrefix,
   disableViewToggle,
+  categories = [],
+  tags = [],
 }: ListItemsProps<T>) => {
   const { t } = useTranslation();
   const {
@@ -51,6 +53,7 @@ const ListItems = <T extends ItemBase>({
     onSelectAll: onSelectAllRows,
     onDeselect,
     pagination,
+    filter,
   } = useListItemsControl({
     items,
     initialView,
@@ -58,12 +61,21 @@ const ListItems = <T extends ItemBase>({
     itemsPerPage,
     onRowSelect,
     onSelectAll,
+    categories,
+    tags,
   });
   const { openConfirmDialog } = useViewLayoutContext();
   const navigate = useNavigate();
 
   const { pages, page, onPageNext, onPagePrev, onPageFirst, onPageLast, disabledButton, perPage, onPerPageChange } =
     pagination;
+  const {
+    categories: categoriesOptions,
+    tags: tagsOptions,
+    onCategoryToggle,
+    onTagToggle,
+    selected: selectedFilter,
+  } = filter;
 
   const deselectedSelectedHandler = () => onDeselect();
 
@@ -92,6 +104,8 @@ const ListItems = <T extends ItemBase>({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onDeleteSelected, selected]);
+
+  // TODO (1) #menu-bar for all options (maybe separate component?)
 
   return (
     <Stack gap={2}>
@@ -162,39 +176,60 @@ const ListItems = <T extends ItemBase>({
               ))}
             </select>
           </div>
+          <div>
+            categories:
+            <br />
+            {categoriesOptions.map((item) => {
+              return (
+                <button key={item.id} onClick={() => onCategoryToggle(item.id)}>
+                  {item.name}
+                </button>
+              );
+            })}
+          </div>
+          <div>
+            tags:
+            <br />
+            {tagsOptions.map((item) => {
+              return (
+                <button key={item.id} onClick={() => onTagToggle(item.id)}>
+                  {item.name}
+                </button>
+              );
+            })}
+          </div>
+          <div>{JSON.stringify(selectedFilter)}</div>
         </Stack>
       </Card>
 
-      <div>
-        {view === listItemsViewKeys.table ? (
-          <TableView
-            name={name}
-            pathPrefix={pathPrefix}
-            rows={rows}
-            selected={selected}
-            onSelect={onSelect}
-            onDetail={rowDetailHandler}
-            onDelete={rowDeleteHandler}
-            onDisable={rowDisableHandler}
-            onSelectAll={onSelectAllRows}
-            columns={columns}
-            checkboxState={checkboxState}
-            isLoading={isLoading}
-          />
-        ) : (
-          <TilesView
-            name={name}
-            pathPrefix={pathPrefix}
-            rows={rows}
-            selected={selected}
-            onSelect={onSelect}
-            onDetail={rowDetailHandler}
-            onDelete={rowDeleteHandler}
-            onDisable={rowDisableHandler}
-            isLoading={isLoading}
-          />
-        )}
-      </div>
+      {view === listItemsViewKeys.table ? (
+        <TableView
+          name={name}
+          pathPrefix={pathPrefix}
+          rows={rows}
+          selected={selected}
+          onSelect={onSelect}
+          onDetail={rowDetailHandler}
+          onDelete={rowDeleteHandler}
+          onDisable={rowDisableHandler}
+          onSelectAll={onSelectAllRows}
+          columns={columns}
+          checkboxState={checkboxState}
+          isLoading={isLoading}
+        />
+      ) : (
+        <TilesView
+          name={name}
+          pathPrefix={pathPrefix}
+          rows={rows}
+          selected={selected}
+          onSelect={onSelect}
+          onDetail={rowDetailHandler}
+          onDelete={rowDeleteHandler}
+          onDisable={rowDisableHandler}
+          isLoading={isLoading}
+        />
+      )}
     </Stack>
   );
 };

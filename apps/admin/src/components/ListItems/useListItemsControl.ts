@@ -2,8 +2,15 @@
 
 import { useCallback, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { ItemBase } from '@common';
-import { CheckboxState, ListItemsSelected, ListItemsSortOrder, ListItemsView, useListItemsControlProps } from './types';
+import { ItemBase, Categories, Tags } from '@common';
+import {
+  CheckboxState,
+  ListItemsFilterProps,
+  ListItemsSelected,
+  ListItemsSortOrder,
+  ListItemsView,
+  useListItemsControlProps,
+} from './types';
 import { searchItems, sortItems } from './helpers';
 import { checkboxStateKeys, listItemsSortOrderKeys, listItemsViewKeys } from './enums';
 import { LIST_ITEMS_PER_PAGE_DEFAULT, LIST_ITEMS_SORT_ATTRIBUTE_DEFAULT } from './constants';
@@ -17,6 +24,8 @@ export const useListItemsControl = <T extends ItemBase>({
   itemsPerPage = LIST_ITEMS_PER_PAGE_DEFAULT,
   onRowSelect,
   onSelectAll,
+  categories = [],
+  tags = [],
 }: useListItemsControlProps<T>) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -38,10 +47,49 @@ export const useListItemsControl = <T extends ItemBase>({
 
   // TODO #save to SM
   const [selected, setSelected] = useState<ListItemsSelected>([]);
+  const [filter, setFilter] = useState<ListItemsFilterProps>({ categories: [], tags: [] });
+  // <---
 
-  const rawRows = searchItems(items, query, searchKeys);
-  const sortedRows = [...rawRows].sort(sortItems(sortBy, orderBy));
   const pages = Math.max(1, Math.ceil(items.length / perPage));
+  const rawRows = searchItems(items, query, searchKeys);
+
+  const filteredRows = useMemo(() => {
+    let results: T[] = [];
+    const filterCategories = filter.categories;
+    const filterTags = filter.tags;
+
+    if (categories?.length > 0 || tags?.length > 0) {
+      if (filterCategories.length > 0) {
+        rawRows.forEach((item) => {
+          const value = (item as T & { categories: number[] })?.categories;
+
+          if (!value) return;
+
+          if (value.some((num) => filterCategories.includes(num))) {
+            results.push(item);
+          }
+        });
+      } else if (filterTags.length > 0) {
+        rawRows.forEach((item) => {
+          const value = (item as T & { tags: number[] })?.tags;
+
+          if (!value) return;
+
+          if (value.some((num) => filterTags.includes(num))) {
+            results.push(item);
+          }
+        });
+      } else {
+        results = rawRows;
+      }
+    } else {
+      results = rawRows;
+    }
+
+    return [...results].sort(sortItems(sortBy, orderBy));
+  }, [rawRows, categories, tags, filter, sortBy, orderBy]);
+
+  // const sortedRows = [...filteredRows].sort(sortItems(sortBy, orderBy));
 
   const isFirstDisabled = page === 1;
   const isLastDisabled = page === pages;
@@ -49,8 +97,8 @@ export const useListItemsControl = <T extends ItemBase>({
   const rows = useMemo(() => {
     const start = (page - 1) * perPage;
 
-    return sortedRows.slice(start, start + perPage);
-  }, [sortedRows, page, perPage]);
+    return filteredRows.slice(start, start + perPage);
+  }, [filteredRows, page, perPage]);
 
   const updateParams = (newParams: Record<string, string | number>) =>
     setSearchParams((params) => {
@@ -163,6 +211,92 @@ export const useListItemsControl = <T extends ItemBase>({
     return checkboxStateKeys.indeterminate;
   }, [rawRows.length, selected.length]);
 
+  const categoriesOptions = useMemo(() => {
+    const ids: number[] = [];
+    const objects: Categories = [];
+
+    if (!categories) return [];
+
+    // We know there is categories attribute to filter
+    items.forEach((item) => {
+      const value = (item as T & { categories: number[] })?.categories;
+
+      if (value && value.length > 0) {
+        value.forEach((id) => {
+          ids.push(id);
+        });
+      }
+    });
+
+    // We iterate sorted ids to find category object
+    [...new Set(ids)].forEach((id) => {
+      const object = categories.find((ctg) => ctg.id === id);
+
+      if (object) objects.push(object);
+    });
+
+    return objects;
+  }, [items, categories]);
+
+  const tagsOptions = useMemo(() => {
+    const ids: number[] = [];
+    const objects: Tags = [];
+
+    if (!tags) return [];
+
+    // We know there is tags attribute to filter
+    items.forEach((item) => {
+      const value = (item as T & { tags: number[] })?.tags;
+
+      if (value && value.length > 0) {
+        value.forEach((id) => {
+          ids.push(id);
+        });
+      }
+    });
+
+    // We iterate sorted ids to find tag object
+    [...new Set(ids)].forEach((id) => {
+      const object = tags.find((ctg) => ctg.id === id);
+
+      if (object) objects.push(object);
+    });
+
+    return objects;
+  }, [items, tags]);
+
+  const toggleSelectCategoriesHandler = useCallback(
+    (id: number) => {
+      const newSelected: ListItemsSelected = [...filter.categories];
+      const index = newSelected.indexOf(id);
+
+      if (index > -1) {
+        newSelected.splice(index, 1);
+      } else {
+        newSelected.push(id);
+      }
+
+      setFilter((prevState) => ({ ...prevState, categories: newSelected }));
+    },
+    [filter]
+  );
+
+  const toggleSelectTagsHandler = useCallback(
+    (id: number) => {
+      const newSelected: ListItemsSelected = [...filter.tags];
+      const index = newSelected.indexOf(id);
+
+      if (index > -1) {
+        newSelected.splice(index, 1);
+      } else {
+        newSelected.push(id);
+      }
+
+      setFilter((prevState) => ({ ...prevState, tags: newSelected }));
+    },
+    [filter]
+  );
+
   return {
     rows,
     rawRows,
@@ -195,6 +329,13 @@ export const useListItemsControl = <T extends ItemBase>({
       },
       onPerPageChange: pagePerPageChangeHandler,
       onPageChange: pageChangeHandler,
+    },
+    filter: {
+      categories: categoriesOptions,
+      tags: tagsOptions,
+      onCategoryToggle: toggleSelectCategoriesHandler,
+      onTagToggle: toggleSelectTagsHandler,
+      selected: filter,
     },
   };
 };

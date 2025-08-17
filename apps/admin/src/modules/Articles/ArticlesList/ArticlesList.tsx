@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArticlesItem } from '@common';
-import { useArticlesQuery } from '../../../hooks-query';
+import { useArticlesQuery, useCategoriesQuery, useTagsQuery } from '../../../hooks-query';
 import { useViewLayoutContext, ListItems } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
@@ -13,8 +13,12 @@ const ArticlesList = () => {
   const { t } = useTranslation(['modules']);
   const { setTitle } = useViewLayoutContext();
   const { articlesQuery } = useArticlesQuery();
+  const { categoriesQuery } = useCategoriesQuery();
+  const { tagsQuery } = useTagsQuery();
 
   const { data: items, isLoading } = articlesQuery;
+  const { data: categories } = categoriesQuery;
+  const { data: tags } = tagsQuery;
 
   const deleteSelectedHandler = (ids: number[]) => {
     // TODO #api-call
@@ -80,6 +84,8 @@ const ArticlesList = () => {
           onDisableSelected={disableSelectedHandler}
           onRowDelete={(id) => deleteSelectedHandler([id])}
           onRowDisable={(id) => disableSelectedHandler([id])}
+          categories={categories}
+          tags={tags}
         />
       </div>
     </article>

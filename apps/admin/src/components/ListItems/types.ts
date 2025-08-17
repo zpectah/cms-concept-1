@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ItemBase } from '@common';
+import { ItemBase, Categories, Tags } from '@common';
 import { checkboxStateKeys, listItemsSortOrderKeys, listItemsViewKeys } from './enums';
 
 export type ListItemsView = keyof typeof listItemsViewKeys;
@@ -69,6 +69,16 @@ export interface ListItemsProps<T extends ItemBase> extends ListItemsBase<T>, Li
    * Optional callback when detail shows
    **/
   onRowDetail?: (id: number) => void;
+
+  /**
+   * Categories for Articles filter
+   **/
+  categories?: Categories;
+
+  /**
+   * Tags for Articles filter
+   **/
+  tags?: Tags;
 }
 
 export interface useListItemsControlProps<T extends ItemBase> extends ListItemsBase<T> {
@@ -78,6 +88,8 @@ export interface useListItemsControlProps<T extends ItemBase> extends ListItemsB
   itemsPerPage?: number;
   onRowSelect?: (selected: ListItemsSelected) => void;
   onSelectAll?: (selected: ListItemsSelected) => void;
+  categories?: Categories;
+  tags?: Tags;
 }
 
 interface ViewBaseProps<T extends ItemBase> extends ListItemsInitialProps {
@@ -96,3 +108,8 @@ export interface TableViewProps<T extends ItemBase> extends ViewBaseProps<T> {
 }
 
 export type TilesViewProps<T extends ItemBase> = ViewBaseProps<T> & {};
+
+export interface ListItemsFilterProps {
+  categories: number[];
+  tags: number[];
+}

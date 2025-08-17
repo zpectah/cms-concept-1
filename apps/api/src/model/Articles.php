@@ -69,6 +69,7 @@ class Articles {
       $articles = [];
 
       for ($i = 1; $i <= 25; $i++) {
+        $isEven = $i % 2;
         $articles[] = [
           'id' => $i,
           'name' => "article-name-$i",
@@ -88,10 +89,10 @@ class Articles {
           'startDate' => $now,
           'endDate' => $now,
           'location' => 'Some location',
-          'categories' => [1,2],
-          'tags' => [2,3],
-          'attachments' => [3,4],
-          'active' => true,
+          'categories' => $isEven ? [1,2] : [3,4],
+          'tags' => $isEven ? [2,3] : [4,5],
+          'attachments' => $isEven ? [3,4] : [5,6,7],
+          'active' => $isEven,
           'deleted' => false,
           'created' => $now,
           'updated' => $now,
