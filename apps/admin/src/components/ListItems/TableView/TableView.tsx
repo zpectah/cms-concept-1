@@ -1,5 +1,14 @@
-import { Link } from 'react-router-dom';
-import { Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+  Checkbox,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { ItemBase } from '@common';
 import { TableViewProps } from '../types';
 import { checkboxStateKeys } from '../enums';
@@ -55,14 +64,9 @@ const TableView = <T extends ItemBase>({
                 return (
                   <TableCell variant="body" key={String(col.value)} align="right">
                     {col.isTitle ? (
-                      <Link
-                        to={`${pathPrefix}/${row.id}`}
-                        onClick={() => {
-                          onDetail(row.id);
-                        }}
-                      >
+                      <Typography variant="button" onClick={() => onDetail(row.id)} sx={{ cursor: 'pointer' }}>
                         {value}
-                      </Link>
+                      </Typography>
                     ) : col?.renderValue ? (
                       col?.renderValue(row)
                     ) : (

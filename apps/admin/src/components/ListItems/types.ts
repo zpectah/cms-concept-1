@@ -41,6 +41,11 @@ export interface ListItemsProps<T extends ItemBase> extends ListItemsBase<T>, Li
   onRowSelect?: (selected: ListItemsSelected) => void;
 
   /**
+   * Optional callback when selected changes
+   **/
+  onSelectAll?: (selected: ListItemsSelected) => void;
+
+  /**
    * Callback for delete when action is confirmed
    **/
   onDeleteSelected?: (selected: ListItemsSelected) => void;
@@ -72,6 +77,7 @@ export interface useListItemsControlProps<T extends ItemBase> extends ListItemsB
   searchKeys: (keyof T)[];
   itemsPerPage?: number;
   onRowSelect?: (selected: ListItemsSelected) => void;
+  onSelectAll?: (selected: ListItemsSelected) => void;
 }
 
 interface ViewBaseProps<T extends ItemBase> extends ListItemsInitialProps {

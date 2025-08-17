@@ -16,8 +16,8 @@ import { TilesView } from './TilesView';
 
 const ListItems = <T extends ItemBase>({
   name,
-  initialView = listItemsViewKeys.table,
-  isLoading, // TODO
+  initialView,
+  isLoading,
   itemsPerPage,
   items = [],
   columns = [],
@@ -29,6 +29,7 @@ const ListItems = <T extends ItemBase>({
   onRowDelete,
   onRowDisable,
   onRowDetail,
+  onSelectAll,
   pathPrefix,
   disableViewToggle,
 }: ListItemsProps<T>) => {
@@ -45,7 +46,7 @@ const ListItems = <T extends ItemBase>({
     selected,
     checkboxState,
     onSelect,
-    onSelectAll,
+    onSelectAll: onSelectAllRows,
     onDeselect,
     pagination,
   } = useListItemsControl({
@@ -54,6 +55,7 @@ const ListItems = <T extends ItemBase>({
     searchKeys,
     itemsPerPage,
     onRowSelect,
+    onSelectAll,
   });
   const { openConfirmDialog } = useViewLayoutContext();
   const navigate = useNavigate();
@@ -172,7 +174,7 @@ const ListItems = <T extends ItemBase>({
             onDetail={rowDetailHandler}
             onDelete={rowDeleteHandler}
             onDisable={rowDisableHandler}
-            onSelectAll={onSelectAll}
+            onSelectAll={onSelectAllRows}
             columns={columns}
             checkboxState={checkboxState}
             isLoading={isLoading}
