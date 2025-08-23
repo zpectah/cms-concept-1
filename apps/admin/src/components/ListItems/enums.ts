@@ -13,3 +13,12 @@ export const checkboxStateKeys = {
   indeterminate: 'indeterminate',
   checked: 'checked',
 } as const;
+
+export const listItemsControlParamsKeys = {
+  view: 'view',
+  query: 'query',
+  orderBy: 'orderBy',
+  sortBy: 'sortBy',
+  page: 'page',
+  perPage: 'perPage',
+} as const;

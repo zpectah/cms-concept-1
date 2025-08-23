@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { ItemBase, Categories, Tags } from '@common';
 import {
@@ -12,7 +12,7 @@ import {
   useListItemsControlProps,
 } from './types';
 import { searchItems, sortItems } from './helpers';
-import { checkboxStateKeys, listItemsSortOrderKeys, listItemsViewKeys } from './enums';
+import { checkboxStateKeys, listItemsControlParamsKeys, listItemsSortOrderKeys, listItemsViewKeys } from './enums';
 import { LIST_ITEMS_PER_PAGE_DEFAULT, LIST_ITEMS_SORT_ATTRIBUTE_DEFAULT } from './constants';
 
 export const useListItemsControl = <T extends ItemBase>({
@@ -30,12 +30,12 @@ export const useListItemsControl = <T extends ItemBase>({
   const [searchParams, setSearchParams] = useSearchParams();
 
   const initialParams = {
-    view: searchParams.get('view') || initialView,
-    query: searchParams.get('query') || '',
-    orderBy: searchParams.get('orderBy') || initialOrderBy,
-    sortBy: searchParams.get('sortBy') || initialSortBy,
-    page: Number(searchParams.get('page')) || 1,
-    perPage: Number(searchParams.get('perPage')) || itemsPerPage,
+    view: searchParams.get(listItemsControlParamsKeys.view) || initialView,
+    query: searchParams.get(listItemsControlParamsKeys.query) || '',
+    orderBy: searchParams.get(listItemsControlParamsKeys.orderBy) || initialOrderBy,
+    sortBy: searchParams.get(listItemsControlParamsKeys.sortBy) || initialSortBy,
+    page: Number(searchParams.get(listItemsControlParamsKeys.page)) || 1,
+    perPage: Number(searchParams.get(listItemsControlParamsKeys.perPage)) || itemsPerPage,
   };
 
   const [view, setView] = useState<ListItemsView>(initialParams.view as ListItemsView);
@@ -45,12 +45,9 @@ export const useListItemsControl = <T extends ItemBase>({
   const [page, setPage] = useState(initialParams.page);
   const [perPage, setPerPage] = useState(initialParams.perPage);
 
-  // TODO #save to SM
   const [selected, setSelected] = useState<ListItemsSelected>([]);
   const [filter, setFilter] = useState<ListItemsFilterProps>({ categories: [], tags: [] });
-  // <---
 
-  const pages = Math.max(1, Math.ceil(items.length / perPage));
   const rawRows = searchItems(items, query, searchKeys);
 
   const filteredRows = useMemo(() => {
@@ -89,8 +86,7 @@ export const useListItemsControl = <T extends ItemBase>({
     return [...results].sort(sortItems(sortBy, orderBy));
   }, [rawRows, categories, tags, filter, sortBy, orderBy]);
 
-  // const sortedRows = [...filteredRows].sort(sortItems(sortBy, orderBy));
-
+  const pages = Math.max(1, Math.ceil(filteredRows.length / perPage));
   const isFirstDisabled = page === 1;
   const isLastDisabled = page === pages;
 
@@ -191,25 +187,25 @@ export const useListItemsControl = <T extends ItemBase>({
 
     if (selected.length >= 0) {
       newSelected = [];
-      rawRows.forEach((item) => {
+      filteredRows.forEach((item) => {
         newSelected.push(item.id);
       });
     }
 
-    if (selected.length === rawRows.length) newSelected = [];
+    if (selected.length === filteredRows.length) newSelected = [];
 
     setSelected(newSelected);
     onSelectAll?.(newSelected);
-  }, [rawRows, selected, onRowSelect]);
+  }, [filteredRows, selected, onRowSelect]);
 
   const deselectHandler = useCallback(() => setSelected([]), []);
 
   const checkboxState = useMemo<CheckboxState>(() => {
     if (selected.length === 0) return checkboxStateKeys.none;
-    if (selected.length === rawRows.length) return checkboxStateKeys.checked;
+    if (selected.length === filteredRows.length) return checkboxStateKeys.checked;
 
     return checkboxStateKeys.indeterminate;
-  }, [rawRows.length, selected.length]);
+  }, [filteredRows, selected]);
 
   const categoriesOptions = useMemo(() => {
     const ids: number[] = [];
@@ -297,9 +293,27 @@ export const useListItemsControl = <T extends ItemBase>({
     [filter]
   );
 
+  useEffect(() => {
+    const updatedParams = {
+      view: searchParams.get(listItemsControlParamsKeys.view),
+      query: searchParams.get(listItemsControlParamsKeys.query),
+      orderBy: searchParams.get(listItemsControlParamsKeys.orderBy),
+      sortBy: searchParams.get(listItemsControlParamsKeys.sortBy),
+      page: Number(searchParams.get(listItemsControlParamsKeys.page)),
+      perPage: Number(searchParams.get(listItemsControlParamsKeys.perPage)),
+    };
+
+    if (updatedParams.view) setView(updatedParams.view as ListItemsView);
+    if (updatedParams.query) setQuery(updatedParams.query);
+    if (updatedParams.orderBy) setOrderBy(updatedParams.orderBy as ListItemsSortOrder);
+    if (updatedParams.sortBy) setSortBy(updatedParams.sortBy as keyof T);
+    if (updatedParams.page) setPage(updatedParams.page);
+    if (updatedParams.perPage) setPerPage(updatedParams.perPage);
+  }, [searchParams]);
+
   return {
     rows,
-    rawRows,
+    rawRows: filteredRows,
     view,
     onViewChange: setView,
     onViewToggle: toggleViewHandler,
