@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { newItemKey, Categories, CategoriesDetail } from '@common';
 import { API_URL, API_KEYS } from '../constants';
@@ -17,13 +17,15 @@ export const useCategoriesQuery = (id?: string) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const categoriesCreateQuery = {
-    /* TODO */
-  };
+  const categoriesCreateQuery = useMutation<unknown, unknown, CategoriesDetail>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
+    mutationFn: (data) => axios.post(`${API_URL.categories}/create`, data).then((response) => response.data),
+  });
 
-  const categoriesPatchQuery = {
-    /* TODO */
-  };
+  const categoriesPatchQuery = useMutation<unknown, unknown, CategoriesDetail>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
+    mutationFn: (data) => axios.patch(`${API_URL.categories}/patch`, data).then((response) => response.data),
+  });
 
   return {
     categoriesQuery,

@@ -77,6 +77,9 @@ const ListItems = <T extends ItemBase>({
     selected: selectedFilter,
   } = filter;
 
+  const isCategories = categories?.length > 0;
+  const isTags = tags?.length > 0;
+
   const deselectedSelectedHandler = () => onDeselect();
 
   const rowDisableHandler = (id: number) => onRowDisable?.(id);
@@ -176,29 +179,34 @@ const ListItems = <T extends ItemBase>({
               ))}
             </select>
           </div>
-          <div>
-            categories:
-            <br />
-            {categoriesOptions.map((item) => {
-              return (
-                <button key={item.id} onClick={() => onCategoryToggle(item.id)}>
-                  {item.name}
-                </button>
-              );
-            })}
-          </div>
-          <div>
-            tags:
-            <br />
-            {tagsOptions.map((item) => {
-              return (
-                <button key={item.id} onClick={() => onTagToggle(item.id)}>
-                  {item.name}
-                </button>
-              );
-            })}
-          </div>
-          <div>{JSON.stringify(selectedFilter)}</div>
+          {isCategories && (
+            <div>
+              categories:
+              <br />
+              {categoriesOptions.map((item) => {
+                return (
+                  <button key={item.id} onClick={() => onCategoryToggle(item.id)}>
+                    {item.name}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {isTags && (
+            <div>
+              tags:
+              <br />
+              {tagsOptions.map((item) => {
+                return (
+                  <button key={item.id} onClick={() => onTagToggle(item.id)}>
+                    {item.name}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+          {isCategories && isTags && <div>{JSON.stringify(selectedFilter)}</div>}
         </Stack>
       </Card>
 

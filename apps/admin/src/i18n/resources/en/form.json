@@ -14,7 +14,8 @@
     "updated": "Updated",
     "startDate": "Start date",
     "endDate": "End date",
-    "location": "Location"
+    "location": "Location",
+    "parent": "Parent"
   },
   "message": {
     "error": {

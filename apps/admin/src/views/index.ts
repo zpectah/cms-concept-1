@@ -1,4 +1,5 @@
 export { default as ArticlesView } from './Articles';
+export { default as CategoriesView } from './Categories';
 export { default as DashboardView } from './Dashboard';
 export { default as DemoView } from './Demo';
 export { default as ErrorView } from './Error';

@@ -52,6 +52,9 @@ const MainMenu = () => {
         <MenuItem component={Link} to={'/articles'} onClick={closeHandler}>
           Articles
         </MenuItem>
+        <MenuItem component={Link} to={'/categories'} onClick={closeHandler}>
+          Categories
+        </MenuItem>
         <MenuItem component={Link} to={'/profile'} onClick={closeHandler}>
           Profile
         </MenuItem>

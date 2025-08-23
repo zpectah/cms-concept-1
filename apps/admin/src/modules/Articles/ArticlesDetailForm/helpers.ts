@@ -1,5 +1,5 @@
-import { IArticlesDetailForm } from './types';
 import { getConfig, getModelLocales } from '../../../utils';
+import { IArticlesDetailForm } from './types';
 
 export const getArticlesTypeDefaultValue = () => {
   const { model } = getConfig();

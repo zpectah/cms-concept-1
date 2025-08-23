@@ -17,6 +17,13 @@ const CategoriesPicker = forwardRef<HTMLSelectElement, CategoriesPickerProps>((p
   const categoriesItems = useMemo(() => {
     const categories: MenuItemProps[] = [];
 
+    if (!multiple)
+      categories.push({
+        id: '0',
+        value: 0,
+        children: 'Not selected',
+      });
+
     categoriesData?.forEach((category) => {
       if (ignored.includes(category.id)) return;
 
@@ -28,7 +35,7 @@ const CategoriesPicker = forwardRef<HTMLSelectElement, CategoriesPickerProps>((p
     });
 
     return categories.reverse();
-  }, [ignored, categoriesData]);
+  }, [ignored, categoriesData, multiple]);
 
   const changeHandler = (
     event: ChangeEvent<HTMLInputElement> | (Event & { target: { value: unknown; name: string } }),
@@ -39,13 +46,12 @@ const CategoriesPicker = forwardRef<HTMLSelectElement, CategoriesPickerProps>((p
     onChange?.(event, value);
   };
 
-  return (
-    <Select
-      ref={ref}
-      items={categoriesItems}
-      onChange={changeHandler}
-      multiple={multiple}
-      renderValue={(selected) => (
+  const multipleProps = useMemo(() => {
+    const baseProps: Pick<SelectProps, 'multiple' | 'renderValue'> = {};
+
+    if (multiple) {
+      baseProps.multiple = true;
+      baseProps.renderValue = (selected) => (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
           {(selected as number[]).map((value) => {
             const categoryItem = categoriesData?.find((category) => category.id === value);
@@ -53,10 +59,13 @@ const CategoriesPicker = forwardRef<HTMLSelectElement, CategoriesPickerProps>((p
             return <Chip key={value} label={categoryItem?.name} color="secondary" />;
           })}
         </Box>
-      )}
-      {...rest}
-    />
-  );
+      );
+    }
+
+    return baseProps;
+  }, [categoriesData, multiple]);
+
+  return <Select ref={ref} items={categoriesItems} onChange={changeHandler} {...multipleProps} {...rest} />;
 });
 
 export default CategoriesPicker;

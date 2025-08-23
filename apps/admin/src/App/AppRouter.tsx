@@ -5,6 +5,7 @@ import { ToastList } from '../modules';
 import { AuthLayout, AppLayout } from '../components';
 import {
   ArticlesView,
+  CategoriesView,
   DashboardView,
   DemoView,
   ErrorView,
@@ -16,6 +17,8 @@ import {
 
 const ArticlesList = lazy(() => import('../modules/Articles/ArticlesList/ArticlesList'));
 const ArticlesDetailForm = lazy(() => import('../modules/Articles/ArticlesDetailForm/ArticlesDetailForm'));
+const CategoriesList = lazy(() => import('../modules/Categories/CategoriesList/CategoriesList'));
+const CategoriesDetailForm = lazy(() => import('../modules/Categories/CategoriesDetailForm/CategoriesDetailForm'));
 
 const AppRouter = () => {
   const {
@@ -73,6 +76,7 @@ const AppRouter = () => {
               element: <ProfileView />,
             },
 
+            // Articles
             {
               path: `/${routes.articles.path}`,
               element: <ArticlesView />,
@@ -84,6 +88,22 @@ const AppRouter = () => {
                 {
                   path: `/${routes.articles.path}/:id`,
                   element: <ArticlesDetailForm />,
+                },
+              ],
+            },
+
+            // Categories
+            {
+              path: `/${routes.categories.path}`,
+              element: <CategoriesView />,
+              children: [
+                {
+                  path: `/${routes.categories.path}`,
+                  element: <CategoriesList />,
+                },
+                {
+                  path: `/${routes.categories.path}/:id`,
+                  element: <CategoriesDetailForm />,
                 },
               ],
             },

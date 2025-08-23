@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { newItemKey, Attachments, AttachmentsDetail } from '@common';
 import { API_URL, API_KEYS } from '../constants';
@@ -17,13 +17,15 @@ export const useAttachmentsQuery = (id?: string) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const attachmentsCreateQuery = {
-    /* TODO */
-  };
+  const attachmentsCreateQuery = useMutation<unknown, unknown, AttachmentsDetail>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
+    mutationFn: (data) => axios.post(`${API_URL.attachments}/create`, data).then((response) => response.data),
+  });
 
-  const attachmentsPatchQuery = {
-    /* TODO */
-  };
+  const attachmentsPatchQuery = useMutation<unknown, unknown, AttachmentsDetail>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
+    mutationFn: (data) => axios.patch(`${API_URL.attachments}/patch`, data).then((response) => response.data),
+  });
 
   return {
     attachmentsQuery,
