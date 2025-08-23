@@ -1,5 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { styled, Box, Stack, Typography } from '@mui/material';
+import { styled, Box, Stack, Typography, Skeleton } from '@mui/material';
 import { WithChildren } from '@common';
 import { Breadcrumbs } from '../../Breadcrumbs';
 import { ViewLayoutContextProvider } from './ViewLayout.context';
@@ -55,7 +55,11 @@ const ViewLayout = ({
         <Stack gap={2}>
           <Breadcrumbs disabled={disableBreadcrumbs} />
           <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
-            {layoutTitle ? <Typography variant="h2">{layoutTitle}</Typography> : <div />}
+            {layoutTitle ? (
+              <Typography variant="h2">{layoutTitle}</Typography>
+            ) : (
+              <Skeleton variant="rectangular" width={210} height={30} />
+            )}
             {layoutTitleAction && <Stack>{layoutTitleAction}</Stack>}
           </Stack>
         </Stack>

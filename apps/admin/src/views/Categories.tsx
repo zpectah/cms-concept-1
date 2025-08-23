@@ -1,4 +1,3 @@
-import { Skeleton } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { newItemKey } from '@common';
@@ -15,7 +14,6 @@ const CategoriesView = () => {
     <ViewLayout
       id="categories-view"
       type="list"
-      title={<Skeleton variant="rectangular" width={210} height={30} />}
       titleAction={
         <LinkButton variant="contained" color="success" size="large" to={`/${routes.categories.path}/${newItemKey}`}>
           {t('button.new.categories')}

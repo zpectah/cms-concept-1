@@ -4,7 +4,7 @@ import { newItemKey } from '@common';
 import { getConfig } from '../utils';
 import { ViewLayout, LinkButton } from '../components';
 
-const ArticlesView = () => {
+const AttachmentsView = () => {
   const {
     admin: { routes },
   } = getConfig();
@@ -12,11 +12,11 @@ const ArticlesView = () => {
 
   return (
     <ViewLayout
-      id="articles-view"
+      id="attachments-view"
       type="list"
       titleAction={
-        <LinkButton variant="contained" color="success" size="large" to={`/${routes.articles.path}/${newItemKey}`}>
-          {t('button.new.articles')}
+        <LinkButton variant="contained" color="success" size="large" to={`/${routes.attachments.path}/${newItemKey}`}>
+          {t('button.new.attachments')}
         </LinkButton>
       }
       children={<Outlet />}
@@ -24,4 +24,4 @@ const ArticlesView = () => {
   );
 };
 
-export default ArticlesView;
+export default AttachmentsView;

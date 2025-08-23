@@ -4,7 +4,7 @@ import { ITagsDetailForm } from './types';
 export const getTagsTypeDefaultValue = () => {
   const { model } = getConfig();
 
-  return model.articles.default;
+  return model.tags.default;
 };
 
 export const getTagsDetailFormDefaultValues = (): ITagsDetailForm => {

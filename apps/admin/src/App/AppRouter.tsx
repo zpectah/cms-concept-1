@@ -5,6 +5,7 @@ import { ToastList } from '../modules';
 import { AuthLayout, AppLayout } from '../components';
 import {
   ArticlesView,
+  AttachmentsView,
   CategoriesView,
   DashboardView,
   DemoView,
@@ -22,6 +23,8 @@ const CategoriesList = lazy(() => import('../modules/Categories/CategoriesList/C
 const CategoriesDetailForm = lazy(() => import('../modules/Categories/CategoriesDetailForm/CategoriesDetailForm'));
 const TagsList = lazy(() => import('../modules/Tags/TagsList/TagsList'));
 const TagsDetailForm = lazy(() => import('../modules/Tags/TagsDetailForm/TagsDetailForm'));
+const AttachmentsList = lazy(() => import('../modules/Attachments/AttachmentsList/AttachmentsList'));
+const AttachmentsDetailForm = lazy(() => import('../modules/Attachments/AttachmentsDetailForm/AttachmentsDetailForm'));
 
 const AppRouter = () => {
   const {
@@ -126,6 +129,34 @@ const AppRouter = () => {
                 },
               ],
             },
+
+            // Attachments
+            {
+              path: `/${routes.attachments.path}`,
+              element: <AttachmentsView />,
+              children: [
+                {
+                  path: `/${routes.attachments.path}`,
+                  element: <AttachmentsList />,
+                },
+                {
+                  path: `/${routes.attachments.path}/:id`,
+                  element: <AttachmentsDetailForm />,
+                },
+              ],
+            },
+
+            // Pages
+
+            // Users
+
+            // Members
+
+            // Menu
+
+            // Messages
+
+            // Translations
           ],
         },
       ],

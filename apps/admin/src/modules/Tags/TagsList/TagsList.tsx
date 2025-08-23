@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { TagsItem } from '@common';
+import { modelKeys, TagsItem } from '@common';
 import { useTagsQuery } from '../../../hooks-query';
 import { useViewLayoutContext, ListItems } from '../../../components';
 import { getConfig } from '../../../utils';
@@ -33,7 +33,7 @@ const TagsList = () => {
 
   return (
     <ListItems<TagsItem>
-      name={routes.tags.path}
+      name={modelKeys.tags}
       items={items ?? []}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}

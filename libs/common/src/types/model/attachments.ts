@@ -13,5 +13,5 @@ export interface AttachmentsDetail extends AttachmentsItem {
   file_name: string;
   file_type: string;
   file_ext: string;
-  file_size: string;
+  file_size: number;
 }

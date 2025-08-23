@@ -1,24 +1,20 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { modelKeys, ArticlesItem } from '@common';
-import { useArticlesQuery, useCategoriesQuery, useTagsQuery } from '../../../hooks-query';
+import { modelKeys, AttachmentsItem } from '@common';
+import { useAttachmentsQuery } from '../../../hooks-query';
 import { useViewLayoutContext, ListItems } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 
-const ArticlesList = () => {
+const AttachmentsList = () => {
   const {
     admin: { routes },
   } = getConfig();
   const { t } = useTranslation(['modules']);
   const { setTitle } = useViewLayoutContext();
-  const { articlesQuery } = useArticlesQuery();
-  const { categoriesQuery } = useCategoriesQuery();
-  const { tagsQuery } = useTagsQuery();
+  const { attachmentsQuery } = useAttachmentsQuery();
 
-  const { data: items, isLoading } = articlesQuery;
-  const { data: categories } = categoriesQuery;
-  const { data: tags } = tagsQuery;
+  const { data: items, isLoading } = attachmentsQuery;
 
   const deleteSelectedHandler = (ids: number[]) => {
     // TODO #api-call
@@ -31,13 +27,13 @@ const ArticlesList = () => {
   };
 
   useEffect(() => {
-    setTitle(t('modules:articles.listTitle'));
+    setTitle(t('modules:tags.listTitle'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <ListItems<ArticlesItem>
-      name={modelKeys.articles}
+    <ListItems<AttachmentsItem>
+      name={modelKeys.attachments}
       items={items ?? []}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}
@@ -47,7 +43,7 @@ const ArticlesList = () => {
         registeredFormFields.type,
         registeredFormFields.active,
       ]}
-      pathPrefix={`/${routes.articles.path}`}
+      pathPrefix={`/${routes.attachments.path}`}
       columns={[
         {
           value: registeredFormFields.name,
@@ -64,16 +60,6 @@ const ArticlesList = () => {
           renderValue: (row) => `__${row.active ? 'Yes' : 'Nope'}__`, // TODO
         },
         {
-          value: registeredFormFields.categories,
-          label: 'Categories',
-          renderValue: (row) => JSON.stringify(row.categories),
-        },
-        {
-          value: registeredFormFields.tags,
-          label: 'Tags',
-          renderValue: (row) => JSON.stringify(row.tags),
-        },
-        {
           value: registeredFormFields.updated,
           label: 'Updated',
         },
@@ -82,10 +68,8 @@ const ArticlesList = () => {
       onDisableSelected={disableSelectedHandler}
       onRowDelete={(id) => deleteSelectedHandler([id])}
       onRowDisable={(id) => disableSelectedHandler([id])}
-      categories={categories}
-      tags={tags}
     />
   );
 };
 
-export default ArticlesList;
+export default AttachmentsList;

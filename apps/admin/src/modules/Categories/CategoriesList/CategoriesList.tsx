@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CategoriesItem } from '@common';
+import { modelKeys, CategoriesItem } from '@common';
 import { useCategoriesQuery } from '../../../hooks-query';
 import { useViewLayoutContext, ListItems } from '../../../components';
 import { getConfig } from '../../../utils';
@@ -33,7 +33,7 @@ const CategoriesList = () => {
 
   return (
     <ListItems<CategoriesItem>
-      name={routes.categories.path}
+      name={modelKeys.categories}
       items={items ?? []}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}
