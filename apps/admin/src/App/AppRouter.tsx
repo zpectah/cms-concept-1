@@ -13,12 +13,15 @@ import {
   PasswordRecoveryView,
   ProfileView,
   SettingsView,
+  TagsView,
 } from '../views';
 
 const ArticlesList = lazy(() => import('../modules/Articles/ArticlesList/ArticlesList'));
 const ArticlesDetailForm = lazy(() => import('../modules/Articles/ArticlesDetailForm/ArticlesDetailForm'));
 const CategoriesList = lazy(() => import('../modules/Categories/CategoriesList/CategoriesList'));
 const CategoriesDetailForm = lazy(() => import('../modules/Categories/CategoriesDetailForm/CategoriesDetailForm'));
+const TagsList = lazy(() => import('../modules/Tags/TagsList/TagsList'));
+const TagsDetailForm = lazy(() => import('../modules/Tags/TagsDetailForm/TagsDetailForm'));
 
 const AppRouter = () => {
   const {
@@ -104,6 +107,22 @@ const AppRouter = () => {
                 {
                   path: `/${routes.categories.path}/:id`,
                   element: <CategoriesDetailForm />,
+                },
+              ],
+            },
+
+            // Tags
+            {
+              path: `/${routes.tags.path}`,
+              element: <TagsView />,
+              children: [
+                {
+                  path: `/${routes.tags.path}`,
+                  element: <TagsList />,
+                },
+                {
+                  path: `/${routes.tags.path}/:id`,
+                  element: <TagsDetailForm />,
                 },
               ],
             },

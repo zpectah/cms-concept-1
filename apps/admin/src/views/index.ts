@@ -7,3 +7,4 @@ export { default as LoginView } from './Login';
 export { default as PasswordRecoveryView } from './PasswordRecovery';
 export { default as ProfileView } from './Profile';
 export { default as SettingsView } from './Settings';
+export { default as TagsView } from './Tags';

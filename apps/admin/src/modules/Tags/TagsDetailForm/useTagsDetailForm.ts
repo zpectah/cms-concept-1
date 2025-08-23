@@ -3,17 +3,17 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { modelKeys, newItemKey, CategoriesDetail } from '@common';
+import { modelKeys, newItemKey, TagsDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useFormDetailControl, useModelMenuItems } from '../../../helpers';
+import { useModelMenuItems } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { useViewLayoutContext } from '../../../components';
-import { useCategoriesQuery } from '../../../hooks-query';
-import { CategoriesDetailFormSchema } from './schema';
-import { ICategoriesDetailForm } from './types';
-import { getCategoriesTypeDefaultValue, getCategoriesDetailFormDefaultValues } from './helpers';
+import { useTagsQuery } from '../../../hooks-query';
+import { TagsDetailFormSchema } from './schema';
+import { ITagsDetailForm } from './types';
+import { getTagsDetailFormDefaultValues, getTagsTypeDefaultValue } from './helpers';
 
-export const useCategoriesDetailForm = () => {
+export const useTagsDetailForm = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -22,27 +22,26 @@ export const useCategoriesDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { categoriesDetailQuery, categoriesPatchQuery } = useCategoriesQuery(id);
-  const { typeFieldOptions } = useModelMenuItems(modelKeys.categories);
-  const { locales, locale, onLocaleChange } = useFormDetailControl();
-  const form = useForm<ICategoriesDetailForm>({
-    resolver: zodResolver(CategoriesDetailFormSchema),
-    defaultValues: getCategoriesDetailFormDefaultValues(locales),
+  const { tagsDetailQuery, tagsPatchQuery } = useTagsQuery(id);
+  const { typeFieldOptions } = useModelMenuItems(modelKeys.tags);
+  const form = useForm<ITagsDetailForm>({
+    resolver: zodResolver(TagsDetailFormSchema),
+    defaultValues: getTagsDetailFormDefaultValues(),
   });
 
-  const { data: detailData, ...detailQuery } = categoriesDetailQuery;
-  const { mutate: patchMutate } = categoriesPatchQuery;
+  const { data: detailData, ...detailQuery } = tagsDetailQuery;
+  const { mutate: patchMutate } = tagsPatchQuery;
 
-  const createHandler = (master: ICategoriesDetailForm) => {
+  const createHandler = (master: ITagsDetailForm) => {
     // TODO #submit
 
     console.log('master create', master);
   };
 
-  const patchHandler = (master: ICategoriesDetailForm) => {
-    patchMutate(master as CategoriesDetail, {
+  const patchHandler = (master: ITagsDetailForm) => {
+    patchMutate(master as TagsDetail, {
       onSuccess: () => {
-        navigate(`/${routes.categories.path}`);
+        navigate(`/${routes.tags.path}`);
         addToast(t('message.success.updateDetail'), 'success', 2500);
         console.info('onSuccess', master);
       },
@@ -62,7 +61,7 @@ export const useCategoriesDetailForm = () => {
     patchHandler(master);
   };
 
-  const submitHandler: SubmitHandler<ICategoriesDetailForm> = (data) => {
+  const submitHandler: SubmitHandler<ITagsDetailForm> = (data) => {
     if (!data) return;
 
     if (data.deleted === true) {
@@ -89,8 +88,8 @@ export const useCategoriesDetailForm = () => {
   useEffect(() => {
     if (id) {
       if (id === newItemKey) {
-        setTitle(t('button.new.categories'));
-        form.reset(getCategoriesDetailFormDefaultValues(locales));
+        setTitle(t('button.new.tags'));
+        form.reset(getTagsDetailFormDefaultValues());
       } else if (detailData) {
         if (form.formState.isDirty) return;
 
@@ -99,18 +98,15 @@ export const useCategoriesDetailForm = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, detailData, form, locales]);
+  }, [id, detailData, form]);
 
   return {
     form,
     typeFieldOptions,
-    typeFieldDefault: getCategoriesTypeDefaultValue(),
+    typeFieldDefault: getTagsTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
     detailData,
     detailQuery,
     detailId: id,
-    locales,
-    locale,
-    onLocaleChange,
   };
 };

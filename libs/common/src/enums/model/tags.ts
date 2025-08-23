@@ -7,3 +7,5 @@ export const tagsTypeKeys = keys.reduce((acc, key) => {
   acc[key] = key;
   return acc;
 }, {} as Record<(typeof keys)[number], string>) as { [K in (typeof keys)[number]]: K };
+
+export const tagsTypeKeysArray = [...keys] as [string, ...string[]];
