@@ -2,6 +2,7 @@ export const modelKeys = {
   articles: 'articles',
   attachments: 'attachments',
   categories: 'categories',
+  comments: 'comments',
   members: 'members',
   menu: 'menu',
   menuItems: 'menuItems',

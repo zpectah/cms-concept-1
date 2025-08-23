@@ -11,6 +11,10 @@
     "listTitle": "Categories",
     "newDetailTitle": "New category"
   },
+  "comments": {
+    "listTitle": "Comments",
+    "newDetailTitle": "New comment"
+  },
   "members": {
     "listTitle": "Members",
     "newDetailTitle": "New member"

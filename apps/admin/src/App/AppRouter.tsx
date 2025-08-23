@@ -31,6 +31,20 @@ const TagsList = lazy(() => import('../modules/Tags/TagsList/TagsList'));
 const TagsDetailForm = lazy(() => import('../modules/Tags/TagsDetailForm/TagsDetailForm'));
 const AttachmentsList = lazy(() => import('../modules/Attachments/AttachmentsList/AttachmentsList'));
 const AttachmentsDetailForm = lazy(() => import('../modules/Attachments/AttachmentsDetailForm/AttachmentsDetailForm'));
+const MembersList = lazy(() => import('../modules/Members/MembersList/MembersList'));
+const MembersDetailForm = lazy(() => import('../modules/Members/MembersDetailForm/MembersDetailForm'));
+const MenuList = lazy(() => import('../modules/Menu/MenuList/MenuList'));
+const MenuDetailForm = lazy(() => import('../modules/Menu/MenuDetailForm/MenuDetailForm'));
+const MessagesList = lazy(() => import('../modules/Messages/MessagesList/MessagesList'));
+const MessagesDetailForm = lazy(() => import('../modules/Messages/MessagesDetailForm/MessagesDetailForm'));
+const PagesList = lazy(() => import('../modules/Pages/PagesList/PagesList'));
+const PagesDetailForm = lazy(() => import('../modules/Pages/PagesDetailForm/PagesDetailForm'));
+const TranslationsList = lazy(() => import('../modules/Translations/TranslationsList/TranslationsList'));
+const TranslationsDetailForm = lazy(
+  () => import('../modules/Translations/TranslationsDetailForm/TranslationsDetailForm')
+);
+const UsersList = lazy(() => import('../modules/Users/UsersList/UsersList'));
+const UsersDetailForm = lazy(() => import('../modules/Users/UsersDetailForm/UsersDetailForm'));
 
 const AppRouter = () => {
   const {
@@ -53,8 +67,15 @@ const AppRouter = () => {
         {
           path: `/${routes.passwordRecovery.path}`,
           element: <PasswordRecoveryView />,
+          children: [
+            {
+              path: `/${routes.passwordRecovery.path}/:token`,
+              element: <PasswordRecoveryView />,
+            },
+          ],
         },
 
+        // TODO: Redirect to login if not session found, otherwise redirect to dashboard
         {
           path: '/',
           element: <Navigate replace to={`/${routes.login.path}`} />,
@@ -157,7 +178,14 @@ const AppRouter = () => {
               path: `/${routes.pages.path}`,
               element: <PagesView />,
               children: [
-                /* TODO */
+                {
+                  path: `/${routes.pages.path}`,
+                  element: <PagesList />,
+                },
+                {
+                  path: `/${routes.pages.path}/:id`,
+                  element: <PagesDetailForm />,
+                },
               ],
             },
 
@@ -166,7 +194,14 @@ const AppRouter = () => {
               path: `/${routes.users.path}`,
               element: <UsersView />,
               children: [
-                /* TODO */
+                {
+                  path: `/${routes.users.path}`,
+                  element: <UsersList />,
+                },
+                {
+                  path: `/${routes.users.path}/:id`,
+                  element: <UsersDetailForm />,
+                },
               ],
             },
 
@@ -175,7 +210,14 @@ const AppRouter = () => {
               path: `/${routes.members.path}`,
               element: <MembersView />,
               children: [
-                /* TODO */
+                {
+                  path: `/${routes.members.path}`,
+                  element: <MembersList />,
+                },
+                {
+                  path: `/${routes.members.path}/:id`,
+                  element: <MembersDetailForm />,
+                },
               ],
             },
 
@@ -184,7 +226,14 @@ const AppRouter = () => {
               path: `/${routes.menu.path}`,
               element: <MenuView />,
               children: [
-                /* TODO */
+                {
+                  path: `/${routes.menu.path}`,
+                  element: <MenuList />,
+                },
+                {
+                  path: `/${routes.menu.path}/:id`,
+                  element: <MenuDetailForm />,
+                },
               ],
             },
 
@@ -193,7 +242,14 @@ const AppRouter = () => {
               path: `/${routes.messages.path}`,
               element: <MessagesView />,
               children: [
-                /* TODO */
+                {
+                  path: `/${routes.messages.path}`,
+                  element: <MessagesList />,
+                },
+                {
+                  path: `/${routes.messages.path}/:id`,
+                  element: <MessagesDetailForm />,
+                },
               ],
             },
 
@@ -202,7 +258,14 @@ const AppRouter = () => {
               path: `/${routes.translations.path}`,
               element: <TranslationsView />,
               children: [
-                /* TODO */
+                {
+                  path: `/${routes.translations.path}`,
+                  element: <TranslationsList />,
+                },
+                {
+                  path: `/${routes.translations.path}/:id`,
+                  element: <TranslationsDetailForm />,
+                },
               ],
             },
           ],

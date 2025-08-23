@@ -10,7 +10,7 @@ export interface TranslationsItem extends ItemBase {
 export type Translations = TranslationsItem[];
 
 interface TranslationsDetailLocale {
-  label: string;
+  value: string;
 }
 
 export interface TranslationsDetail extends TranslationsItem, ItemLocaleBase<TranslationsDetailLocale> {

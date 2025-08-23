@@ -92,13 +92,18 @@
   "model": {
     "articles": {
       "type": ["default", "event"],
-      "default": "default"
+      "default": "default",
+      "comments": true
     },
     "attachments": {
       "type": ["default"],
       "default": "default"
     },
     "categories": {
+      "type": ["default"],
+      "default": "default"
+    },
+    "comments": {
       "type": ["default"],
       "default": "default"
     },

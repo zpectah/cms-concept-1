@@ -72,6 +72,54 @@ class Router {
             $response = $attachments -> process($environment, $method, $parsed_url, $jsonData);
             break;
 
+          case 'pages':
+            $pages = new \model\Pages;
+
+            $response = $pages -> process($environment, $method, $parsed_url, $jsonData);
+            break;
+
+          case 'users':
+            $users = new \model\Users;
+
+            $response = $users -> process($environment, $method, $parsed_url, $jsonData);
+            break;
+
+          case 'members':
+            $members = new \model\Members;
+
+            $response = $members -> process($environment, $method, $parsed_url, $jsonData);
+            break;
+
+          case 'menu':
+            $menu = new \model\Menu;
+
+            $response = $menu -> process($environment, $method, $parsed_url, $jsonData);
+            break;
+
+          case 'menuItems':
+            $menuItems = new \model\MenuItems;
+
+            $response = $menuItems -> process($environment, $method, $parsed_url, $jsonData);
+            break;
+
+          case 'messages':
+            $messages = new \model\Messages;
+
+            $response = $messages -> process($environment, $method, $parsed_url, $jsonData);
+            break;
+
+          case 'translations':
+            $translations = new \model\Translations;
+
+            $response = $translations -> process($environment, $method, $parsed_url, $jsonData);
+            break;
+
+          case 'comments':
+            $comments = new \model\Comments;
+
+            $response = $comments -> process($environment, $method, $parsed_url, $jsonData);
+            break;
+
           default:
             $response = [];
             break;
