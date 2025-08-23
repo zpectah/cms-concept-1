@@ -27,7 +27,7 @@ const AttachmentsList = () => {
   };
 
   useEffect(() => {
-    setTitle(t('modules:tags.listTitle'));
+    setTitle(t('modules:attachments.listTitle'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

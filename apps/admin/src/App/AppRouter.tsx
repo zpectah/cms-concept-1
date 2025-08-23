@@ -15,6 +15,12 @@ import {
   ProfileView,
   SettingsView,
   TagsView,
+  MembersView,
+  MenuView,
+  MessagesView,
+  PagesView,
+  TranslationsView,
+  UsersView,
 } from '../views';
 
 const ArticlesList = lazy(() => import('../modules/Articles/ArticlesList/ArticlesList'));
@@ -147,16 +153,58 @@ const AppRouter = () => {
             },
 
             // Pages
+            {
+              path: `/${routes.pages.path}`,
+              element: <PagesView />,
+              children: [
+                /* TODO */
+              ],
+            },
 
             // Users
+            {
+              path: `/${routes.users.path}`,
+              element: <UsersView />,
+              children: [
+                /* TODO */
+              ],
+            },
 
             // Members
+            {
+              path: `/${routes.members.path}`,
+              element: <MembersView />,
+              children: [
+                /* TODO */
+              ],
+            },
 
             // Menu
+            {
+              path: `/${routes.menu.path}`,
+              element: <MenuView />,
+              children: [
+                /* TODO */
+              ],
+            },
 
             // Messages
+            {
+              path: `/${routes.messages.path}`,
+              element: <MessagesView />,
+              children: [
+                /* TODO */
+              ],
+            },
 
             // Translations
+            {
+              path: `/${routes.translations.path}`,
+              element: <TranslationsView />,
+              children: [
+                /* TODO */
+              ],
+            },
           ],
         },
       ],

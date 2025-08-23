@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import { useMenuItems } from '../../hooks';
 
 const MainMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -12,6 +13,8 @@ const MainMenu = () => {
   const openHandler = (event: MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget);
 
   const closeHandler = () => setAnchorEl(null);
+
+  const { mainMenu: items } = useMenuItems();
 
   return (
     <>
@@ -37,36 +40,11 @@ const MainMenu = () => {
           },
         }}
       >
-        <MenuItem component={Link} to={'/demo'} onClick={closeHandler}>
-          Demo *
-        </MenuItem>
-        <MenuItem component={Link} to={'/login'} onClick={closeHandler}>
-          Login *
-        </MenuItem>
-        <MenuItem component={Link} to={'/password-recovery'} onClick={closeHandler}>
-          Password Recovery *
-        </MenuItem>
-        <MenuItem component={Link} to={'/dashboard'} onClick={closeHandler}>
-          Dashboard
-        </MenuItem>
-        <MenuItem component={Link} to={'/articles'} onClick={closeHandler}>
-          Articles
-        </MenuItem>
-        <MenuItem component={Link} to={'/categories'} onClick={closeHandler}>
-          Categories
-        </MenuItem>
-        <MenuItem component={Link} to={'/tags'} onClick={closeHandler}>
-          Tags
-        </MenuItem>
-        <MenuItem component={Link} to={'/attachments'} onClick={closeHandler}>
-          Attachments
-        </MenuItem>
-        <MenuItem component={Link} to={'/profile'} onClick={closeHandler}>
-          Profile
-        </MenuItem>
-        <MenuItem component={Link} to={'/settings'} onClick={closeHandler}>
-          Settings
-        </MenuItem>
+        {items.map((item) => (
+          <MenuItem key={item.id} component={Link} to={item.path} onClick={closeHandler}>
+            {item.label}
+          </MenuItem>
+        ))}
       </Menu>
     </>
   );
