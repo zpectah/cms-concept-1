@@ -15,6 +15,4 @@ interface PagesDetailLocale {
   content: string;
 }
 
-export interface PagesDetail extends PagesItem, ItemLocaleBase<PagesDetailLocale> {
-  /* TODO */
-}
+export interface PagesDetail extends PagesItem, ItemLocaleBase<PagesDetailLocale> {}

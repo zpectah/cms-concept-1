@@ -9,6 +9,4 @@ export interface MenuItem extends ItemBase {
 
 export type Menu = MenuItem[];
 
-export interface MenuDetail extends MenuItem {
-  /* TODO */
-}
+export type MenuDetail = MenuItem & {};

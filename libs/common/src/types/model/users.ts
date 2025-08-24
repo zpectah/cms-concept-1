@@ -17,6 +17,4 @@ export interface UsersItem extends ItemBase {
 
 export type Users = UsersItem[];
 
-export interface UsersDetail extends UsersItem {
-  /* TODO */
-}
+export type UsersDetail = UsersItem & {};

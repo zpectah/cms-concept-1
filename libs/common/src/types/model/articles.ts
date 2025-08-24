@@ -8,6 +8,9 @@ export interface ArticlesItem extends ItemBase {
   categories: number[];
   tags: number[];
   attachments: number[];
+  startDate?: string;
+  endDate?: string;
+  location?: string;
 }
 
 export type Articles = ArticlesItem[];
@@ -18,8 +21,4 @@ interface ArticlesDetailLocale {
   content: string;
 }
 
-export interface ArticlesDetail extends ArticlesItem, ItemLocaleBase<ArticlesDetailLocale> {
-  startDate?: string;
-  endDate?: string;
-  location?: string;
-}
+export interface ArticlesDetail extends ArticlesItem, ItemLocaleBase<ArticlesDetailLocale> {}

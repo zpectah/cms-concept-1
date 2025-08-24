@@ -15,6 +15,4 @@ interface CategoriesDetailLocale {
   description?: string;
 }
 
-export interface CategoriesDetail extends CategoriesItem, ItemLocaleBase<CategoriesDetailLocale> {
-  /* TODO */
-}
+export interface CategoriesDetail extends CategoriesItem, ItemLocaleBase<CategoriesDetailLocale> {}

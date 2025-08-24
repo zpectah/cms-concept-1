@@ -6,6 +6,7 @@ export type MembersType = keyof typeof membersTypeKeys;
 export interface MembersItem extends ItemBase {
   type: MembersType;
 
+  // TODO
   email: string;
   password?: string;
 
@@ -17,6 +18,4 @@ export interface MembersItem extends ItemBase {
 
 export type Members = MembersItem[];
 
-export interface MembersDetail extends MembersItem {
-  /* TODO */
-}
+export type MembersDetail = MembersItem & {};

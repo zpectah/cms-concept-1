@@ -13,6 +13,4 @@ interface TranslationsDetailLocale {
   value: string;
 }
 
-export interface TranslationsDetail extends TranslationsItem, ItemLocaleBase<TranslationsDetailLocale> {
-  /* TODO */
-}
+export interface TranslationsDetail extends TranslationsItem, ItemLocaleBase<TranslationsDetailLocale> {}

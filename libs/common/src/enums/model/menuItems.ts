@@ -7,3 +7,5 @@ export const menuItemsTypeKeys = keys.reduce((acc, key) => {
   acc[key] = key;
   return acc;
 }, {} as Record<(typeof keys)[number], string>) as { [K in (typeof keys)[number]]: K };
+
+export const menuItemsTypeKeysArray = [...keys] as [string, ...string[]];

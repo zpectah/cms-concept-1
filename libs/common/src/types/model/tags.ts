@@ -9,6 +9,4 @@ export interface TagsItem extends ItemBase {
 
 export type Tags = TagsItem[];
 
-export interface TagsDetail extends TagsItem {
-  /* TODO */
-}
+export type TagsDetail = TagsItem & {};

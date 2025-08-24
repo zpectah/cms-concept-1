@@ -1,0 +1,116 @@
+import { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslation } from 'react-i18next';
+import { modelKeys, newItemKey, PagesDetail } from '@common';
+import { getConfig } from '../../../utils';
+import { useFormDetailControl, useModelMenuItems } from '../../../helpers';
+import { useAppStore } from '../../../store';
+import { useViewLayoutContext } from '../../../components';
+import { usePagesQuery } from '../../../hooks-query';
+import { PagesDetailFormSchema } from './schema';
+import { IPagesDetailForm } from './types';
+import { getPagesDetailFormDefaultValues, getPagesTypeDefaultValue } from './helpers';
+
+export const usePagesDetailForm = () => {
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const {
+    admin: { routes },
+  } = getConfig();
+  const { addToast } = useAppStore();
+  const { setTitle, openConfirmDialog } = useViewLayoutContext();
+  const { pagesDetailQuery, pagesPatchQuery } = usePagesQuery(id);
+  const { typeFieldOptions } = useModelMenuItems(modelKeys.pages);
+  const { locales, locale, onLocaleChange } = useFormDetailControl();
+  const form = useForm<IPagesDetailForm>({
+    resolver: zodResolver(PagesDetailFormSchema),
+    defaultValues: getPagesDetailFormDefaultValues(locales),
+  });
+
+  const { data: detailData, ...detailQuery } = pagesDetailQuery;
+  const { mutate: patchMutate } = pagesPatchQuery;
+
+  const createHandler = (master: IPagesDetailForm) => {
+    // TODO #submit
+
+    console.log('master create', master);
+  };
+
+  const patchHandler = (master: IPagesDetailForm) => {
+    patchMutate(master as PagesDetail, {
+      onSuccess: () => {
+        navigate(`/${routes.pages.path}`);
+        addToast(t('message.success.updateDetail'), 'success', 2500);
+        console.info('onSuccess', master);
+      },
+      onError: () => {
+        addToast(t('message.error.common'), 'error');
+        console.info('onError', master);
+      },
+    });
+  };
+
+  const deleteConfirmHandler = () => {
+    const master = Object.assign({
+      ...detailData,
+      deleted: true,
+    });
+
+    patchHandler(master);
+  };
+
+  const submitHandler: SubmitHandler<IPagesDetailForm> = (data) => {
+    if (!data) return;
+
+    if (data.deleted === true) {
+      openConfirmDialog({
+        title: t('message.confirm.deleteDetail.title'),
+        content: t('message.confirm.deleteDetail.content'),
+        onConfirm: deleteConfirmHandler,
+      });
+
+      return;
+    }
+
+    const master = Object.assign({
+      ...data,
+    });
+
+    if (data.id === 0) {
+      createHandler(master);
+    } else {
+      patchHandler(master);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      if (id === newItemKey) {
+        setTitle(t('button.new.pages'));
+        form.reset(getPagesDetailFormDefaultValues(locales));
+      } else if (detailData) {
+        if (form.formState.isDirty) return;
+
+        setTitle(detailData.name);
+        form.reset(detailData);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, detailData, form, locales]);
+
+  return {
+    form,
+    typeFieldOptions,
+    typeFieldDefault: getPagesTypeDefaultValue(),
+    onSubmit: form.handleSubmit(submitHandler),
+    detailData,
+    detailQuery,
+    detailId: id,
+    locales,
+    locale,
+    onLocaleChange,
+  };
+};

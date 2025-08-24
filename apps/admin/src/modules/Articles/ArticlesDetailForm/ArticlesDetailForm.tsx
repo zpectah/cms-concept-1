@@ -24,10 +24,15 @@ import { useArticlesDetailForm } from './useArticlesDetailForm';
 const ArticlesDetailForm = () => {
   const {
     admin: { routes },
+    model: {
+      articles: { comments },
+    },
   } = getConfig();
   const { t } = useTranslation(['common', 'form']);
   const { detailId, form, locale, locales, onSubmit, onLocaleChange, typeFieldDefault, typeFieldOptions } =
     useArticlesDetailForm();
+
+  const isComments = !!comments;
 
   const type = useWatch({ name: registeredFormFields.type, control: form.control });
   const startDate = useWatch({ name: registeredFormFields.startDate, control: form.control });
@@ -99,6 +104,7 @@ const ArticlesDetailForm = () => {
           multiple
           defaultValue={[]}
         />
+        {isComments && <div>TODO: comments</div>}
       </FormLayout>
     </ControlledForm>
   );

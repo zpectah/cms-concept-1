@@ -15,7 +15,16 @@
     "startDate": "Start date",
     "endDate": "End date",
     "location": "Location",
-    "parent": "Parent"
+    "parent": "Parent",
+    "email": "E-mail",
+    "password": "Password",
+    "password_again": "Password again",
+    "firstName": "First name",
+    "lastName": "Surname",
+    "accessLevel": "Access level",
+    "address": "Address",
+    "sender": "Sender",
+    "subject": "Subject"
   },
   "message": {
     "error": {

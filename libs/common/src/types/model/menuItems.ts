@@ -15,6 +15,4 @@ interface MenuItemsDetailLocale {
   label: string;
 }
 
-export interface MenuItemsDetail extends MenuItemsItem, ItemLocaleBase<MenuItemsDetailLocale> {
-  /* TODO */
-}
+export interface MenuItemsDetail extends MenuItemsItem, ItemLocaleBase<MenuItemsDetailLocale> {}
