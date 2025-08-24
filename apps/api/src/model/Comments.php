@@ -11,8 +11,13 @@ class Comments {
       switch ($method) {
 
         case 'GET':
-          $id = $url['a'];
-          $response = $this -> get($id);
+
+          if ($url['a'] && $url['b']) {
+            $response = $this -> get(null, $url['a'], $url['b']);
+          } else if (is_numeric($url['a'])) {
+            $response = $this -> get($url['a'], null, null);
+          }
+
           break;
 
         case 'PATCH':
@@ -32,7 +37,7 @@ class Comments {
     return $response;
   }
 
-  public function get($id): array {
+  private function get($id, $contentType, $contentId): array {
     $now = date('c'); // ISO 8601 format
 
     if ($id) {
@@ -44,8 +49,8 @@ class Comments {
         'sender' => 'sender.012' . $id . '@sender.com',
         'subject' => 'Fusce tristique pellentesque dapibus - ' . $id,
         'content' => 'Lorem bibendum curabitur sollicitudin molestie mi tincidunt ultrices placerat sem vehicula placerat eget commodo blandit',
-        'content_type' => 'articles',
-        'content_id' => 5,
+        'content_type' => $contentType ?? 'unknown',
+        'content_id' => $contentId ?? 0,
         'parent' => 0,
         'active' => true,
         'deleted' => false,
@@ -56,14 +61,16 @@ class Comments {
       // Mock list
       $comments = [];
 
-      for ($i = 1; $i <= 10; $i++) {
+      for ($i = 1; $i <= 5; $i++) {
         $comments[] = [
           'id' => $i,
           'name' => "comment-$i",
           'type' => 'default',
           'sender' => 'sender.012' . $id . '@sender.com',
-          'content_type' => 'articles',
-          'content_id' => 5,
+          'subject' => 'Fusce tristique pellentesque dapibus - ' . $id,
+          'content' => 'Lorem bibendum curabitur sollicitudin molestie mi tincidunt ultrices placerat sem vehicula placerat eget commodo blandit',
+          'content_type' => $contentType ?? 'unknown',
+          'content_id' => $contentId ?? 0,
           'parent' => 0,
           'active' => true,
           'deleted' => false,

@@ -19,7 +19,9 @@ import {
 import { TagsPickerField } from '../../Tags';
 import { CategoriesPickerField } from '../../Categories';
 import { AttachmentsPickerField } from '../../Attachments';
+import { CommentsManager } from '../../Comments';
 import { useArticlesDetailForm } from './useArticlesDetailForm';
+import { modelKeys } from '@common';
 
 const ArticlesDetailForm = () => {
   const {
@@ -104,7 +106,7 @@ const ArticlesDetailForm = () => {
           multiple
           defaultValue={[]}
         />
-        {isComments && <div>TODO: comments</div>}
+        <CommentsManager isEnabled={isComments} contentType={modelKeys.articles} contentId={detailId} />
       </FormLayout>
     </ControlledForm>
   );

@@ -1,14 +1,22 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { newItemKey, Comments, CommentsDetail } from '@common';
+import { newItemKey, Comments, CommentsDetail, Model } from '@common';
 import { API_URL, API_KEYS } from '../constants';
 
 const QUERY_KEY_BASE = API_KEYS.comments;
 
-export const useCommentsQuery = (id?: string) => {
+interface useCommentsQueryProps {
+  id?: string;
+  contentType?: Model;
+  contentId?: number;
+}
+
+export const useCommentsQuery = ({ id, contentType, contentId }: useCommentsQueryProps) => {
+  const commentsPath = contentType && contentId ? `${API_URL.comments}/${contentType}/${contentId}` : API_URL.comments;
+
   const commentsQuery = useQuery<unknown, unknown, Comments>({
     queryKey: [QUERY_KEY_BASE],
-    queryFn: () => axios.get(API_URL.comments).then((response) => response.data),
+    queryFn: () => axios.get(commentsPath).then((response) => response.data),
   });
 
   const commentsDetailQuery = useQuery<unknown, unknown, CommentsDetail>({
