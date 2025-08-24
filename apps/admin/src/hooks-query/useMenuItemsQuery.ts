@@ -5,10 +5,17 @@ import { API_URL, API_KEYS } from '../constants';
 
 const QUERY_KEY_BASE = API_KEYS.menuItems;
 
-export const useMenuItemsQuery = (id?: string) => {
+interface useMenuItemsQueryProps {
+  id?: string;
+  menuId?: string;
+}
+
+export const useMenuItemsQuery = ({ id, menuId }: useMenuItemsQueryProps) => {
+  const menuItemsPath = menuId ? `${API_URL.menuItems}/menu/${menuId}` : API_URL.menuItems;
+
   const menuItemsQuery = useQuery<unknown, unknown, MenuItems>({
     queryKey: [QUERY_KEY_BASE],
-    queryFn: () => axios.get(API_URL.menuItems).then((response) => response.data),
+    queryFn: () => axios.get(menuItemsPath).then((response) => response.data),
   });
 
   const menuItemsDetailQuery = useQuery<unknown, unknown, MenuItemsDetail>({

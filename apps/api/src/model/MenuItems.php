@@ -11,8 +11,13 @@ class MenuItems {
       switch ($method) {
 
         case 'GET':
-          $id = $url['a'];
-          $response = $this -> get($id);
+
+          if ($url['a'] === 'menu' && $url['b']) {
+            $response = $this -> get(null, $url['b']);
+          } else if (is_numeric($url['a'])) {
+            $response = $this -> get($url['a'], null);
+          }
+
           break;
 
         case 'PATCH':
@@ -32,7 +37,7 @@ class MenuItems {
     return $response;
   }
 
-  public function get($id): array {
+  public function get($id, $menuId): array {
     $now = date('c'); // ISO 8601 format
 
     if ($id) {
@@ -49,8 +54,8 @@ class MenuItems {
             'label' => "Menu item label CS $id",
           ],
         ],
-        'parent' => 1,
-        'menu' => 1,
+        'parent_id' => 0,
+        'menu_id' => $menuId ?? 0,
         'active' => true,
         'deleted' => false,
         'created' => $now,
@@ -73,8 +78,8 @@ class MenuItems {
 //              'label' => "Menu item label CS $id",
 //            ],
 //          ],
-          'parent' => 1,
-          'menu' => 1,
+          'parent_id' => 0,
+          'menu_id' => $menuId ?? 0,
           'active' => true,
           'deleted' => false,
           'created' => $now,

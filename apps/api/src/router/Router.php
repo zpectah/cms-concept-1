@@ -96,7 +96,7 @@ class Router {
             $response = $menu -> process($environment, $method, $parsed_url, $jsonData);
             break;
 
-          case 'menuItems':
+          case 'menuitems':
             $menuItems = new \model\MenuItems;
 
             $response = $menuItems -> process($environment, $method, $parsed_url, $jsonData);

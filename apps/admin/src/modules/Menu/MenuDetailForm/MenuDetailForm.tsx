@@ -11,6 +11,7 @@ import {
   SelectField,
 } from '../../../components';
 import { useMenuDetailForm } from './useMenuDetailForm';
+import { MenuItemsManager } from '../../MenuItems';
 
 const MenuDetailForm = () => {
   const {
@@ -35,7 +36,7 @@ const MenuDetailForm = () => {
           items={typeFieldOptions}
           fieldProps={{ defaultValue: typeFieldDefault }}
         />
-        <div>TODO: MenuItems manager</div>
+        <MenuItemsManager isEnabled menuId={detailId} />
       </FormLayout>
     </ControlledForm>
   );

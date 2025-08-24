@@ -5,8 +5,8 @@ export type MenuItemsType = keyof typeof menuItemsTypeKeys;
 
 export interface MenuItemsItem extends ItemBase {
   type: MenuItemsType;
-  parent: number;
-  menu: number;
+  parent_id: number;
+  menu_id: number;
 }
 
 export type MenuItems = MenuItemsItem[];
