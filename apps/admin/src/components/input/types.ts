@@ -72,6 +72,7 @@ export interface WysiwygProps {
   isError?: boolean;
   required?: boolean;
   disabled?: boolean;
+  readOnly?: boolean;
 }
 
 export type DatePickerProps = MuiDatePickerProps<never> & {};

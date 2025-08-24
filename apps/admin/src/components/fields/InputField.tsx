@@ -2,7 +2,7 @@ import { ControlledFormField } from '../FormField';
 import { Input } from '../input';
 import { InputFieldProps } from './types';
 
-const InputField = ({ fieldProps, isDisabled, isRequired, ...rest }: InputFieldProps) => (
+const InputField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: InputFieldProps) => (
   <ControlledFormField
     render={({ field, fieldState }) => (
       <Input
@@ -10,6 +10,7 @@ const InputField = ({ fieldProps, isDisabled, isRequired, ...rest }: InputFieldP
         error={!!fieldState.error}
         disabled={isDisabled}
         required={isRequired}
+        readOnly={readOnly}
         {...fieldProps}
         {...field}
       />

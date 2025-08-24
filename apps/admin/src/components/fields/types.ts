@@ -17,7 +17,7 @@ import {
   RadioItemProps,
 } from '../input';
 
-type FieldBase = Omit<FormFieldProps, 'field'> & {};
+type FieldBase = Omit<FormFieldProps, 'field'> & { readOnly?: boolean };
 
 export type DatePickerFieldProps = FieldBase & {
   fieldProps?: Partial<DatePickerProps>;

@@ -2,7 +2,7 @@ import { ControlledFormField } from '../FormField';
 import { Textarea } from '../input';
 import { TextareaFieldProps } from './types';
 
-const TextareaField = ({ fieldProps, isDisabled, isRequired, ...rest }: TextareaFieldProps) => (
+const TextareaField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: TextareaFieldProps) => (
   <ControlledFormField
     render={({ field, fieldState }) => (
       <Textarea
@@ -10,6 +10,7 @@ const TextareaField = ({ fieldProps, isDisabled, isRequired, ...rest }: Textarea
         error={!!fieldState.error}
         disabled={isDisabled}
         required={isRequired}
+        readOnly={readOnly}
         {...fieldProps}
         {...field}
       />

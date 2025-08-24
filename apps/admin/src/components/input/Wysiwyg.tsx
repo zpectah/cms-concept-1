@@ -21,6 +21,7 @@ import LinkOffIcon from '@mui/icons-material/LinkOff';
 import CodeIcon from '@mui/icons-material/Code';
 import CodeOffIcon from '@mui/icons-material/CodeOff';
 import FormatClearIcon from '@mui/icons-material/FormatClear';
+import Textarea from './Textarea';
 import { WysiwygProps } from './types';
 
 // https://www.npmjs.com/package/react-simple-wysiwyg
@@ -135,7 +136,7 @@ const ButtonHtml = ({ ...rest }) => {
 };
 
 const Wysiwyg = forwardRef<HTMLInputElement, WysiwygProps>(
-  ({ value, onChange, name, isError, disabled, required }, ref) => {
+  ({ value, onChange, name, isError, disabled, required, readOnly }, ref) => {
     const [html, setHtml] = useState<string>(value ?? '');
     const [focused, setFocused] = useState(false);
 
@@ -159,6 +160,10 @@ const Wysiwyg = forwardRef<HTMLInputElement, WysiwygProps>(
     const blurHandler = () => setFocused(false);
 
     useEffect(() => setHtml(value ?? ''), [value]);
+
+    if (readOnly) {
+      return <Textarea name={name} value={html} ref={ref} disabled={disabled} rows={5} readOnly />;
+    }
 
     return (
       <EditorProvider>

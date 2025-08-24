@@ -2,7 +2,15 @@ import { ControlledFormField } from '../FormField';
 import { Select } from '../input';
 import { SelectFieldProps } from './types';
 
-const SelectField = ({ fieldProps, items = [], defaultValue, isDisabled, isRequired, ...rest }: SelectFieldProps) => (
+const SelectField = ({
+  fieldProps,
+  items = [],
+  defaultValue,
+  isDisabled,
+  isRequired,
+  readOnly,
+  ...rest
+}: SelectFieldProps) => (
   <ControlledFormField
     render={({ field, fieldState }) => (
       <Select
@@ -12,6 +20,7 @@ const SelectField = ({ fieldProps, items = [], defaultValue, isDisabled, isRequi
         defaultValue={defaultValue ?? fieldProps?.defaultValue}
         disabled={isDisabled}
         required={isRequired}
+        readOnly={readOnly}
         {...fieldProps}
         {...field}
       />

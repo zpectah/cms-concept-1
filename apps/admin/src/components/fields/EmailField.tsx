@@ -2,7 +2,7 @@ import { ControlledFormField } from '../FormField';
 import { Email } from '../input';
 import { EmailFieldProps } from './types';
 
-const EmailField = ({ fieldProps, isDisabled, isRequired, ...rest }: EmailFieldProps) => (
+const EmailField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: EmailFieldProps) => (
   <ControlledFormField
     render={({ field, fieldState }) => (
       <Email
@@ -10,6 +10,7 @@ const EmailField = ({ fieldProps, isDisabled, isRequired, ...rest }: EmailFieldP
         error={!!fieldState.error}
         disabled={isDisabled}
         required={isRequired}
+        readOnly={readOnly}
         {...fieldProps}
         {...field}
       />
