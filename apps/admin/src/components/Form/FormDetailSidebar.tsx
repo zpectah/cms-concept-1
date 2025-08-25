@@ -11,9 +11,10 @@ type FormDetailSidebarProps = Partial<WithChildren> & {
   created?: string;
   updated?: string;
   detailId?: string;
+  disableActions?: boolean;
 };
 
-const FormDetailSidebar = ({ children, detailId, created, updated }: FormDetailSidebarProps) => {
+const FormDetailSidebar = ({ children, detailId, created, updated, disableActions }: FormDetailSidebarProps) => {
   const { t } = useTranslation(['form']);
 
   return (
@@ -24,14 +25,16 @@ const FormDetailSidebar = ({ children, detailId, created, updated }: FormDetailS
           <Literal label={t('form:label.updated')} value={getFormattedDateTime(updated)} />
         </Stack>
       </HiddenCard>
-      <Stack>
-        <SwitchField name={registeredFormFields.active} fieldProps={{ label: t('form:label.active') }} />
-        <SwitchField
-          name={registeredFormFields.deleted}
-          fieldProps={{ label: t('form:label.deleted'), inputProps: { color: 'warning' } }}
-          isDisabled={detailId === newItemKey}
-        />
-      </Stack>
+      {!disableActions && (
+        <Stack>
+          <SwitchField name={registeredFormFields.active} fieldProps={{ label: t('form:label.active') }} />
+          <SwitchField
+            name={registeredFormFields.deleted}
+            fieldProps={{ label: t('form:label.deleted'), inputProps: { color: 'warning' } }}
+            isDisabled={detailId === newItemKey}
+          />
+        </Stack>
+      )}
       {children}
     </Stack>
   );

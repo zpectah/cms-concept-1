@@ -36,7 +36,9 @@
     "settings": "Settings",
     "tags": "Tags",
     "translations": "Translations",
-    "user": "Users"
+    "users": "Users",
+    "profile": "Profile",
+    "demo": "Demo"
   },
   "message": {
     "confirm": {

@@ -3,30 +3,30 @@
 ## Articles
 
 ```
-/private/articles
-/private/articles/$id
+[GET] /private/articles
+[GET] /private/articles/$id
 ```
 
 ## Attachments
 
 ```
-/private/attachments
-/private/attachments/$id
+[GET] /private/attachments
+[GET] /private/attachments/$id
 ```
 
 ## Categories
 
 ```
-/private/categories
-/private/categories/$id
+[GET] /private/categories
+[GET] /private/categories/$id
 ```
 
 ## Comments
 
 ```
-/private/comments
-/private/comments/$id
-/private/comments/$contentType/$contentId
+[GET] /private/comments
+[GET] /private/comments/$id
+[GET] /private/comments/$contentType/$contentId
 ```
 * $contentType = Content type [articles]
 * $contentId = Id of content type
@@ -34,55 +34,63 @@
 ## Members
 
 ```
-/private/members
-/private/members/$id
+[GET] /private/members
+[GET] /private/members/$id
 ```
 
 ## Menu
 
 ```
-/private/menu
-/private/menu/$id
+[GET] /private/menu
+[GET] /private/menu/$id
 ```
 
 ## MenuItems
 
 ```
-/private/menuitems
-/private/menuitems/$id
+[GET] /private/menuitems
+[GET] /private/menuitems/$id
+[GET] /private/menuitems/menu/$menuId
 ```
+* $menuId = Parent menu id
 
 ## Messages
 
 ```
-/private/messages
-/private/messages/$id
+[GET] /private/messages
+[GET] /private/messages/$id
 ```
 
 ## Pages
 
 ```
-/private/pages
-/private/pages/$id
+[GET] /private/pages
+[GET] /private/pages/$id
 ```
 
 ## Tags
 
 ```
-/private/tags
-/private/tags/$id
+[GET] /private/tags
+[GET] /private/tags/$id
 ```
 
 ## Translations
 
 ```
-/private/translations
-/private/translations/$id
+[GET] /private/translations
+[GET] /private/translations/$id
 ```
 
 ## Users
 
 ```
-/private/users
-/private/users/$id
+[GET] /private/users
+[GET] /private/users/$id
+```
+
+## Settings
+
+```
+[GET] /private/settings
 ```

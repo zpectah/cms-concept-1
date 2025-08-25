@@ -1,17 +1,8 @@
 import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { registeredFormFields } from '../../../enums';
+import { Button } from '@mui/material';
 import { getConfig } from '../../../utils';
-import {
-  ControlledForm,
-  FormDetailSidebar,
-  FormDetailActions,
-  FormLayout,
-  InputField,
-  SelectField,
-  EmailField,
-  TextareaField,
-} from '../../../components';
+import { ControlledForm, FormDetailSidebar, FormDetailActions, FormLayout, Literal } from '../../../components';
 import { useMessagesDetailForm } from './useMessagesDetailForm';
 
 const MessagesDetailForm = () => {
@@ -19,33 +10,30 @@ const MessagesDetailForm = () => {
     admin: { routes },
   } = getConfig();
   const { t } = useTranslation(['common', 'form']);
-  const { detailId, form, onSubmit, typeFieldDefault, typeFieldOptions } = useMessagesDetailForm();
+  const { detailId, form, onSubmit } = useMessagesDetailForm();
 
-  const created = useWatch({ name: registeredFormFields.created, control: form.control });
-  const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
-
-  // TODO - pokud bude ID - tak zamknout editaci (readonly?)
-  // TODO - nebo rovnou jako Literal ???
+  const values = useWatch({ control: form.control });
 
   return (
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
-        actions={<FormDetailActions detailId={detailId} listPath={`/${routes.messages.path}`} />}
-        sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
+        actions={
+          <FormDetailActions detailId={detailId} listPath={`/${routes.messages.path}`} disableActions>
+            <Button size="large" color="secondary" variant="outlined">
+              {/* TODO */}
+              Mark as read
+            </Button>
+          </FormDetailActions>
+        }
+        sidebar={
+          <FormDetailSidebar detailId={detailId} created={values.created} updated={values.updated} disableActions />
+        }
       >
-        <InputField name={registeredFormFields.name} label={t('form:label.name')} readOnly />
-        <SelectField
-          name={registeredFormFields.type}
-          label={t('form:label.type')}
-          items={typeFieldOptions}
-          fieldProps={{ defaultValue: typeFieldDefault }}
-          readOnly
-        />
-
-        <EmailField name={registeredFormFields.sender} label={t('form:label.sender')} readOnly />
-
-        <InputField name={registeredFormFields.subject} label={t('form:label.subject')} readOnly />
-        <TextareaField name={registeredFormFields.content} label={t('form:label.content')} readOnly />
+        <Literal label={t('form:label.name')} value={values.name} />
+        <Literal label={t('form:label.type')} value={values.type} />
+        <Literal label={t('form:label.sender')} value={values.sender} />
+        <Literal label={t('form:label.subject')} value={values.subject} />
+        <Literal label={t('form:label.content')} value={values.content} />
       </FormLayout>
     </ControlledForm>
   );
