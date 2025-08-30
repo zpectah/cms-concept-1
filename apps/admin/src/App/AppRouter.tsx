@@ -10,6 +10,7 @@ import {
   DashboardView,
   DemoView,
   ErrorView,
+  ErrorBoundary,
   LoginView,
   PasswordRecoveryView,
   ProfileView,
@@ -54,6 +55,7 @@ const AppRouter = () => {
   const router = createBrowserRouter([
     {
       element: <AppLayout variant="minimal" />,
+      errorElement: <ErrorBoundary />,
       children: [
         {
           path: '*',
@@ -85,6 +87,7 @@ const AppRouter = () => {
 
     {
       element: <AuthLayout />,
+      errorElement: <ErrorBoundary />,
       children: [
         {
           element: <AppLayout slot={<ToastList />} />,

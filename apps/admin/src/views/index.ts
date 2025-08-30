@@ -4,6 +4,7 @@ export { default as CategoriesView } from './Categories';
 export { default as DashboardView } from './Dashboard';
 export { default as DemoView } from './Demo';
 export { default as ErrorView } from './Error';
+export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as LoginView } from './Login';
 export { default as MembersView } from './Members';
 export { default as MenuView } from './Menu';
