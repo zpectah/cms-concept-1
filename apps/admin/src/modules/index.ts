@@ -4,5 +4,6 @@ export * from './Dashboard';
 export * from './Demo';
 export * from './Login';
 export * from './PasswordRecovery';
+export * from './Settings';
 export * from './Toasts';
 export * from './Tags';

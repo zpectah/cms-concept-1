@@ -40,6 +40,11 @@ const MessagesList = lazy(() => import('../modules/Messages/MessagesList/Message
 const MessagesDetailForm = lazy(() => import('../modules/Messages/MessagesDetailForm/MessagesDetailForm'));
 const PagesList = lazy(() => import('../modules/Pages/PagesList/PagesList'));
 const PagesDetailForm = lazy(() => import('../modules/Pages/PagesDetailForm/PagesDetailForm'));
+const SettingsClientPanel = lazy(() => import('../modules/Settings/ClientPanelForm/ClientPanelForm'));
+const SettingsGlobalPanel = lazy(() => import('../modules/Settings/GlobalPanelForm/GlobalPanelForm'));
+const SettingsLanguagesPanel = lazy(() => import('../modules/Settings/LanguagesPanel/LanguagesPanel'));
+const SettingsMaintenancePanel = lazy(() => import('../modules/Settings/MaintenancePanel/MaintenancePanel'));
+const SettingsBlacklistPanel = lazy(() => import('../modules/Settings/BlacklistPanel/BlacklistPanel'));
 const TranslationsList = lazy(() => import('../modules/Translations/TranslationsList/TranslationsList'));
 const TranslationsDetailForm = lazy(
   () => import('../modules/Translations/TranslationsDetailForm/TranslationsDetailForm')
@@ -103,13 +108,39 @@ const AppRouter = () => {
             },
 
             {
-              path: `/${routes.settings.path}`,
-              element: <SettingsView />,
+              path: `/${routes.profile.path}`,
+              element: <ProfileView />,
             },
 
             {
-              path: `/${routes.profile.path}`,
-              element: <ProfileView />,
+              path: `/${routes.settings.path}`,
+              element: <SettingsView />,
+              children: [
+                {
+                  path: `/${routes.settings.path}`,
+                  element: <Navigate replace to={`/${routes.settings.path}/${routes.settings.panels.global}`} />,
+                },
+                {
+                  path: `/${routes.settings.path}/${routes.settings.panels.global}`,
+                  element: <SettingsGlobalPanel />,
+                },
+                {
+                  path: `/${routes.settings.path}/${routes.settings.panels.client}`,
+                  element: <SettingsClientPanel />,
+                },
+                {
+                  path: `/${routes.settings.path}/${routes.settings.panels.languages}`,
+                  element: <SettingsLanguagesPanel />,
+                },
+                {
+                  path: `/${routes.settings.path}/${routes.settings.panels.maintenance}`,
+                  element: <SettingsMaintenancePanel />,
+                },
+                {
+                  path: `/${routes.settings.path}/${routes.settings.panels.blacklist}`,
+                  element: <SettingsBlacklistPanel />,
+                },
+              ],
             },
 
             // Articles

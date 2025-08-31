@@ -5,6 +5,8 @@ import { DatePickerFieldProps } from './types';
 
 const DatePickerField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: DatePickerFieldProps) => (
   <ControlledFormField
+    isDisabled={isDisabled}
+    isRequired={isRequired}
     render={({ field, fieldState }) => {
       const safeValue = field.value ? dayjs(field.value) : null;
 

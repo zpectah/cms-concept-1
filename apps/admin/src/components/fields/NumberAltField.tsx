@@ -4,6 +4,8 @@ import { NumberAltFieldProps } from './types';
 
 const NumberField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: NumberAltFieldProps) => (
   <ControlledFormField
+    isDisabled={isDisabled}
+    isRequired={isRequired}
     render={({ field, fieldState }) => (
       <NumberAlt
         fullWidth

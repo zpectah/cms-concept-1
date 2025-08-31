@@ -4,6 +4,8 @@ import { PasswordFieldProps } from './types';
 
 const PasswordField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: PasswordFieldProps) => (
   <ControlledFormField
+    isDisabled={isDisabled}
+    isRequired={isRequired}
     render={({ field, fieldState }) => (
       <Password
         fullWidth

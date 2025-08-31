@@ -46,5 +46,48 @@
   "users": {
     "listTitle": "Users",
     "newDetailTitle": "New user"
-  }
+  },
+  "dashboard": {},
+  "demo": {},
+  "login": {},
+  "passwordRecovery": {},
+  "profile": {},
+  "settings": {
+    "pageTitle": "Settings",
+    "tabs": {
+      "global": {
+        "title": "Global",
+        "description": "Global panel description",
+        "section": {
+          "project": {
+            "title": "Project"
+          },
+          "company": {
+            "title": "Company"
+          }
+        }
+      },
+      "client": {
+        "title": "Client",
+        "description": "Client panel description",
+        "section": {}
+      },
+      "languages": {
+        "title": "Languages",
+        "description": "Languages panel description",
+        "section": {}
+      },
+      "maintenance": {
+        "title": "Maintenance",
+        "description": "Maintenance panel description",
+        "section": {}
+      },
+      "blacklist": {
+        "title": "Blacklist",
+        "description": "Blacklist panel description",
+        "section": {}
+      }
+    }
+  },
+  "toasts": {}
 }

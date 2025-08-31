@@ -16,6 +16,7 @@ interface ViewLayoutProps extends WithChildren {
   title?: ViewLayoutTitle;
   titleAction?: ViewLayoutTitleAction;
   type?: ViewLayoutType;
+  tabsNavigation?: ReactNode;
 }
 
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -26,7 +27,7 @@ const Wrapper = styled(Box)(({ theme }) => ({
 }));
 
 /* TODO */
-const Main = styled(Box)(() => ({}));
+const Main = styled(Stack)(() => ({}));
 const MainContent = styled(Box)(() => ({}));
 
 const ViewLayout = ({
@@ -36,6 +37,7 @@ const ViewLayout = ({
   title,
   titleAction,
   type = viewLayoutTypeKeys.default,
+  tabsNavigation,
 }: ViewLayoutProps) => {
   const [layoutTitle, setLayoutTitle] = useState<ViewLayoutTitle>(title);
   const [layoutTitleAction, setLayoutTitleAction] = useState<ViewLayoutTitleAction>(titleAction);
@@ -63,7 +65,8 @@ const ViewLayout = ({
             {layoutTitleAction && <Stack>{layoutTitleAction}</Stack>}
           </Stack>
         </Stack>
-        <Main>
+        <Main gap={4}>
+          {tabsNavigation && tabsNavigation}
           <MainContent as="div">{children}</MainContent>
         </Main>
       </Wrapper>

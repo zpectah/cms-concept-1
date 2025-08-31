@@ -60,7 +60,8 @@
           "global": "global",
           "client": "client",
           "languages": "language",
-          "maintenance": "maintenance"
+          "maintenance": "maintenance",
+          "blacklist": "blacklist"
         }
       },
       "tags": {

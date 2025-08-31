@@ -4,6 +4,8 @@ import { EmailFieldProps } from './types';
 
 const EmailField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: EmailFieldProps) => (
   <ControlledFormField
+    isDisabled={isDisabled}
+    isRequired={isRequired}
     render={({ field, fieldState }) => (
       <Email
         fullWidth

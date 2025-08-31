@@ -8,6 +8,7 @@ const FormFieldBase = ({
   name,
   label,
   isRequired,
+  isDisabled,
   helperMessages = [],
   successMessages = [],
   errorMessages = [],

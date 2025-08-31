@@ -4,6 +4,8 @@ import { CheckboxFieldProps } from './types';
 
 const CheckboxField = ({ fieldProps, isDisabled, isRequired, ...rest }: CheckboxFieldProps) => (
   <ControlledFormField
+    isDisabled={isDisabled}
+    isRequired={isRequired}
     render={({ field, fieldState }) => (
       <Checkbox
         label={fieldProps?.label}

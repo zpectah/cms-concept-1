@@ -4,6 +4,8 @@ import { TextareaFieldProps } from './types';
 
 const TextareaField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: TextareaFieldProps) => (
   <ControlledFormField
+    isDisabled={isDisabled}
+    isRequired={isRequired}
     render={({ field, fieldState }) => (
       <Textarea
         fullWidth

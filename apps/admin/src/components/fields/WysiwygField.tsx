@@ -4,6 +4,8 @@ import { WysiwygFieldProps } from './types';
 
 const WysiwygField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: WysiwygFieldProps) => (
   <ControlledFormField
+    isDisabled={isDisabled}
+    isRequired={isRequired}
     render={({ field, fieldState }) => (
       <Wysiwyg
         isError={!!fieldState.error}

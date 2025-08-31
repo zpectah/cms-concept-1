@@ -4,6 +4,8 @@ import { InputFieldProps } from './types';
 
 const InputField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: InputFieldProps) => (
   <ControlledFormField
+    isDisabled={isDisabled}
+    isRequired={isRequired}
     render={({ field, fieldState }) => (
       <Input
         fullWidth

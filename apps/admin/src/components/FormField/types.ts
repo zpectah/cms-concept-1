@@ -20,6 +20,7 @@ export interface FormFieldBaseProps extends Partial<WithChildren> {
   name: string;
   label?: string;
   isRequired?: boolean;
+  isDisabled?: boolean;
   helperMessages?: string[];
   successMessages?: string[];
   errorMessages?: string[];
@@ -31,7 +32,6 @@ export interface FormFieldProps extends Omit<FormFieldBaseProps, 'children'> {
   field: ReactElement;
   fieldId?: string;
   testId?: string;
-  isDisabled?: boolean;
   fieldOptions?: RegisterOptions;
 }
 

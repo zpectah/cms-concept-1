@@ -4,6 +4,8 @@ import { NumberFieldProps } from './types';
 
 const NumberField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: NumberFieldProps) => (
   <ControlledFormField
+    isDisabled={isDisabled}
+    isRequired={isRequired}
     render={({ field, fieldState }) => (
       <Number
         fullWidth

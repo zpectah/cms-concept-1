@@ -4,6 +4,8 @@ import { SwitchFieldProps } from './types';
 
 const SwitchField = ({ fieldProps, isDisabled, isRequired, ...rest }: SwitchFieldProps) => (
   <ControlledFormField
+    isDisabled={isDisabled}
+    isRequired={isRequired}
     render={({ field }) => (
       <Switch
         label={fieldProps?.label}

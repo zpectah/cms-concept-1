@@ -9,6 +9,8 @@ const ControlledFormField = ({
   label,
   errorMessages = [],
   render,
+  isRequired,
+  isDisabled,
   ...rest
 }: ControlledFormFieldProps) => {
   const form = useFormContext();
@@ -17,6 +19,7 @@ const ControlledFormField = ({
     <Controller
       name={name}
       control={form.control}
+      rules={{ required: isRequired }}
       render={({ field, fieldState, formState }) => {
         const fieldErrorMessage = fieldState.error?.message;
         const fieldErrorMessages: string[] = [...errorMessages];
@@ -24,7 +27,14 @@ const ControlledFormField = ({
         if (fieldErrorMessage) fieldErrorMessages.push(fieldErrorMessage);
 
         return (
-          <FormFieldBase name={field.name} label={label} errorMessages={fieldErrorMessages} {...rest}>
+          <FormFieldBase
+            name={field.name}
+            label={label}
+            errorMessages={fieldErrorMessages}
+            isRequired={isRequired}
+            isDisabled={isDisabled}
+            {...rest}
+          >
             {render({ field, fieldState, formState })}
           </FormFieldBase>
         );
