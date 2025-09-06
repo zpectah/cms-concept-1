@@ -1,5 +1,5 @@
-import { ThemeToggle, useViewLayoutContext } from '../../components';
 import { useEffect } from 'react';
+import { ThemeToggle, useViewLayoutContext } from '../../components';
 
 const Dashboard = () => {
   const { setTitle } = useViewLayoutContext();

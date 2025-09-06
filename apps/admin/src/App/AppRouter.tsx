@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
 import { getConfig } from '../utils';
-import { ToastList } from '../modules';
+import { ToastList, AnnouncementsList } from '../modules';
 import { AuthLayout, AppLayout } from '../components';
 import {
   ArticlesView,
@@ -59,7 +59,7 @@ const AppRouter = () => {
 
   const router = createBrowserRouter([
     {
-      element: <AppLayout variant="minimal" />,
+      element: <AppLayout variant="minimal" toastsSlot={<ToastList />} announcementsSlot={<AnnouncementsList />} />,
       errorElement: <ErrorBoundary />,
       children: [
         {
@@ -95,7 +95,7 @@ const AppRouter = () => {
       errorElement: <ErrorBoundary />,
       children: [
         {
-          element: <AppLayout slot={<ToastList />} />,
+          element: <AppLayout toastsSlot={<ToastList />} announcementsSlot={<AnnouncementsList />} />,
           children: [
             {
               path: `/${routes.demo.path}`,

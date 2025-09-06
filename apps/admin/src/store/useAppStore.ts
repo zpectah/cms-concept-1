@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { PaletteMode } from '@mui/material';
 import { getRandomId } from '@common';
-import { ToastsItem, ToastsItemSeverity } from '../types';
+import { ToastsItem, ToastsItemSeverity, AnnouncementsItem, AnnouncementsItemSeverity } from '../types';
 import { toastsItemSeverityKeys } from '../enums';
 import { getConfig } from '../utils';
 import { CMS_LOCALES_KEY, CMS_THEME_MODE_KEY } from '../constants';
@@ -11,10 +11,14 @@ interface AppStore {
   setLocale: (locale: string) => void;
   mode: PaletteMode | string;
   setMode: (mode: PaletteMode) => void;
+  // Toasts
   toasts: ToastsItem[];
   addToast: (title: string, severity?: ToastsItemSeverity, autoclose?: number | boolean) => void;
   removeToast: (id: string) => void;
-  // TODO #announcements
+  // Announcements
+  announcements: AnnouncementsItem[];
+  addAnnouncement: (title: string, severity?: AnnouncementsItemSeverity, autoclose?: number | boolean) => void;
+  removeAnnouncement: (id: string) => void;
 }
 
 const useAppStore = create<AppStore>((set, getState) => {
@@ -25,6 +29,7 @@ const useAppStore = create<AppStore>((set, getState) => {
   const locale = window.localStorage.getItem(CMS_LOCALES_KEY) ?? localeCfg.default;
   const mode = window.localStorage.getItem(CMS_THEME_MODE_KEY) ?? theme.default;
   const toasts: ToastsItem[] = [];
+  const announcements: AnnouncementsItem[] = [];
 
   const setLocalesHandler = (locale: string) => {
     set({ locale });
@@ -68,6 +73,38 @@ const useAppStore = create<AppStore>((set, getState) => {
     set({ toasts: tmpToasts });
   };
 
+  const removeAnnouncementHandler = (id: string) => {
+    const tmpAnnouncements = [...getState().announcements];
+    const index = tmpAnnouncements.findIndex((item) => item.id === id);
+
+    if (index > -1) tmpAnnouncements.splice(index, 1);
+
+    set({ announcements: tmpAnnouncements });
+  };
+
+  const addAnnouncementHandler = (
+    title: string,
+    severity: ToastsItemSeverity = toastsItemSeverityKeys.info,
+    autoclose?: number | boolean
+  ) => {
+    const tmpAnnouncements = [...getState().announcements];
+    const id = getRandomId();
+
+    tmpAnnouncements.push({
+      id,
+      title,
+      severity,
+    });
+
+    if (autoclose) {
+      const timeout = typeof autoclose === 'number' ? autoclose : 4000;
+
+      setTimeout(() => removeAnnouncementHandler(id), timeout);
+    }
+
+    set({ announcements: tmpAnnouncements });
+  };
+
   return {
     // Locale
     locale,
@@ -79,6 +116,10 @@ const useAppStore = create<AppStore>((set, getState) => {
     toasts,
     removeToast: removeToastHandler,
     addToast: addToastHandler,
+    // Announcements
+    announcements,
+    addAnnouncement: addAnnouncementHandler,
+    removeAnnouncement: removeAnnouncementHandler,
   };
 });
 

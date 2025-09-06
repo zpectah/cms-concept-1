@@ -19,6 +19,8 @@ import {
   SelectField,
   TextareaField,
   Textarea,
+  Content,
+  Section,
 } from '../../../components';
 import { useAppStore } from '../../../store';
 
@@ -42,114 +44,127 @@ const DemoExamples = () => {
       field_textarea: '',
     },
   });
-  const { addToast } = useAppStore();
+  const { addToast, addAnnouncement } = useAppStore();
 
   return (
-    <ControlledForm form={form}>
-      <Stack gap={4}>
-        <Stack gap={4}>
-          <Stack>
-            <FormFieldBase
-              name="fieldName1"
-              label="Field label"
-              isRequired
-              helperMessages={['Primary helper message']}
-              successMessages={['Primary success message']}
-              errorMessages={['Primary error message']}
-            >
-              <Password fullWidth placeholder="Input placeholder text" />
-            </FormFieldBase>
+    <Content>
+      <Section>
+        <ControlledForm form={form}>
+          <Stack gap={4}>
+            <Stack gap={4}>
+              <Stack>
+                <FormFieldBase
+                  name="fieldName1"
+                  label="Field label"
+                  isRequired
+                  helperMessages={['Primary helper message']}
+                  successMessages={['Primary success message']}
+                  errorMessages={['Primary error message']}
+                >
+                  <Password fullWidth placeholder="Input placeholder text" />
+                </FormFieldBase>
+              </Stack>
+              <Divider />
+              <Stack gap={2}>
+                <InputField name="field_input" label="InputField label" />
+                <EmailField name="field_email" label="EmailField label" />
+                <NumberField name="field_number" label="NumberField label" />
+                <NumberAltField name="field_number_alt" label="NumberAltField label" fieldProps={{ step: 10 }} />
+                <PasswordField name="field_password_alt" label="PasswordField label" />
+                <TextareaField name="field_textarea" label="TextareaField label" />
+                <WysiwygField name="field_wysiwyg" label="WysiwygField label" isRequired />
+                <Divider />
+                <DatePickerField name="field_datepicker" label="DatePickerField label" />
+                <DateTimePickerField name="field_datetimepicker" label="DateTimePickerField label" />
+                <Divider />
+                <SwitchField name="field_switch" label="SwitchField label" fieldProps={{ label: 'Switch label' }} />
+                <CheckboxField
+                  name="field_checkbox"
+                  label="CheckboxField label"
+                  fieldProps={{ label: 'Checkbox label' }}
+                />
+                <SelectField
+                  name="field_select"
+                  label="SelectField label"
+                  items={[
+                    {
+                      value: 'opt1',
+                      children: 'Option 1',
+                    },
+                    {
+                      value: 'opt2',
+                      children: 'Option 2',
+                    },
+                    {
+                      value: 'opt3',
+                      children: 'Option 3',
+                    },
+                    {
+                      value: 'opt4',
+                      children: 'Option 4',
+                      disabled: true,
+                    },
+                  ]}
+                />
+                <RadioGroupField
+                  name="field_radiogroup"
+                  label="RadioGroupField horizontal label"
+                  items={[
+                    {
+                      name: 'field_radiogroup.opt1',
+                      value: 'opt1',
+                      label: 'Yes',
+                    },
+                    {
+                      name: 'field_radiogroup.opt2',
+                      value: 'opt2',
+                      label: 'No',
+                    },
+                    {
+                      name: 'field_radiogroup.opt3',
+                      value: 'opt3',
+                      label: 'Maybe',
+                    },
+                  ]}
+                  row
+                />
+                <RadioGroupField
+                  name="field_radiogroup2"
+                  label="RadioGroupField vertical label"
+                  items={[
+                    {
+                      name: 'field_radiogroup2.opt1',
+                      value: 'opt1',
+                      label: 'Option 1',
+                    },
+                    {
+                      name: 'field_radiogroup2.opt2',
+                      value: 'opt2',
+                      label: 'Option 2',
+                    },
+                    {
+                      name: 'field_radiogroup2.opt3',
+                      value: 'opt3',
+                      label: 'Option 3',
+                    },
+                    {
+                      name: 'field_radiogroup2.opt4',
+                      value: 'opt4',
+                      label: 'Option 4',
+                      disabled: true,
+                    },
+                  ]}
+                />
+              </Stack>
+            </Stack>
+            <Stack>
+              <Textarea value={JSON.stringify(form.watch(), null, 2)} rows={17} readOnly />
+            </Stack>
           </Stack>
-          <Divider />
-          <Stack gap={2}>
-            <InputField name="field_input" label="InputField label" />
-            <EmailField name="field_email" label="EmailField label" />
-            <NumberField name="field_number" label="NumberField label" />
-            <NumberAltField name="field_number_alt" label="NumberAltField label" fieldProps={{ step: 10 }} />
-            <PasswordField name="field_password_alt" label="PasswordField label" />
-            <TextareaField name="field_textarea" label="TextareaField label" />
-            <WysiwygField name="field_wysiwyg" label="WysiwygField label" isRequired />
-            <Divider />
-            <DatePickerField name="field_datepicker" label="DatePickerField label" />
-            <DateTimePickerField name="field_datetimepicker" label="DateTimePickerField label" />
-            <Divider />
-            <SwitchField name="field_switch" label="SwitchField label" fieldProps={{ label: 'Switch label' }} />
-            <CheckboxField name="field_checkbox" label="CheckboxField label" fieldProps={{ label: 'Checkbox label' }} />
-            <SelectField
-              name="field_select"
-              label="SelectField label"
-              items={[
-                {
-                  value: 'opt1',
-                  children: 'Option 1',
-                },
-                {
-                  value: 'opt2',
-                  children: 'Option 2',
-                },
-                {
-                  value: 'opt3',
-                  children: 'Option 3',
-                },
-                {
-                  value: 'opt4',
-                  children: 'Option 4',
-                  disabled: true,
-                },
-              ]}
-            />
-            <RadioGroupField
-              name="field_radiogroup"
-              label="RadioGroupField horizontal label"
-              items={[
-                {
-                  name: 'field_radiogroup.opt1',
-                  value: 'opt1',
-                  label: 'Yes',
-                },
-                {
-                  name: 'field_radiogroup.opt2',
-                  value: 'opt2',
-                  label: 'No',
-                },
-                {
-                  name: 'field_radiogroup.opt3',
-                  value: 'opt3',
-                  label: 'Maybe',
-                },
-              ]}
-              row
-            />
-            <RadioGroupField
-              name="field_radiogroup2"
-              label="RadioGroupField vertical label"
-              items={[
-                {
-                  name: 'field_radiogroup2.opt1',
-                  value: 'opt1',
-                  label: 'Option 1',
-                },
-                {
-                  name: 'field_radiogroup2.opt2',
-                  value: 'opt2',
-                  label: 'Option 2',
-                },
-                {
-                  name: 'field_radiogroup2.opt3',
-                  value: 'opt3',
-                  label: 'Option 3',
-                },
-                {
-                  name: 'field_radiogroup2.opt4',
-                  value: 'opt4',
-                  label: 'Option 4',
-                  disabled: true,
-                },
-              ]}
-            />
-          </Stack>
-        </Stack>
-        <Divider />
+        </ControlledForm>
+      </Section>
+      <Divider />
+      <Section>
         <Stack direction="row" gap={2} flexWrap="wrap">
           <Button variant="outlined" onClick={() => addToast('Toast default title', 'info', true)}>
             Open toast
@@ -167,12 +182,17 @@ const DemoExamples = () => {
             Open error toast
           </Button>
         </Stack>
-        <Divider />
-        <Stack>
-          <Textarea value={JSON.stringify(form.watch(), null, 2)} rows={17} readOnly />
+
+        <Stack direction="row" gap={2} flexWrap="wrap">
+          <Button variant="outlined" onClick={() => addAnnouncement('title announcement', 'info', 10000)}>
+            Add announcement
+          </Button>
+          <Button variant="outlined" onClick={() => addAnnouncement('title announcement', 'warning')}>
+            Add another announcement
+          </Button>
         </Stack>
-      </Stack>
-    </ControlledForm>
+      </Section>
+    </Content>
   );
 };
 

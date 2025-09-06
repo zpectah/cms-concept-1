@@ -1,6 +1,6 @@
 import { styled } from '@mui/material';
 import { useAppStore } from '../../../store';
-import ToastsItem from './ToastsItem';
+import ToastsListItem from './ToastsListItem';
 
 const ToastsWrapper = styled('div')(() => ({
   width: '100%',
@@ -35,7 +35,7 @@ const ToastList = () => {
     <ToastsWrapper>
       <ToastsWrapperList>
         {toasts.map((toast) => (
-          <ToastsItem key={toast.id} onClose={removeToast} {...toast} />
+          <ToastsListItem key={toast.id} onClose={removeToast} {...toast} />
         ))}
       </ToastsWrapperList>
     </ToastsWrapper>

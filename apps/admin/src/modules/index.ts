@@ -1,3 +1,4 @@
+export * from './Announcements';
 export * from './Attachments';
 export * from './Categories';
 export * from './Dashboard';

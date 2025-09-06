@@ -13,7 +13,8 @@ const layoutVariantKeys = {
 
 interface AppLayoutProps {
   variant?: keyof typeof layoutVariantKeys;
-  slot?: ReactNode;
+  toastsSlot?: ReactNode;
+  announcementsSlot?: ReactNode;
 }
 
 const Wrapper = styled('main')({
@@ -35,7 +36,7 @@ const Content = styled(Box)(({ theme }) => ({
   gap: theme.spacing(4),
 }));
 
-const AppLayout = ({ variant = layoutVariantKeys.default, slot }: AppLayoutProps) => {
+const AppLayout = ({ variant = layoutVariantKeys.default, toastsSlot, announcementsSlot }: AppLayoutProps) => {
   const wrapperProps = {
     id: 'cms-layout',
     className: `variant--${variant}`,
@@ -47,6 +48,7 @@ const AppLayout = ({ variant = layoutVariantKeys.default, slot }: AppLayoutProps
         return (
           <>
             <LayoutBase {...wrapperProps}>
+              {announcementsSlot}
               <Wrapper>
                 <Content>
                   <Box sx={{ marginTop: 'auto', marginBottom: 'auto' }}>
@@ -55,7 +57,7 @@ const AppLayout = ({ variant = layoutVariantKeys.default, slot }: AppLayoutProps
                 </Content>
               </Wrapper>
             </LayoutBase>
-            {slot}
+            {toastsSlot}
           </>
         );
 
@@ -64,6 +66,7 @@ const AppLayout = ({ variant = layoutVariantKeys.default, slot }: AppLayoutProps
         return (
           <>
             <LayoutBase {...wrapperProps}>
+              {announcementsSlot}
               <Header />
               <Wrapper>
                 <Container>
@@ -74,13 +77,13 @@ const AppLayout = ({ variant = layoutVariantKeys.default, slot }: AppLayoutProps
                 </Container>
               </Wrapper>
             </LayoutBase>
-            {slot}
+            {toastsSlot}
           </>
         );
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [variant, slot]);
+  }, [variant, toastsSlot, announcementsSlot]);
 };
 
 export default AppLayout;
