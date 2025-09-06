@@ -1,4 +1,6 @@
-export const getDataToFormMapper = () => {
+import { ISettingsGlobalPanelForm } from './types';
+
+export const getDataToFormMapper = (): ISettingsGlobalPanelForm => {
   return {
     projectName: '',
     projectDescription: '',

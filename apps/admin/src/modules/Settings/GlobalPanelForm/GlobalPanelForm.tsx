@@ -13,12 +13,10 @@ import { useGlobalPanelForm } from './useGlobalPanelForm';
 
 const GlobalPanelForm = () => {
   const { t } = useTranslation(['common', 'modules']);
-  const { form } = useGlobalPanelForm();
-
-  console.log('form', form.getValues());
+  const { form, onSubmit } = useGlobalPanelForm();
 
   return (
-    <ControlledForm form={form}>
+    <ControlledForm form={form} formProps={{ onSubmit }}>
       <Content>
         <Section title={t('modules:settings.tabs.global.section.project.title')}>
           <InputField name="projectName" label="Název projektu" isRequired />

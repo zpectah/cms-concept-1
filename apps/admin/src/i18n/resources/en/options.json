@@ -1,4 +1,16 @@
 {
   "default": "Default",
-  "event": "Event"
+  "event": "Event",
+
+  "robots": {
+    "all": "All",
+    "index": "Index",
+    "follow": "Follow",
+    "none": "None",
+    "noindex": "No index",
+    "nofollow": "No follow",
+    "nosnippet": "No snippet",
+    "noarchive": "No archive",
+    "nocache": "No cache"
+  }
 }

@@ -1,41 +1,46 @@
 import { Button, Divider, Stack } from '@mui/material';
-import { ControlledForm, Content, Section, SubmitButton } from '../../../components';
+import { useTranslation } from 'react-i18next';
+import {
+  ControlledForm,
+  Content,
+  Section,
+  SubmitButton,
+  InputField,
+  TextareaField,
+  SelectField,
+  SwitchField,
+} from '../../../components';
 import { useClientPanelForm } from './useClientPanelForm';
 
 const ClientPanelForm = () => {
-  const { form } = useClientPanelForm();
+  const { t } = useTranslation(['common', 'modules']);
+  const { form, onSubmit, fieldOptions } = useClientPanelForm();
 
   // TODO
 
   return (
-    <ControlledForm form={form}>
+    <ControlledForm form={form} formProps={{ onSubmit }}>
       <Content>
-        <Section title="Meta">
-          - titulek
-          <br />
-          - popisek
-          <br />
-          - klíčová slova
-          <br />- roboti
+        <Section title={t('modules:settings.tabs.client.section.meta.title')}>
+          <InputField name="metaTitle" label="Titulek aplikace" isRequired />
+          <TextareaField name="metaDescription" label="Popis aplikace" />
+          <InputField name="metaKeywords" label="Klíčová slova" />
+          <SelectField name="metaRobots" label="Meta roboti" items={fieldOptions.metaRobots} />
         </Section>
         <Section title="Stavy">
-          - debug mód
-          <br />- mód údržby
+          <SwitchField name="stateDebug" fieldProps={{ label: 'Mód ladění' }} />
+          <SwitchField name="stateMaintenance" fieldProps={{ label: 'Mód údržby' }} />
         </Section>
-        <Section title="Zprávy">- odesílatel zpráv (?) - příjemci zpráv</Section>
+        <Section title="Zprávy">
+          <SwitchField name="messagesActive" fieldProps={{ label: 'Zprávy aktivní' }} />
+          <InputField name="messagesRecipients" label="Příjemci zpráv" />
+        </Section>
         <Section title="Komentáře">
-          - aktivní komentáře
-          <br />- anonymní komentáře
+          <SwitchField name="commentsActive" fieldProps={{ label: 'Komentáře aktivní' }} />
+          <SwitchField name="commentsAnonymous" fieldProps={{ label: 'Komentovat mohou i anonymní uživatelé' }} />
         </Section>
         <Section title="Members">
-          - aktivní - - - bude v configu!
-          <br />
-          - přihlášení
-          <br />
-          - obnova ztraceného hesla
-          <br />
-          - profilová stránka
-          <br />- registrace uživatele
+          <SwitchField name="membersActive" fieldProps={{ label: 'Members aktivní' }} />
         </Section>
         <Divider />
         <Stack direction="row" gap={2}>

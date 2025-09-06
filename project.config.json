@@ -141,5 +141,14 @@
       "default": "default"
     }
   },
+  "members": {
+    "mode": "active",
+    "options": {
+      "registration": true,
+      "login": true,
+      "passwordRecovery": true,
+      "profile": true
+    }
+  },
   "api": {}
 }

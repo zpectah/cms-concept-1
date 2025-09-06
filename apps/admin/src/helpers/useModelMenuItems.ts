@@ -1,13 +1,10 @@
 import { MenuItemProps } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import { Model } from '@common';
 import { getConfig } from '../utils';
+import { getOptionValue } from './getOptionValue';
 
 export const useModelMenuItems = (model: Model) => {
   const { model: configModel } = getConfig();
-  const { t } = useTranslation(['options']);
-
-  const getValueTranslation = (value: string) => t(value);
 
   const getTypeFieldOptions = (disabled?: string[]) => {
     const items: MenuItemProps[] = [];
@@ -17,7 +14,7 @@ export const useModelMenuItems = (model: Model) => {
 
       items.push({
         value: type,
-        children: getValueTranslation(type),
+        children: getOptionValue(type),
       });
     });
 
@@ -26,6 +23,6 @@ export const useModelMenuItems = (model: Model) => {
 
   return {
     typeFieldOptions: getTypeFieldOptions(),
-    getValueTranslation,
+    getOptionValue,
   };
 };

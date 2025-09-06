@@ -70,7 +70,23 @@
       "client": {
         "title": "Client",
         "description": "Client panel description",
-        "section": {}
+        "section": {
+          "meta": {
+            "title": "Meta"
+          },
+          "states": {
+            "title": "States"
+          },
+          "messages": {
+            "title": "Messages"
+          },
+          "comments": {
+            "title": "Comments"
+          },
+          "members": {
+            "title": "Members"
+          }
+        }
       },
       "languages": {
         "title": "Languages",
