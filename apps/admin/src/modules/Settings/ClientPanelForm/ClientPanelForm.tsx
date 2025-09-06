@@ -21,25 +21,25 @@ const ClientPanelForm = () => {
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
       <Content>
-        <Section title={t('modules:settings.tabs.client.section.meta.title')}>
+        <Section title={t('modules:settings.tabs.client.section.meta.title')} cardContent>
           <InputField name="metaTitle" label="Titulek aplikace" isRequired />
           <TextareaField name="metaDescription" label="Popis aplikace" />
           <InputField name="metaKeywords" label="Klíčová slova" />
           <SelectField name="metaRobots" label="Meta roboti" items={fieldOptions.metaRobots} />
         </Section>
-        <Section title="Stavy">
+        <Section title="Stavy" cardContent>
           <SwitchField name="stateDebug" fieldProps={{ label: 'Mód ladění' }} />
           <SwitchField name="stateMaintenance" fieldProps={{ label: 'Mód údržby' }} />
         </Section>
-        <Section title="Zprávy">
+        <Section title="Zprávy" cardContent>
           <SwitchField name="messagesActive" fieldProps={{ label: 'Zprávy aktivní' }} />
           <InputField name="messagesRecipients" label="Příjemci zpráv" />
         </Section>
-        <Section title="Komentáře">
+        <Section title="Komentáře" cardContent>
           <SwitchField name="commentsActive" fieldProps={{ label: 'Komentáře aktivní' }} />
           <SwitchField name="commentsAnonymous" fieldProps={{ label: 'Komentovat mohou i anonymní uživatelé' }} />
         </Section>
-        <Section title="Members">
+        <Section title="Members" cardContent>
           <SwitchField name="membersActive" fieldProps={{ label: 'Members aktivní' }} />
         </Section>
         <Divider />

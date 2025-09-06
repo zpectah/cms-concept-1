@@ -8,8 +8,12 @@ const LanguagesPanel = () => {
 
   return (
     <Content>
-      <Section title="Správa jazyků">- seznam nainstalovaných jazyků [klíč, aktivní, výchozí]</Section>
-      <Section title="Instalace nového jazyka">- výběr a instalace nového jazyka</Section>
+      <Section title="Správa jazyků" cardContent>
+        - seznam nainstalovaných jazyků [klíč, aktivní, výchozí]
+      </Section>
+      <Section title="Instalace nového jazyka" cardContent>
+        - výběr a instalace nového jazyka
+      </Section>
     </Content>
   );
 };

@@ -18,12 +18,12 @@ const GlobalPanelForm = () => {
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
       <Content>
-        <Section title={t('modules:settings.tabs.global.section.project.title')}>
+        <Section title={t('modules:settings.tabs.global.section.project.title')} cardContent>
           <InputField name="projectName" label="Název projektu" isRequired />
           <TextareaField name="projectDescription" label="Popis projektu" />
         </Section>
         <Divider />
-        <Section title={t('modules:settings.tabs.global.section.company.title')}>
+        <Section title={t('modules:settings.tabs.global.section.company.title')} cardContent>
           <InputField name="companyName" label="Název společnosti" />
           <TextareaField name="companyDescription" label="Popis společnosti" />
           <InputField name="companyId" label="ID společnosti" />

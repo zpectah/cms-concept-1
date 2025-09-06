@@ -82,6 +82,15 @@ const theme = createTheme({
         variant: 'outlined',
       },
     },
+    MuiCardHeader: {
+      defaultProps: {
+        slotProps: {
+          title: {
+            variant: 'h4',
+          },
+        },
+      },
+    },
   },
 });
 

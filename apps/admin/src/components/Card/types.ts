@@ -13,4 +13,5 @@ export type CardProps = MuiCardProps & {
   cardMediaProps?: Partial<CardMediaProps>;
   cardActions?: ReactNode;
   cardActionsProps?: Partial<CardActionsProps>;
+  title?: ReactNode;
 };

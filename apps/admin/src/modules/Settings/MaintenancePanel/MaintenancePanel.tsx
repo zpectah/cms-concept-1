@@ -8,7 +8,7 @@ const MaintenancePanel = () => {
 
   return (
     <Content>
-      <Section title="Údržba">
+      <Section title="Údržba" cardContent>
         - Definitivně smazat všechny smazané položky
         <br />- Definitivně smazat všechny smazané přílohy
       </Section>

@@ -8,11 +8,12 @@ const Card = ({
   cardMediaProps,
   cardActions,
   cardActionsProps,
+  title,
   ...rest
 }: CardProps) => {
   return (
     <MuiCard {...rest}>
-      {cardHeaderProps && <CardHeader {...cardHeaderProps} />}
+      {(cardHeaderProps || title) && <CardHeader title={title} {...cardHeaderProps} />}
       {cardMediaProps && <CardMedia {...cardMediaProps} />}
       {(children || cardContentProps) && <CardContent {...cardContentProps}>{children}</CardContent>}
       {cardActions && <CardActions {...cardActionsProps}>{cardActions}</CardActions>}

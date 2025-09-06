@@ -8,7 +8,9 @@ const BlacklistPanel = () => {
 
   return (
     <Content>
-      <Section title="Blokování přístupu">- tabulka s IP adresama nebo emailem [IP Address, e-mail]</Section>
+      <Section title="Blokování přístupu" cardContent>
+        - tabulka s IP adresama nebo emailem [IP Address, e-mail]
+      </Section>
     </Content>
   );
 };
