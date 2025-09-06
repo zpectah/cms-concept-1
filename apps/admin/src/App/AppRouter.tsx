@@ -28,6 +28,7 @@ const ArticlesList = lazy(() => import('../modules/Articles/ArticlesList/Article
 const ArticlesDetailForm = lazy(() => import('../modules/Articles/ArticlesDetailForm/ArticlesDetailForm'));
 const CategoriesList = lazy(() => import('../modules/Categories/CategoriesList/CategoriesList'));
 const CategoriesDetailForm = lazy(() => import('../modules/Categories/CategoriesDetailForm/CategoriesDetailForm'));
+const Dashboard = lazy(() => import('../modules/Dashboard/Dashboard'));
 const TagsList = lazy(() => import('../modules/Tags/TagsList/TagsList'));
 const TagsDetailForm = lazy(() => import('../modules/Tags/TagsDetailForm/TagsDetailForm'));
 const AttachmentsList = lazy(() => import('../modules/Attachments/AttachmentsList/AttachmentsList'));
@@ -40,6 +41,7 @@ const MessagesList = lazy(() => import('../modules/Messages/MessagesList/Message
 const MessagesDetailForm = lazy(() => import('../modules/Messages/MessagesDetailForm/MessagesDetailForm'));
 const PagesList = lazy(() => import('../modules/Pages/PagesList/PagesList'));
 const PagesDetailForm = lazy(() => import('../modules/Pages/PagesDetailForm/PagesDetailForm'));
+const ProfileAccountPanel = lazy(() => import('../modules/Profile/AccountPanelForm/AccountPanelForm'));
 const SettingsClientPanel = lazy(() => import('../modules/Settings/ClientPanelForm/ClientPanelForm'));
 const SettingsGlobalPanel = lazy(() => import('../modules/Settings/GlobalPanelForm/GlobalPanelForm'));
 const SettingsLanguagesPanel = lazy(() => import('../modules/Settings/LanguagesPanel/LanguagesPanel'));
@@ -67,10 +69,13 @@ const AppRouter = () => {
           element: <ErrorView code={404} />,
         },
 
+        // Login
         {
           path: `/${routes.login.path}`,
           element: <LoginView />,
         },
+
+        // Password recovery
         {
           path: `/${routes.passwordRecovery.path}`,
           element: <PasswordRecoveryView />,
@@ -97,21 +102,41 @@ const AppRouter = () => {
         {
           element: <AppLayout toastsSlot={<ToastList />} announcementsSlot={<AnnouncementsList />} />,
           children: [
+            // Demo
             {
               path: `/${routes.demo.path}`,
               element: <DemoView />,
             },
 
+            // Dashboard
             {
               path: `/${routes.dashboard.path}`,
               element: <DashboardView />,
+              children: [
+                {
+                  path: `/${routes.dashboard.path}`,
+                  element: <Dashboard />,
+                },
+              ],
             },
 
+            // Profile
             {
               path: `/${routes.profile.path}`,
               element: <ProfileView />,
+              children: [
+                {
+                  path: `/${routes.profile.path}`,
+                  element: <Navigate replace to={`/${routes.profile.path}/${routes.profile.panels.account}`} />,
+                },
+                {
+                  path: `/${routes.profile.path}/${routes.profile.panels.account}`,
+                  element: <ProfileAccountPanel />,
+                },
+              ],
             },
 
+            // Settings
             {
               path: `/${routes.settings.path}`,
               element: <SettingsView />,

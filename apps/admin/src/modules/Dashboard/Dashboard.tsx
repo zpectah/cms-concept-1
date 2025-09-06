@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ThemeToggle, useViewLayoutContext } from '../../components';
+import { useViewLayoutContext, Content } from '../../components';
 
 const Dashboard = () => {
   const { setTitle } = useViewLayoutContext();
@@ -10,12 +10,10 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <>
+    <Content>
       ...Dashboard page view...
-      <div>
-        <ThemeToggle />
-      </div>
-    </>
+      <div>...</div>
+    </Content>
   );
 };
 

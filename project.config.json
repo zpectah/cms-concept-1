@@ -80,7 +80,10 @@
         "path": "translations"
       },
       "profile": {
-        "path": "profile"
+        "path": "profile",
+        "panels": {
+          "account": "account"
+        }
       }
     }
   },

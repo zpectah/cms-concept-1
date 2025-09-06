@@ -47,11 +47,35 @@
     "listTitle": "Users",
     "newDetailTitle": "New user"
   },
-  "dashboard": {},
-  "demo": {},
-  "login": {},
-  "passwordRecovery": {},
-  "profile": {},
+  "dashboard": {
+    "pageTitle": "Dashboard"
+  },
+  "demo": {
+    "pageTitle": "Demo examples"
+  },
+  "login": {
+    "pageTitle": "Login"
+  },
+  "passwordRecovery": {
+    "pageTitle": "Password recovery"
+  },
+  "profile": {
+    "pageTitle": "Profile",
+    "tabs": {
+      "account": {
+        "title": "Account",
+        "description": "Account panel description",
+        "section": {
+          "basic": {
+            "title": "Basic information"
+          },
+          "appearance": {
+            "title": "Appearance"
+          }
+        }
+      }
+    }
+  },
   "settings": {
     "pageTitle": "Settings",
     "tabs": {
@@ -105,5 +129,6 @@
       }
     }
   },
-  "toasts": {}
+  "toasts": {},
+  "announcements": {}
 }

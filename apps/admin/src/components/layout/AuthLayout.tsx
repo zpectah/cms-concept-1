@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 const AuthLayout = () => {
   // TODO
   useEffect(() => {
-    console.log('Check authorization here');
+    console.info('Check authorization here');
   }, []);
 
   return <Outlet />;

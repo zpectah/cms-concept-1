@@ -5,7 +5,11 @@ const ThemeToggle = () => {
 
   // TODO
 
-  return <button onClick={toggleMode}>{mode}</button>;
+  return (
+    <button type="button" onClick={toggleMode}>
+      {mode}
+    </button>
+  );
 };
 
 export default ThemeToggle;
