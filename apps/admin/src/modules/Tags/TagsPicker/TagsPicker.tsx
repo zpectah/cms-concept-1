@@ -50,7 +50,7 @@ const TagsPicker = forwardRef<HTMLSelectElement, TagsPickerProps>((props, ref) =
           {(selected as number[]).map((value) => {
             const tagsItem = tagsData?.find((tag) => tag.id === value);
 
-            return <Chip key={value} label={tagsItem?.name} color="secondary" />;
+            return <Chip key={value} label={tagsItem?.name} color="secondary" variant="outlined" />;
           })}
         </Box>
       )}

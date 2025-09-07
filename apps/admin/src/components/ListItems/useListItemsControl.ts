@@ -5,7 +5,8 @@ import { useSearchParams } from 'react-router-dom';
 import { ItemBase, Categories, Tags } from '@common';
 import {
   CheckboxState,
-  ListItemsFilterProps,
+  ListItemsFilter,
+  ListItemsPagination,
   ListItemsSelected,
   ListItemsSortOrder,
   ListItemsView,
@@ -44,9 +45,8 @@ export const useListItemsControl = <T extends ItemBase>({
   const [sortBy, setSortBy] = useState<keyof T>(initialParams.sortBy as keyof T);
   const [page, setPage] = useState(initialParams.page);
   const [perPage, setPerPage] = useState(initialParams.perPage);
-
   const [selected, setSelected] = useState<ListItemsSelected>([]);
-  const [filter, setFilter] = useState<ListItemsFilterProps>({ categories: [], tags: [] });
+  const [filter, setFilter] = useState<ListItemsFilter>({ categories: [], tags: [] });
 
   const rawRows = searchItems(items, query, searchKeys);
 
@@ -293,6 +293,24 @@ export const useListItemsControl = <T extends ItemBase>({
     [filter]
   );
 
+  const pagination: ListItemsPagination = {
+    page,
+    pages,
+    perPage,
+    onPageNext: onPageNextHandler,
+    onPagePrev: onPagePrevHandler,
+    onPageFirst: onPageFirstHandler,
+    onPageLast: onPageLastHandler,
+    disabledButton: {
+      first: isFirstDisabled,
+      prev: isFirstDisabled,
+      next: isLastDisabled,
+      last: isLastDisabled,
+    },
+    onPerPageChange: pagePerPageChangeHandler,
+    onPageChange: pageChangeHandler,
+  };
+
   useEffect(() => {
     const updatedParams = {
       view: searchParams.get(listItemsControlParamsKeys.view),
@@ -327,23 +345,7 @@ export const useListItemsControl = <T extends ItemBase>({
     onSelect: selectRowHandler,
     onSelectAll: selectAllHandler,
     onDeselect: deselectHandler,
-    pagination: {
-      page,
-      pages,
-      perPage,
-      onPageNext: onPageNextHandler,
-      onPagePrev: onPagePrevHandler,
-      onPageFirst: onPageFirstHandler,
-      onPageLast: onPageLastHandler,
-      disabledButton: {
-        first: isFirstDisabled,
-        prev: isFirstDisabled,
-        next: isLastDisabled,
-        last: isLastDisabled,
-      },
-      onPerPageChange: pagePerPageChangeHandler,
-      onPageChange: pageChangeHandler,
-    },
+    pagination,
     filter: {
       categories: categoriesOptions,
       tags: tagsOptions,

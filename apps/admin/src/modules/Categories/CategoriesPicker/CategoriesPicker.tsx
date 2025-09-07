@@ -56,7 +56,7 @@ const CategoriesPicker = forwardRef<HTMLSelectElement, CategoriesPickerProps>((p
           {(selected as number[]).map((value) => {
             const categoryItem = categoriesData?.find((category) => category.id === value);
 
-            return <Chip key={value} label={categoryItem?.name} color="secondary" />;
+            return <Chip key={value} label={categoryItem?.name} color="secondary" variant="outlined" />;
           })}
         </Box>
       );

@@ -50,7 +50,7 @@ const AttachmentsPicker = forwardRef<HTMLSelectElement, AttachmentsPickerProps>(
           {(selected as number[]).map((value) => {
             const attachmentItem = attachmentsData?.find((attachment) => attachment.id === value);
 
-            return <Chip key={value} label={attachmentItem?.name} color="secondary" />;
+            return <Chip key={value} label={attachmentItem?.name} color="secondary" variant="outlined" />;
           })}
         </Box>
       )}

@@ -109,7 +109,51 @@ export interface TableViewProps<T extends ItemBase> extends ViewBaseProps<T> {
 
 export type TilesViewProps<T extends ItemBase> = ViewBaseProps<T> & {};
 
-export interface ListItemsFilterProps {
+export interface ListItemsFilter {
   categories: number[];
   tags: number[];
 }
+
+export interface ListItemsPagination {
+  page: number;
+  pages: number;
+  perPage: number;
+  onPageNext: () => void;
+  onPagePrev: () => void;
+  onPageFirst: () => void;
+  onPageLast: () => void;
+  disabledButton: {
+    first: boolean;
+    prev: boolean;
+    next: boolean;
+    last: boolean;
+  };
+  onPerPageChange: (perPage: number) => void;
+  onPageChange: (page: number) => void;
+}
+
+export interface ListItemsControlsProps<T extends ItemBase> {
+  disableViewToggle?: boolean;
+  view: ListItemsView;
+  onViewToggle: () => void;
+  rawRows: T[];
+  selected: ListItemsSelected;
+  query: string;
+  onQueryChange: (query: string) => void;
+  orderBy?: ListItemsSortOrder;
+  onOrderBy: (key: keyof T) => void;
+  sortBy?: keyof T;
+  orderKeys: (keyof T)[];
+  onDeselectedSelected: () => void;
+  onDeleteSelected: () => void;
+  onDisableSelected: () => void;
+  isCategories: boolean;
+  categories: Categories;
+  onCategoryToggle: (id: number) => void;
+  isTags: boolean;
+  tags: Tags;
+  onTagToggle: (id: number) => void;
+  selectedFilter: ListItemsFilter;
+}
+
+export type ListItemsPaginationProps = ListItemsPagination & {};
