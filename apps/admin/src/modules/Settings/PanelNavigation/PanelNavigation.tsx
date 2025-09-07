@@ -30,7 +30,7 @@ const PanelNavigation = () => {
     {
       name: settingsPanelsKeys.languages,
       path: `/${routes.settings.path}/${routes.settings.panels.languages}`,
-      label: t('modules:settings.tabs.languages.title'),
+      label: t('modules:settings.tabs.language.title'),
     },
     {
       name: settingsPanelsKeys.maintenance,

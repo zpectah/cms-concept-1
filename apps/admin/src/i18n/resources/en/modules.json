@@ -112,7 +112,7 @@
           }
         }
       },
-      "languages": {
+      "language": {
         "title": "Languages",
         "description": "Languages panel description",
         "section": {}

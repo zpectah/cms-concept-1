@@ -17,6 +17,7 @@ export * from './ListItems';
 export * from './Literal';
 export * from './LocalesTabs';
 export * from './MainMenu';
+export * from './preloader';
 export * from './Section';
 export * from './StringPicker';
 export * from './ThemeToggle';
