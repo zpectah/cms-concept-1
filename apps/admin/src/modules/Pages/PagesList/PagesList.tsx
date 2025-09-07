@@ -1,40 +1,21 @@
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, PagesItem } from '@common';
-import { usePagesQuery } from '../../../hooks-query';
-import { useViewLayoutContext, ListItems, ValueType, ValueBoolean, ValueDate } from '../../../components';
+import { ListItems, ValueType, ValueBoolean, ValueDate } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
+import { usePagesList } from './usePagesList';
 
 const PagesList = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { t } = useTranslation(['modules', 'components']);
-  const { setTitle } = useViewLayoutContext();
-  const { pagesQuery } = usePagesQuery();
-
-  const { data: items, isLoading } = pagesQuery;
-
-  const deleteSelectedHandler = (ids: number[]) => {
-    // TODO #api-call
-    console.log('deleteSelectedHandler', ids);
-  };
-
-  const disableSelectedHandler = (ids: number[]) => {
-    // TODO #api-call
-    console.log('disableSelectedHandler', ids);
-  };
-
-  useEffect(() => {
-    setTitle(t('modules:pages.listTitle'));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { t } = useTranslation(['components']);
+  const { pages, isLoading, onDeleteSelected, onDisableSelected } = usePagesList();
 
   return (
     <ListItems<PagesItem>
       name={modelKeys.pages}
-      items={items ?? []}
+      items={pages}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}
       orderKeys={[
@@ -66,10 +47,10 @@ const PagesList = () => {
           renderValue: (row) => <ValueDate value={row.updated} />,
         },
       ]}
-      onDeleteSelected={deleteSelectedHandler}
-      onDisableSelected={disableSelectedHandler}
-      onRowDelete={(id) => deleteSelectedHandler([id])}
-      onRowDisable={(id) => disableSelectedHandler([id])}
+      onDeleteSelected={onDeleteSelected}
+      onDisableSelected={onDisableSelected}
+      onRowDelete={(id) => onDeleteSelected([id])}
+      onRowDisable={(id) => onDisableSelected([id])}
     />
   );
 };

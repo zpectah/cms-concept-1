@@ -89,7 +89,10 @@ const ListItems = <T extends ItemBase>({
     navigate(`${pathPrefix}/${id}`);
   };
 
-  const disableSelectedHandler = useCallback(() => onDisableSelected?.(selected), [onDisableSelected, selected]);
+  const disableSelectedHandler = useCallback(() => {
+    onDisableSelected?.(selected);
+    onDeselect();
+  }, [onDisableSelected, onDeselect, selected]);
 
   const rowDeleteHandler = (id: number) => {
     openConfirmDialog({
@@ -103,10 +106,13 @@ const ListItems = <T extends ItemBase>({
     openConfirmDialog({
       title: t('message.confirm.deleteSelected.title'),
       content: t('message.confirm.deleteSelected.content'),
-      onConfirm: () => onDeleteSelected?.(selected),
+      onConfirm: () => {
+        onDeleteSelected?.(selected);
+        onDeselect();
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onDeleteSelected, selected]);
+  }, [onDeleteSelected, onDeselect, selected]);
 
   // TODO (1) #menu-bar for all options (maybe separate component?)
 

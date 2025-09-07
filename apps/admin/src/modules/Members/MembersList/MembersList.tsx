@@ -1,40 +1,21 @@
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, MembersItem } from '@common';
-import { useMembersQuery } from '../../../hooks-query';
-import { useViewLayoutContext, ListItems, ValueType, ValueBoolean, ValueDate } from '../../../components';
+import { ListItems, ValueType, ValueBoolean, ValueDate } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
+import { useMembersList } from './useMembersList';
 
 const MembersList = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { t } = useTranslation(['modules', 'components']);
-  const { setTitle } = useViewLayoutContext();
-  const { membersQuery } = useMembersQuery();
-
-  const { data: items, isLoading } = membersQuery;
-
-  const deleteSelectedHandler = (ids: number[]) => {
-    // TODO #api-call
-    console.log('deleteSelectedHandler', ids);
-  };
-
-  const disableSelectedHandler = (ids: number[]) => {
-    // TODO #api-call
-    console.log('disableSelectedHandler', ids);
-  };
-
-  useEffect(() => {
-    setTitle(t('modules:members.listTitle'));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { t } = useTranslation(['components']);
+  const { members, isLoading, onDeleteSelected, onDisableSelected } = useMembersList();
 
   return (
     <ListItems<MembersItem>
       name={modelKeys.members}
-      items={items ?? []}
+      items={members}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}
       orderKeys={[
@@ -66,10 +47,10 @@ const MembersList = () => {
           renderValue: (row) => <ValueDate value={row.updated} />,
         },
       ]}
-      onDeleteSelected={deleteSelectedHandler}
-      onDisableSelected={disableSelectedHandler}
-      onRowDelete={(id) => deleteSelectedHandler([id])}
-      onRowDisable={(id) => disableSelectedHandler([id])}
+      onDeleteSelected={onDeleteSelected}
+      onDisableSelected={onDisableSelected}
+      onRowDelete={(id) => onDeleteSelected([id])}
+      onRowDisable={(id) => onDisableSelected([id])}
     />
   );
 };

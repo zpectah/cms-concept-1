@@ -63,6 +63,8 @@
     "success": {
       "createDetail": "Item was successfully created",
       "updateDetail": "Item was successfully update",
+      "updateRow": "Item was successfully update",
+      "updateSelected": "Selected items was successfully updated",
       "deleteDetail": "Item was successfully deleted",
       "deleteRow": "Item was successfully deleted",
       "deleteSelected": "Selected items was successfully deleted"

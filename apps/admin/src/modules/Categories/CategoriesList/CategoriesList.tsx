@@ -1,41 +1,22 @@
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { modelKeys, CategoriesItem } from '@common';
-import { useCategoriesQuery } from '../../../hooks-query';
-import { useViewLayoutContext, ListItems, ValueType, ValueBoolean, ValueDate, ValueArray } from '../../../components';
+import { ListItems, ValueType, ValueBoolean, ValueDate, ValueArray } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
+import { useCategoriesList } from './useCategoriesList';
 
 const CategoriesList = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { t } = useTranslation(['modules', 'components']);
-  const { setTitle } = useViewLayoutContext();
-  const { categoriesQuery } = useCategoriesQuery();
-
-  const { data: items, isLoading } = categoriesQuery;
-
-  const deleteSelectedHandler = (ids: number[]) => {
-    // TODO #api-call
-    console.log('deleteSelectedHandler', ids);
-  };
-
-  const disableSelectedHandler = (ids: number[]) => {
-    // TODO #api-call
-    console.log('disableSelectedHandler', ids);
-  };
-
-  useEffect(() => {
-    setTitle(t('modules:categories.listTitle'));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { t } = useTranslation(['components']);
+  const { categories, isLoading, onDeleteSelected, onDisableSelected } = useCategoriesList();
 
   return (
     <ListItems<CategoriesItem>
       name={modelKeys.categories}
-      items={items ?? []}
+      items={categories}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}
       orderKeys={[
@@ -73,10 +54,10 @@ const CategoriesList = () => {
           renderValue: (row) => <ValueDate value={row.updated} />,
         },
       ]}
-      onDeleteSelected={deleteSelectedHandler}
-      onDisableSelected={disableSelectedHandler}
-      onRowDelete={(id) => deleteSelectedHandler([id])}
-      onRowDisable={(id) => disableSelectedHandler([id])}
+      onDeleteSelected={onDeleteSelected}
+      onDisableSelected={onDisableSelected}
+      onRowDelete={(id) => onDeleteSelected([id])}
+      onRowDisable={(id) => onDisableSelected([id])}
     />
   );
 };
