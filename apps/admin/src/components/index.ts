@@ -22,3 +22,4 @@ export * from './Section';
 export * from './StringPicker';
 export * from './ThemeToggle';
 export * from './UserMenu';
+export * from './value';

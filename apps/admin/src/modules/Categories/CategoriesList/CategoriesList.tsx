@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import RemoveIcon from '@mui/icons-material/Remove';
 import { modelKeys, CategoriesItem } from '@common';
 import { useCategoriesQuery } from '../../../hooks-query';
-import { useViewLayoutContext, ListItems } from '../../../components';
+import { useViewLayoutContext, ListItems, ValueType, ValueBoolean, ValueDate, ValueArray } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 
@@ -10,7 +11,7 @@ const CategoriesList = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { t } = useTranslation(['modules']);
+  const { t } = useTranslation(['modules', 'components']);
   const { setTitle } = useViewLayoutContext();
   const { categoriesQuery } = useCategoriesQuery();
 
@@ -47,25 +48,29 @@ const CategoriesList = () => {
       columns={[
         {
           value: registeredFormFields.name,
-          label: 'Name',
+          label: t('components:ListItems.label.name'),
           isTitle: true,
         },
         {
           value: registeredFormFields.type,
-          label: 'Type',
+          label: t('components:ListItems.label.type'),
+          renderValue: (row) => <ValueType value={row.type} />,
         },
         {
           value: registeredFormFields.active,
-          label: 'Active',
-          renderValue: (row) => `__${row.active ? 'Yes' : 'Nope'}__`, // TODO
+          label: t('components:ListItems.label.active'),
+          renderValue: (row) => <ValueBoolean value={row.active} />,
         },
         {
           value: registeredFormFields.parent,
-          label: 'Parent',
+          label: t('components:ListItems.label.parent'),
+          renderValue: (row) =>
+            row.parent === 0 ? <RemoveIcon fontSize="inherit" /> : <ValueArray value={[row.parent]} />,
         },
         {
           value: registeredFormFields.updated,
-          label: 'Updated',
+          label: t('components:ListItems.label.updated'),
+          renderValue: (row) => <ValueDate value={row.updated} />,
         },
       ]}
       onDeleteSelected={deleteSelectedHandler}

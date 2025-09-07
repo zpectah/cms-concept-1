@@ -22,6 +22,11 @@
     "return": "Return",
     "cancel": "Cancel"
   },
+  "label": {
+    "yesterday": "Yesterday",
+    "today": "Today",
+    "tomorrow": "Tomorrow"
+  },
   "routes": {
     "articles": "Articles",
     "attachments": "Attachments",

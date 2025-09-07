@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, UsersItem } from '@common';
 import { useUsersQuery } from '../../../hooks-query';
-import { useViewLayoutContext, ListItems } from '../../../components';
+import { useViewLayoutContext, ListItems, ValueType, ValueBoolean, ValueDate } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 
@@ -10,7 +10,7 @@ const UsersList = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { t } = useTranslation(['modules']);
+  const { t } = useTranslation(['modules', 'components']);
   const { setTitle } = useViewLayoutContext();
   const { usersQuery } = useUsersQuery();
 
@@ -47,25 +47,27 @@ const UsersList = () => {
       columns={[
         {
           value: registeredFormFields.name,
-          label: 'Name',
+          label: t('components:ListItems.label.name'),
           isTitle: true,
         },
         {
           value: registeredFormFields.email,
-          label: 'Email',
+          label: t('components:ListItems.label.email'),
         },
         {
           value: registeredFormFields.type,
-          label: 'Type',
+          label: t('components:ListItems.label.type'),
+          renderValue: (row) => <ValueType value={row.type} />,
         },
         {
           value: registeredFormFields.active,
-          label: 'Active',
-          renderValue: (row) => `__${row.active ? 'Yes' : 'Nope'}__`, // TODO
+          label: t('components:ListItems.label.active'),
+          renderValue: (row) => <ValueBoolean value={row.active} />,
         },
         {
           value: registeredFormFields.updated,
-          label: 'Updated',
+          label: t('components:ListItems.label.updated'),
+          renderValue: (row) => <ValueDate value={row.updated} />,
         },
       ]}
       onDeleteSelected={deleteSelectedHandler}
