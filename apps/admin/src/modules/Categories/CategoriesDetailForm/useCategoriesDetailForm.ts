@@ -7,6 +7,7 @@ import { modelKeys, newItemKey, CategoriesDetail } from '@common';
 import { getConfig } from '../../../utils';
 import { useFormDetailControl, useModelMenuItems } from '../../../helpers';
 import { useAppStore } from '../../../store';
+import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useCategoriesQuery } from '../../../hooks-query';
 import { CategoriesDetailFormSchema } from './schema';
@@ -43,7 +44,7 @@ export const useCategoriesDetailForm = () => {
     patchMutate(master as CategoriesDetail, {
       onSuccess: () => {
         navigate(`/${routes.categories.path}`);
-        addToast(t('message.success.updateDetail'), 'success', 2500);
+        addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
         console.info('onSuccess', master);
       },
       onError: () => {

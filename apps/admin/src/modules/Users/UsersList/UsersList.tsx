@@ -21,6 +21,9 @@ const UsersList = () => {
       orderKeys={[
         registeredFormFields.id,
         registeredFormFields.name,
+        registeredFormFields.email,
+        registeredFormFields.firstName,
+        registeredFormFields.lastName,
         registeredFormFields.type,
         registeredFormFields.active,
       ]}

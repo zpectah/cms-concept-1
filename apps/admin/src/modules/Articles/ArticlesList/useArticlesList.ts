@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../../../store';
+import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useArticlesQuery, useCategoriesQuery, useTagsQuery } from '../../../hooks-query';
 
@@ -22,7 +23,7 @@ export const useArticlesList = () => {
 
     const toastMsg = ids.length === 1 ? t('message.success.deleteRow') : t('message.success.deleteSelected');
 
-    addToast(toastMsg, 'success', 2500);
+    addToast(toastMsg, 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
 
     // addToast(t('message.error.common'), 'error');
 
@@ -35,7 +36,7 @@ export const useArticlesList = () => {
 
     const toastMsg = ids.length === 1 ? t('message.success.updateRow') : t('message.success.updateSelected');
 
-    addToast(toastMsg, 'success', 2500);
+    addToast(toastMsg, 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
 
     // addToast(t('message.error.common'), 'error');
 

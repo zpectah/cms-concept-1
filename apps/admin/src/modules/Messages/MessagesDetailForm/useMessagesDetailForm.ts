@@ -7,6 +7,7 @@ import { modelKeys, newItemKey, MessagesDetail } from '@common';
 import { getConfig } from '../../../utils';
 import { useModelMenuItems } from '../../../helpers';
 import { useAppStore } from '../../../store';
+import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMessagesQuery } from '../../../hooks-query';
 import { MessagesDetailFormSchema } from './schema';
@@ -42,7 +43,7 @@ export const useMessagesDetailForm = () => {
     patchMutate(master as MessagesDetail, {
       onSuccess: () => {
         navigate(`/${routes.messages.path}`);
-        addToast(t('message.success.updateDetail'), 'success', 2500);
+        addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
         console.info('onSuccess', master);
       },
       onError: () => {

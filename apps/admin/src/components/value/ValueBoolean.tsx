@@ -1,10 +1,15 @@
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { SvgIconProps } from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 interface ValueBooleanProps {
   value?: boolean;
 }
 
-const ValueBoolean = ({ value }: ValueBooleanProps) => (value ? <VisibilityIcon /> : <VisibilityOffIcon />);
+const ValueBoolean = ({ value }: ValueBooleanProps) => {
+  const iconProps: Partial<SvgIconProps> = { fontSize: 'small' };
+
+  return value ? <CheckIcon {...iconProps} /> : <RemoveIcon {...iconProps} />;
+};
 
 export default ValueBoolean;

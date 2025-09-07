@@ -7,6 +7,7 @@ import { modelKeys, newItemKey, ArticlesDetail } from '@common';
 import { getConfig } from '../../../utils';
 import { useFormDetailControl, useModelMenuItems } from '../../../helpers';
 import { useAppStore } from '../../../store';
+import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useArticlesQuery } from '../../../hooks-query';
 import { ArticlesDetailFormSchema } from './schema';
@@ -43,7 +44,7 @@ export const useArticlesDetailForm = () => {
     patchMutate(master as ArticlesDetail, {
       onSuccess: () => {
         navigate(`/${routes.articles.path}`);
-        addToast(t('message.success.updateDetail'), 'success', 2500);
+        addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
         console.info('onSuccess', master);
       },
       onError: () => {

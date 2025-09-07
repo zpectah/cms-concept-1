@@ -7,6 +7,7 @@ import { modelKeys, newItemKey, MenuDetail } from '@common';
 import { getConfig } from '../../../utils';
 import { useModelMenuItems } from '../../../helpers';
 import { useAppStore } from '../../../store';
+import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMenuQuery } from '../../../hooks-query';
 import { MenuDetailFormSchema } from './schema';
@@ -42,7 +43,7 @@ export const useMenuDetailForm = () => {
     patchMutate(master as MenuDetail, {
       onSuccess: () => {
         navigate(`/${routes.menu.path}`);
-        addToast(t('message.success.updateDetail'), 'success', 2500);
+        addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
         console.info('onSuccess', master);
       },
       onError: () => {

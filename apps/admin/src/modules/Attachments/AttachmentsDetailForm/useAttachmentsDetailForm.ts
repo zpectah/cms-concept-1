@@ -7,6 +7,7 @@ import { modelKeys, newItemKey, AttachmentsDetail } from '@common';
 import { getConfig } from '../../../utils';
 import { useModelMenuItems } from '../../../helpers';
 import { useAppStore } from '../../../store';
+import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useAttachmentsQuery } from '../../../hooks-query';
 import { AttachmentsDetailFormSchema } from './schema';
@@ -42,7 +43,7 @@ export const useAttachmentsDetailForm = () => {
     patchMutate(master as AttachmentsDetail, {
       onSuccess: () => {
         navigate(`/${routes.attachments.path}`);
-        addToast(t('message.success.updateDetail'), 'success', 2500);
+        addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
         console.info('onSuccess', master);
       },
       onError: () => {

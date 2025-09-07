@@ -7,6 +7,7 @@ import { modelKeys, newItemKey, TagsDetail } from '@common';
 import { getConfig } from '../../../utils';
 import { useModelMenuItems } from '../../../helpers';
 import { useAppStore } from '../../../store';
+import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useTagsQuery } from '../../../hooks-query';
 import { TagsDetailFormSchema } from './schema';
@@ -42,7 +43,7 @@ export const useTagsDetailForm = () => {
     patchMutate(master as TagsDetail, {
       onSuccess: () => {
         navigate(`/${routes.tags.path}`);
-        addToast(t('message.success.updateDetail'), 'success', 2500);
+        addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
         console.info('onSuccess', master);
       },
       onError: () => {

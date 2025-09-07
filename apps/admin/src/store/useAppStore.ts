@@ -4,7 +4,7 @@ import { getRandomId } from '@common';
 import { ToastsItem, ToastsItemSeverity, AnnouncementsItem, AnnouncementsItemSeverity } from '../types';
 import { toastsItemSeverityKeys } from '../enums';
 import { getConfig } from '../utils';
-import { CMS_LOCALES_KEY, CMS_THEME_MODE_KEY } from '../constants';
+import { CMS_LOCALES_KEY, CMS_THEME_MODE_KEY, FEEDBACK_COMMON_TIMEOUT_DEFAULT } from '../constants';
 
 interface AppStore {
   locale: string;
@@ -65,7 +65,7 @@ const useAppStore = create<AppStore>((set, getState) => {
     });
 
     if (autoclose) {
-      const timeout = typeof autoclose === 'number' ? autoclose : 4000;
+      const timeout = typeof autoclose === 'number' ? autoclose : FEEDBACK_COMMON_TIMEOUT_DEFAULT;
 
       setTimeout(() => removeToastHandler(id), timeout);
     }
@@ -97,7 +97,7 @@ const useAppStore = create<AppStore>((set, getState) => {
     });
 
     if (autoclose) {
-      const timeout = typeof autoclose === 'number' ? autoclose : 4000;
+      const timeout = typeof autoclose === 'number' ? autoclose : FEEDBACK_COMMON_TIMEOUT_DEFAULT;
 
       setTimeout(() => removeAnnouncementHandler(id), timeout);
     }
