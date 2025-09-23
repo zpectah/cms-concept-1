@@ -47,7 +47,15 @@ class Members {
         'firstName' => 'First name ' . $id,
         'lastName' => 'Last name ' . $id,
 
-        'address' => 'Address 123, 205',
+        'address' => [
+          'street' => 'Street',
+          'streetNo' => '125/15B',
+          'district' => 'District',
+          'city' => 'My City',
+          'country' => 'My Country',
+          'zip' => '555248',
+          'flatNo' => '17d',
+        ],
 
         'active' => true,
         'deleted' => false,

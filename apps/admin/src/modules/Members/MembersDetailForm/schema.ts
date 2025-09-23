@@ -1,6 +1,6 @@
 import z from 'zod';
 import { membersTypeKeysArray } from '@common';
-import { formFieldsSchemas } from '../../../schema';
+import { formFieldsSchemas, AddressSchema } from '../../../schema';
 
 export const MembersDetailFormSchema = z.object({
   id: formFieldsSchemas.number,
@@ -13,7 +13,7 @@ export const MembersDetailFormSchema = z.object({
   firstName: formFieldsSchemas.string,
   lastName: formFieldsSchemas.string,
 
-  address: formFieldsSchemas.string.optional(),
+  address: AddressSchema.optional(),
 
   active: formFieldsSchemas.boolean.optional(),
   deleted: formFieldsSchemas.boolean.optional(),

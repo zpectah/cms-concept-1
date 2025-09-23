@@ -1,5 +1,17 @@
+import { Stack } from '@mui/material';
+import { Content } from '../../../components';
+
 const PasswordRecoveryForm = () => {
-  return <form>...PasswordRecoveryForm...</form>;
+  return (
+    <form>
+      <Content>
+        <Stack>
+          ...PasswordRecoveryForm...
+          <div>...</div>
+        </Stack>
+      </Content>
+    </form>
+  );
 };
 
 export default PasswordRecoveryForm;

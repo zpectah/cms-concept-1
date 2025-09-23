@@ -24,7 +24,14 @@
     "accessLevel": "Access level",
     "address": "Address",
     "sender": "Sender",
-    "subject": "Subject"
+    "subject": "Subject",
+    "street": "Street",
+    "streetNo": "Street Number",
+    "district": "District",
+    "zip": "ZIP",
+    "city": "City",
+    "country": "Country",
+    "flatNo": "Flat Number"
   },
   "message": {
     "error": {

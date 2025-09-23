@@ -1,5 +1,6 @@
 import { membersTypeKeys } from '../../enums';
 import { ItemBase } from '../item';
+import { Address } from '../form';
 
 export type MembersType = keyof typeof membersTypeKeys;
 
@@ -13,7 +14,7 @@ export interface MembersItem extends ItemBase {
   firstName?: string;
   lastName?: string;
 
-  address?: string;
+  address?: Address;
 }
 
 export type Members = MembersItem[];

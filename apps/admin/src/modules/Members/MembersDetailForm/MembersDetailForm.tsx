@@ -11,6 +11,7 @@ import {
   SelectField,
   EmailField,
   PasswordField,
+  AddressField,
 } from '../../../components';
 import { useMembersDetailForm } from './useMembersDetailForm';
 
@@ -45,7 +46,7 @@ const MembersDetailForm = () => {
         <InputField name={registeredFormFields.firstName} label={t('form:label.firstName')} />
         <InputField name={registeredFormFields.lastName} label={t('form:label.lastName')} />
 
-        <EmailField name={registeredFormFields.address} label={t('form:label.address')} />
+        <AddressField />
       </FormLayout>
     </ControlledForm>
   );

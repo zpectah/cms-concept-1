@@ -1,3 +1,4 @@
+export { default as AddressField } from './AddressField';
 export { default as CheckboxField } from './CheckboxField';
 export { default as DatePickerField } from './DatePickerField';
 export { default as DateTimePickerField } from './DateTimePickerField';
