@@ -1,5 +1,5 @@
-import { Stack, Button, Divider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Stack, Button, Divider } from '@mui/material';
 import {
   ControlledForm,
   Content,
@@ -17,23 +17,25 @@ const GlobalPanelForm = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { form, onSubmit } = useGlobalPanelForm();
 
+  // TODO
+
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
       <Content>
-        <Section title={t('modules:settings.tabs.global.section.project.title')} cardContent>
+        <Section title={t('modules:settings.tabs.global.section.project.title')} cardContent contentSpacing="form">
           <InputField name="projectName" label="Název projektu" isRequired />
           <TextareaField name="projectDescription" label="Popis projektu" />
         </Section>
         <Divider />
-        <Section title={t('modules:settings.tabs.global.section.company.title')} cardContent>
+        <Section title={t('modules:settings.tabs.global.section.company.title')} cardContent contentSpacing="form">
           <InputField name="companyName" label="Název společnosti" />
           <TextareaField name="companyDescription" label="Popis společnosti" />
           <InputField name="companyId" label="ID společnosti" />
-          <EmailPickerField name="companyEmail" label="EmailPickerField DEMO" />
-          <PhonePickerField name="companyPhone" label="PhonePickerField DEMO" />
-          <AddressField fieldPrefix="companyAddress" disableCard />
+          <EmailPickerField name="companyEmail" label="E-mail společnosti" />
+          <PhonePickerField name="companyPhone" label="Telefon společnosti" />
           <div>GPS lokalita TODO</div>
           <InputField name="companyBank" label="Bankovní spojení" />
+          <AddressField fieldPrefix="companyAddress" disableCard />
         </Section>
         <Divider />
         <Stack direction="row" gap={2}>

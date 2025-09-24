@@ -4,7 +4,15 @@ import { EmailProps } from './types';
 import Input from './Input';
 
 const Email = forwardRef<HTMLInputElement, EmailProps>(({ disableIcon, ...rest }, ref) => {
-  return <Input type="email" startAdornment={!disableIcon && <MailOutlineIcon />} inputRef={ref} {...rest} />;
+  return (
+    <Input
+      type="email"
+      inputMode="email"
+      startAdornment={!disableIcon && <MailOutlineIcon />}
+      inputRef={ref}
+      {...rest}
+    />
+  );
 });
 
 export default Email;

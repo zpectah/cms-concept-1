@@ -8,6 +8,7 @@ export { default as InputField } from './InputField';
 export { default as NumberField } from './NumberField';
 export { default as NumberAltField } from './NumberAltField';
 export { default as PasswordField } from './PasswordField';
+export { default as PhoneField } from './PhoneField';
 export { default as PhonePickerField } from './PhonePickerField';
 export { default as RadioGroupField } from './RadioGroupField';
 export { default as SelectField } from './SelectField';

@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Stack, Grid, Divider } from '@mui/material';
 import { WithChildren } from '@common';
+import FormContent from './FormContent';
 
 interface FormLayoutProps extends WithChildren {
   actions: ReactNode;
@@ -11,7 +12,7 @@ const FormLayout = ({ children, actions, sidebar }: FormLayoutProps) => (
   <Stack gap={4}>
     <Grid container spacing={4}>
       <Grid size={{ xs: 12, md: sidebar ? 8 : 12 }}>
-        <Stack gap={1}>{children}</Stack>
+        <FormContent>{children}</FormContent>
       </Grid>
       {sidebar && (
         <Grid size={{ xs: 12, md: 4 }}>

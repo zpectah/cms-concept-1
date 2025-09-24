@@ -15,6 +15,7 @@ import {
   SelectProps,
   TextareaProps,
   RadioItemProps,
+  PhoneProps,
 } from '../input';
 import { EmailPickerProps, PhonePickerProps, StringPickerProps } from '../picker';
 
@@ -42,6 +43,10 @@ export type CheckboxFieldProps = FieldBase & {
 
 export type EmailFieldProps = FieldBase & {
   fieldProps?: Partial<EmailProps>;
+};
+
+export type PhoneFieldProps = FieldBase & {
+  fieldProps?: Partial<PhoneProps>;
 };
 
 export type InputFieldProps = FieldBase & {

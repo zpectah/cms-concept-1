@@ -9,6 +9,8 @@ import {
   TextareaField,
   SelectField,
   SwitchField,
+  StringPickerField,
+  EmailPickerField,
 } from '../../../components';
 import { useClientPanelForm } from './useClientPanelForm';
 
@@ -21,25 +23,25 @@ const ClientPanelForm = () => {
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
       <Content>
-        <Section title={t('modules:settings.tabs.client.section.meta.title')} cardContent>
+        <Section title={t('modules:settings.tabs.client.section.meta.title')} cardContent contentSpacing="form">
           <InputField name="metaTitle" label="Titulek aplikace" isRequired />
           <TextareaField name="metaDescription" label="Popis aplikace" />
-          <InputField name="metaKeywords" label="Klíčová slova" />
           <SelectField name="metaRobots" label="Meta roboti" items={fieldOptions.metaRobots} />
+          <StringPickerField name="metaKeywords" label="Klíčová slova" />
         </Section>
-        <Section title="Stavy" cardContent>
+        <Section title="Stavy" cardContent contentSpacing="form">
           <SwitchField name="stateDebug" fieldProps={{ label: 'Mód ladění' }} />
           <SwitchField name="stateMaintenance" fieldProps={{ label: 'Mód údržby' }} />
         </Section>
-        <Section title="Zprávy" cardContent>
+        <Section title="Zprávy" cardContent contentSpacing="form">
           <SwitchField name="messagesActive" fieldProps={{ label: 'Zprávy aktivní' }} />
-          <InputField name="messagesRecipients" label="Příjemci zpráv" />
+          <EmailPickerField name="messagesRecipients" label="Příjemci zpráv" />
         </Section>
-        <Section title="Komentáře" cardContent>
+        <Section title="Komentáře" cardContent contentSpacing="form">
           <SwitchField name="commentsActive" fieldProps={{ label: 'Komentáře aktivní' }} />
           <SwitchField name="commentsAnonymous" fieldProps={{ label: 'Komentovat mohou i anonymní uživatelé' }} />
         </Section>
-        <Section title="Members" cardContent>
+        <Section title="Members" cardContent contentSpacing="form">
           <SwitchField name="membersActive" fieldProps={{ label: 'Members aktivní' }} />
         </Section>
         <Divider />
@@ -49,6 +51,9 @@ const ClientPanelForm = () => {
             Reset
           </Button>
         </Stack>
+        <pre>
+          <code>{JSON.stringify(form.watch(), null, 2)}</code>
+        </pre>
       </Content>
     </ControlledForm>
   );

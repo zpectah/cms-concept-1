@@ -1,11 +1,21 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button, Stack, Chip } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Input } from '../input';
 import { BasePickerProps } from './types';
 
-const BasePicker = ({ value, onChange, renderValue }: BasePickerProps) => {
-  const [tempValue, setTempValue] = useState('');
+const BasePicker = ({
+  value,
+  onChange,
+  renderValue,
+  renderInput,
+  isValueValid,
+  chipProps,
+  stackProps,
+}: BasePickerProps) => {
+  const [tempValue, setTempValue] = useState<string>('');
+
+  const valueValid = useMemo(() => (isValueValid ? isValueValid?.(tempValue) : true), [isValueValid, tempValue]);
 
   const addHandler = () => {
     const newState = [...value];
@@ -25,19 +35,37 @@ const BasePicker = ({ value, onChange, renderValue }: BasePickerProps) => {
   };
 
   return (
-    <Stack gap={1.5}>
+    <Stack gap={1} {...stackProps}>
+      {value.length > 0 && (
+        <Stack direction="row" gap={1}>
+          {value.map((item, index) =>
+            renderValue ? (
+              renderValue(item, index)
+            ) : (
+              <Chip
+                key={index}
+                label={item}
+                onDelete={() => removeHandler(index)}
+                variant="outlined"
+                color="primary"
+                {...chipProps}
+              />
+            )
+          )}
+        </Stack>
+      )}
       <Stack direction="row" gap={1}>
-        {value.map((item, index) =>
-          renderValue ? (
-            renderValue(item, index)
-          ) : (
-            <Chip key={index} label={item} onDelete={() => removeHandler(index)} />
-          )
+        {renderInput ? (
+          renderInput(tempValue, (value) => setTempValue(value))
+        ) : (
+          <Input
+            name="base-picker-input"
+            value={tempValue}
+            onChange={(event) => setTempValue(event.target.value)}
+            sx={{ width: { xs: '100%', md: '33%' } }}
+          />
         )}
-      </Stack>
-      <Stack direction="row" gap={1}>
-        <Input fullWidth value={tempValue} onChange={(event) => setTempValue(event.target.value)} />
-        <Button onClick={addHandler} variant="outlined" color="success" disabled={!(tempValue.length >= 3)}>
+        <Button onClick={addHandler} color="inherit" disabled={!(tempValue.length >= 3) || !valueValid} size="small">
           <AddIcon />
         </Button>
       </Stack>

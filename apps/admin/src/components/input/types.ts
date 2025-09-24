@@ -29,6 +29,8 @@ export type NumberProps = InputProps & {
 
 export type EmailProps = Omit<InputProps, 'type'> & { disableIcon?: boolean };
 
+export type PhoneProps = Omit<InputProps, 'type'> & { disableIcon?: boolean };
+
 export type SearchProps = Omit<InputProps, 'type'> & { disableIcon?: boolean };
 
 export type PasswordProps = Omit<InputProps, 'type'> & {

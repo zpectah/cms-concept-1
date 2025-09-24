@@ -6,6 +6,7 @@ export { default as Input } from './Input';
 export { default as Number } from './Number';
 export { default as NumberAlt } from './NumberAlt';
 export { default as Password } from './Password';
+export { default as Phone } from './Phone';
 export { default as Radio } from './Radio';
 export { default as RadioGroup } from './RadioGroup';
 export { default as Search } from './Search';
