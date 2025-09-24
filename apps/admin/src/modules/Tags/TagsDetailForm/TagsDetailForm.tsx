@@ -33,7 +33,7 @@ const TagsDetailForm = () => {
           name={registeredFormFields.type}
           label={t('form:label.type')}
           items={typeFieldOptions}
-          fieldProps={{ defaultValue: typeFieldDefault }}
+          fieldProps={{ defaultValue: typeFieldDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
       </FormLayout>
     </ControlledForm>

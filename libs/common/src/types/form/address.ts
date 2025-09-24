@@ -4,6 +4,5 @@ export interface Address {
   district?: string;
   city: string;
   country: string;
-  zip: string;
-  flatNo?: string;
+  zip: number;
 }

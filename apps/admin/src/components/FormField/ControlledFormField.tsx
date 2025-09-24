@@ -11,9 +11,12 @@ const ControlledFormField = ({
   render,
   isRequired,
   isDisabled,
+  isHidden,
   ...rest
 }: ControlledFormFieldProps) => {
   const form = useFormContext();
+
+  if (isHidden) return null;
 
   return (
     <Controller

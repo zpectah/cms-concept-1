@@ -18,7 +18,7 @@ import {
 } from '../input';
 import { StringPickerProps } from '../StringPicker';
 
-type FieldBase = Omit<FormFieldProps, 'field'> & { readOnly?: boolean };
+type FieldBase = Omit<FormFieldProps, 'field'> & { readOnly?: boolean; isHidden?: boolean };
 
 export type DatePickerFieldProps = FieldBase & {
   fieldProps?: Partial<DatePickerProps>;

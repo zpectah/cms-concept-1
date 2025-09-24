@@ -54,8 +54,9 @@ class Members {
           'city' => 'My City',
           'country' => 'My Country',
           'zip' => '555248',
-          'flatNo' => '17d',
         ],
+
+        'flatNo' => '17d',
 
         'active' => true,
         'deleted' => false,

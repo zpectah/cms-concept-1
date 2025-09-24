@@ -37,7 +37,8 @@
     "error": {
       "required": "Field is required",
       "endDateBeforeStartDate": "End date must be after start date",
-      "emailFormat": "Email is in wrong format"
+      "emailFormat": "Email is in wrong format",
+      "insufficientChars": "Insufficient number of characters"
     }
   }
 }

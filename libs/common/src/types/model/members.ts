@@ -14,7 +14,8 @@ export interface MembersItem extends ItemBase {
   firstName?: string;
   lastName?: string;
 
-  address?: Address;
+  address: Partial<Address>;
+  flatNo?: string;
 }
 
 export type Members = MembersItem[];

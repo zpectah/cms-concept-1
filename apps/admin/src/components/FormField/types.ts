@@ -21,6 +21,7 @@ export interface FormFieldBaseProps extends Partial<WithChildren> {
   label?: string;
   isRequired?: boolean;
   isDisabled?: boolean;
+  isHidden?: boolean;
   helperMessages?: string[];
   successMessages?: string[];
   errorMessages?: string[];

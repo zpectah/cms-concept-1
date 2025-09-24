@@ -46,12 +46,6 @@ const AddressField = () => {
             label={t('form:label.country')}
           />
         </Grid>
-        <Grid size={3}>
-          <InputField
-            name={`${registeredFormFields.address}.${registeredFormFields.flatNo}`}
-            label={t('form:label.flatNo')}
-          />
-        </Grid>
       </Grid>
     </Card>
   );

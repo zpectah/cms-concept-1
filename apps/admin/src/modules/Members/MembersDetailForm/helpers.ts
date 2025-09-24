@@ -18,7 +18,16 @@ export const getMembersDetailFormDefaultValues = (): IMembersDetailForm => {
     firstName: '',
     lastName: '',
 
-    address: '',
+    address: {
+      street: '',
+      streetNo: '',
+      district: '',
+      city: '',
+      country: '',
+      zip: null,
+    },
+
+    flatNo: '',
 
     type: getMembersTypeDefaultValue(),
     active: true,

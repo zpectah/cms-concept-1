@@ -1,5 +1,6 @@
 import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { newItemKey } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getConfig } from '../../../utils';
 import {
@@ -36,17 +37,22 @@ const MembersDetailForm = () => {
           name={registeredFormFields.type}
           label={t('form:label.type')}
           items={typeFieldOptions}
-          fieldProps={{ defaultValue: typeFieldDefault }}
+          fieldProps={{ defaultValue: typeFieldDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
         <EmailField name={registeredFormFields.email} label={t('form:label.email')} />
-
-        {/* TODO - Jen pokud je nový */}
-        <PasswordField name={registeredFormFields.password} label={t('form:label.password')} />
-
+        <PasswordField
+          name={registeredFormFields.password}
+          label={t('form:label.password')}
+          isRequired={detailId === newItemKey}
+        />
         <InputField name={registeredFormFields.firstName} label={t('form:label.firstName')} />
         <InputField name={registeredFormFields.lastName} label={t('form:label.lastName')} />
-
         <AddressField />
+        <InputField
+          name={registeredFormFields.flatNo}
+          label={t('form:label.flatNo')}
+          fieldProps={{ sx: { width: { xs: '100%', md: '33%' } } }}
+        />
       </FormLayout>
     </ControlledForm>
   );
