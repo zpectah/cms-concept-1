@@ -7,7 +7,8 @@ import {
   SubmitButton,
   InputField,
   TextareaField,
-  StringPickerField,
+  EmailPickerField,
+  PhonePickerField,
   AddressField,
 } from '../../../components';
 import { useGlobalPanelForm } from './useGlobalPanelForm';
@@ -28,9 +29,8 @@ const GlobalPanelForm = () => {
           <InputField name="companyName" label="Název společnosti" />
           <TextareaField name="companyDescription" label="Popis společnosti" />
           <InputField name="companyId" label="ID společnosti" />
-          <div>E-mail picker TODO</div>
-          <StringPickerField name="companyEmail" label="String picker DEMO" />
-          <div>Telefon picker TODO</div>
+          <EmailPickerField name="companyEmail" label="EmailPickerField DEMO" />
+          <PhonePickerField name="companyPhone" label="PhonePickerField DEMO" />
           <AddressField fieldPrefix="companyAddress" disableCard />
           <div>GPS lokalita TODO</div>
           <InputField name="companyBank" label="Bankovní spojení" />
@@ -42,6 +42,9 @@ const GlobalPanelForm = () => {
             Reset
           </Button>
         </Stack>
+        <pre>
+          <code>{JSON.stringify(form.watch(), null, 2)}</code>
+        </pre>
       </Content>
     </ControlledForm>
   );

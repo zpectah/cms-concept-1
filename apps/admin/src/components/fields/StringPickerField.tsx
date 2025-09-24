@@ -1,5 +1,5 @@
 import { ControlledFormField } from '../FormField';
-import { StringPicker } from '../StringPicker';
+import { StringPicker } from '../picker';
 import { StringPickerFieldProps } from './types';
 
 const StringPickerField = ({ fieldProps, isDisabled, isRequired, readOnly, ...rest }: StringPickerFieldProps) => (

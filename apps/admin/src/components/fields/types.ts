@@ -16,7 +16,7 @@ import {
   TextareaProps,
   RadioItemProps,
 } from '../input';
-import { StringPickerProps } from '../StringPicker';
+import { EmailPickerProps, PhonePickerProps, StringPickerProps } from '../picker';
 
 type FieldBase = Omit<FormFieldProps, 'field'> & { readOnly?: boolean; isHidden?: boolean };
 
@@ -75,6 +75,14 @@ export type SelectFieldProps = FieldBase & {
 
 export type TextareaFieldProps = FieldBase & {
   fieldProps?: Partial<TextareaProps>;
+};
+
+export type EmailPickerFieldProps = FieldBase & {
+  fieldProps?: Partial<EmailPickerProps>;
+};
+
+export type PhonePickerFieldProps = FieldBase & {
+  fieldProps?: Partial<PhonePickerProps>;
 };
 
 export type StringPickerFieldProps = FieldBase & {
