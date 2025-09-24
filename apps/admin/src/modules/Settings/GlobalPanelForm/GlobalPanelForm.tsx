@@ -8,6 +8,7 @@ import {
   InputField,
   TextareaField,
   StringPickerField,
+  AddressField,
 } from '../../../components';
 import { useGlobalPanelForm } from './useGlobalPanelForm';
 
@@ -30,11 +31,7 @@ const GlobalPanelForm = () => {
           <div>E-mail picker TODO</div>
           <StringPickerField name="companyEmail" label="String picker DEMO" />
           <div>Telefon picker TODO</div>
-          <InputField name="companyStreet" label="Ulice" />
-          <InputField name="companyStreetNo" label="ČP" />
-          <InputField name="companyCity" label="Město" />
-          <InputField name="companyCountry" label="Země / Stát" />
-          <InputField name="companyZip" label="PSČ" />
+          <AddressField fieldPrefix="companyAddress" disableCard />
           <div>GPS lokalita TODO</div>
           <InputField name="companyBank" label="Bankovní spojení" />
         </Section>

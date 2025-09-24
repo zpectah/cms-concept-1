@@ -1,4 +1,5 @@
 import { getConfig } from '../../../utils';
+import { addressFormDefaults } from '../../../constants';
 import { IMembersDetailForm } from './types';
 
 export const getMembersTypeDefaultValue = () => {
@@ -18,14 +19,7 @@ export const getMembersDetailFormDefaultValues = (): IMembersDetailForm => {
     firstName: '',
     lastName: '',
 
-    address: {
-      street: '',
-      streetNo: '',
-      district: '',
-      city: '',
-      country: '',
-      zip: null,
-    },
+    address: addressFormDefaults,
 
     flatNo: '',
 

@@ -47,7 +47,7 @@ const MembersDetailForm = () => {
         />
         <InputField name={registeredFormFields.firstName} label={t('form:label.firstName')} />
         <InputField name={registeredFormFields.lastName} label={t('form:label.lastName')} />
-        <AddressField />
+        <AddressField fieldPrefix={registeredFormFields.address} />
         <InputField
           name={registeredFormFields.flatNo}
           label={t('form:label.flatNo')}

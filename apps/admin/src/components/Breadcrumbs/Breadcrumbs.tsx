@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, Link } from 'react-router-dom';
 import { Breadcrumbs as MuiBreadcrumbs, Typography } from '@mui/material';
 import { getConfig } from '../../utils';
 import { useEffect, useState } from 'react';
@@ -31,7 +31,13 @@ const Breadcrumbs = ({ disabled }: BreadcrumbsProps) => {
   return (
     <MuiBreadcrumbs role="presentation" aria-label="breadcrumbs">
       <Typography variant="caption">{admin.meta.title}</Typography>
-      <Typography variant="caption">{t(`routes.${routeName}`)}</Typography>
+      {id ? (
+        <Typography variant="caption" component={Link} to={`/${routeName}`}>
+          {t(`routes.${routeName}`)}
+        </Typography>
+      ) : (
+        <Typography variant="caption">{t(`routes.${routeName}`)}</Typography>
+      )}
       {id && <Typography variant="caption">#{id}</Typography>}
       {isPanels && <Typography variant="caption">{t(`modules:${routeName}.tabs.${subRouteName}.title`)}</Typography>}
     </MuiBreadcrumbs>

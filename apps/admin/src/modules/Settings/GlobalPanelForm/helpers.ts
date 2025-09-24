@@ -1,3 +1,4 @@
+import { addressFormDefaults } from '../../../constants';
 import { ISettingsGlobalPanelForm } from './types';
 
 export const getDataToFormMapper = (): ISettingsGlobalPanelForm => {
@@ -9,12 +10,7 @@ export const getDataToFormMapper = (): ISettingsGlobalPanelForm => {
     companyId: '',
     companyEmail: [],
     companyPhone: [],
-    companyAddress: '',
-    companyStreet: '',
-    companyStreetNo: '',
-    companyCity: '',
-    companyCountry: '',
-    companyZip: '',
+    companyAddress: addressFormDefaults,
     companyLocation: [],
     companyBank: '',
   };
