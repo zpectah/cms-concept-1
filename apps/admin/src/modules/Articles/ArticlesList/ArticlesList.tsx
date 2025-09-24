@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { modelKeys, ArticlesItem } from '@common';
 import { ListItems, ValueBoolean, ValueArray, ValueDate, ValueType } from '../../../components';
 import { getConfig } from '../../../utils';
@@ -9,7 +8,6 @@ const ArticlesList = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { t } = useTranslation(['components']);
   const { articles, categories, tags, isLoading, onDeleteSelected, onDisableSelected } = useArticlesList();
 
   return (
@@ -28,32 +26,26 @@ const ArticlesList = () => {
       columns={[
         {
           value: registeredFormFields.name,
-          label: t('components:ListItems.label.name'),
           isTitle: true,
         },
         {
           value: registeredFormFields.type,
-          label: t('components:ListItems.label.type'),
           renderValue: (row) => <ValueType value={row.type} />,
         },
         {
           value: registeredFormFields.active,
-          label: t('components:ListItems.label.active'),
           renderValue: (row) => <ValueBoolean value={row.active} />,
         },
         {
           value: registeredFormFields.categories,
-          label: t('components:ListItems.label.categories'),
           renderValue: (row) => <ValueArray value={row.categories} />,
         },
         {
           value: registeredFormFields.tags,
-          label: t('components:ListItems.label.tags'),
           renderValue: (row) => <ValueArray value={row.tags} />,
         },
         {
           value: registeredFormFields.updated,
-          label: t('components:ListItems.label.updated'),
           renderValue: (row) => <ValueDate value={row.updated} />,
         },
       ]}

@@ -17,7 +17,7 @@ interface ListItemsBase<T extends ItemBase> {
 
 interface ListItemsTableColumn<T extends ItemBase> {
   value: keyof T;
-  label: string;
+  label?: string;
   renderValue?: (row: T) => ReactNode;
   isTitle?: boolean;
 }
@@ -154,6 +154,7 @@ export interface ListItemsControlsProps<T extends ItemBase> {
   tags: Tags;
   onTagToggle: (id: number) => void;
   selectedFilter: ListItemsFilter;
+  onSelectAll: () => void;
 }
 
 export type ListItemsPaginationProps = ListItemsPagination & {};

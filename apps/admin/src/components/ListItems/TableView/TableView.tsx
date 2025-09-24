@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import {
   Checkbox,
   Paper,
@@ -8,6 +9,8 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Button,
+  Stack,
 } from '@mui/material';
 import { ItemBase } from '@common';
 import { TableViewProps } from '../types';
@@ -27,6 +30,8 @@ const TableView = <T extends ItemBase>({
   onDisable,
   isLoading,
 }: TableViewProps<T>) => {
+  const { t } = useTranslation(['common', 'form']);
+
   return (
     <TableContainer component={Paper} variant="outlined">
       <Table aria-label={`${name} list table`}>
@@ -42,7 +47,7 @@ const TableView = <T extends ItemBase>({
 
             {columns?.map((col) => (
               <TableCell key={String(col.value)} variant="head" align="right">
-                {col.label}
+                {col.label ? col.label : t(`form:label.${String(col.value)}`)}
               </TableCell>
             ))}
 
@@ -77,9 +82,17 @@ const TableView = <T extends ItemBase>({
               })}
 
               <TableCell align="right">
-                <button onClick={() => onDelete(row.id)}>delete</button>
-                <button onClick={() => onDisable(row.id)}>disable</button>
-                <button onClick={() => onDetail(row.id)}>detail</button>
+                <Stack direction="row" gap={1} sx={{ display: 'inline-flex' }}>
+                  <Button onClick={() => onDelete(row.id)} variant="outlined" color="error" size="small">
+                    {t('button.delete')}
+                  </Button>
+                  <Button onClick={() => onDisable(row.id)} variant="outlined" color="warning" size="small">
+                    {t('button.disable')}
+                  </Button>
+                  <Button onClick={() => onDetail(row.id)} variant="contained" color="secondary" size="small">
+                    {t('button.detail')}
+                  </Button>
+                </Stack>
               </TableCell>
             </TableRow>
           ))}

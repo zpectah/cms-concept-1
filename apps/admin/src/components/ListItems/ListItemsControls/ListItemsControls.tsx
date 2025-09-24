@@ -1,11 +1,14 @@
-import { Button, ButtonGroup, Stack, ToggleButton, ToggleButtonGroup, Grid } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Button, Stack, ToggleButton, ToggleButtonGroup, Grid, Collapse } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { ItemBase } from '@common';
+import { getConfig } from '../../../utils';
 import { Card } from '../../Card';
 import { Search } from '../../input';
 import { listItemsSortOrderKeys } from '../enums';
 import { ListItemsControlsProps } from '../types';
+import { useMemo, useState } from 'react';
 
 const ListItemsControls = <T extends ItemBase>({
   disableViewToggle,
@@ -29,7 +32,13 @@ const ListItemsControls = <T extends ItemBase>({
   tags,
   onTagToggle,
   selectedFilter,
+  onSelectAll,
 }: ListItemsControlsProps<T>) => {
+  const [expanded, setExpanded] = useState(false);
+
+  const { viewToggleEnabled } = getConfig();
+  const { t } = useTranslation(['common', 'form']);
+
   const renderCategories = () => {
     if (!isCategories) return;
 
@@ -78,63 +87,114 @@ const ListItemsControls = <T extends ItemBase>({
     );
   };
 
+  const listOptionsMenu = useMemo(
+    () => [
+      {
+        name: 'selectAll',
+        label: t('button.selectAll'),
+        onClick: onSelectAll,
+        hidden: selected.length === rawRows.length,
+      },
+      {
+        name: 'deselectAll',
+        label: t('button.deselectAll'),
+        onClick: onDeselectedSelected,
+        hidden: selected.length === 0,
+      },
+      {
+        name: 'deleteSelected',
+        label: t('button.deleteSelected'),
+        onClick: onDeleteSelected,
+        disabled: selected.length === 0,
+      },
+      {
+        name: 'disableSelected',
+        label: t('button.disableSelected'),
+        onClick: onDisableSelected,
+        disabled: selected.length === 0,
+      },
+    ],
+    [onSelectAll, selected.length, rawRows.length, onDeselectedSelected, onDeleteSelected, onDisableSelected]
+  );
+
   return (
     <>
       <Card>
-        <Stack gap={1}>
-          <Grid container>
-            <Grid size={10}>
-              <Search value={query} onChange={(event) => onQueryChange(event.target.value)} fullWidth />
-            </Grid>
-            <Grid size={2}>
-              <Button variant="outlined" color="inherit">
-                More...
-              </Button>
-            </Grid>
-          </Grid>
+        <Stack gap={2}>
+          <Stack direction="row" gap={1}>
+            <Search value={query} onChange={(event) => onQueryChange(event.target.value)} fullWidth />
+          </Stack>
 
-          <Grid container>
-            <Grid size={6}>
-              <ToggleButtonGroup value={sortBy}>
-                {orderKeys?.map((key, index) => (
-                  <ToggleButton key={index} value={key} onClick={() => onOrderBy(key)} size="small">
-                    &nbsp;{String(key)}&nbsp;
-                    {key === sortBy && (
-                      <>
-                        {orderBy === listItemsSortOrderKeys.asc ? (
-                          <ArrowUpwardIcon fontSize="inherit" />
-                        ) : (
-                          <ArrowDownwardIcon fontSize="inherit" />
-                        )}
-                      </>
-                    )}
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
-            </Grid>
-            <Grid size={6}>
-              <Stack direction="row" gap={1}>
-                <ButtonGroup variant="outlined" color="inherit" size="small">
-                  <Button onClick={onDeselectedSelected} disabled={selected.length === 0}>
-                    deselect all
+          <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <Stack direction="row" gap={1}>
+              {listOptionsMenu.map(({ name, label, onClick, disabled, hidden }) => {
+                if (hidden) return null;
+
+                return (
+                  <Button
+                    key={name}
+                    onClick={onClick}
+                    disabled={disabled}
+                    color="inherit"
+                    variant="outlined"
+                    size="small"
+                  >
+                    {label}
                   </Button>
-                  <Button onClick={onDeleteSelected} disabled={selected.length === 0}>
-                    delete selected
-                  </Button>
-                  <Button onClick={onDisableSelected} disabled={selected.length === 0}>
-                    disable selected
-                  </Button>
-                </ButtonGroup>
+                );
+              })}
+            </Stack>
+            {viewToggleEnabled ?? (
+              <Stack>
                 <Button variant="outlined" color="inherit" size="small" onClick={onViewToggle}>
                   {view}
                 </Button>
               </Stack>
-            </Grid>
-          </Grid>
-        </Stack>
-        <Stack gap={1}>
-          {renderCategories()}
-          {renderTags()}
+            )}
+            <Stack>
+              <Button
+                color="inherit"
+                variant="outlined"
+                size="small"
+                onClick={() => {
+                  setExpanded(!expanded);
+                }}
+              >
+                {expanded ? t('button.less') : t('button.more')}
+              </Button>
+            </Stack>
+          </Stack>
+
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Stack gap={2}>
+              <Grid container>
+                <Grid size={12}>
+                  <ToggleButtonGroup value={sortBy} exclusive>
+                    {orderKeys?.map((key, index) => (
+                      <ToggleButton key={index} value={key} onClick={() => onOrderBy(key)} size="small">
+                        &nbsp;{t(`form:label.${String(key)}`)}&nbsp;
+                        {key === sortBy && (
+                          <>
+                            {orderBy === listItemsSortOrderKeys.asc ? (
+                              <ArrowUpwardIcon fontSize="inherit" />
+                            ) : (
+                              <ArrowDownwardIcon fontSize="inherit" />
+                            )}
+                          </>
+                        )}
+                      </ToggleButton>
+                    ))}
+                  </ToggleButtonGroup>
+                </Grid>
+              </Grid>
+              {(isCategories || isTags) && (
+                <Stack gap={1}>
+                  {renderCategories()}
+                  {renderTags()}
+                </Stack>
+              )}
+            </Stack>
+          </Collapse>
         </Stack>
       </Card>
     </>

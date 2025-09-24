@@ -1,14 +1,1 @@
-{
-  "ListItems": {
-    "label": {
-      "name": "Name",
-      "type": "Type",
-      "active": "Active",
-      "parent": "Parent",
-      "updated": "Updated",
-      "categories": "Categories",
-      "tags": "Tags",
-      "email": "E-mail"
-    }
-  }
-}
+{}

@@ -7,6 +7,11 @@ const getConfig = () => {
   return {
     env,
     isDev: env === 'development',
+
+    // TODO
+    viewToggleEnabled: false,
+    //
+
     ...config,
   };
 };

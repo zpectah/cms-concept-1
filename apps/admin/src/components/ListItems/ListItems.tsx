@@ -133,6 +133,7 @@ const ListItems = <T extends ItemBase>({
         isTags={isTags}
         tags={tagsOptions}
         onTagToggle={onTagToggle}
+        onSelectAll={onSelectAllRows}
       />
       {view === listItemsViewKeys.table ? (
         <TableView<T>
