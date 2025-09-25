@@ -10,6 +10,7 @@ import {
   ThemeToggle,
   ActionBar,
   PasswordField,
+  DebugFormModel,
 } from '../../../components';
 import { useAccountPanelForm } from './useAccountPanelForm';
 
@@ -38,6 +39,8 @@ const AccountPanelForm = () => {
             {t('button.reset')}
           </Button>
         </ActionBar>
+
+        <DebugFormModel name="ClientPanelForm" />
       </Content>
     </ControlledForm>
   );

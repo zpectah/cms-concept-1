@@ -4,12 +4,14 @@ import BasePicker from './BasePicker';
 
 const PhonePicker = (props: PhonePickerProps) => (
   <BasePicker
-    renderInput={(value, setValue) => (
+    renderInput={(value, setValue, inputSx, placeholder, error) => (
       <Phone
         name="phone-picker-input"
         value={value}
         onChange={(event) => setValue(event.target.value)}
-        sx={{ width: { xs: '100%', md: '33%' } }}
+        sx={{ ...inputSx }}
+        placeholder={placeholder}
+        error={error}
       />
     )}
     {...props}

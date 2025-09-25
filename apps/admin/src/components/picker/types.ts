@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ChipProps, StackProps } from '@mui/material';
+import { ChipProps, StackProps, SxProps, Theme } from '@mui/material';
 
 interface PickerBaseProps {
   name: string;
@@ -8,11 +8,18 @@ interface PickerBaseProps {
   isError?: boolean;
   chipProps?: Partial<ChipProps>;
   stackProps?: Partial<StackProps>;
+  placeholder?: string;
 }
 
 export interface BasePickerProps extends PickerBaseProps {
   renderValue?: (value: string, index: number) => ReactNode;
-  renderInput?: (value: string, setValue: (value: string) => void) => ReactNode;
+  renderInput?: (
+    value: string,
+    setValue: (value: string) => void,
+    inputSx: SxProps<Theme>,
+    placeholder?: string,
+    error?: boolean
+  ) => ReactNode;
   isValueValid?: (value: string) => boolean;
 }
 

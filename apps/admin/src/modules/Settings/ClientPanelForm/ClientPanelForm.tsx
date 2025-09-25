@@ -12,6 +12,7 @@ import {
   StringPickerField,
   EmailPickerField,
   ActionBar,
+  DebugFormModel,
 } from '../../../components';
 import { useClientPanelForm } from './useClientPanelForm';
 
@@ -33,7 +34,11 @@ const ClientPanelForm = () => {
             items={fieldOptions.metaRobots}
             fieldProps={{ sx: { width: { xs: '100%', md: '33%' } } }}
           />
-          <StringPickerField name="metaKeywords" label="Klíčová slova" />
+          <StringPickerField
+            name="metaKeywords"
+            label="Klíčová slova"
+            fieldProps={{ placeholder: 'Zadejte klíčové slovo' }}
+          />
         </Section>
         <Section title="Stavy" cardContent contentSpacing="form">
           <SwitchField name="stateDebug" fieldProps={{ label: 'Mód ladění' }} />
@@ -41,7 +46,11 @@ const ClientPanelForm = () => {
         </Section>
         <Section title="Zprávy" cardContent contentSpacing="form">
           <SwitchField name="messagesActive" fieldProps={{ label: 'Zprávy aktivní' }} />
-          <EmailPickerField name="messagesRecipients" label="Příjemci zpráv" />
+          <EmailPickerField
+            name="messagesRecipients"
+            label="Příjemci zpráv"
+            fieldProps={{ placeholder: 'Zadejte e-mail' }}
+          />
         </Section>
         <Section title="Komentáře" cardContent contentSpacing="form">
           <SwitchField name="commentsActive" fieldProps={{ label: 'Komentáře aktivní' }} />
@@ -57,9 +66,8 @@ const ClientPanelForm = () => {
             {t('button.reset')}
           </Button>
         </ActionBar>
-        <pre>
-          <code>{JSON.stringify(form.watch(), null, 2)}</code>
-        </pre>
+
+        <DebugFormModel name="ClientPanelForm" />
       </Content>
     </ControlledForm>
   );

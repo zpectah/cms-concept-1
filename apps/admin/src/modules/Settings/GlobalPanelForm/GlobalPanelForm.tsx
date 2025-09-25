@@ -11,6 +11,7 @@ import {
   PhonePickerField,
   AddressField,
   ActionBar,
+  DebugFormModel,
 } from '../../../components';
 import { useGlobalPanelForm } from './useGlobalPanelForm';
 
@@ -32,11 +33,19 @@ const GlobalPanelForm = () => {
           <InputField name="companyName" label="Název společnosti" />
           <TextareaField name="companyDescription" label="Popis společnosti" />
           <InputField name="companyId" label="ID společnosti" />
-          <EmailPickerField name="companyEmail" label="E-mail společnosti" />
-          <PhonePickerField name="companyPhone" label="Telefon společnosti" />
-          <div>GPS lokalita TODO</div>
+          <EmailPickerField
+            name="companyEmail"
+            label="E-mail společnosti"
+            fieldProps={{ placeholder: 'Zadejte e-mail' }}
+          />
+          <PhonePickerField
+            name="companyPhone"
+            label="Telefon společnosti"
+            fieldProps={{ placeholder: 'Zadejte telefon' }}
+          />
           <InputField name="companyBank" label="Bankovní spojení" />
           <AddressField fieldPrefix="companyAddress" disableCard />
+          <div>GPS lokalita TODO</div>
         </Section>
         <Divider />
         <ActionBar>
@@ -45,9 +54,8 @@ const GlobalPanelForm = () => {
             {t('button.reset')}
           </Button>
         </ActionBar>
-        <pre>
-          <code>{JSON.stringify(form.watch(), null, 2)}</code>
-        </pre>
+
+        <DebugFormModel name="ClientPanelForm" />
       </Content>
     </ControlledForm>
   );
