@@ -6,9 +6,7 @@ const EmailPickerField = ({ fieldProps, isDisabled, isRequired, readOnly, ...res
   <ControlledFormField
     isDisabled={isDisabled}
     isRequired={isRequired}
-    render={({ field, fieldState }) => {
-      return <EmailPicker isError={!!fieldState.error} {...fieldProps} {...field} />;
-    }}
+    render={({ field, fieldState }) => <EmailPicker isError={!!fieldState.error} {...fieldProps} {...field} />}
     {...rest}
   />
 );

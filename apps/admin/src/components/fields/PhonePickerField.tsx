@@ -6,9 +6,7 @@ const PhonePickerField = ({ fieldProps, isDisabled, isRequired, readOnly, ...res
   <ControlledFormField
     isDisabled={isDisabled}
     isRequired={isRequired}
-    render={({ field, fieldState }) => {
-      return <PhonePicker isError={!!fieldState.error} {...fieldProps} {...field} />;
-    }}
+    render={({ field, fieldState }) => <PhonePicker isError={!!fieldState.error} {...fieldProps} {...field} />}
     {...rest}
   />
 );

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Stack, Button, Divider } from '@mui/material';
+import { Button, Divider } from '@mui/material';
 import {
   ControlledForm,
   Content,
@@ -10,6 +10,7 @@ import {
   EmailPickerField,
   PhonePickerField,
   AddressField,
+  ActionBar,
 } from '../../../components';
 import { useGlobalPanelForm } from './useGlobalPanelForm';
 
@@ -38,12 +39,12 @@ const GlobalPanelForm = () => {
           <AddressField fieldPrefix="companyAddress" disableCard />
         </Section>
         <Divider />
-        <Stack direction="row" gap={2}>
-          <SubmitButton>Save changes</SubmitButton>
+        <ActionBar>
+          <SubmitButton>{t('button.saveChanges')}</SubmitButton>
           <Button type="reset" variant="outlined" color="inherit">
-            Reset
+            {t('button.reset')}
           </Button>
-        </Stack>
+        </ActionBar>
         <pre>
           <code>{JSON.stringify(form.watch(), null, 2)}</code>
         </pre>

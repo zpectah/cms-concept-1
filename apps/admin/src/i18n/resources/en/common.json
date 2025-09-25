@@ -29,7 +29,10 @@
     "less": "Less",
     "delete": "Delete",
     "disable": "Disable",
-    "detail": "Detail"
+    "detail": "Detail",
+    "dismiss": "Dismiss",
+    "save": "Save",
+    "saveChanges": "Save changes"
   },
   "label": {
     "yesterday": "Yesterday",

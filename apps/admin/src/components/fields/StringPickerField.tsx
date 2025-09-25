@@ -6,9 +6,7 @@ const StringPickerField = ({ fieldProps, isDisabled, isRequired, readOnly, ...re
   <ControlledFormField
     isDisabled={isDisabled}
     isRequired={isRequired}
-    render={({ field, fieldState }) => {
-      return <StringPicker isError={!!fieldState.error} {...fieldProps} {...field} />;
-    }}
+    render={({ field, fieldState }) => <StringPicker isError={!!fieldState.error} {...fieldProps} {...field} />}
     {...rest}
   />
 );

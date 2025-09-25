@@ -1,4 +1,4 @@
-import { Button, Divider, Stack } from '@mui/material';
+import { Button, Divider } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import {
   ControlledForm,
@@ -11,6 +11,7 @@ import {
   SwitchField,
   StringPickerField,
   EmailPickerField,
+  ActionBar,
 } from '../../../components';
 import { useClientPanelForm } from './useClientPanelForm';
 
@@ -26,7 +27,12 @@ const ClientPanelForm = () => {
         <Section title={t('modules:settings.tabs.client.section.meta.title')} cardContent contentSpacing="form">
           <InputField name="metaTitle" label="Titulek aplikace" isRequired />
           <TextareaField name="metaDescription" label="Popis aplikace" />
-          <SelectField name="metaRobots" label="Meta roboti" items={fieldOptions.metaRobots} />
+          <SelectField
+            name="metaRobots"
+            label="Meta roboti"
+            items={fieldOptions.metaRobots}
+            fieldProps={{ sx: { width: { xs: '100%', md: '33%' } } }}
+          />
           <StringPickerField name="metaKeywords" label="Klíčová slova" />
         </Section>
         <Section title="Stavy" cardContent contentSpacing="form">
@@ -45,12 +51,12 @@ const ClientPanelForm = () => {
           <SwitchField name="membersActive" fieldProps={{ label: 'Members aktivní' }} />
         </Section>
         <Divider />
-        <Stack direction="row" gap={2}>
-          <SubmitButton>Save changes</SubmitButton>
+        <ActionBar>
+          <SubmitButton>{t('button.saveChanges')}</SubmitButton>
           <Button type="reset" variant="outlined" color="inherit">
-            Reset
+            {t('button.reset')}
           </Button>
-        </Stack>
+        </ActionBar>
         <pre>
           <code>{JSON.stringify(form.watch(), null, 2)}</code>
         </pre>
