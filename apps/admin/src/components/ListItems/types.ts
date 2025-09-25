@@ -117,7 +117,6 @@ export interface ListItemsFilter {
 export interface ListItemsPagination {
   page: number;
   pages: number;
-  perPage: number;
   onPageNext: () => void;
   onPagePrev: () => void;
   onPageFirst: () => void;
@@ -128,8 +127,9 @@ export interface ListItemsPagination {
     next: boolean;
     last: boolean;
   };
-  onPerPageChange: (perPage: number) => void;
   onPageChange: (page: number) => void;
+  perPage: number;
+  onPerPageChange: (perPage: number) => void;
 }
 
 export interface ListItemsControlsProps<T extends ItemBase> {
@@ -155,6 +155,8 @@ export interface ListItemsControlsProps<T extends ItemBase> {
   onTagToggle: (id: number) => void;
   selectedFilter: ListItemsFilter;
   onSelectAll: () => void;
+  perPage: number;
+  onPerPageChange: (perPage: number) => void;
 }
 
 export type ListItemsPaginationProps = ListItemsPagination & {};

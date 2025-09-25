@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, MenuDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useModelMenuItems } from '../../../helpers';
+import { useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -24,7 +24,7 @@ export const useMenuDetailForm = () => {
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { menuDetailQuery, menuPatchQuery } = useMenuQuery(id);
-  const { typeFieldOptions } = useModelMenuItems(modelKeys.menu);
+  const { getTypeFieldOptions } = useSelectOptions();
   const form = useForm<IMenuDetailForm>({
     resolver: zodResolver(MenuDetailFormSchema),
     defaultValues: getMenuDetailFormDefaultValues(),
@@ -103,7 +103,7 @@ export const useMenuDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions,
+    typeFieldOptions: getTypeFieldOptions(modelKeys.menu),
     typeFieldDefault: getMenuTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
     detailData,

@@ -1,4 +1,6 @@
 import { Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { ActionBar } from '../Content';
 import DialogBase from './DialogBase';
 import { ConfirmDialogProps } from './types';
 import { CONFIRM_DIALOG_TIMEOUT_DEFAULT } from './constants';
@@ -13,6 +15,8 @@ const ConfirmDialog = ({
   context = confirmDialogContextKeys.default,
   timeout = CONFIRM_DIALOG_TIMEOUT_DEFAULT,
 }: ConfirmDialogProps) => {
+  const { t } = useTranslation();
+
   const confirmHandler = () => {
     onClose();
     setTimeout(onConfirm, timeout);
@@ -26,10 +30,14 @@ const ConfirmDialog = ({
       title={title}
       contentText={content}
       actions={
-        <>
-          <Button onClick={onClose}>cancel</Button>
-          <Button onClick={confirmHandler}>confirm</Button>
-        </>
+        <ActionBar stackProps={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Button size="large" onClick={onClose} variant="outlined" color="inherit">
+            {t('button.cancel')}
+          </Button>
+          <Button size="large" onClick={confirmHandler} variant="contained" color="primary">
+            {t('button.confirm')}
+          </Button>
+        </ActionBar>
       }
       dialogProps={{ keepMounted: true }}
     />

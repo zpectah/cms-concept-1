@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, TranslationsDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useFormDetailControl, useModelMenuItems } from '../../../helpers';
+import { useFormDetailControl, useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -24,7 +24,7 @@ export const useTranslationsDetailForm = () => {
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { translationsDetailQuery, translationsPatchQuery } = useTranslationsQuery(id);
-  const { typeFieldOptions } = useModelMenuItems(modelKeys.translations);
+  const { getTypeFieldOptions } = useSelectOptions();
   const { locales, locale, onLocaleChange } = useFormDetailControl();
   const form = useForm<ITranslationsDetailForm>({
     resolver: zodResolver(TranslationsDetailFormSchema),
@@ -104,7 +104,7 @@ export const useTranslationsDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions,
+    typeFieldOptions: getTypeFieldOptions(modelKeys.translations),
     typeFieldDefault: getTranslationsTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
     detailData,

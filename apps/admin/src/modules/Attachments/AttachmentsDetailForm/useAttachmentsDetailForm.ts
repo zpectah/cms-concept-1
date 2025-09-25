@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, AttachmentsDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useModelMenuItems } from '../../../helpers';
+import { useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -24,7 +24,7 @@ export const useAttachmentsDetailForm = () => {
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { attachmentsDetailQuery, attachmentsPatchQuery } = useAttachmentsQuery(id);
-  const { typeFieldOptions } = useModelMenuItems(modelKeys.attachments);
+  const { getTypeFieldOptions } = useSelectOptions();
   const form = useForm<IAttachmentsDetailForm>({
     resolver: zodResolver(AttachmentsDetailFormSchema),
     defaultValues: getAttachmentsDetailFormDefaultValues(),
@@ -103,7 +103,7 @@ export const useAttachmentsDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions,
+    typeFieldOptions: getTypeFieldOptions(modelKeys.attachments),
     typeFieldDefault: getAttachmentsTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
     detailData,

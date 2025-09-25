@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, ArticlesDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useFormDetailControl, useModelMenuItems } from '../../../helpers';
+import { useFormDetailControl, useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -24,7 +24,7 @@ export const useArticlesDetailForm = () => {
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { articlesDetailQuery, articlesPatchQuery } = useArticlesQuery(id);
-  const { typeFieldOptions } = useModelMenuItems(modelKeys.articles);
+  const { getTypeFieldOptions } = useSelectOptions();
   const { locales, locale, onLocaleChange } = useFormDetailControl();
   const form = useForm<IArticlesDetailForm>({
     resolver: zodResolver(ArticlesDetailFormSchema),
@@ -104,7 +104,7 @@ export const useArticlesDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions,
+    typeFieldOptions: getTypeFieldOptions(modelKeys.articles),
     typeFieldDefault: getArticlesTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
     detailData,

@@ -1,7 +1,10 @@
-import { Stack } from '@mui/material';
+import { Stack, Box, IconButton } from '@mui/material';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import LastPageIcon from '@mui/icons-material/LastPage';
 import { Card } from '../../Card';
 import { ListItemsPaginationProps } from '../types';
-import { LIST_ITEMS_PER_PAGE_OPTIONS } from '../constants';
 
 const ListItemsPagination = ({
   pages,
@@ -10,42 +13,27 @@ const ListItemsPagination = ({
   onPageLast,
   onPageNext,
   onPagePrev,
-  onPerPageChange,
-  onPageChange,
-  perPage,
   disabledButton,
-}: ListItemsPaginationProps) => {
-  return (
-    <Card>
-      <Stack>
-        <div>
-          <button onClick={onPageFirst} disabled={disabledButton.first}>
-            first
-          </button>
-          <button onClick={onPagePrev} disabled={disabledButton.prev}>
-            prev
-          </button>
-          &nbsp;
-          <button onClick={onPageNext} disabled={disabledButton.next}>
-            next
-          </button>
-          <button onClick={onPageLast} disabled={disabledButton.last}>
-            last
-          </button>
-        </div>
-        <Stack>
-          Page {page} of {pages}
-        </Stack>
-        <div>
-          <select value={perPage} onChange={(event) => onPerPageChange(Number(event.target.value))}>
-            {LIST_ITEMS_PER_PAGE_OPTIONS.map((item) => (
-              <option key={item} value={item} label={String(item)} />
-            ))}
-          </select>
-        </div>
-      </Stack>
-    </Card>
-  );
-};
+}: ListItemsPaginationProps) => (
+  <Card>
+    <Stack direction="row" alignItems="center" justifyContent="center" gap={2}>
+      <IconButton onClick={onPageFirst} disabled={disabledButton.first}>
+        <FirstPageIcon />
+      </IconButton>
+      <IconButton onClick={onPagePrev} disabled={disabledButton.prev}>
+        <KeyboardArrowLeftIcon />
+      </IconButton>
+      <Box sx={{ width: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {page} / {pages}
+      </Box>
+      <IconButton onClick={onPageNext} disabled={disabledButton.next}>
+        <KeyboardArrowRightIcon />
+      </IconButton>
+      <IconButton onClick={onPageLast} disabled={disabledButton.last}>
+        <LastPageIcon />
+      </IconButton>
+    </Stack>
+  </Card>
+);
 
 export default ListItemsPagination;

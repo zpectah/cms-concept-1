@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, UsersDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useModelMenuItems } from '../../../helpers';
+import { useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -24,7 +24,7 @@ export const useUsersDetailForm = () => {
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { usersDetailQuery, usersPatchQuery } = useUsersQuery(id);
-  const { typeFieldOptions } = useModelMenuItems(modelKeys.users);
+  const { getTypeFieldOptions } = useSelectOptions();
   const form = useForm<IUsersDetailForm>({
     resolver: zodResolver(UsersDetailFormSchema),
     defaultValues: getUsersDetailFormDefaultValues(),
@@ -103,7 +103,7 @@ export const useUsersDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions,
+    typeFieldOptions: getTypeFieldOptions(modelKeys.users),
     typeFieldDefault: getUsersTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
     detailData,

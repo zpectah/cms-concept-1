@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, TagsDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useModelMenuItems } from '../../../helpers';
+import { useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -24,7 +24,7 @@ export const useTagsDetailForm = () => {
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { tagsDetailQuery, tagsPatchQuery } = useTagsQuery(id);
-  const { typeFieldOptions } = useModelMenuItems(modelKeys.tags);
+  const { getTypeFieldOptions } = useSelectOptions();
   const form = useForm<ITagsDetailForm>({
     resolver: zodResolver(TagsDetailFormSchema),
     defaultValues: getTagsDetailFormDefaultValues(),
@@ -103,7 +103,7 @@ export const useTagsDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions,
+    typeFieldOptions: getTypeFieldOptions(modelKeys.tags),
     typeFieldDefault: getTagsTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
     detailData,

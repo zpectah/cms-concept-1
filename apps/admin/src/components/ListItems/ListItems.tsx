@@ -134,6 +134,8 @@ const ListItems = <T extends ItemBase>({
         tags={tagsOptions}
         onTagToggle={onTagToggle}
         onSelectAll={onSelectAllRows}
+        perPage={pagination.perPage}
+        onPerPageChange={pagination.onPerPageChange}
       />
       {view === listItemsViewKeys.table ? (
         <TableView<T>

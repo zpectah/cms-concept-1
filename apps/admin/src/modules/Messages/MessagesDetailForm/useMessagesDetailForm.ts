@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, MessagesDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useModelMenuItems } from '../../../helpers';
+import { useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -24,7 +24,7 @@ export const useMessagesDetailForm = () => {
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { messagesDetailQuery, messagesPatchQuery } = useMessagesQuery(id);
-  const { typeFieldOptions } = useModelMenuItems(modelKeys.messages);
+  const { getTypeFieldOptions } = useSelectOptions();
   const form = useForm<IMessagesDetailForm>({
     resolver: zodResolver(MessagesDetailFormSchema),
     defaultValues: getMessagesDetailFormDefaultValues(),
@@ -103,7 +103,7 @@ export const useMessagesDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions,
+    typeFieldOptions: getTypeFieldOptions(modelKeys.messages),
     typeFieldDefault: getMessagesTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
     detailData,

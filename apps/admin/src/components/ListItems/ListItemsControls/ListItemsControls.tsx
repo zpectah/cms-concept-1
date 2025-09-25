@@ -1,14 +1,17 @@
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Stack, ToggleButton, ToggleButtonGroup, Grid, Collapse } from '@mui/material';
+import { Button, Stack, ToggleButton, ToggleButtonGroup, Grid, Collapse, ButtonProps } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { ItemBase } from '@common';
 import { getConfig } from '../../../utils';
+import { muiCommonColorVariantKeys } from '../../../enums';
+import { useSelectOptions } from '../../../helpers';
 import { Card } from '../../Card';
-import { Search } from '../../input';
+import { Search, Select } from '../../input';
 import { listItemsSortOrderKeys } from '../enums';
 import { ListItemsControlsProps } from '../types';
-import { useMemo, useState } from 'react';
+import { LIST_ITEMS_PER_PAGE_OPTIONS } from '../constants';
 
 const ListItemsControls = <T extends ItemBase>({
   disableViewToggle,
@@ -33,11 +36,14 @@ const ListItemsControls = <T extends ItemBase>({
   onTagToggle,
   selectedFilter,
   onSelectAll,
+  perPage,
+  onPerPageChange,
 }: ListItemsControlsProps<T>) => {
   const [expanded, setExpanded] = useState(false);
 
   const { viewToggleEnabled } = getConfig();
   const { t } = useTranslation(['common', 'form']);
+  const { getOptionsFromList } = useSelectOptions();
 
   const renderCategories = () => {
     if (!isCategories) return;
@@ -53,7 +59,7 @@ const ListItemsControls = <T extends ItemBase>({
               onClick={() => onCategoryToggle(item.id)}
               size="small"
               variant={isSelected ? 'contained' : 'outlined'}
-              color={isSelected ? 'primary' : 'inherit'}
+              color={isSelected ? muiCommonColorVariantKeys.primary : muiCommonColorVariantKeys.inherit}
             >
               {item.name}
             </Button>
@@ -77,7 +83,7 @@ const ListItemsControls = <T extends ItemBase>({
               onClick={() => onTagToggle(item.id)}
               size="small"
               variant={isSelected ? 'contained' : 'outlined'}
-              color={isSelected ? 'primary' : 'inherit'}
+              color={isSelected ? muiCommonColorVariantKeys.primary : muiCommonColorVariantKeys.inherit}
             >
               {item.name}
             </Button>
@@ -88,32 +94,38 @@ const ListItemsControls = <T extends ItemBase>({
   };
 
   const listOptionsMenu = useMemo(
-    () => [
-      {
-        name: 'selectAll',
-        label: t('button.selectAll'),
-        onClick: onSelectAll,
-        hidden: selected.length === rawRows.length,
-      },
-      {
-        name: 'deselectAll',
-        label: t('button.deselectAll'),
-        onClick: onDeselectedSelected,
-        hidden: selected.length === 0,
-      },
-      {
-        name: 'deleteSelected',
-        label: t('button.deleteSelected'),
-        onClick: onDeleteSelected,
-        disabled: selected.length === 0,
-      },
-      {
-        name: 'disableSelected',
-        label: t('button.disableSelected'),
-        onClick: onDisableSelected,
-        disabled: selected.length === 0,
-      },
-    ],
+    () =>
+      [
+        {
+          name: 'selectAll',
+          label: t('button.selectAll'),
+          onClick: onSelectAll,
+          hidden: selected.length === rawRows.length,
+        },
+        {
+          name: 'deselectAll',
+          label: t('button.deselectAll'),
+          onClick: onDeselectedSelected,
+          hidden: selected.length === 0,
+        },
+        {
+          name: 'deleteSelected',
+          label: t('button.deleteSelected'),
+          onClick: onDeleteSelected,
+          disabled: selected.length === 0,
+          color: muiCommonColorVariantKeys.error,
+          variant: 'contained',
+        },
+        {
+          name: 'disableSelected',
+          label: t('button.disableSelected'),
+          onClick: onDisableSelected,
+          disabled: selected.length === 0,
+          color: muiCommonColorVariantKeys.warning,
+          variant: 'contained',
+        },
+      ] as ({ label: string } & ButtonProps)[],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [onSelectAll, selected.length, rawRows.length, onDeselectedSelected, onDeleteSelected, onDisableSelected]
   );
 
@@ -127,7 +139,7 @@ const ListItemsControls = <T extends ItemBase>({
 
           <Stack direction="row" alignItems="center" justifyContent="space-between">
             <Stack direction="row" gap={1}>
-              {listOptionsMenu.map(({ name, label, onClick, disabled, hidden }) => {
+              {listOptionsMenu.map(({ name, label, onClick, disabled, hidden, color, ...rest }) => {
                 if (hidden) return null;
 
                 return (
@@ -135,9 +147,10 @@ const ListItemsControls = <T extends ItemBase>({
                     key={name}
                     onClick={onClick}
                     disabled={disabled}
-                    color="inherit"
+                    color={color ? color : muiCommonColorVariantKeys.inherit}
                     variant="outlined"
                     size="small"
+                    {...rest}
                   >
                     {label}
                   </Button>
@@ -168,7 +181,7 @@ const ListItemsControls = <T extends ItemBase>({
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <Stack gap={2}>
               <Grid container>
-                <Grid size={12}>
+                <Grid size={8}>
                   <ToggleButtonGroup value={sortBy} exclusive>
                     {orderKeys?.map((key, index) => (
                       <ToggleButton key={index} value={key} onClick={() => onOrderBy(key)} size="small">
@@ -185,6 +198,18 @@ const ListItemsControls = <T extends ItemBase>({
                       </ToggleButton>
                     ))}
                   </ToggleButtonGroup>
+                </Grid>
+                <Grid size={4}>
+                  <Stack alignItems="end">
+                    <Select
+                      value={perPage}
+                      onChange={(event) => onPerPageChange(Number(event.target.value))}
+                      size="small"
+                      items={getOptionsFromList(LIST_ITEMS_PER_PAGE_OPTIONS)}
+                      sx={{ width: '150px' }}
+                      fullWidth
+                    />
+                  </Stack>
                 </Grid>
               </Grid>
               {(isCategories || isTags) && (

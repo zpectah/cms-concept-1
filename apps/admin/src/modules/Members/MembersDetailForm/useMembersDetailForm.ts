@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, MembersDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useModelMenuItems } from '../../../helpers';
+import { useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -24,7 +24,7 @@ export const useMembersDetailForm = () => {
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { membersDetailQuery, membersPatchQuery } = useMembersQuery(id);
-  const { typeFieldOptions } = useModelMenuItems(modelKeys.members);
+  const { getTypeFieldOptions } = useSelectOptions();
   const form = useForm<IMembersDetailForm>({
     resolver: zodResolver(MembersDetailFormSchema),
     defaultValues: getMembersDetailFormDefaultValues(),
@@ -103,7 +103,7 @@ export const useMembersDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions,
+    typeFieldOptions: getTypeFieldOptions(modelKeys.members),
     typeFieldDefault: getMembersTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
     detailData,

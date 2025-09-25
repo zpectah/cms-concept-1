@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, CategoriesDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useFormDetailControl, useModelMenuItems } from '../../../helpers';
+import { useFormDetailControl, useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -24,7 +24,7 @@ export const useCategoriesDetailForm = () => {
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { categoriesDetailQuery, categoriesPatchQuery } = useCategoriesQuery(id);
-  const { typeFieldOptions } = useModelMenuItems(modelKeys.categories);
+  const { getTypeFieldOptions } = useSelectOptions();
   const { locales, locale, onLocaleChange } = useFormDetailControl();
   const form = useForm<ICategoriesDetailForm>({
     resolver: zodResolver(CategoriesDetailFormSchema),
@@ -104,7 +104,7 @@ export const useCategoriesDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions,
+    typeFieldOptions: getTypeFieldOptions(modelKeys.categories),
     typeFieldDefault: getCategoriesTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
     detailData,

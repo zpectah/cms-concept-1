@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, PagesDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useFormDetailControl, useModelMenuItems } from '../../../helpers';
+import { useFormDetailControl, useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -24,7 +24,7 @@ export const usePagesDetailForm = () => {
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { pagesDetailQuery, pagesPatchQuery } = usePagesQuery(id);
-  const { typeFieldOptions } = useModelMenuItems(modelKeys.pages);
+  const { getTypeFieldOptions } = useSelectOptions();
   const { locales, locale, onLocaleChange } = useFormDetailControl();
   const form = useForm<IPagesDetailForm>({
     resolver: zodResolver(PagesDetailFormSchema),
@@ -104,7 +104,7 @@ export const usePagesDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions,
+    typeFieldOptions: getTypeFieldOptions(modelKeys.pages),
     typeFieldDefault: getPagesTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
     detailData,
