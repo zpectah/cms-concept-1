@@ -32,7 +32,8 @@
     "detail": "Detail",
     "dismiss": "Dismiss",
     "save": "Save",
-    "saveChanges": "Save changes"
+    "saveChanges": "Save changes",
+    "markAsRead": "Mark as read"
   },
   "label": {
     "yesterday": "Yesterday",

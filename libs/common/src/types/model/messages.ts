@@ -8,6 +8,7 @@ export interface MessagesItem extends ItemBase {
   sender: string;
   subject: string;
   content?: string;
+  read: boolean;
 }
 
 export type Messages = MessagesItem[];

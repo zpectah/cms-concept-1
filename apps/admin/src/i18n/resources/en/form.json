@@ -32,7 +32,8 @@
     "zip": "ZIP",
     "city": "City",
     "country": "Country",
-    "flatNo": "Flat Number"
+    "flatNo": "Flat Number",
+    "read": "Read"
   },
   "message": {
     "error": {

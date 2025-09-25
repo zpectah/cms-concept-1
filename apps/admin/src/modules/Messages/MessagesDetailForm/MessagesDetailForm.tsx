@@ -10,7 +10,7 @@ const MessagesDetailForm = () => {
     admin: { routes },
   } = getConfig();
   const { t } = useTranslation(['common', 'form']);
-  const { detailId, form, onSubmit } = useMessagesDetailForm();
+  const { detailId, form, onSubmit, onRead } = useMessagesDetailForm();
 
   const values = useWatch({ control: form.control });
 
@@ -19,9 +19,13 @@ const MessagesDetailForm = () => {
       <FormLayout
         actions={
           <FormDetailActions detailId={detailId} listPath={`/${routes.messages.path}`} disableActions>
-            <Button size="large" color="secondary" variant="outlined">
-              {/* TODO */}
-              Mark as read
+            <Button
+              size="large"
+              color="secondary"
+              variant="outlined"
+              onClick={() => detailId && onRead([Number(detailId)])}
+            >
+              {t('button.markAsRead')}
             </Button>
           </FormDetailActions>
         }

@@ -86,6 +86,13 @@ export const useMessagesDetailForm = () => {
     }
   };
 
+  const readHandler = (ids: number[]) => {
+    // TODO
+    console.log('Marked as read', ids);
+    navigate(`/${routes.messages.path}`);
+    addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+  };
+
   useEffect(() => {
     if (id) {
       if (id === newItemKey) {
@@ -106,6 +113,7 @@ export const useMessagesDetailForm = () => {
     typeFieldOptions: getTypeFieldOptions(modelKeys.messages),
     typeFieldDefault: getMessagesTypeDefaultValue(),
     onSubmit: form.handleSubmit(submitHandler),
+    onRead: readHandler,
     detailData,
     detailQuery,
     detailId: id,

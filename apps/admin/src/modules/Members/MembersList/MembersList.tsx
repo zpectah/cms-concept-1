@@ -28,7 +28,7 @@ const MembersList = () => {
       pathPrefix={`/${routes.members.path}`}
       columns={[
         {
-          value: registeredFormFields.name,
+          value: registeredFormFields.email,
           isTitle: true,
         },
         {

@@ -22,6 +22,7 @@ export const registeredFormFields = {
   name: 'name',
   parent: 'parent',
   password: 'password',
+  read: 'read',
   sender: 'sender',
   startDate: 'startDate',
   street: 'street',

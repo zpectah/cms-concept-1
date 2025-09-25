@@ -28,11 +28,8 @@ const UsersList = () => {
       pathPrefix={`/${routes.users.path}`}
       columns={[
         {
-          value: registeredFormFields.name,
-          isTitle: true,
-        },
-        {
           value: registeredFormFields.email,
+          isTitle: true,
         },
         {
           value: registeredFormFields.type,

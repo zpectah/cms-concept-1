@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { modelKeys, MessagesItem } from '@common';
 import { ListItems, ValueType, ValueBoolean, ValueDate } from '../../../components';
 import { getConfig } from '../../../utils';
@@ -9,7 +8,6 @@ const MessagesList = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { t } = useTranslation(['components']);
   const { messages, isLoading, onDeleteSelected, onDisableSelected } = useMessagesList();
 
   return (
@@ -20,30 +18,30 @@ const MessagesList = () => {
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}
       orderKeys={[
         registeredFormFields.id,
-        registeredFormFields.name,
+        registeredFormFields.sender,
         registeredFormFields.type,
         registeredFormFields.active,
       ]}
       pathPrefix={`/${routes.messages.path}`}
       columns={[
         {
-          value: registeredFormFields.name,
-          label: t('components:ListItems.label.name'),
+          value: registeredFormFields.sender,
           isTitle: true,
         },
         {
           value: registeredFormFields.type,
-          label: t('components:ListItems.label.type'),
           renderValue: (row) => <ValueType value={row.type} />,
         },
         {
+          value: registeredFormFields.read,
+          renderValue: (row) => <ValueBoolean value={row.read} />,
+        },
+        {
           value: registeredFormFields.active,
-          label: t('components:ListItems.label.active'),
           renderValue: (row) => <ValueBoolean value={row.active} />,
         },
         {
           value: registeredFormFields.updated,
-          label: t('components:ListItems.label.updated'),
           renderValue: (row) => <ValueDate value={row.updated} />,
         },
       ]}
