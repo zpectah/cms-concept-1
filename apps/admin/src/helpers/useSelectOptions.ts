@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { MenuItemProps } from '@mui/material';
 import { Model } from '@common';
 import { getConfig } from '../utils';
@@ -5,6 +6,7 @@ import { getOptionValue } from './getOptionValue';
 
 export const useSelectOptions = () => {
   const { model: configModel } = getConfig();
+  const { t } = useTranslation();
 
   const getOptionsFromList = (list: (string | number)[]): MenuItemProps[] => {
     const tmpItems: MenuItemProps[] = [];
@@ -19,6 +21,19 @@ export const useSelectOptions = () => {
     return tmpItems;
   };
 
+  const getTranslatedOptionsFromList = (list: (string | number)[], prefix?: string): MenuItemProps[] => {
+    const tmpItems: MenuItemProps[] = [];
+
+    list.forEach((item) => {
+      tmpItems.push({
+        value: item,
+        children: t(`options:${prefix ? `${prefix}.` : ''}${String(item)}`),
+      });
+    });
+
+    return tmpItems;
+  };
+
   const getTypeFieldOptions = (model: Model, disabled?: string[]) => {
     const tmpItems: MenuItemProps[] = [];
 
@@ -27,7 +42,7 @@ export const useSelectOptions = () => {
 
       tmpItems.push({
         value: type,
-        children: getOptionValue(type),
+        children: getOptionValue(type, 'model'),
       });
     });
 
@@ -36,7 +51,7 @@ export const useSelectOptions = () => {
 
   return {
     getOptionsFromList,
+    getTranslatedOptionsFromList,
     getTypeFieldOptions,
-    getOptionValue,
   };
 };

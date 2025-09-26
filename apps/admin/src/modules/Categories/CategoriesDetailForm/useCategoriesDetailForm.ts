@@ -12,7 +12,7 @@ import { useViewLayoutContext } from '../../../components';
 import { useCategoriesQuery } from '../../../hooks-query';
 import { CategoriesDetailFormSchema } from './schema';
 import { ICategoriesDetailForm } from './types';
-import { getCategoriesTypeDefaultValue, getCategoriesDetailFormDefaultValues } from './helpers';
+import { getCategoriesDetailFormDefaultValues } from './helpers';
 
 export const useCategoriesDetailForm = () => {
   const { t } = useTranslation();
@@ -104,8 +104,9 @@ export const useCategoriesDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions: getTypeFieldOptions(modelKeys.categories),
-    typeFieldDefault: getCategoriesTypeDefaultValue(),
+    fieldOptions: {
+      type: getTypeFieldOptions(modelKeys.categories),
+    },
     onSubmit: form.handleSubmit(submitHandler),
     detailData,
     detailQuery,

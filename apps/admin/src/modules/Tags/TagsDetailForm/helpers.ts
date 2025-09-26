@@ -1,17 +1,12 @@
-import { getConfig } from '../../../utils';
+import { tagsColorDefault, tagsTypeDefault } from '@common';
 import { ITagsDetailForm } from './types';
-
-export const getTagsTypeDefaultValue = () => {
-  const { model } = getConfig();
-
-  return model.tags.default;
-};
 
 export const getTagsDetailFormDefaultValues = (): ITagsDetailForm => {
   return {
     id: 0,
     name: '',
-    type: getTagsTypeDefaultValue(),
+    type: tagsTypeDefault,
+    color: tagsColorDefault,
     active: true,
     deleted: false,
   };

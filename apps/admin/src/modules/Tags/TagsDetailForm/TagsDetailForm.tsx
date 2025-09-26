@@ -1,5 +1,6 @@
 import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { tagsColorDefault, tagsTypeDefault } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getConfig } from '../../../utils';
 import {
@@ -17,7 +18,7 @@ const TagsDetailForm = () => {
     admin: { routes },
   } = getConfig();
   const { t } = useTranslation(['common', 'form']);
-  const { detailId, form, onSubmit, typeFieldDefault, typeFieldOptions } = useTagsDetailForm();
+  const { detailId, form, onSubmit, fieldOptions } = useTagsDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
@@ -32,8 +33,14 @@ const TagsDetailForm = () => {
         <SelectField
           name={registeredFormFields.type}
           label={t('form:label.type')}
-          items={typeFieldOptions}
-          fieldProps={{ defaultValue: typeFieldDefault, sx: { width: { xs: '100%', md: '33%' } } }}
+          items={fieldOptions.type}
+          fieldProps={{ defaultValue: tagsTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
+        />
+        <SelectField
+          name={registeredFormFields.color}
+          label={t('form:label.color')}
+          items={fieldOptions.color}
+          fieldProps={{ defaultValue: tagsColorDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
       </FormLayout>
     </ControlledForm>

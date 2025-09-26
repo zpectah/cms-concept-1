@@ -2,6 +2,11 @@
   "default": "Default",
   "event": "Event",
 
+  "model": {
+    "default": "Default",
+    "event": "Event"
+  },
+
   "robots": {
     "all": "All",
     "index": "Index",
@@ -12,5 +17,19 @@
     "nosnippet": "No snippet",
     "noarchive": "No archive",
     "nocache": "No cache"
+  },
+
+  "color": {
+    "none": "None",
+    "red": "Red",
+    "orange": "Orange",
+    "yellow": "Yellow",
+    "green": "Green",
+    "blue": "Blue",
+    "pink": "Pink",
+    "purple": "Purple",
+    "brown": "Brown",
+    "black": "Black",
+    "white": "White"
   }
 }

@@ -1,17 +1,11 @@
-import { getConfig } from '../../../utils';
+import { attachmentsTypeDefault } from '@common';
 import { IAttachmentsDetailForm } from './types';
-
-export const getAttachmentsTypeDefaultValue = () => {
-  const { model } = getConfig();
-
-  return model.attachments.default;
-};
 
 export const getAttachmentsDetailFormDefaultValues = (): IAttachmentsDetailForm => {
   return {
     id: 0,
     name: '',
-    type: getAttachmentsTypeDefaultValue(),
+    type: attachmentsTypeDefault,
     active: true,
     deleted: false,
     file_name: '',

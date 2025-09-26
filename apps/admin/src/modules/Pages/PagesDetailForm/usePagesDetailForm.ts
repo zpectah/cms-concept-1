@@ -12,7 +12,7 @@ import { useViewLayoutContext } from '../../../components';
 import { usePagesQuery } from '../../../hooks-query';
 import { PagesDetailFormSchema } from './schema';
 import { IPagesDetailForm } from './types';
-import { getPagesDetailFormDefaultValues, getPagesTypeDefaultValue } from './helpers';
+import { getPagesDetailFormDefaultValues } from './helpers';
 
 export const usePagesDetailForm = () => {
   const { t } = useTranslation();
@@ -104,8 +104,9 @@ export const usePagesDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions: getTypeFieldOptions(modelKeys.pages),
-    typeFieldDefault: getPagesTypeDefaultValue(),
+    fieldOptions: {
+      type: getTypeFieldOptions(modelKeys.pages),
+    },
     onSubmit: form.handleSubmit(submitHandler),
     detailData,
     detailQuery,

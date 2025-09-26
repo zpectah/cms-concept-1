@@ -12,7 +12,7 @@ import { useViewLayoutContext } from '../../../components';
 import { useTranslationsQuery } from '../../../hooks-query';
 import { TranslationsDetailFormSchema } from './schema';
 import { ITranslationsDetailForm } from './types';
-import { getTranslationsDetailFormDefaultValues, getTranslationsTypeDefaultValue } from './helpers';
+import { getTranslationsDetailFormDefaultValues } from './helpers';
 
 export const useTranslationsDetailForm = () => {
   const { t } = useTranslation();
@@ -104,8 +104,9 @@ export const useTranslationsDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions: getTypeFieldOptions(modelKeys.translations),
-    typeFieldDefault: getTranslationsTypeDefaultValue(),
+    fieldOptions: {
+      type: getTypeFieldOptions(modelKeys.translations),
+    },
     onSubmit: form.handleSubmit(submitHandler),
     detailData,
     detailQuery,

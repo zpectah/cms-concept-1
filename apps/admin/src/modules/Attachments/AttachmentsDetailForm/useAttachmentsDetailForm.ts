@@ -12,7 +12,7 @@ import { useViewLayoutContext } from '../../../components';
 import { useAttachmentsQuery } from '../../../hooks-query';
 import { AttachmentsDetailFormSchema } from './schema';
 import { IAttachmentsDetailForm } from './types';
-import { getAttachmentsTypeDefaultValue, getAttachmentsDetailFormDefaultValues } from './helpers';
+import { getAttachmentsDetailFormDefaultValues } from './helpers';
 
 export const useAttachmentsDetailForm = () => {
   const { t } = useTranslation();
@@ -103,8 +103,9 @@ export const useAttachmentsDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions: getTypeFieldOptions(modelKeys.attachments),
-    typeFieldDefault: getAttachmentsTypeDefaultValue(),
+    fieldOptions: {
+      type: getTypeFieldOptions(modelKeys.attachments),
+    },
     onSubmit: form.handleSubmit(submitHandler),
     detailData,
     detailQuery,

@@ -5,6 +5,7 @@ export const registeredFormFields = {
   attachments: 'attachments',
   categories: 'categories',
   city: 'city',
+  color: 'color',
   content: 'content',
   country: 'country',
   created: 'created',

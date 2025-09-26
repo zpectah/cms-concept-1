@@ -1,12 +1,6 @@
-import { getConfig } from '../../../utils';
+import { membersTypeDefault } from '@common';
 import { addressFormDefaults } from '../../../constants';
 import { IMembersDetailForm } from './types';
-
-export const getMembersTypeDefaultValue = () => {
-  const { model } = getConfig();
-
-  return model.members.default;
-};
 
 export const getMembersDetailFormDefaultValues = (): IMembersDetailForm => {
   return {
@@ -23,7 +17,7 @@ export const getMembersDetailFormDefaultValues = (): IMembersDetailForm => {
 
     flatNo: '',
 
-    type: getMembersTypeDefaultValue(),
+    type: membersTypeDefault,
     active: true,
     deleted: false,
   };

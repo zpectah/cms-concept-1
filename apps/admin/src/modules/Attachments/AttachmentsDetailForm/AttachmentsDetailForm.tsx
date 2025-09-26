@@ -1,5 +1,6 @@
 import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { attachmentsTypeDefault } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getConfig } from '../../../utils';
 import {
@@ -17,7 +18,7 @@ const AttachmentsDetailForm = () => {
     admin: { routes },
   } = getConfig();
   const { t } = useTranslation(['common', 'form']);
-  const { detailId, form, onSubmit, typeFieldDefault, typeFieldOptions } = useAttachmentsDetailForm();
+  const { detailId, form, onSubmit, fieldOptions } = useAttachmentsDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
@@ -32,8 +33,8 @@ const AttachmentsDetailForm = () => {
         <SelectField
           name={registeredFormFields.type}
           label={t('form:label.type')}
-          items={typeFieldOptions}
-          fieldProps={{ defaultValue: typeFieldDefault, sx: { width: { xs: '100%', md: '33%' } } }}
+          items={fieldOptions.type}
+          fieldProps={{ defaultValue: attachmentsTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
       </FormLayout>
     </ControlledForm>

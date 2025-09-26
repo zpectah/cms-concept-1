@@ -1,5 +1,6 @@
 import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { categoriesTypeDefault, newItemKey } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getConfig } from '../../../utils';
 import {
@@ -14,15 +15,13 @@ import {
 } from '../../../components';
 import { CategoriesPickerField } from '../../Categories';
 import { useCategoriesDetailForm } from './useCategoriesDetailForm';
-import { newItemKey } from '@common';
 
 const CategoriesDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
   const { t } = useTranslation(['common', 'form']);
-  const { detailId, form, locale, locales, onSubmit, onLocaleChange, typeFieldDefault, typeFieldOptions } =
-    useCategoriesDetailForm();
+  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = useCategoriesDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
@@ -37,8 +36,8 @@ const CategoriesDetailForm = () => {
         <SelectField
           name={registeredFormFields.type}
           label={t('form:label.type')}
-          items={typeFieldOptions}
-          fieldProps={{ defaultValue: typeFieldDefault, sx: { width: { xs: '100%', md: '33%' } } }}
+          items={fieldOptions.type}
+          fieldProps={{ defaultValue: categoriesTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
 
         <LocalesTabs

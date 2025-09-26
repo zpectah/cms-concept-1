@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { modelKeys, newItemKey, TagsDetail } from '@common';
+import { modelKeys, newItemKey, tagsColorKeysArray, TagsDetail } from '@common';
 import { getConfig } from '../../../utils';
 import { useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
@@ -12,7 +12,7 @@ import { useViewLayoutContext } from '../../../components';
 import { useTagsQuery } from '../../../hooks-query';
 import { TagsDetailFormSchema } from './schema';
 import { ITagsDetailForm } from './types';
-import { getTagsDetailFormDefaultValues, getTagsTypeDefaultValue } from './helpers';
+import { getTagsDetailFormDefaultValues } from './helpers';
 
 export const useTagsDetailForm = () => {
   const { t } = useTranslation();
@@ -24,7 +24,7 @@ export const useTagsDetailForm = () => {
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { tagsDetailQuery, tagsPatchQuery } = useTagsQuery(id);
-  const { getTypeFieldOptions } = useSelectOptions();
+  const { getTypeFieldOptions, getTranslatedOptionsFromList } = useSelectOptions();
   const form = useForm<ITagsDetailForm>({
     resolver: zodResolver(TagsDetailFormSchema),
     defaultValues: getTagsDetailFormDefaultValues(),
@@ -103,8 +103,10 @@ export const useTagsDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions: getTypeFieldOptions(modelKeys.tags),
-    typeFieldDefault: getTagsTypeDefaultValue(),
+    fieldOptions: {
+      type: getTypeFieldOptions(modelKeys.tags),
+      color: getTranslatedOptionsFromList(tagsColorKeysArray, 'color'),
+    },
     onSubmit: form.handleSubmit(submitHandler),
     detailData,
     detailQuery,

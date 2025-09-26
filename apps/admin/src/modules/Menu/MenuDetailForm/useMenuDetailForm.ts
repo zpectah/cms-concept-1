@@ -12,7 +12,7 @@ import { useViewLayoutContext } from '../../../components';
 import { useMenuQuery } from '../../../hooks-query';
 import { MenuDetailFormSchema } from './schema';
 import { IMenuDetailForm } from './types';
-import { getMenuDetailFormDefaultValues, getMenuTypeDefaultValue } from './helpers';
+import { getMenuDetailFormDefaultValues } from './helpers';
 
 export const useMenuDetailForm = () => {
   const { t } = useTranslation();
@@ -103,8 +103,9 @@ export const useMenuDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions: getTypeFieldOptions(modelKeys.menu),
-    typeFieldDefault: getMenuTypeDefaultValue(),
+    fieldOptions: {
+      type: getTypeFieldOptions(modelKeys.menu),
+    },
     onSubmit: form.handleSubmit(submitHandler),
     detailData,
     detailQuery,

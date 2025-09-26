@@ -1,6 +1,7 @@
 import { useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { articlesTypeDefault, modelKeys } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getTypedDate, getConfig } from '../../../utils';
 import {
@@ -21,7 +22,6 @@ import { CategoriesPickerField } from '../../Categories';
 import { AttachmentsPickerField } from '../../Attachments';
 import { CommentsManager } from '../../Comments';
 import { useArticlesDetailForm } from './useArticlesDetailForm';
-import { modelKeys } from '@common';
 
 const ArticlesDetailForm = () => {
   const {
@@ -31,8 +31,7 @@ const ArticlesDetailForm = () => {
     },
   } = getConfig();
   const { t } = useTranslation(['common', 'form']);
-  const { detailId, form, locale, locales, onSubmit, onLocaleChange, typeFieldDefault, typeFieldOptions } =
-    useArticlesDetailForm();
+  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = useArticlesDetailForm();
 
   const isComments = !!comments;
 
@@ -51,8 +50,8 @@ const ArticlesDetailForm = () => {
         <SelectField
           name={registeredFormFields.type}
           label={t('form:label.type')}
-          items={typeFieldOptions}
-          fieldProps={{ defaultValue: typeFieldDefault, sx: { width: { xs: '100%', md: '33%' } } }}
+          items={fieldOptions.type}
+          fieldProps={{ defaultValue: articlesTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
         <HiddenCard visible={type === 'event'}>
           <Grid container spacing={2}>

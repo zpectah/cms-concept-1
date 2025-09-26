@@ -12,7 +12,7 @@ import { useViewLayoutContext } from '../../../components';
 import { useMembersQuery } from '../../../hooks-query';
 import { MembersDetailFormSchema } from './schema';
 import { IMembersDetailForm } from './types';
-import { getMembersDetailFormDefaultValues, getMembersTypeDefaultValue } from './helpers';
+import { getMembersDetailFormDefaultValues } from './helpers';
 
 export const useMembersDetailForm = () => {
   const { t } = useTranslation();
@@ -103,8 +103,9 @@ export const useMembersDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions: getTypeFieldOptions(modelKeys.members),
-    typeFieldDefault: getMembersTypeDefaultValue(),
+    fieldOptions: {
+      type: getTypeFieldOptions(modelKeys.members),
+    },
     onSubmit: form.handleSubmit(submitHandler),
     detailData,
     detailQuery,

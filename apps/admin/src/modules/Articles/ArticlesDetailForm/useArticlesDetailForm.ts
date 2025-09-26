@@ -12,7 +12,7 @@ import { useViewLayoutContext } from '../../../components';
 import { useArticlesQuery } from '../../../hooks-query';
 import { ArticlesDetailFormSchema } from './schema';
 import { IArticlesDetailForm } from './types';
-import { getArticlesDetailFormDefaultValues, getArticlesTypeDefaultValue } from './helpers';
+import { getArticlesDetailFormDefaultValues } from './helpers';
 
 export const useArticlesDetailForm = () => {
   const { t } = useTranslation();
@@ -104,8 +104,9 @@ export const useArticlesDetailForm = () => {
 
   return {
     form,
-    typeFieldOptions: getTypeFieldOptions(modelKeys.articles),
-    typeFieldDefault: getArticlesTypeDefaultValue(),
+    fieldOptions: {
+      type: getTypeFieldOptions(modelKeys.articles),
+    },
     onSubmit: form.handleSubmit(submitHandler),
     detailData,
     detailQuery,

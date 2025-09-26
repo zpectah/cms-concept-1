@@ -33,7 +33,8 @@
     "city": "City",
     "country": "Country",
     "flatNo": "Flat Number",
-    "read": "Read"
+    "read": "Read",
+    "color": "Color"
   },
   "message": {
     "error": {

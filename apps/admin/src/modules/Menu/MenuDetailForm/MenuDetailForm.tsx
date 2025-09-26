@@ -12,13 +12,14 @@ import {
 } from '../../../components';
 import { useMenuDetailForm } from './useMenuDetailForm';
 import { MenuItemsManager } from '../../MenuItems';
+import { menuTypeDefault } from '@common';
 
 const MenuDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
   const { t } = useTranslation(['common', 'form']);
-  const { detailId, form, onSubmit, typeFieldDefault, typeFieldOptions } = useMenuDetailForm();
+  const { detailId, form, onSubmit, fieldOptions } = useMenuDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
@@ -33,8 +34,8 @@ const MenuDetailForm = () => {
         <SelectField
           name={registeredFormFields.type}
           label={t('form:label.type')}
-          items={typeFieldOptions}
-          fieldProps={{ defaultValue: typeFieldDefault, sx: { width: { xs: '100%', md: '33%' } } }}
+          items={fieldOptions.type}
+          fieldProps={{ defaultValue: menuTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
         <MenuItemsManager isEnabled menuId={detailId} />
       </FormLayout>

@@ -1,17 +1,11 @@
-import { getConfig } from '../../../utils';
+import { usersTypeDefault } from '@common';
 import { IUsersDetailForm } from './types';
-
-export const getUsersTypeDefaultValue = () => {
-  const { model } = getConfig();
-
-  return model.users.default;
-};
 
 export const getUsersDetailFormDefaultValues = (): IUsersDetailForm => {
   return {
     id: 0,
     name: '',
-    type: getUsersTypeDefaultValue(),
+    type: usersTypeDefault,
 
     email: '',
     password: '',

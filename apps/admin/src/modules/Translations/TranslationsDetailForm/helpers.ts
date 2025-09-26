@@ -1,17 +1,12 @@
-import { getConfig, getModelLocales } from '../../../utils';
+import { translationsTypeDefault } from '@common';
+import { getModelLocales } from '../../../utils';
 import { ITranslationsDetailForm } from './types';
-
-export const getTranslationsTypeDefaultValue = () => {
-  const { model } = getConfig();
-
-  return model.translations.default;
-};
 
 export const getTranslationsDetailFormDefaultValues = (locales: string[]): ITranslationsDetailForm => {
   return {
     id: 0,
     name: '',
-    type: getTranslationsTypeDefaultValue(),
+    type: translationsTypeDefault,
     locale: getModelLocales<{ value: string }>(locales, {
       value: '',
     }),
