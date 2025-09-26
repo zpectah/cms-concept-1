@@ -45,6 +45,7 @@ const ArticlesDetailForm = () => {
       <FormLayout
         actions={<FormDetailActions detailId={detailId} listPath={`/${routes.articles.path}`} />}
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
+        actionbar={<CommentsManager isEnabled={isComments} contentType={modelKeys.articles} contentId={detailId} />}
       >
         <InputField name={registeredFormFields.name} label={t('form:label.name')} />
         <SelectField
@@ -105,7 +106,6 @@ const ArticlesDetailForm = () => {
           multiple
           defaultValue={[]}
         />
-        <CommentsManager isEnabled={isComments} contentType={modelKeys.articles} contentId={detailId} />
       </FormLayout>
     </ControlledForm>
   );

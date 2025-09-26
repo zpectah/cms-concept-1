@@ -63,6 +63,7 @@ const CategoriesDetailForm = () => {
           name={registeredFormFields.parent}
           label={t('form:label.parent')}
           ignored={detailId !== newItemKey ? [Number(detailId)] : []}
+          fieldProps={{ sx: { width: { xs: '100%', md: '50%', lg: '33%' } } }}
         />
       </FormLayout>
     </ControlledForm>

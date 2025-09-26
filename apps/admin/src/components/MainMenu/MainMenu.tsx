@@ -1,9 +1,10 @@
 import { useState, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
+import { Menu, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { useMenuItems } from '../../hooks';
+import { IconButtonPlus } from '../Button';
 
 const MainMenu = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -18,17 +19,16 @@ const MainMenu = () => {
 
   return (
     <>
-      <Tooltip title={'Main menu'}>
-        <IconButton
-          id="main-menu-button"
-          aria-controls={open ? 'main-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          onClick={openHandler}
-        >
-          {open ? <CloseIcon /> : <MenuIcon />}
-        </IconButton>
-      </Tooltip>
+      <IconButtonPlus
+        id="main-menu-button"
+        aria-controls={open ? 'main-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={openHandler}
+        tooltip="Main menu"
+      >
+        {open ? <CloseIcon /> : <MenuIcon />}
+      </IconButtonPlus>
       <Menu
         id="main-menu"
         anchorEl={anchorEl}

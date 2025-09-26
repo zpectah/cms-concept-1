@@ -16,7 +16,16 @@ const DebugFormModel = ({ name, textareaProps }: DebugFormModelProps) => {
     }
   }, [form.formState.errors, name]);
 
-  return <Textarea value={JSON.stringify(form.watch(), null, 2)} readOnly rows={20} {...textareaProps} />;
+  return (
+    <Textarea
+      value={JSON.stringify(form.watch(), null, 2)}
+      readOnly
+      rows={20}
+      {...textareaProps}
+      sx={{ border: 'none', ...textareaProps?.sx }}
+      slotProps={{ input: { sx: { border: '1px dashed' } }, ...textareaProps?.slotProps }}
+    />
+  );
 };
 
 export default DebugFormModel;

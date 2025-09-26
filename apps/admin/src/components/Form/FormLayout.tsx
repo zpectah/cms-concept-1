@@ -2,15 +2,16 @@ import { ReactNode } from 'react';
 import { Stack, Grid, Divider } from '@mui/material';
 import { WithChildren } from '@common';
 import { UI_SPACING } from '../../constants';
-import { ActionBar } from '../Content';
+import { Content, ActionBar } from '../Content';
 import FormContent from './FormContent';
 
 interface FormLayoutProps extends WithChildren {
   actions: ReactNode;
   sidebar?: ReactNode;
+  actionbar?: ReactNode;
 }
 
-const FormLayout = ({ children, actions, sidebar }: FormLayoutProps) => (
+const FormLayout = ({ children, actions, sidebar, actionbar }: FormLayoutProps) => (
   <Stack gap={UI_SPACING.layout}>
     <Grid container spacing={UI_SPACING.layout}>
       <Grid size={{ xs: 12, md: sidebar ? 8 : 12 }}>
@@ -25,6 +26,7 @@ const FormLayout = ({ children, actions, sidebar }: FormLayoutProps) => (
         </Grid>
       )}
     </Grid>
+    {actionbar && <Content>{actionbar}</Content>}
     <Divider />
     <ActionBar>{actions}</ActionBar>
   </Stack>

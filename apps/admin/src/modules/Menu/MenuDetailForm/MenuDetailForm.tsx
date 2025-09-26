@@ -29,6 +29,7 @@ const MenuDetailForm = () => {
       <FormLayout
         actions={<FormDetailActions detailId={detailId} listPath={`/${routes.menu.path}`} />}
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
+        actionbar={<MenuItemsManager isEnabled menuId={detailId} />}
       >
         <InputField name={registeredFormFields.name} label={t('form:label.name')} />
         <SelectField
@@ -37,7 +38,6 @@ const MenuDetailForm = () => {
           items={fieldOptions.type}
           fieldProps={{ defaultValue: menuTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
-        <MenuItemsManager isEnabled menuId={detailId} />
       </FormLayout>
     </ControlledForm>
   );

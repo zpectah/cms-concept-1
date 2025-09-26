@@ -98,7 +98,21 @@ export const useMenuItems = () => {
     },
   ];
 
+  const userMenu: MenuItem[] = [
+    {
+      id: '0',
+      path: `/${routes.profile.path}`,
+      label: 'Profile',
+    },
+    {
+      id: '1',
+      path: `/${routes.login.path}/?exit=true`,
+      label: 'Logout',
+    },
+  ];
+
   return {
     mainMenu,
+    userMenu,
   };
 };
