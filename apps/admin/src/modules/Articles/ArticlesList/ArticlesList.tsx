@@ -1,5 +1,5 @@
 import { modelKeys, ArticlesItem } from '@common';
-import { ListItems, ValueBoolean, ValueArray, ValueDate, ValueType } from '../../../components';
+import { ListItems, ValueArray, ValueDate, ValueType } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 import { useArticlesList } from './useArticlesList';
@@ -31,10 +31,6 @@ const ArticlesList = () => {
         {
           value: registeredFormFields.type,
           renderValue: (row) => <ValueType value={row.type} />,
-        },
-        {
-          value: registeredFormFields.active,
-          renderValue: (row) => <ValueBoolean value={row.active} />,
         },
         {
           value: registeredFormFields.categories,

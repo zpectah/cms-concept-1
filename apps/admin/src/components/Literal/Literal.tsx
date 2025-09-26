@@ -1,9 +1,10 @@
+import { ReactNode } from 'react';
 import { Stack, Typography, StackProps } from '@mui/material';
 import { Label } from '../Label';
 
 interface LiteralProps extends StackProps {
   label: string;
-  value?: string;
+  value?: ReactNode;
 }
 
 const Literal = ({ label, value, ...rest }: LiteralProps) => (

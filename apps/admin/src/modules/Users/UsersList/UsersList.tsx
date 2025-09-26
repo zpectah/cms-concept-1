@@ -1,5 +1,5 @@
 import { modelKeys, UsersItem } from '@common';
-import { ListItems, ValueType, ValueBoolean, ValueDate } from '../../../components';
+import { ListItems, ValueType, ValueDate } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 import { useUsersList } from './useUsersList';
@@ -34,10 +34,6 @@ const UsersList = () => {
         {
           value: registeredFormFields.type,
           renderValue: (row) => <ValueType value={row.type} />,
-        },
-        {
-          value: registeredFormFields.active,
-          renderValue: (row) => <ValueBoolean value={row.active} />,
         },
         {
           value: registeredFormFields.updated,

@@ -1,5 +1,5 @@
 import { modelKeys, AttachmentsItem } from '@common';
-import { ListItems, ValueType, ValueBoolean, ValueDate } from '../../../components';
+import { ListItems, ValueType, ValueDate } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 import { useAttachmentsList } from './useAttachmentsList';
@@ -31,10 +31,6 @@ const AttachmentsList = () => {
         {
           value: registeredFormFields.type,
           renderValue: (row) => <ValueType value={row.type} />,
-        },
-        {
-          value: registeredFormFields.active,
-          renderValue: (row) => <ValueBoolean value={row.active} />,
         },
         {
           value: registeredFormFields.updated,

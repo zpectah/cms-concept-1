@@ -1,7 +1,7 @@
 import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { newItemKey, WithChildren } from '@common';
-import { getFormattedDateTime } from '../../utils';
+import { getFormattedDateString } from '../../utils';
 import { registeredFormFields } from '../../enums';
 import { SwitchField } from '../fields';
 import { HiddenCard } from '../Card';
@@ -21,8 +21,8 @@ const FormDetailSidebar = ({ children, detailId, created, updated, disableAction
     <Stack gap={2}>
       <HiddenCard visible={detailId !== newItemKey}>
         <Stack gap={2}>
-          <Literal label={t('form:label.created')} value={getFormattedDateTime(created)} />
-          <Literal label={t('form:label.updated')} value={getFormattedDateTime(updated)} />
+          <Literal label={t('form:label.created')} value={getFormattedDateString(created)} />
+          <Literal label={t('form:label.updated')} value={getFormattedDateString(updated, true)} />
         </Stack>
       </HiddenCard>
       {!disableActions && (

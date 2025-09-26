@@ -32,7 +32,7 @@ const Breadcrumbs = ({ disabled }: BreadcrumbsProps) => {
     <MuiBreadcrumbs role="presentation" aria-label="breadcrumbs">
       <Typography variant="caption">{admin.meta.title}</Typography>
       {id ? (
-        <Typography variant="caption" component={Link} to={`/${routeName}`}>
+        <Typography variant="caption" component={Link} to={`/${routeName}`} sx={{ color: 'inherit' }}>
           {t(`routes.${routeName}`)}
         </Typography>
       ) : (

@@ -1,6 +1,6 @@
 import RemoveIcon from '@mui/icons-material/Remove';
 import { modelKeys, CategoriesItem } from '@common';
-import { ListItems, ValueType, ValueBoolean, ValueDate, ValueArray } from '../../../components';
+import { ListItems, ValueType, ValueDate, ValueArray } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 import { useCategoriesList } from './useCategoriesList';
@@ -32,10 +32,6 @@ const CategoriesList = () => {
         {
           value: registeredFormFields.type,
           renderValue: (row) => <ValueType value={row.type} />,
-        },
-        {
-          value: registeredFormFields.active,
-          renderValue: (row) => <ValueBoolean value={row.active} />,
         },
         {
           value: registeredFormFields.parent,

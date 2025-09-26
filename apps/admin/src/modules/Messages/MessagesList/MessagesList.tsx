@@ -37,10 +37,6 @@ const MessagesList = () => {
           renderValue: (row) => <ValueBoolean value={row.read} />,
         },
         {
-          value: registeredFormFields.active,
-          renderValue: (row) => <ValueBoolean value={row.active} />,
-        },
-        {
           value: registeredFormFields.updated,
           renderValue: (row) => <ValueDate value={row.updated} />,
         },
