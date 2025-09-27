@@ -34,6 +34,7 @@ export interface FormFieldProps extends Omit<FormFieldBaseProps, 'children'> {
   fieldId?: string;
   testId?: string;
   fieldOptions?: RegisterOptions;
+  defaultValue?: unknown;
 }
 
 export interface ControlledFormFieldProps extends Omit<FormFieldProps, 'field'> {

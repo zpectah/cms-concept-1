@@ -14,6 +14,7 @@ const SelectField = ({
   <ControlledFormField
     isDisabled={isDisabled}
     isRequired={isRequired}
+    defaultValue={defaultValue ?? fieldProps?.defaultValue} // important
     render={({ field, fieldState }) => (
       <Select
         fullWidth

@@ -12,6 +12,7 @@ const ControlledFormField = ({
   isRequired,
   isDisabled,
   isHidden,
+  defaultValue,
   ...rest
 }: ControlledFormFieldProps) => {
   const form = useFormContext();
@@ -23,6 +24,7 @@ const ControlledFormField = ({
       name={name}
       control={form.control}
       rules={{ required: isRequired }}
+      defaultValue={defaultValue}
       render={({ field, fieldState, formState }) => {
         const fieldErrorMessage = fieldState.error?.message;
         const fieldErrorMessages: string[] = [...errorMessages];

@@ -10,6 +10,7 @@ import {
   FormLayout,
   InputField,
   SelectField,
+  DebugFormModel,
 } from '../../../components';
 import { useTagsDetailForm } from './useTagsDetailForm';
 
@@ -42,6 +43,8 @@ const TagsDetailForm = () => {
           items={fieldOptions.color}
           fieldProps={{ defaultValue: tagsColorDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
+
+        <DebugFormModel name="TagsDetailForm" textareaProps={{ rows: 10 }} />
       </FormLayout>
     </ControlledForm>
   );

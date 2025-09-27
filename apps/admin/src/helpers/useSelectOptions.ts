@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { MenuItemProps } from '@mui/material';
 import { Model } from '@common';
 import { getConfig } from '../utils';
@@ -6,9 +5,8 @@ import { getOptionValue } from './getOptionValue';
 
 export const useSelectOptions = () => {
   const { model: configModel } = getConfig();
-  const { t } = useTranslation();
 
-  const getOptionsFromList = (list: (string | number)[]): MenuItemProps[] => {
+  const getOptionsFromList = (list: (string | number)[]) => {
     const tmpItems: MenuItemProps[] = [];
 
     list.forEach((item) => {
@@ -21,13 +19,13 @@ export const useSelectOptions = () => {
     return tmpItems;
   };
 
-  const getTranslatedOptionsFromList = (list: (string | number)[], prefix?: string): MenuItemProps[] => {
+  const getTranslatedOptionsFromList = (list: (string | number)[], prefix?: string) => {
     const tmpItems: MenuItemProps[] = [];
 
     list.forEach((item) => {
       tmpItems.push({
         value: item,
-        children: t(`options:${prefix ? `${prefix}.` : ''}${String(item)}`),
+        children: getOptionValue(String(item), prefix),
       });
     });
 
@@ -37,12 +35,12 @@ export const useSelectOptions = () => {
   const getTypeFieldOptions = (model: Model, disabled?: string[]) => {
     const tmpItems: MenuItemProps[] = [];
 
-    configModel[model].type.forEach((type) => {
-      if (disabled?.includes(type)) return;
+    configModel[model].type.forEach((item) => {
+      if (disabled?.includes(item)) return;
 
       tmpItems.push({
-        value: type,
-        children: getOptionValue(type, 'model'),
+        value: item,
+        children: getOptionValue(item, 'model'),
       });
     });
 
