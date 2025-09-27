@@ -16,7 +16,13 @@ const UsersList = () => {
       model={modelKeys.users}
       items={users}
       isLoading={isLoading}
-      searchKeys={[registeredFormFields.name, registeredFormFields.type]}
+      searchKeys={[
+        registeredFormFields.name,
+        registeredFormFields.email,
+        registeredFormFields.firstName,
+        registeredFormFields.lastName,
+        registeredFormFields.type,
+      ]}
       orderKeys={[
         registeredFormFields.id,
         registeredFormFields.name,

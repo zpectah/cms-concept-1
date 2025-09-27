@@ -1,1 +1,13 @@
-{}
+{
+  "ListItems": {
+    "searchInputPlaceholder": "Type to search in list",
+    "filterByType": "Filter by type",
+    "filterByTags": "Filter by tags",
+    "filterByCategories": "Filter by categories",
+    "sortBy": "Sort by",
+    "rowsPerPage": "Rows per page",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "resetFilter": "Reset filter"
+  }
+}

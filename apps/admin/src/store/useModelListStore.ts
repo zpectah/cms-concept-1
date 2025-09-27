@@ -32,7 +32,7 @@ interface ModelListStore {
 const createModelCommonDefaults = () => ({
   view: 'table',
   query: '',
-  orderBy: 'asc',
+  orderBy: 'desc',
   sortBy: 'id',
   page: 1,
   perPage: 10,

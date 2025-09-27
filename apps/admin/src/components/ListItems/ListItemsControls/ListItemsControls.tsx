@@ -1,15 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Stack, Grid, Collapse, ButtonProps } from '@mui/material';
+import { Button, Stack, Grid, Collapse, ButtonProps, Divider, Typography } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { ItemBase } from '@common';
 import { getConfig } from '../../../utils';
 import { muiCommonColorVariantKeys } from '../../../enums';
-import { useSelectOptions } from '../../../helpers';
 import { Card } from '../../Card';
 import { Literal } from '../../Literal';
-import { Search, Select } from '../../input';
+import { Search } from '../../input';
 import { listItemsSortOrderKeys } from '../enums';
 import { ListItemsControlsProps } from '../types';
 import { LIST_ITEMS_PER_PAGE_OPTIONS } from '../constants';
@@ -44,16 +43,48 @@ const ListItemsControls = <T extends ItemBase>({
   perPage,
   onPerPageChange,
   onFilterReset,
+  rowsOnPage,
 }: ListItemsControlsProps<T>) => {
+  const { viewToggleEnabled } = getConfig();
+  const { t } = useTranslation(['common', 'form', 'options', 'components']);
+
   const [expanded, setExpanded] = useState(false);
 
-  const { viewToggleEnabled } = getConfig();
-  const { t } = useTranslation(['common', 'form', 'options']);
-  const { getOptionsFromList } = useSelectOptions();
+  const selectOptionsItems = [
+    {
+      name: 'selectAll',
+      label: t('button.selectAll'),
+      onClick: onSelectAll,
+      hidden: selected.length === rawRows.length && rawRows.length >= 0,
+    },
+    {
+      name: 'deselectAll',
+      label: t('button.deselectAll'),
+      onClick: onDeselectedSelected,
+      hidden: selected.length === 0 && rawRows.length >= 0,
+      variant: 'contained',
+    },
+    {
+      name: 'deleteSelected',
+      label: t('button.deleteSelected'),
+      onClick: onDeleteSelected,
+      disabled: selected.length === 0,
+      color: muiCommonColorVariantKeys.error,
+      variant: 'contained',
+    },
+    {
+      name: 'disableSelected',
+      label: t('button.disableSelected'),
+      onClick: onDisableSelected,
+      disabled: selected.length === 0,
+      color: muiCommonColorVariantKeys.warning,
+      variant: 'contained',
+    },
+  ] as ({ label: string } & ButtonProps)[];
 
   const renderTypes = () => (
     <Literal
-      label="Filter by type:"
+      label={t('components:ListItems.filterByType')}
       value={
         <Stack direction="row" gap={0.5}>
           {types.map((item) => {
@@ -64,7 +95,9 @@ const ListItemsControls = <T extends ItemBase>({
                 key={item}
                 onClick={() => onTypeToggle(item)}
                 size="small"
+                color={muiCommonColorVariantKeys.info}
                 variant={isSelected ? 'contained' : 'outlined'}
+                disabled={types.length <= 1}
               >
                 {t(`options:model.${item}`)}
               </Button>
@@ -80,7 +113,7 @@ const ListItemsControls = <T extends ItemBase>({
 
     return (
       <Literal
-        label="Filter by category:"
+        label={t('components:ListItems.filterByCategories')}
         value={
           <Stack direction="row" gap={0.5}>
             {categories.map((item) => {
@@ -91,7 +124,9 @@ const ListItemsControls = <T extends ItemBase>({
                   key={item.id}
                   onClick={() => onCategoryToggle(item.id)}
                   size="small"
+                  color={muiCommonColorVariantKeys.info}
                   variant={isSelected ? 'contained' : 'outlined'}
+                  disabled={categories.length <= 1}
                 >
                   {item.name}
                 </Button>
@@ -108,7 +143,7 @@ const ListItemsControls = <T extends ItemBase>({
 
     return (
       <Literal
-        label="Filter by tag:"
+        label={t('components:ListItems.filterByTags')}
         value={
           <Stack direction="row" gap={0.5}>
             {tags.map((item) => {
@@ -119,7 +154,9 @@ const ListItemsControls = <T extends ItemBase>({
                   key={item.id}
                   onClick={() => onTagToggle(item.id)}
                   size="small"
+                  color={muiCommonColorVariantKeys.info}
                   variant={isSelected ? 'contained' : 'outlined'}
+                  disabled={tags.length <= 1}
                 >
                   {item.name}
                 </Button>
@@ -131,154 +168,133 @@ const ListItemsControls = <T extends ItemBase>({
     );
   };
 
-  const listOptionsMenu = useMemo(
-    () =>
-      [
-        {
-          name: 'selectAll',
-          label: t('button.selectAll'),
-          onClick: onSelectAll,
-          hidden: selected.length === rawRows.length,
-        },
-        {
-          name: 'deselectAll',
-          label: t('button.deselectAll'),
-          onClick: onDeselectedSelected,
-          hidden: selected.length === 0,
-        },
-        {
-          name: 'deleteSelected',
-          label: t('button.deleteSelected'),
-          onClick: onDeleteSelected,
-          disabled: selected.length === 0,
-          color: muiCommonColorVariantKeys.error,
-          variant: 'contained',
-        },
-        {
-          name: 'disableSelected',
-          label: t('button.disableSelected'),
-          onClick: onDisableSelected,
-          disabled: selected.length === 0,
-          color: muiCommonColorVariantKeys.warning,
-          variant: 'contained',
-        },
-      ] as ({ label: string } & ButtonProps)[],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [onSelectAll, selected.length, rawRows.length, onDeselectedSelected, onDeleteSelected, onDisableSelected]
+  const renderSortBy = () => (
+    <Literal
+      label={t('components:ListItems.sortBy')}
+      value={
+        <Stack direction="row" gap={0.5}>
+          {orderKeys.map((key, index) => (
+            <Button
+              key={index}
+              variant={sortBy === key ? 'contained' : 'outlined'}
+              size="small"
+              color={muiCommonColorVariantKeys.info}
+              onClick={() => onOrderBy(key)}
+            >
+              &nbsp;{t(`form:label.${String(key)}`)}&nbsp;
+              {key === sortBy && (
+                <>
+                  {orderBy === listItemsSortOrderKeys.asc ? (
+                    <ArrowUpwardIcon fontSize="inherit" />
+                  ) : (
+                    <ArrowDownwardIcon fontSize="inherit" />
+                  )}
+                </>
+              )}
+            </Button>
+          ))}
+        </Stack>
+      }
+    />
+  );
+
+  const renderListOptionsMenu = () => (
+    <Stack direction="row" gap={0.5}>
+      {selectOptionsItems.map(({ name, label, onClick, disabled, hidden, color, ...rest }) => {
+        if (hidden) return null;
+
+        return (
+          <Button
+            variant="outlined"
+            size="small"
+            key={name}
+            onClick={onClick}
+            disabled={disabled}
+            color={color ?? color}
+            {...rest}
+          >
+            {label}
+          </Button>
+        );
+      })}
+
+      <Stack direction="row" alignItems="center">
+        &nbsp;
+        <Typography variant="button">
+          {rawRows.length}&nbsp;({rowsOnPage})
+        </Typography>
+      </Stack>
+    </Stack>
+  );
+
+  const renderRowsPerPage = () => (
+    <Literal
+      label={t('components:ListItems.rowsPerPage')}
+      value={
+        <Stack direction="row" gap={0.5}>
+          {LIST_ITEMS_PER_PAGE_OPTIONS.map((item) => (
+            <Button
+              key={`id_${item}`}
+              size="small"
+              onClick={() => onPerPageChange(item)}
+              variant={perPage === item ? 'contained' : 'outlined'}
+              color={muiCommonColorVariantKeys.info}
+            >
+              {item}
+            </Button>
+          ))}
+        </Stack>
+      }
+    />
   );
 
   return (
-    <>
-      <Card>
-        <Stack gap={2}>
-          <Stack direction="row" gap={1}>
-            <Search value={query} onChange={(event) => onQueryChange(event.target.value)} fullWidth />
-          </Stack>
-
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Stack direction="row" gap={1}>
-              {listOptionsMenu.map(({ name, label, onClick, disabled, hidden, color, ...rest }) => {
-                if (hidden) return null;
-
-                return (
-                  <Button
-                    key={name}
-                    onClick={onClick}
-                    disabled={disabled}
-                    color={color ? color : muiCommonColorVariantKeys.inherit}
-                    variant="outlined"
-                    size="small"
-                    {...rest}
-                  >
-                    {label}
-                  </Button>
-                );
-              })}
-            </Stack>
-            {viewToggleEnabled ?? (
-              <Stack>
+    <Card>
+      <Stack direction="column" gap={2}>
+        <Grid container spacing={2}>
+          <Grid size={12}>
+            <Search
+              value={query}
+              onChange={(event) => onQueryChange(event.target.value)}
+              fullWidth
+              placeholder={t('components:ListItems.searchInputPlaceholder')}
+            />
+          </Grid>
+          <Grid size={6}>{renderListOptionsMenu()}</Grid>
+          <Grid size={6}>
+            <Stack direction="row" gap={1} justifyContent="end">
+              {viewToggleEnabled ?? (
                 <Button variant="outlined" color="inherit" size="small" onClick={onViewToggle}>
                   {view}
                 </Button>
-              </Stack>
-            )}
-            <Stack direction="row" gap={1}>
-              <Button color="inherit" variant="outlined" size="small" onClick={onFilterReset}>
-                Reset filter
+              )}
+              <Button color="error" variant="outlined" size="small" onClick={onFilterReset}>
+                {t('components:ListItems.resetFilter')}
               </Button>
-
               <Button
-                color="inherit"
-                variant="outlined"
+                variant={expanded ? 'contained' : 'outlined'}
                 size="small"
                 onClick={() => {
                   setExpanded(!expanded);
                 }}
               >
-                Show {expanded ? t('button.less') : t('button.more')}
+                {expanded ? t('components:ListItems.showLess') : t('components:ListItems.showMore')}
               </Button>
             </Stack>
-          </Stack>
-
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <Stack gap={2}>
-              <Grid container>
-                <Grid size={8}>
-                  <Literal
-                    label="Sort by:"
-                    value={
-                      <Stack direction="row" gap={0.5}>
-                        {orderKeys.map((key, index) => (
-                          <Button
-                            key={index}
-                            variant={sortBy === key ? 'contained' : 'outlined'}
-                            size="small"
-                            onClick={() => onOrderBy(key)}
-                          >
-                            &nbsp;{t(`form:label.${String(key)}`)}&nbsp;
-                            {key === sortBy && (
-                              <>
-                                {orderBy === listItemsSortOrderKeys.asc ? (
-                                  <ArrowUpwardIcon fontSize="inherit" />
-                                ) : (
-                                  <ArrowDownwardIcon fontSize="inherit" />
-                                )}
-                              </>
-                            )}
-                          </Button>
-                        ))}
-                      </Stack>
-                    }
-                  />
-                </Grid>
-                <Grid size={4}>
-                  <Stack alignItems="end">
-                    <Literal
-                      label="Rows per page"
-                      value={
-                        <Select
-                          value={perPage}
-                          onChange={(event) => onPerPageChange(Number(event.target.value))}
-                          size="small"
-                          items={getOptionsFromList(LIST_ITEMS_PER_PAGE_OPTIONS)}
-                          sx={{ width: '150px' }}
-                          fullWidth
-                        />
-                      }
-                    />
-                  </Stack>
-                </Grid>
-              </Grid>
-              <Stack gap={1}>
-                {renderTypes()}
-                {renderTags()}
-                {renderCategories()}
-              </Stack>
-            </Stack>
-          </Collapse>
-        </Stack>
-      </Card>
-    </>
+          </Grid>
+        </Grid>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Divider sx={{ my: 1 }} />
+          <Grid container spacing={2}>
+            <Grid size={6}>{renderSortBy()}</Grid>
+            <Grid size={6}>{renderRowsPerPage()}</Grid>
+            <Grid size={12}>{renderTypes()}</Grid>
+            {isTags && <Grid size={12}>{renderTags()}</Grid>}
+            {isCategories && <Grid size={12}>{renderCategories()}</Grid>}
+          </Grid>
+        </Collapse>
+      </Stack>
+    </Card>
   );
 };
 

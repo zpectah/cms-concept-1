@@ -143,6 +143,7 @@ const ListItems = <T extends ItemBase>({
         types={typesOptions}
         onFilterReset={onFilterReset}
         filterDirty={filterDirty}
+        rowsOnPage={rows.length}
       />
       {view === listItemsViewKeys.table ? (
         <TableView<T>

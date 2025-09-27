@@ -17,9 +17,10 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import FileOpenIcon from '@mui/icons-material/FileOpen';
 import { ItemBase } from '@common';
+import { IconButtonPlus, IconButtonPlusProps } from '../../Button';
 import { TableViewProps } from '../types';
 import { checkboxStateKeys } from '../enums';
-import { IconButtonPlus, IconButtonPlusProps } from '../../Button';
+import { muiCommonColorVariantKeys } from '../../../enums';
 
 const TableView = <T extends ItemBase>({
   name,
@@ -43,7 +44,6 @@ const TableView = <T extends ItemBase>({
     };
     const buttonCommonProps: Partial<IconButtonPlusProps> = {
       size: 'small',
-      color: 'inherit',
     };
 
     return [
@@ -52,6 +52,7 @@ const TableView = <T extends ItemBase>({
         onClick: () => onDelete(id),
         tooltip: t('button.delete'),
         children: <DeleteIcon {...iconProps} />,
+        color: muiCommonColorVariantKeys.error,
         hidden: false,
       },
       {
@@ -59,6 +60,7 @@ const TableView = <T extends ItemBase>({
         onClick: () => onDisable(id),
         tooltip: t('button.disable'),
         children: active ? <VisibilityOffIcon fontSize="inherit" /> : <VisibilityIcon fontSize="inherit" />,
+        color: muiCommonColorVariantKeys.warning,
         hidden: false,
       },
       {
@@ -66,6 +68,7 @@ const TableView = <T extends ItemBase>({
         onClick: () => onDetail(id),
         tooltip: t('button.detail'),
         children: <FileOpenIcon {...iconProps} />,
+        color: muiCommonColorVariantKeys.primary,
         hidden: false,
       },
     ] as (IconButtonPlusProps & { hidden: boolean })[];
