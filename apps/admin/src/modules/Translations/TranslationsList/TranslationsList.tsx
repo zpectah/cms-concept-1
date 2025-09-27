@@ -12,7 +12,8 @@ const TranslationsList = () => {
 
   return (
     <ListItems<TranslationsItem>
-      name={modelKeys.translations}
+      name={`${modelKeys.translations}-list-items`}
+      model={modelKeys.translations}
       items={translations}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}

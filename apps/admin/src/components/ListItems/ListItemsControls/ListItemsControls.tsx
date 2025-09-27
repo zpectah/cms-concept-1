@@ -8,12 +8,14 @@ import { getConfig } from '../../../utils';
 import { muiCommonColorVariantKeys } from '../../../enums';
 import { useSelectOptions } from '../../../helpers';
 import { Card } from '../../Card';
+import { Literal } from '../../Literal';
 import { Search, Select } from '../../input';
 import { listItemsSortOrderKeys } from '../enums';
 import { ListItemsControlsProps } from '../types';
 import { LIST_ITEMS_PER_PAGE_OPTIONS } from '../constants';
 
 const ListItemsControls = <T extends ItemBase>({
+  model,
   disableViewToggle,
   view,
   onViewToggle,
@@ -28,9 +30,11 @@ const ListItemsControls = <T extends ItemBase>({
   onDeselectedSelected,
   onDeleteSelected,
   onDisableSelected,
+  types,
   isCategories,
   categories,
   onCategoryToggle,
+  onTypeToggle,
   isTags,
   tags,
   onTagToggle,
@@ -42,30 +46,60 @@ const ListItemsControls = <T extends ItemBase>({
   const [expanded, setExpanded] = useState(false);
 
   const { viewToggleEnabled } = getConfig();
-  const { t } = useTranslation(['common', 'form']);
+  const { t } = useTranslation(['common', 'form', 'options']);
   const { getOptionsFromList } = useSelectOptions();
+
+  const renderTypes = () => (
+    <Literal
+      label="By type:"
+      value={
+        <Stack direction="row" gap={1}>
+          {types.map((item) => {
+            const isSelected = selectedFilter.types.includes(item);
+
+            return (
+              <Button
+                key={item}
+                onClick={() => onTypeToggle(item)}
+                size="small"
+                variant={isSelected ? 'contained' : 'outlined'}
+                color={isSelected ? muiCommonColorVariantKeys.primary : muiCommonColorVariantKeys.inherit}
+              >
+                {t(`options:model.${item}`)}
+              </Button>
+            );
+          })}
+        </Stack>
+      }
+    />
+  );
 
   const renderCategories = () => {
     if (!isCategories) return;
 
     return (
-      <Stack direction="row" gap={1}>
-        {categories.map((item) => {
-          const isSelected = selectedFilter.categories.includes(item.id);
+      <Literal
+        label="By category:"
+        value={
+          <Stack direction="row" gap={1}>
+            {categories.map((item) => {
+              const isSelected = selectedFilter.categories.includes(item.id);
 
-          return (
-            <Button
-              key={item.id}
-              onClick={() => onCategoryToggle(item.id)}
-              size="small"
-              variant={isSelected ? 'contained' : 'outlined'}
-              color={isSelected ? muiCommonColorVariantKeys.primary : muiCommonColorVariantKeys.inherit}
-            >
-              {item.name}
-            </Button>
-          );
-        })}
-      </Stack>
+              return (
+                <Button
+                  key={item.id}
+                  onClick={() => onCategoryToggle(item.id)}
+                  size="small"
+                  variant={isSelected ? 'contained' : 'outlined'}
+                  color={isSelected ? muiCommonColorVariantKeys.primary : muiCommonColorVariantKeys.inherit}
+                >
+                  {item.name}
+                </Button>
+              );
+            })}
+          </Stack>
+        }
+      />
     );
   };
 
@@ -73,23 +107,28 @@ const ListItemsControls = <T extends ItemBase>({
     if (!isTags) return;
 
     return (
-      <Stack direction="row" gap={1}>
-        {tags.map((item) => {
-          const isSelected = selectedFilter.tags.includes(item.id);
+      <Literal
+        label="By tag:"
+        value={
+          <Stack direction="row" gap={1}>
+            {tags.map((item) => {
+              const isSelected = selectedFilter.tags.includes(item.id);
 
-          return (
-            <Button
-              key={item.id}
-              onClick={() => onTagToggle(item.id)}
-              size="small"
-              variant={isSelected ? 'contained' : 'outlined'}
-              color={isSelected ? muiCommonColorVariantKeys.primary : muiCommonColorVariantKeys.inherit}
-            >
-              {item.name}
-            </Button>
-          );
-        })}
-      </Stack>
+              return (
+                <Button
+                  key={item.id}
+                  onClick={() => onTagToggle(item.id)}
+                  size="small"
+                  variant={isSelected ? 'contained' : 'outlined'}
+                  color={isSelected ? muiCommonColorVariantKeys.primary : muiCommonColorVariantKeys.inherit}
+                >
+                  {item.name}
+                </Button>
+              );
+            })}
+          </Stack>
+        }
+      />
     );
   };
 
@@ -212,12 +251,11 @@ const ListItemsControls = <T extends ItemBase>({
                   </Stack>
                 </Grid>
               </Grid>
-              {(isCategories || isTags) && (
-                <Stack gap={1}>
-                  {renderCategories()}
-                  {renderTags()}
-                </Stack>
-              )}
+              <Stack gap={1}>
+                {renderTypes()}
+                {renderTags()}
+                {renderCategories()}
+              </Stack>
             </Stack>
           </Collapse>
         </Stack>

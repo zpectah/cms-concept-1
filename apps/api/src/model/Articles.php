@@ -37,10 +37,12 @@ class Articles {
 
     if ($id) {
       // Mock detail
+      $isEven = $id % 2;
+
       return [
         'id' => $id,
         'name' => 'article-name-' . $id,
-        'type' => 'default',
+        'type' => $isEven ? 'default' : 'event',
         'locale' => [
           'en' => [
             'title' => "Article title EN $id",
@@ -73,7 +75,7 @@ class Articles {
         $articles[] = [
           'id' => $i,
           'name' => "article-name-$i",
-          'type' => 'default',
+          'type' => $isEven ? 'default' : 'event',
 //                'locale' => [
 //                  'en' => [
 //                    'title' => "Article title EN $i",

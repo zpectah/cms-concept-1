@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ItemBase, Categories, Tags } from '@common';
+import { ItemBase, Categories, Tags, Model } from '@common';
 import { checkboxStateKeys, listItemsSortOrderKeys, listItemsViewKeys } from './enums';
 
 export type ListItemsView = keyof typeof listItemsViewKeys;
@@ -34,6 +34,7 @@ export interface ListItemsProps<T extends ItemBase> extends ListItemsBase<T>, Li
   orderKeys: (keyof T)[];
   itemsPerPage?: number;
   disableViewToggle?: boolean;
+  model: Model;
 
   /**
    * Optional callback when selected changes
@@ -82,6 +83,7 @@ export interface ListItemsProps<T extends ItemBase> extends ListItemsBase<T>, Li
 }
 
 export interface useListItemsControlProps<T extends ItemBase> extends ListItemsBase<T> {
+  model: Model;
   initialOrderBy?: ListItemsSortOrder;
   initialSortBy?: keyof T;
   searchKeys: (keyof T)[];
@@ -110,6 +112,7 @@ export interface TableViewProps<T extends ItemBase> extends ViewBaseProps<T> {
 export type TilesViewProps<T extends ItemBase> = ViewBaseProps<T> & {};
 
 export interface ListItemsFilter {
+  types: string[];
   categories: number[];
   tags: number[];
 }
@@ -133,6 +136,7 @@ export interface ListItemsPagination {
 }
 
 export interface ListItemsControlsProps<T extends ItemBase> {
+  model: Model;
   disableViewToggle?: boolean;
   view: ListItemsView;
   onViewToggle: () => void;
@@ -157,6 +161,8 @@ export interface ListItemsControlsProps<T extends ItemBase> {
   onSelectAll: () => void;
   perPage: number;
   onPerPageChange: (perPage: number) => void;
+  types: string[];
+  onTypeToggle: (type: string) => void;
 }
 
 export type ListItemsPaginationProps = ListItemsPagination & {};

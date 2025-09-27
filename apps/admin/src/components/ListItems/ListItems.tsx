@@ -14,6 +14,7 @@ import { TilesView } from './TilesView';
 
 const ListItems = <T extends ItemBase>({
   name,
+  model,
   initialView,
   isLoading,
   itemsPerPage,
@@ -52,6 +53,7 @@ const ListItems = <T extends ItemBase>({
     pagination,
     filter,
   } = useListItemsControl({
+    model,
     items,
     initialView,
     searchKeys,
@@ -65,10 +67,12 @@ const ListItems = <T extends ItemBase>({
   const navigate = useNavigate();
 
   const {
+    types: typesOptions,
     categories: categoriesOptions,
     tags: tagsOptions,
     onCategoryToggle,
     onTagToggle,
+    onTypeToggle,
     selected: selectedFilter,
   } = filter;
 
@@ -112,6 +116,7 @@ const ListItems = <T extends ItemBase>({
   return (
     <Stack gap={2}>
       <ListItemsControls<T>
+        model={model}
         disableViewToggle={disableViewToggle}
         view={view}
         onViewToggle={onViewToggle}
@@ -130,12 +135,14 @@ const ListItems = <T extends ItemBase>({
         isCategories={isCategories}
         categories={categoriesOptions}
         onCategoryToggle={onCategoryToggle}
+        onTypeToggle={onTypeToggle}
         isTags={isTags}
         tags={tagsOptions}
         onTagToggle={onTagToggle}
         onSelectAll={onSelectAllRows}
         perPage={pagination.perPage}
         onPerPageChange={pagination.onPerPageChange}
+        types={typesOptions}
       />
       {view === listItemsViewKeys.table ? (
         <TableView<T>

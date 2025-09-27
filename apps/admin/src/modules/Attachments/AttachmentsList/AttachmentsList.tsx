@@ -12,7 +12,8 @@ const AttachmentsList = () => {
 
   return (
     <ListItems<AttachmentsItem>
-      name={modelKeys.attachments}
+      name={`${modelKeys.attachments}-list-items`}
+      model={modelKeys.attachments}
       items={attachments}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}

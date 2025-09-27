@@ -12,7 +12,8 @@ const MenuList = () => {
 
   return (
     <ListItems<MenuItem>
-      name={modelKeys.menu}
+      name={`${modelKeys.menu}-list-items`}
+      model={modelKeys.menu}
       items={menu}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}

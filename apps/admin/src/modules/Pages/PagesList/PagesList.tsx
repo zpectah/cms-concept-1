@@ -12,7 +12,8 @@ const PagesList = () => {
 
   return (
     <ListItems<PagesItem>
-      name={modelKeys.pages}
+      name={`${modelKeys.pages}-list-items`}
+      model={modelKeys.pages}
       items={pages}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}

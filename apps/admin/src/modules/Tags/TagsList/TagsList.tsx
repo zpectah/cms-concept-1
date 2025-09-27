@@ -12,7 +12,8 @@ const TagsList = () => {
 
   return (
     <ListItems<TagsItem>
-      name={modelKeys.tags}
+      name={`${modelKeys.tags}-list-items`}
+      model={modelKeys.tags}
       items={tags}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}

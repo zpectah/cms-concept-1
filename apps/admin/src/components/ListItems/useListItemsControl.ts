@@ -17,6 +17,7 @@ import { checkboxStateKeys, listItemsControlParamsKeys, listItemsSortOrderKeys, 
 import { LIST_ITEMS_PER_PAGE_DEFAULT, LIST_ITEMS_SORT_ATTRIBUTE_DEFAULT } from './constants';
 
 export const useListItemsControl = <T extends ItemBase>({
+  model,
   items = [],
   initialView = listItemsViewKeys.table,
   initialOrderBy = listItemsSortOrderKeys.desc,
@@ -46,45 +47,33 @@ export const useListItemsControl = <T extends ItemBase>({
   const [page, setPage] = useState(initialParams.page);
   const [perPage, setPerPage] = useState(initialParams.perPage);
   const [selected, setSelected] = useState<ListItemsSelected>([]);
-  const [filter, setFilter] = useState<ListItemsFilter>({ categories: [], tags: [] });
+  const [filter, setFilter] = useState<ListItemsFilter>({ types: [], categories: [], tags: [] });
 
   const rawRows = searchItems(items, query, searchKeys);
 
   const filteredRows = useMemo(() => {
-    let results: T[] = [];
-    const filterCategories = filter.categories;
-    const filterTags = filter.tags;
+    return [...rawRows]
+      .filter((item) => {
+        if (filter.types.length === 0) return true;
 
-    if (categories?.length > 0 || tags?.length > 0) {
-      if (filterCategories.length > 0) {
-        rawRows.forEach((item) => {
-          const value = (item as T & { categories: number[] })?.categories;
+        return item.type && filter.types.includes(item.type);
+      })
+      .filter((item) => {
+        if (filter.categories.length === 0) return true;
 
-          if (!value) return;
+        const categories = (item as T & { categories?: number[] }).categories ?? [];
 
-          if (value.some((num) => filterCategories.includes(num))) {
-            results.push(item);
-          }
-        });
-      } else if (filterTags.length > 0) {
-        rawRows.forEach((item) => {
-          const value = (item as T & { tags: number[] })?.tags;
+        return categories.some((c) => filter.categories.includes(c));
+      })
+      .filter((item) => {
+        if (filter.tags.length === 0) return true;
 
-          if (!value) return;
+        const tags = (item as T & { tags?: number[] }).tags ?? [];
 
-          if (value.some((num) => filterTags.includes(num))) {
-            results.push(item);
-          }
-        });
-      } else {
-        results = rawRows;
-      }
-    } else {
-      results = rawRows;
-    }
-
-    return [...results].sort(sortItems(sortBy, orderBy));
-  }, [rawRows, categories, tags, filter, sortBy, orderBy]);
+        return tags.some((t) => filter.tags.includes(t));
+      })
+      .sort(sortItems(sortBy, orderBy));
+  }, [rawRows, filter, sortBy, orderBy]);
 
   const pages = Math.max(1, Math.ceil(filteredRows.length / perPage));
   const isFirstDisabled = page === 1;
@@ -207,6 +196,21 @@ export const useListItemsControl = <T extends ItemBase>({
     return checkboxStateKeys.indeterminate;
   }, [filteredRows, selected]);
 
+  const typeOptions = () => {
+    const types: string[] = [];
+
+    // We know there is type attribute to filter
+    rawRows.forEach((item) => {
+      const type = item.type;
+
+      if (!type) return;
+
+      if (types.indexOf(type) < 0) types.push(type);
+    });
+
+    return types;
+  };
+
   const categoriesOptions = useMemo(() => {
     const ids: number[] = [];
     const objects: Categories = [];
@@ -260,6 +264,22 @@ export const useListItemsControl = <T extends ItemBase>({
 
     return objects;
   }, [items, tags]);
+
+  const toggleSelectTypesHandler = useCallback(
+    (type: string) => {
+      const newSelected: string[] = [...filter.types];
+      const index = newSelected.indexOf(type);
+
+      if (index > -1) {
+        newSelected.splice(index, 1);
+      } else {
+        newSelected.push(type);
+      }
+
+      setFilter((prevState) => ({ ...prevState, types: newSelected }));
+    },
+    [filter]
+  );
 
   const toggleSelectCategoriesHandler = useCallback(
     (id: number) => {
@@ -347,11 +367,13 @@ export const useListItemsControl = <T extends ItemBase>({
     onDeselect: deselectHandler,
     pagination,
     filter: {
+      types: typeOptions(),
       categories: categoriesOptions,
       tags: tagsOptions,
       onCategoryToggle: toggleSelectCategoriesHandler,
       onTagToggle: toggleSelectTagsHandler,
       selected: filter,
+      onTypeToggle: toggleSelectTypesHandler,
     },
   };
 };

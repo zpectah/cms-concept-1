@@ -12,7 +12,8 @@ const UsersList = () => {
 
   return (
     <ListItems<UsersItem>
-      name={modelKeys.users}
+      name={`${modelKeys.users}-list-items`}
+      model={modelKeys.users}
       items={users}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}

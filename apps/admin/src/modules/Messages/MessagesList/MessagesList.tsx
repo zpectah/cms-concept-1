@@ -12,7 +12,8 @@ const MessagesList = () => {
 
   return (
     <ListItems<MessagesItem>
-      name={modelKeys.messages}
+      name={`${modelKeys.messages}-list-items`}
+      model={modelKeys.messages}
       items={messages}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}

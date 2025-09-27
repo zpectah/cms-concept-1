@@ -13,7 +13,8 @@ const CategoriesList = () => {
 
   return (
     <ListItems<CategoriesItem>
-      name={modelKeys.categories}
+      name={`${modelKeys.categories}-list-items`}
+      model={modelKeys.categories}
       items={categories}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}
