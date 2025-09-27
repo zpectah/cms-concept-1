@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Stack, ToggleButton, ToggleButtonGroup, Grid, Collapse, ButtonProps } from '@mui/material';
+import { Button, Stack, Grid, Collapse, ButtonProps } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { ItemBase } from '@common';
@@ -15,8 +15,9 @@ import { ListItemsControlsProps } from '../types';
 import { LIST_ITEMS_PER_PAGE_OPTIONS } from '../constants';
 
 const ListItemsControls = <T extends ItemBase>({
-  model,
-  disableViewToggle,
+  // model,
+  // disableViewToggle,
+  // filterDirty,
   view,
   onViewToggle,
   query,
@@ -43,7 +44,6 @@ const ListItemsControls = <T extends ItemBase>({
   perPage,
   onPerPageChange,
   onFilterReset,
-  filterDirty,
 }: ListItemsControlsProps<T>) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -53,9 +53,9 @@ const ListItemsControls = <T extends ItemBase>({
 
   const renderTypes = () => (
     <Literal
-      label="By type:"
+      label="Filter by type:"
       value={
-        <Stack direction="row" gap={1}>
+        <Stack direction="row" gap={0.5}>
           {types.map((item) => {
             const isSelected = selectedFilter.types.includes(item);
 
@@ -65,7 +65,6 @@ const ListItemsControls = <T extends ItemBase>({
                 onClick={() => onTypeToggle(item)}
                 size="small"
                 variant={isSelected ? 'contained' : 'outlined'}
-                color={isSelected ? muiCommonColorVariantKeys.primary : muiCommonColorVariantKeys.inherit}
               >
                 {t(`options:model.${item}`)}
               </Button>
@@ -81,9 +80,9 @@ const ListItemsControls = <T extends ItemBase>({
 
     return (
       <Literal
-        label="By category:"
+        label="Filter by category:"
         value={
-          <Stack direction="row" gap={1}>
+          <Stack direction="row" gap={0.5}>
             {categories.map((item) => {
               const isSelected = selectedFilter.categories.includes(item.id);
 
@@ -93,7 +92,6 @@ const ListItemsControls = <T extends ItemBase>({
                   onClick={() => onCategoryToggle(item.id)}
                   size="small"
                   variant={isSelected ? 'contained' : 'outlined'}
-                  color={isSelected ? muiCommonColorVariantKeys.primary : muiCommonColorVariantKeys.inherit}
                 >
                   {item.name}
                 </Button>
@@ -110,9 +108,9 @@ const ListItemsControls = <T extends ItemBase>({
 
     return (
       <Literal
-        label="By tag:"
+        label="Filter by tag:"
         value={
-          <Stack direction="row" gap={1}>
+          <Stack direction="row" gap={0.5}>
             {tags.map((item) => {
               const isSelected = selectedFilter.tags.includes(item.id);
 
@@ -122,7 +120,6 @@ const ListItemsControls = <T extends ItemBase>({
                   onClick={() => onTagToggle(item.id)}
                   size="small"
                   variant={isSelected ? 'contained' : 'outlined'}
-                  color={isSelected ? muiCommonColorVariantKeys.primary : muiCommonColorVariantKeys.inherit}
                 >
                   {item.name}
                 </Button>
@@ -227,32 +224,47 @@ const ListItemsControls = <T extends ItemBase>({
             <Stack gap={2}>
               <Grid container>
                 <Grid size={8}>
-                  <ToggleButtonGroup value={sortBy} exclusive>
-                    {orderKeys?.map((key, index) => (
-                      <ToggleButton key={index} value={key} onClick={() => onOrderBy(key)} size="small">
-                        &nbsp;{t(`form:label.${String(key)}`)}&nbsp;
-                        {key === sortBy && (
-                          <>
-                            {orderBy === listItemsSortOrderKeys.asc ? (
-                              <ArrowUpwardIcon fontSize="inherit" />
-                            ) : (
-                              <ArrowDownwardIcon fontSize="inherit" />
+                  <Literal
+                    label="Sort by:"
+                    value={
+                      <Stack direction="row" gap={0.5}>
+                        {orderKeys.map((key, index) => (
+                          <Button
+                            key={index}
+                            variant={sortBy === key ? 'contained' : 'outlined'}
+                            size="small"
+                            onClick={() => onOrderBy(key)}
+                          >
+                            &nbsp;{t(`form:label.${String(key)}`)}&nbsp;
+                            {key === sortBy && (
+                              <>
+                                {orderBy === listItemsSortOrderKeys.asc ? (
+                                  <ArrowUpwardIcon fontSize="inherit" />
+                                ) : (
+                                  <ArrowDownwardIcon fontSize="inherit" />
+                                )}
+                              </>
                             )}
-                          </>
-                        )}
-                      </ToggleButton>
-                    ))}
-                  </ToggleButtonGroup>
+                          </Button>
+                        ))}
+                      </Stack>
+                    }
+                  />
                 </Grid>
                 <Grid size={4}>
                   <Stack alignItems="end">
-                    <Select
-                      value={perPage}
-                      onChange={(event) => onPerPageChange(Number(event.target.value))}
-                      size="small"
-                      items={getOptionsFromList(LIST_ITEMS_PER_PAGE_OPTIONS)}
-                      sx={{ width: '150px' }}
-                      fullWidth
+                    <Literal
+                      label="Rows per page"
+                      value={
+                        <Select
+                          value={perPage}
+                          onChange={(event) => onPerPageChange(Number(event.target.value))}
+                          size="small"
+                          items={getOptionsFromList(LIST_ITEMS_PER_PAGE_OPTIONS)}
+                          sx={{ width: '150px' }}
+                          fullWidth
+                        />
+                      }
                     />
                   </Stack>
                 </Grid>

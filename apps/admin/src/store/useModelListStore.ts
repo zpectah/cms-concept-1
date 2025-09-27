@@ -68,7 +68,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     window.localStorage.setItem('model-list', JSON.stringify(object));
 
   const resetModel = (model: Model) => {
-    const tmpModel = Object.assign({ ...modelStore });
+    const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model] = {
       ...createModelCommonDefaults(),
@@ -82,7 +82,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
   const areObjectsEqual = (obj1: object) => JSON.stringify(obj1) === JSON.stringify(createModelCommonDefaults());
 
   const setViewHandler = (model: Model, view: ListItemsView) => {
-    const tmpModel = Object.assign({ ...modelStore });
+    const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].view = view;
     tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
@@ -92,7 +92,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
   };
 
   const setQueryHandler = (model: Model, query: string) => {
-    const tmpModel = Object.assign({ ...modelStore });
+    const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].query = query;
     tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
@@ -102,7 +102,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
   };
 
   const setOrderByHandler = (model: Model, orderBy: ListItemsSortOrder) => {
-    const tmpModel = Object.assign({ ...modelStore });
+    const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].orderBy = orderBy;
     tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
@@ -112,7 +112,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
   };
 
   const setSortByHandler = (model: Model, sortBy: string) => {
-    const tmpModel = Object.assign({ ...modelStore });
+    const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].sortBy = sortBy;
     tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
@@ -122,7 +122,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
   };
 
   const setPageHandler = (model: Model, page: number) => {
-    const tmpModel = Object.assign({ ...modelStore });
+    const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].page = page;
     tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
@@ -132,7 +132,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
   };
 
   const setPerPageHandler = (model: Model, perPage: number) => {
-    const tmpModel = Object.assign({ ...modelStore });
+    const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].perPage = perPage;
     tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
@@ -142,7 +142,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
   };
 
   const setSelectedHandler = (model: Model, selected: number[]) => {
-    const tmpModel = Object.assign({ ...modelStore });
+    const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].selected = selected;
     tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
@@ -152,7 +152,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
   };
 
   const setFilterHandler = (model: Model, filter: Partial<ListItemsFilter>) => {
-    const tmpModel = Object.assign({ ...modelStore });
+    const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].filter = { ...tmpModel[model].filter, ...filter };
     tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
