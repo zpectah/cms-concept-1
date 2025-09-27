@@ -26,6 +26,7 @@ export const useListItemsControl = <T extends ItemBase>({
     setSortBy,
     setSelected,
     setFilter,
+    resetModel,
   } = useModelListStore();
 
   const rawRows = searchItems(items, modelStore[model].query, searchKeys);
@@ -319,6 +320,8 @@ export const useListItemsControl = <T extends ItemBase>({
       onTagToggle: toggleSelectTagsHandler,
       selected: modelStore[model].filter,
       onTypeToggle: toggleSelectTypesHandler,
+      dirty: modelStore[model].dirty,
     },
+    onFilterReset: () => resetModel(model),
   };
 };

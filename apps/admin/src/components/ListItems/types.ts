@@ -160,6 +160,8 @@ export interface ListItemsControlsProps<T extends ItemBase> {
   onPerPageChange: (perPage: number) => void;
   types: string[];
   onTypeToggle: (type: string) => void;
+  onFilterReset: () => void;
+  filterDirty: boolean;
 }
 
 export type ListItemsPaginationProps = ListItemsPagination & {};

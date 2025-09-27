@@ -42,6 +42,8 @@ const ListItemsControls = <T extends ItemBase>({
   onSelectAll,
   perPage,
   onPerPageChange,
+  onFilterReset,
+  filterDirty,
 }: ListItemsControlsProps<T>) => {
   const [expanded, setExpanded] = useState(false);
 
@@ -203,7 +205,11 @@ const ListItemsControls = <T extends ItemBase>({
                 </Button>
               </Stack>
             )}
-            <Stack>
+            <Stack direction="row" gap={1}>
+              <Button color="inherit" variant="outlined" size="small" onClick={onFilterReset}>
+                Reset filter
+              </Button>
+
               <Button
                 color="inherit"
                 variant="outlined"
@@ -212,7 +218,7 @@ const ListItemsControls = <T extends ItemBase>({
                   setExpanded(!expanded);
                 }}
               >
-                {expanded ? t('button.less') : t('button.more')}
+                Show {expanded ? t('button.less') : t('button.more')}
               </Button>
             </Stack>
           </Stack>

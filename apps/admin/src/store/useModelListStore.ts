@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { Model } from '@common';
 import { ListItemsView, ListItemsSortOrder, ListItemsFilter } from '../components';
 
-interface ListModel {
+interface ListItemModel {
   view: ListItemsView;
   query: string;
   orderBy: ListItemsSortOrder;
@@ -11,22 +11,13 @@ interface ListModel {
   perPage: number;
   selected: number[];
   filter: ListItemsFilter;
+  dirty: boolean;
 }
+
+type ListModel = Record<Model, ListItemModel>;
+
 interface ModelListStore {
-  model: {
-    articles: ListModel;
-    attachments: ListModel;
-    categories: ListModel;
-    comments: ListModel;
-    members: ListModel;
-    menu: ListModel;
-    menuItems: ListModel;
-    messages: ListModel;
-    pages: ListModel;
-    tags: ListModel;
-    translations: ListModel;
-    users: ListModel;
-  };
+  model: ListModel;
   setView: (model: Model, view: ListItemsView) => void;
   setQuery: (model: Model, query: string) => void;
   setOrderBy: (model: Model, orderBy: ListItemsSortOrder) => void;
@@ -35,6 +26,7 @@ interface ModelListStore {
   setPerPage: (model: Model, perPage: number) => void;
   setSelected: (model: Model, selected: number[]) => void;
   setFilter: (model: Model, filter: Partial<ListItemsFilter>) => void;
+  resetModel: (model: Model) => void;
 }
 
 const createModelCommonDefaults = () => ({
@@ -46,6 +38,7 @@ const createModelCommonDefaults = () => ({
   perPage: 10,
   selected: [],
   filter: { types: [], categories: [], tags: [] },
+  dirty: false,
 });
 
 const modelDefaults = {
@@ -65,7 +58,7 @@ const modelDefaults = {
 
 const useModelListStore = create<ModelListStore>((set, getState) => {
   const storageString = window.localStorage.getItem('model-list');
-  const storageJson = storageString ? JSON.parse(storageString) : modelDefaults;
+  const storageJson = storageString ? JSON.parse(storageString) : Object.assign(modelDefaults);
 
   const modelStore = {
     ...storageJson,
@@ -74,10 +67,25 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
   const saveToStorage = (object: ModelListStore['model']) =>
     window.localStorage.setItem('model-list', JSON.stringify(object));
 
+  const resetModel = (model: Model) => {
+    const tmpModel = Object.assign({ ...modelStore });
+
+    tmpModel[model] = {
+      ...createModelCommonDefaults(),
+      dirty: false,
+    };
+
+    set({ model: tmpModel });
+    saveToStorage(tmpModel);
+  };
+
+  const areObjectsEqual = (obj1: object) => JSON.stringify(obj1) === JSON.stringify(createModelCommonDefaults());
+
   const setViewHandler = (model: Model, view: ListItemsView) => {
     const tmpModel = Object.assign({ ...modelStore });
 
     tmpModel[model].view = view;
+    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -87,6 +95,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...modelStore });
 
     tmpModel[model].query = query;
+    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -96,6 +105,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...modelStore });
 
     tmpModel[model].orderBy = orderBy;
+    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -105,6 +115,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...modelStore });
 
     tmpModel[model].sortBy = sortBy;
+    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -114,6 +125,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...modelStore });
 
     tmpModel[model].page = page;
+    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -123,6 +135,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...modelStore });
 
     tmpModel[model].perPage = perPage;
+    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -132,6 +145,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...modelStore });
 
     tmpModel[model].selected = selected;
+    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -141,6 +155,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...modelStore });
 
     tmpModel[model].filter = { ...tmpModel[model].filter, ...filter };
+    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -156,6 +171,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     setPerPage: setPerPageHandler,
     setSelected: setSelectedHandler,
     setFilter: setFilterHandler,
+    resetModel,
   };
 });
 

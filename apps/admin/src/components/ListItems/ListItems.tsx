@@ -50,6 +50,7 @@ const ListItems = <T extends ItemBase>({
     onDeselect,
     pagination,
     filter,
+    onFilterReset,
   } = useListItemsControl({
     model,
     items,
@@ -70,6 +71,7 @@ const ListItems = <T extends ItemBase>({
     onTagToggle,
     onTypeToggle,
     selected: selectedFilter,
+    dirty: filterDirty,
   } = filter;
 
   const isCategories = categories?.length > 0;
@@ -139,6 +141,8 @@ const ListItems = <T extends ItemBase>({
         perPage={pagination.perPage}
         onPerPageChange={pagination.onPerPageChange}
         types={typesOptions}
+        onFilterReset={onFilterReset}
+        filterDirty={filterDirty}
       />
       {view === listItemsViewKeys.table ? (
         <TableView<T>
