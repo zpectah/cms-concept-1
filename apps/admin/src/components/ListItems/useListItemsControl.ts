@@ -1,162 +1,125 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useCallback, useMemo } from 'react';
 import { ItemBase, Categories, Tags } from '@common';
-import {
-  CheckboxState,
-  ListItemsFilter,
-  ListItemsPagination,
-  ListItemsSelected,
-  ListItemsSortOrder,
-  ListItemsView,
-  useListItemsControlProps,
-} from './types';
+import { CheckboxState, ListItemsPagination, ListItemsSelected, useListItemsControlProps } from './types';
 import { searchItems, sortItems } from './helpers';
-import { checkboxStateKeys, listItemsControlParamsKeys, listItemsSortOrderKeys, listItemsViewKeys } from './enums';
-import { LIST_ITEMS_PER_PAGE_DEFAULT, LIST_ITEMS_SORT_ATTRIBUTE_DEFAULT } from './constants';
+import { checkboxStateKeys, listItemsSortOrderKeys, listItemsViewKeys } from './enums';
+import useModelListStore from '../../store/useModelListStore';
 
 export const useListItemsControl = <T extends ItemBase>({
   model,
   items = [],
-  initialView = listItemsViewKeys.table,
-  initialOrderBy = listItemsSortOrderKeys.desc,
-  initialSortBy = LIST_ITEMS_SORT_ATTRIBUTE_DEFAULT,
   searchKeys = [],
-  itemsPerPage = LIST_ITEMS_PER_PAGE_DEFAULT,
   onRowSelect,
   onSelectAll,
   categories = [],
   tags = [],
 }: useListItemsControlProps<T>) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const {
+    model: modelStore,
+    setView,
+    setPage,
+    setPerPage,
+    setQuery,
+    setOrderBy,
+    setSortBy,
+    setSelected,
+    setFilter,
+  } = useModelListStore();
 
-  const initialParams = {
-    view: searchParams.get(listItemsControlParamsKeys.view) || initialView,
-    query: searchParams.get(listItemsControlParamsKeys.query) || '',
-    orderBy: searchParams.get(listItemsControlParamsKeys.orderBy) || initialOrderBy,
-    sortBy: searchParams.get(listItemsControlParamsKeys.sortBy) || initialSortBy,
-    page: Number(searchParams.get(listItemsControlParamsKeys.page)) || 1,
-    perPage: Number(searchParams.get(listItemsControlParamsKeys.perPage)) || itemsPerPage,
-  };
-
-  const [view, setView] = useState<ListItemsView>(initialParams.view as ListItemsView);
-  const [query, setQuery] = useState<string>(initialParams.query);
-  const [orderBy, setOrderBy] = useState<ListItemsSortOrder>(initialParams.orderBy as ListItemsSortOrder);
-  const [sortBy, setSortBy] = useState<keyof T>(initialParams.sortBy as keyof T);
-  const [page, setPage] = useState(initialParams.page);
-  const [perPage, setPerPage] = useState(initialParams.perPage);
-  const [selected, setSelected] = useState<ListItemsSelected>([]);
-  const [filter, setFilter] = useState<ListItemsFilter>({ types: [], categories: [], tags: [] });
-
-  const rawRows = searchItems(items, query, searchKeys);
+  const rawRows = searchItems(items, modelStore[model].query, searchKeys);
 
   const filteredRows = useMemo(() => {
     return [...rawRows]
       .filter((item) => {
-        if (filter.types.length === 0) return true;
+        if (modelStore[model].filter.types.length === 0) return true;
 
-        return item.type && filter.types.includes(item.type);
+        return item.type && modelStore[model].filter.types.includes(item.type);
       })
       .filter((item) => {
-        if (filter.categories.length === 0) return true;
+        if (modelStore[model].filter.categories.length === 0) return true;
 
         const categories = (item as T & { categories?: number[] }).categories ?? [];
 
-        return categories.some((c) => filter.categories.includes(c));
+        return categories.some((c) => modelStore[model].filter.categories.includes(c));
       })
       .filter((item) => {
-        if (filter.tags.length === 0) return true;
+        if (modelStore[model].filter.tags.length === 0) return true;
 
         const tags = (item as T & { tags?: number[] }).tags ?? [];
 
-        return tags.some((t) => filter.tags.includes(t));
+        return tags.some((t) => modelStore[model].filter.tags.includes(t));
       })
-      .sort(sortItems(sortBy, orderBy));
-  }, [rawRows, filter, sortBy, orderBy]);
+      .sort(sortItems(modelStore[model].sortBy as keyof T, modelStore[model].orderBy));
+  }, [rawRows, modelStore[model].filter, modelStore[model].sortBy, modelStore[model].orderBy]);
 
-  const pages = Math.max(1, Math.ceil(filteredRows.length / perPage));
-  const isFirstDisabled = page === 1;
-  const isLastDisabled = page === pages;
+  const pages = Math.max(1, Math.ceil(filteredRows.length / modelStore[model].perPage));
+  const isFirstDisabled = modelStore[model].page === 1;
+  const isLastDisabled = modelStore[model].page === pages;
 
   const rows = useMemo(() => {
-    const start = (page - 1) * perPage;
+    const start = (modelStore[model].page - 1) * modelStore[model].perPage;
 
-    return filteredRows.slice(start, start + perPage);
-  }, [filteredRows, page, perPage]);
+    return filteredRows.slice(start, start + modelStore[model].perPage);
+  }, [filteredRows, modelStore[model].page, modelStore[model].perPage]);
 
-  const updateParams = (newParams: Record<string, string | number>) =>
-    setSearchParams((params) => {
-      Object.entries(newParams).forEach(([key, value]) => {
-        if (value === null || value === '') {
-          params.delete(key);
-        } else {
-          params.set(key, String(value));
-        }
-      });
-
-      return params;
-    });
-
-  const pageChangeHandler = (page: number) => {
-    setPage(page);
-    updateParams({ page });
-  };
+  const pageChangeHandler = (page: number) => setPage(model, page);
 
   const pagePerPageChangeHandler = (perPage: number) => {
-    setPerPage(perPage);
-    updateParams({ perPage, page: 1 });
-    setPage(1);
+    setPerPage(model, perPage);
+    setPage(model, 1);
   };
 
-  const onPageNextHandler = useCallback(() => pageChangeHandler(Math.min(page + 1, pages)), [page, pages]);
-  const onPagePrevHandler = useCallback(() => pageChangeHandler(Math.max(page - 1, 1)), [page]);
+  const onPageNextHandler = useCallback(
+    () => pageChangeHandler(Math.min(modelStore[model].page + 1, pages)),
+    [modelStore[model].page, pages]
+  );
+  const onPagePrevHandler = useCallback(
+    () => pageChangeHandler(Math.max(modelStore[model].page - 1, 1)),
+    [modelStore[model].page]
+  );
   const onPageFirstHandler = useCallback(() => pageChangeHandler(1), []);
   const onPageLastHandler = useCallback(() => pageChangeHandler(pages), [pages]);
 
   const toggleViewHandler = useCallback(() => {
-    const newView = view === listItemsViewKeys.table ? listItemsViewKeys.tiles : listItemsViewKeys.table;
+    const newView =
+      modelStore[model].view === listItemsViewKeys.table ? listItemsViewKeys.tiles : listItemsViewKeys.table;
 
-    setView(newView);
-    updateParams({ view: newView });
-  }, [view]);
+    setView(model, newView);
+  }, [modelStore[model].view]);
 
   const toggleOrderByHandler = useCallback(() => {
     const newOrderBy =
-      orderBy === listItemsSortOrderKeys.asc ? listItemsSortOrderKeys.desc : listItemsSortOrderKeys.asc;
+      modelStore[model].orderBy === listItemsSortOrderKeys.asc
+        ? listItemsSortOrderKeys.desc
+        : listItemsSortOrderKeys.asc;
 
-    setOrderBy(newOrderBy);
-    updateParams({ orderBy: newOrderBy });
-  }, [orderBy]);
+    setOrderBy(model, newOrderBy);
+  }, [modelStore[model].orderBy]);
 
   const orderHandler = useCallback(
     (key: keyof T) => {
-      setSortBy(key);
-      if (key === sortBy) {
+      setSortBy(model, key as string);
+      if (key === modelStore[model].sortBy) {
         const newOrderBy =
-          orderBy === listItemsSortOrderKeys.asc ? listItemsSortOrderKeys.desc : listItemsSortOrderKeys.asc;
+          modelStore[model].orderBy === listItemsSortOrderKeys.asc
+            ? listItemsSortOrderKeys.desc
+            : listItemsSortOrderKeys.asc;
 
-        setOrderBy(newOrderBy);
-        updateParams({
-          sortBy: key as string,
-          orderBy: newOrderBy,
-        });
+        setOrderBy(model, newOrderBy);
       } else {
-        setOrderBy(listItemsSortOrderKeys.desc);
-        updateParams({ orderBy: listItemsSortOrderKeys.desc, sortBy: key as string });
+        setOrderBy(model, listItemsSortOrderKeys.desc);
       }
     },
-    [sortBy, orderBy, toggleOrderByHandler]
+    [modelStore[model].sortBy, modelStore[model].orderBy, toggleOrderByHandler]
   );
 
-  const queryChangeHandler = (query: string) => {
-    setQuery(query);
-    updateParams({ query });
-  };
+  const queryChangeHandler = (query: string) => setQuery(model, query);
 
   const selectRowHandler = useCallback(
     (id: number) => {
-      const newSelected: ListItemsSelected = [...selected];
+      const newSelected: ListItemsSelected = [...modelStore[model].selected];
       const index = newSelected.indexOf(id);
 
       if (index > -1) {
@@ -165,36 +128,36 @@ export const useListItemsControl = <T extends ItemBase>({
         newSelected.push(id);
       }
 
-      setSelected(newSelected);
+      setSelected(model, newSelected);
       onRowSelect?.(newSelected);
     },
-    [selected, onRowSelect]
+    [modelStore[model].selected, onRowSelect]
   );
 
   const selectAllHandler = useCallback(() => {
     let newSelected: ListItemsSelected = [];
 
-    if (selected.length >= 0) {
+    if (modelStore[model].selected.length >= 0) {
       newSelected = [];
       filteredRows.forEach((item) => {
         newSelected.push(item.id);
       });
     }
 
-    if (selected.length === filteredRows.length) newSelected = [];
+    if (modelStore[model].selected.length === filteredRows.length) newSelected = [];
 
-    setSelected(newSelected);
+    setSelected(model, newSelected);
     onSelectAll?.(newSelected);
-  }, [filteredRows, selected, onRowSelect]);
+  }, [filteredRows, modelStore[model].selected, onRowSelect]);
 
-  const deselectHandler = useCallback(() => setSelected([]), []);
+  const deselectHandler = useCallback(() => setSelected(model, []), []);
 
   const checkboxState = useMemo<CheckboxState>(() => {
-    if (selected.length === 0) return checkboxStateKeys.none;
-    if (selected.length === filteredRows.length) return checkboxStateKeys.checked;
+    if (modelStore[model].selected.length === 0) return checkboxStateKeys.none;
+    if (modelStore[model].selected.length === filteredRows.length) return checkboxStateKeys.checked;
 
     return checkboxStateKeys.indeterminate;
-  }, [filteredRows, selected]);
+  }, [filteredRows, modelStore[model].selected]);
 
   const typeOptions = () => {
     const types: string[] = [];
@@ -267,7 +230,7 @@ export const useListItemsControl = <T extends ItemBase>({
 
   const toggleSelectTypesHandler = useCallback(
     (type: string) => {
-      const newSelected: string[] = [...filter.types];
+      const newSelected: string[] = [...modelStore[model].filter.types];
       const index = newSelected.indexOf(type);
 
       if (index > -1) {
@@ -276,14 +239,14 @@ export const useListItemsControl = <T extends ItemBase>({
         newSelected.push(type);
       }
 
-      setFilter((prevState) => ({ ...prevState, types: newSelected }));
+      setFilter(model, { types: newSelected });
     },
-    [filter]
+    [modelStore[model].filter]
   );
 
   const toggleSelectCategoriesHandler = useCallback(
     (id: number) => {
-      const newSelected: ListItemsSelected = [...filter.categories];
+      const newSelected: ListItemsSelected = [...modelStore[model].filter.categories];
       const index = newSelected.indexOf(id);
 
       if (index > -1) {
@@ -292,14 +255,14 @@ export const useListItemsControl = <T extends ItemBase>({
         newSelected.push(id);
       }
 
-      setFilter((prevState) => ({ ...prevState, categories: newSelected }));
+      setFilter(model, { categories: newSelected });
     },
-    [filter]
+    [modelStore[model].filter]
   );
 
   const toggleSelectTagsHandler = useCallback(
     (id: number) => {
-      const newSelected: ListItemsSelected = [...filter.tags];
+      const newSelected: ListItemsSelected = [...modelStore[model].filter.tags];
       const index = newSelected.indexOf(id);
 
       if (index > -1) {
@@ -308,15 +271,15 @@ export const useListItemsControl = <T extends ItemBase>({
         newSelected.push(id);
       }
 
-      setFilter((prevState) => ({ ...prevState, tags: newSelected }));
+      setFilter(model, { tags: newSelected });
     },
-    [filter]
+    [modelStore[model].filter]
   );
 
   const pagination: ListItemsPagination = {
-    page,
+    page: modelStore[model].page,
     pages,
-    perPage,
+    perPage: modelStore[model].perPage,
     onPageNext: onPageNextHandler,
     onPagePrev: onPagePrevHandler,
     onPageFirst: onPageFirstHandler,
@@ -331,36 +294,18 @@ export const useListItemsControl = <T extends ItemBase>({
     onPageChange: pageChangeHandler,
   };
 
-  useEffect(() => {
-    const updatedParams = {
-      view: searchParams.get(listItemsControlParamsKeys.view),
-      query: searchParams.get(listItemsControlParamsKeys.query),
-      orderBy: searchParams.get(listItemsControlParamsKeys.orderBy),
-      sortBy: searchParams.get(listItemsControlParamsKeys.sortBy),
-      page: Number(searchParams.get(listItemsControlParamsKeys.page)),
-      perPage: Number(searchParams.get(listItemsControlParamsKeys.perPage)),
-    };
-
-    if (updatedParams.view) setView(updatedParams.view as ListItemsView);
-    if (updatedParams.query) setQuery(updatedParams.query);
-    if (updatedParams.orderBy) setOrderBy(updatedParams.orderBy as ListItemsSortOrder);
-    if (updatedParams.sortBy) setSortBy(updatedParams.sortBy as keyof T);
-    if (updatedParams.page) setPage(updatedParams.page);
-    if (updatedParams.perPage) setPerPage(updatedParams.perPage);
-  }, [searchParams]);
-
   return {
     rows,
     rawRows: filteredRows,
-    view,
+    view: modelStore[model].view,
     onViewChange: setView,
     onViewToggle: toggleViewHandler,
-    query,
+    query: modelStore[model].query,
     onQueryChange: queryChangeHandler,
-    orderBy,
-    sortBy,
+    orderBy: modelStore[model].orderBy,
+    sortBy: modelStore[model].sortBy,
     onOrderBy: orderHandler,
-    selected,
+    selected: modelStore[model].selected,
     checkboxState,
     onSelect: selectRowHandler,
     onSelectAll: selectAllHandler,
@@ -372,7 +317,7 @@ export const useListItemsControl = <T extends ItemBase>({
       tags: tagsOptions,
       onCategoryToggle: toggleSelectCategoriesHandler,
       onTagToggle: toggleSelectTagsHandler,
-      selected: filter,
+      selected: modelStore[model].filter,
       onTypeToggle: toggleSelectTypesHandler,
     },
   };

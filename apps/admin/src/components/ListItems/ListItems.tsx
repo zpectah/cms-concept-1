@@ -15,9 +15,7 @@ import { TilesView } from './TilesView';
 const ListItems = <T extends ItemBase>({
   name,
   model,
-  initialView,
   isLoading,
-  itemsPerPage,
   items = [],
   columns = [],
   searchKeys = [],
@@ -55,9 +53,7 @@ const ListItems = <T extends ItemBase>({
   } = useListItemsControl({
     model,
     items,
-    initialView,
     searchKeys,
-    itemsPerPage,
     onRowSelect,
     onSelectAll,
     categories,
@@ -127,7 +123,7 @@ const ListItems = <T extends ItemBase>({
         orderKeys={orderKeys}
         orderBy={orderBy}
         onOrderBy={onOrderBy}
-        sortBy={sortBy}
+        sortBy={sortBy as keyof T}
         onDeselectedSelected={deselectedSelectedHandler}
         onDeleteSelected={deleteSelectedHandler}
         onDisableSelected={disableSelectedHandler}

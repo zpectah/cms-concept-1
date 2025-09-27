@@ -12,7 +12,7 @@ export type ListItemsSelected = number[];
 
 interface ListItemsBase<T extends ItemBase> {
   items: T[];
-  initialView?: ListItemsView;
+  // initialView?: ListItemsView;
 }
 
 interface ListItemsTableColumn<T extends ItemBase> {
@@ -84,10 +84,7 @@ export interface ListItemsProps<T extends ItemBase> extends ListItemsBase<T>, Li
 
 export interface useListItemsControlProps<T extends ItemBase> extends ListItemsBase<T> {
   model: Model;
-  initialOrderBy?: ListItemsSortOrder;
-  initialSortBy?: keyof T;
   searchKeys: (keyof T)[];
-  itemsPerPage?: number;
   onRowSelect?: (selected: ListItemsSelected) => void;
   onSelectAll?: (selected: ListItemsSelected) => void;
   categories?: Categories;

@@ -1,5 +1,9 @@
+export const LIST_ITEMS_PER_PAGE_OPTIONS = [5, 10, 15, 25, 50, 100];
+
 export const LIST_ITEMS_PER_PAGE_DEFAULT = 10;
 
-export const LIST_ITEMS_PER_PAGE_OPTIONS = [5, 10, 15, 25, 50];
-
 export const LIST_ITEMS_SORT_ATTRIBUTE_DEFAULT = 'id';
+
+export const LIST_ITEMS_ORDER_ATTRIBUTE_DEFAULT = 'asc';
+
+export const LIST_ITEMS_VIEW_ATTRIBUTE_DEFAULT = 'table';
