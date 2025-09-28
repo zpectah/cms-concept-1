@@ -13,13 +13,13 @@ const Wrapper = styled('footer')(({ theme }) => ({
 }));
 
 const Footer = () => {
-  const { meta, admin, version } = getConfig();
+  const { project, meta, version } = getConfig();
 
   return (
     <Wrapper id="cms-footer">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="center" gap={0.5}>
-          <span>{admin.meta.title}</span>:<span>{meta.name}</span>
+          <span>{meta.title}</span>:<span>{project.name}</span>
           &nbsp;|&nbsp;
           <span>v{version}</span>
         </Stack>

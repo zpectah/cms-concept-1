@@ -1,8 +1,12 @@
 {
   "version": "0.0.1",
   "meta": {
-    "name": "project editable data name",
-    "description": "project editable data description"
+    "title": "CMS concept",
+    "description": "Main CMS description ..."
+  },
+  "project": {
+    "name": "PROJECT NAME",
+    "description": "PROJECT DESCRIPTION"
   },
   "apps": {
     "mapbox": {
@@ -12,7 +16,7 @@
   "admin": {
     "meta": {
       "title": "CMS concept",
-      "description": "CMS description somewhere"
+      "description": "Edit your web content"
     },
     "locale": {
       "default": "en",
