@@ -4,6 +4,11 @@
     "name": "project editable data name",
     "description": "project editable data description"
   },
+  "apps": {
+    "mapbox": {
+      "token": "pk.eyJ1IjoienBlY3RlciIsImEiOiJjbWczZWs3a2owZXN1MmtzOXo4NjI1ODlwIn0.Oq06DQcsMOwtpCvu_TWF8g"
+    }
+  },
   "admin": {
     "meta": {
       "title": "CMS concept",

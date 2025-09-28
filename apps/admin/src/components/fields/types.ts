@@ -18,6 +18,7 @@ import {
   PhoneProps,
 } from '../input';
 import { EmailPickerProps, PhonePickerProps, StringPickerProps } from '../picker';
+import { GpsPickerProps } from '../GpsPicker';
 
 type FieldBase = Omit<FormFieldProps, 'field'> & { readOnly?: boolean; isHidden?: boolean };
 
@@ -92,4 +93,8 @@ export type PhonePickerFieldProps = FieldBase & {
 
 export type StringPickerFieldProps = FieldBase & {
   fieldProps?: Partial<StringPickerProps>;
+};
+
+export type GpsPickerFieldProps = FieldBase & {
+  fieldProps?: Partial<GpsPickerProps>;
 };

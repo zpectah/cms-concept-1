@@ -18,6 +18,7 @@ import {
   WysiwygField,
   AddressField,
   DebugFormModel,
+  GpsPickerField,
 } from '../../../components';
 import { TagsPickerField } from '../../Tags';
 import { CategoriesPickerField } from '../../Categories';
@@ -71,7 +72,7 @@ const ArticlesDetailForm = () => {
             </Grid>
           </Grid>
           <AddressField fieldPrefix="eventAddress" disableCard />
-          <InputField name={registeredFormFields.gpsLocation} label={t('form:label.gpsLocation')} />
+          <GpsPickerField name={registeredFormFields.gpsLocation} label={t('form:label.gpsLocation')} />
         </HiddenCard>
         <LocalesTabs
           locales={locales}

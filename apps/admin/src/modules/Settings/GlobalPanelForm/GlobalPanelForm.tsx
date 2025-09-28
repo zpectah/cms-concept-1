@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Button, Divider } from '@mui/material';
+// import { registeredFormFields } from '../../../enums';
 import {
   ControlledForm,
   Content,
@@ -12,6 +13,7 @@ import {
   AddressField,
   ActionBar,
   DebugFormModel,
+  GpsPickerField,
 } from '../../../components';
 import { useGlobalPanelForm } from './useGlobalPanelForm';
 
@@ -45,7 +47,7 @@ const GlobalPanelForm = () => {
           />
           <InputField name="companyBank" label="Bankovní spojení" />
           <AddressField fieldPrefix="companyAddress" disableCard />
-          <div>GPS lokalita TODO</div>
+          <GpsPickerField name="companyLocation" label={t('form:label.gpsLocation')} />
         </Section>
         <Divider />
         <ActionBar>

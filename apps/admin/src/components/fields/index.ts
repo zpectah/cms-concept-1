@@ -4,6 +4,7 @@ export { default as DatePickerField } from './DatePickerField';
 export { default as DateTimePickerField } from './DateTimePickerField';
 export { default as EmailField } from './EmailField';
 export { default as EmailPickerField } from './EmailPickerField';
+export { default as GpsPickerField } from './GpsPickerField';
 export { default as InputField } from './InputField';
 export { default as NumberField } from './NumberField';
 export { default as NumberAltField } from './NumberAltField';
