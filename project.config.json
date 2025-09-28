@@ -99,43 +99,18 @@
     }
   },
   "model": {
-    "articles": {
-      "type": ["default", "event"],
-      "comments": true
-    },
-    "attachments": {
-      "type": ["default"]
-    },
-    "categories": {
-      "type": ["default"]
-    },
-    "comments": {
-      "type": ["default"]
-    },
-    "tags": {
-      "type": ["default"]
-    },
-    "members": {
-      "type": ["default"]
-    },
-    "menu": {
-      "type": ["default"]
-    },
-    "menuItems": {
-      "type": ["default"]
-    },
-    "messages": {
-      "type": ["default"]
-    },
-    "pages": {
-      "type": ["default"]
-    },
-    "translations": {
-      "type": ["default"]
-    },
-    "users": {
-      "type": ["default"]
-    }
+    "articles": {},
+    "attachments": {},
+    "categories": {},
+    "comments": {},
+    "tags": {},
+    "members": {},
+    "menu": {},
+    "menuItems": {},
+    "messages": {},
+    "pages": {},
+    "translations": {},
+    "users": {}
   },
   "members": {
     "mode": "active",

@@ -20,7 +20,7 @@ export const getArticlesDetailFormDefaultValues = (locales: string[]): IArticles
     deleted: false,
 
     // Event
-    gpsLocation: [],
+    gpsLocation: [0, 0],
     eventAddress: addressFormDefaults,
     startDate: null,
     endDate: null,

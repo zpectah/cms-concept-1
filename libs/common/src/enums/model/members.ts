@@ -1,11 +1,5 @@
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import config from '../../../../../project.config.json';
+export const membersTypeKeys = {
+  default: 'default',
+} as const;
 
-const keys = [...config.model.members.type] as const;
-
-export const membersTypeKeys = keys.reduce((acc, key) => {
-  acc[key] = key;
-  return acc;
-}, {} as Record<(typeof keys)[number], string>) as { [K in (typeof keys)[number]]: K };
-
-export const membersTypeKeysArray = [...keys] as [string, ...string[]];
+export const membersTypeKeysArray = [...Object.keys(membersTypeKeys)] as [string, ...string[]];

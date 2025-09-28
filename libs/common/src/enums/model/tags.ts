@@ -1,14 +1,8 @@
-// eslint-disable-next-line @nx/enforce-module-boundaries
-import config from '../../../../../project.config.json';
+export const tagsTypeKeys = {
+  default: 'default',
+} as const;
 
-const keys = [...config.model.tags.type] as const;
-
-export const tagsTypeKeys = keys.reduce((acc, key) => {
-  acc[key] = key;
-  return acc;
-}, {} as Record<(typeof keys)[number], string>) as { [K in (typeof keys)[number]]: K };
-
-export const tagsTypeKeysArray = [...keys] as [string, ...string[]];
+export const tagsTypeKeysArray = [...Object.keys(tagsTypeKeys)] as [string, ...string[]];
 
 export const tagsColorKeys = {
   none: 'none',

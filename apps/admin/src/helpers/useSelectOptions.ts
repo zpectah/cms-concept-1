@@ -1,11 +1,8 @@
 import { MenuItemProps } from '@mui/material';
-import { Model } from '@common';
-import { getConfig } from '../utils';
+import { modelTypes, Model } from '@common';
 import { getOptionValue } from './getOptionValue';
 
 export const useSelectOptions = () => {
-  const { model: configModel } = getConfig();
-
   const getOptionsFromList = (list: (string | number)[]) => {
     const tmpItems: MenuItemProps[] = [];
 
@@ -35,7 +32,7 @@ export const useSelectOptions = () => {
   const getTypeFieldOptions = (model: Model, disabled?: string[]) => {
     const tmpItems: MenuItemProps[] = [];
 
-    configModel[model].type.forEach((item) => {
+    modelTypes[model].forEach((item) => {
       if (disabled?.includes(item)) return;
 
       tmpItems.push({
