@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { ItemBase, Categories, Tags } from '@common';
 import { CheckboxState, ListItemsPagination, ListItemsSelected, useListItemsControlProps } from './types';
 import { searchItems, sortItems } from './helpers';
@@ -15,6 +15,7 @@ export const useListItemsControl = <T extends ItemBase>({
   onSelectAll,
   categories = [],
   tags = [],
+  initialView,
 }: useListItemsControlProps<T>) => {
   const {
     model: modelStore,
@@ -54,11 +55,9 @@ export const useListItemsControl = <T extends ItemBase>({
       })
       .sort(sortItems(modelStore[model].sortBy as keyof T, modelStore[model].orderBy));
   }, [rawRows, modelStore[model].filter, modelStore[model].sortBy, modelStore[model].orderBy]);
-
-  const pages = Math.max(1, Math.ceil(filteredRows.length / modelStore[model].perPage));
-  const isFirstDisabled = modelStore[model].page === 1;
-  const isLastDisabled = modelStore[model].page === pages;
-
+  const pages = useMemo(() => Math.max(1, Math.ceil(filteredRows.length / modelStore[model].perPage)), [filteredRows]);
+  const isFirstDisabled = useMemo(() => modelStore[model].page === 1, []);
+  const isLastDisabled = useMemo(() => modelStore[model].page === pages, [pages]);
   const rows = useMemo(() => {
     const start = (modelStore[model].page - 1) * modelStore[model].perPage;
 
@@ -304,6 +303,10 @@ export const useListItemsControl = <T extends ItemBase>({
     selected: modelStore[model].filter,
     onTypeToggle: toggleSelectTypesHandler,
   };
+
+  useEffect(() => {
+    if (initialView) setView(model, initialView);
+  }, []);
 
   return {
     rows,

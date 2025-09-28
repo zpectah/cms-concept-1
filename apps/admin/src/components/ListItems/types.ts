@@ -12,29 +12,29 @@ export type ListItemsSelected = number[];
 
 interface ListItemsBase<T extends ItemBase> {
   items: T[];
-  // initialView?: ListItemsView;
 }
 
 interface ListItemsTableColumn<T extends ItemBase> {
-  value: keyof T;
+  isTitle?: boolean;
   label?: string;
   renderValue?: (row: T) => ReactNode;
-  isTitle?: boolean;
+  value: keyof T;
 }
 
 interface ListItemsInitialProps {
-  name: string;
   isLoading?: boolean;
+  name: string;
   pathPrefix: string;
 }
 
 export interface ListItemsProps<T extends ItemBase> extends ListItemsBase<T>, ListItemsInitialProps {
   columns: ListItemsTableColumn<T>[];
-  searchKeys: (keyof T)[];
-  orderKeys: (keyof T)[];
-  itemsPerPage?: number;
   disableViewToggle?: boolean;
+  initialView?: ListItemsView;
+  itemsPerPage?: number;
   model: Model;
+  orderKeys: (keyof T)[];
+  searchKeys: (keyof T)[];
 
   /**
    * Optional callback when selected changes
@@ -83,28 +83,29 @@ export interface ListItemsProps<T extends ItemBase> extends ListItemsBase<T>, Li
 }
 
 export interface useListItemsControlProps<T extends ItemBase> extends ListItemsBase<T> {
+  categories?: Categories;
+  initialView?: ListItemsView;
   model: Model;
-  searchKeys: (keyof T)[];
   onRowSelect?: (selected: ListItemsSelected) => void;
   onSelectAll?: (selected: ListItemsSelected) => void;
-  categories?: Categories;
+  searchKeys: (keyof T)[];
   tags?: Tags;
 }
 
 interface ViewBaseProps<T extends ItemBase> extends ListItemsInitialProps {
+  onDelete: (id: number) => void;
+  onDetail: (id: number) => void;
+  onDisable: (id: number) => void;
+  onSelect: (id: number) => void;
   rows: T[];
   selected: ListItemsSelected;
-  onSelect: (id: number) => void;
-  onDetail: (id: number) => void;
-  onDelete: (id: number) => void;
-  onDisable: (id: number) => void;
 }
 
 export interface TableViewProps<T extends ItemBase> extends ViewBaseProps<T> {
-  model: Model;
-  columns: ListItemsTableColumn<T>[];
-  onSelectAll: () => void;
   checkboxState: CheckboxState;
+  columns: ListItemsTableColumn<T>[];
+  model: Model;
+  onSelectAll: () => void;
 }
 
 export interface TilesViewProps<T extends ItemBase> extends ViewBaseProps<T> {
@@ -112,18 +113,12 @@ export interface TilesViewProps<T extends ItemBase> extends ViewBaseProps<T> {
 }
 
 export interface ListItemsFilter {
-  types: string[];
   categories: number[];
   tags: number[];
+  types: string[];
 }
 
 export interface ListItemsPagination {
-  page: number;
-  pages: number;
-  onPageNext: () => void;
-  onPagePrev: () => void;
-  onPageFirst: () => void;
-  onPageLast: () => void;
   disabledButton: {
     first: boolean;
     prev: boolean;
@@ -131,40 +126,46 @@ export interface ListItemsPagination {
     last: boolean;
   };
   onPageChange: (page: number) => void;
-  perPage: number;
+  onPageFirst: () => void;
+  onPageLast: () => void;
+  onPageNext: () => void;
+  onPagePrev: () => void;
   onPerPageChange: (perPage: number) => void;
+  page: number;
+  pages: number;
+  perPage: number;
 }
 
 export interface ListItemsControlsProps<T extends ItemBase> {
-  model: Model;
-  disableViewToggle?: boolean;
-  view: ListItemsView;
-  onViewToggle: () => void;
-  rawRows: T[];
-  selected: ListItemsSelected;
-  query: string;
-  onQueryChange: (query: string) => void;
-  orderBy?: ListItemsSortOrder;
-  onOrderBy: (key: keyof T) => void;
-  sortBy?: keyof T;
-  orderKeys: (keyof T)[];
-  onDeselectedSelected: () => void;
-  onDeleteSelected: () => void;
-  onDisableSelected: () => void;
-  isCategories: boolean;
   categories: Categories;
-  onCategoryToggle: (id: number) => void;
+  disableViewToggle?: boolean;
+  isCategories: boolean;
   isTags: boolean;
-  tags: Tags;
-  onTagToggle: (id: number) => void;
-  selectedFilter: ListItemsFilter;
-  onSelectAll: () => void;
-  perPage: number;
-  onPerPageChange: (perPage: number) => void;
-  types: string[];
-  onTypeToggle: (type: string) => void;
+  model: Model;
+  onCategoryToggle: (id: number) => void;
+  onDeleteSelected: () => void;
+  onDeselectedSelected: () => void;
+  onDisableSelected: () => void;
   onFilterReset: () => void;
+  onOrderBy: (key: keyof T) => void;
+  onPerPageChange: (perPage: number) => void;
+  onQueryChange: (query: string) => void;
+  onSelectAll: () => void;
+  onTagToggle: (id: number) => void;
+  onTypeToggle: (type: string) => void;
+  onViewToggle: () => void;
+  orderBy?: ListItemsSortOrder;
+  orderKeys: (keyof T)[];
+  perPage: number;
+  query: string;
+  rawRows: T[];
   rowsOnPage: number;
+  selected: ListItemsSelected;
+  selectedFilter: ListItemsFilter;
+  sortBy?: keyof T;
+  tags: Tags;
+  types: string[];
+  view: ListItemsView;
 }
 
 export type ListItemsPaginationProps = ListItemsPagination & {};

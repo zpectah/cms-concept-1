@@ -31,6 +31,7 @@ const ListItems = <T extends ItemBase>({
   disableViewToggle,
   categories = [],
   tags = [],
+  initialView = 'table',
 }: ListItemsProps<T>) => {
   const { t } = useTranslation();
   const {
@@ -59,6 +60,7 @@ const ListItems = <T extends ItemBase>({
     onSelectAll,
     categories,
     tags,
+    initialView,
   });
   const { openConfirmDialog } = useViewLayoutContext();
   const navigate = useNavigate();
@@ -71,7 +73,6 @@ const ListItems = <T extends ItemBase>({
     onTagToggle,
     onTypeToggle,
     selected: selectedFilter,
-    // dirty: filterDirty,
   } = filter;
 
   const isCategories = categories?.length > 0;

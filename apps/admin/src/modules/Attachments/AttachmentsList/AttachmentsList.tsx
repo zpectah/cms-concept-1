@@ -14,6 +14,7 @@ const AttachmentsList = () => {
     <ListItems<AttachmentsItem>
       name={`${modelKeys.attachments}-list-items`}
       model={modelKeys.attachments}
+      initialView="tiles"
       items={attachments}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}
