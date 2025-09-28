@@ -55,9 +55,19 @@ class Articles {
             'content' => "Article content CS $id",
           ],
         ],
+
         'startDate' => $now,
         'endDate' => $now,
-        'location' => 'Some location',
+        'gpsLocation' => [0,0],
+        'eventAddress' => [
+          'street' => 'Street',
+          'streetNo' => '125/15B',
+          'district' => 'District',
+          'city' => 'My City',
+          'country' => 'My Country',
+          'zip' => '555248',
+        ],
+
         'categories' => [1,2],
         'tags' => [2,3],
         'attachments' => [3,4],
@@ -90,7 +100,7 @@ class Articles {
 //                ],
           'startDate' => $now,
           'endDate' => $now,
-          'location' => 'Some location',
+
           'categories' => $isEven ? [1,2] : [3,4],
           'tags' => $isEven ? [2,3] : [4,5],
           'attachments' => $isEven ? [3,4] : [5,6,7],

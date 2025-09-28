@@ -268,7 +268,7 @@ const ListItemsControls = <T extends ItemBase>({
                   {view}
                 </Button>
               )}
-              <Button color="error" variant="outlined" size="small" onClick={onFilterReset}>
+              <Button color="warning" variant="outlined" size="small" onClick={onFilterReset}>
                 {t('components:ListItems.resetFilter')}
               </Button>
               <Button

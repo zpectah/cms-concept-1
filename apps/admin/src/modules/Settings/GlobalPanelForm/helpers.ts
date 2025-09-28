@@ -11,7 +11,7 @@ export const getDataToFormMapper = (): ISettingsGlobalPanelForm => {
     companyEmail: [],
     companyPhone: [],
     companyAddress: addressFormDefaults,
-    companyLocation: [],
+    companyLocation: [0, 0],
     companyBank: '',
   };
 };

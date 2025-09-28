@@ -16,6 +16,8 @@ import {
   SelectField,
   TextareaField,
   WysiwygField,
+  AddressField,
+  DebugFormModel,
 } from '../../../components';
 import { TagsPickerField } from '../../Tags';
 import { CategoriesPickerField } from '../../Categories';
@@ -68,7 +70,8 @@ const ArticlesDetailForm = () => {
               />
             </Grid>
           </Grid>
-          <InputField name={registeredFormFields.location} label={t('form:label.location')} />
+          <AddressField fieldPrefix="eventAddress" disableCard />
+          <InputField name={registeredFormFields.gpsLocation} label={t('form:label.gpsLocation')} />
         </HiddenCard>
         <LocalesTabs
           locales={locales}
@@ -106,6 +109,8 @@ const ArticlesDetailForm = () => {
           multiple
           defaultValue={[]}
         />
+
+        <DebugFormModel name="ArticlesDetailForm" />
       </FormLayout>
     </ControlledForm>
   );

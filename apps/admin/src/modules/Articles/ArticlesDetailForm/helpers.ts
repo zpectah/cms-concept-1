@@ -1,5 +1,6 @@
 import { articlesTypeDefault } from '@common';
 import { getModelLocales } from '../../../utils';
+import { addressFormDefaults } from '../../../constants';
 import { IArticlesDetailForm } from './types';
 
 export const getArticlesDetailFormDefaultValues = (locales: string[]): IArticlesDetailForm => {
@@ -17,8 +18,11 @@ export const getArticlesDetailFormDefaultValues = (locales: string[]): IArticles
     attachments: [],
     active: true,
     deleted: false,
+
+    // Event
+    gpsLocation: [],
+    eventAddress: addressFormDefaults,
     startDate: null,
     endDate: null,
-    location: '',
   };
 };

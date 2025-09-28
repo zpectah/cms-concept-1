@@ -1,5 +1,6 @@
 import { articlesTypeKeys } from '../../enums';
 import { ItemBase, ItemLocaleBase } from '../item';
+import { Address, GpsLocation } from '../form';
 
 export type ArticlesType = keyof typeof articlesTypeKeys;
 
@@ -8,9 +9,12 @@ export interface ArticlesItem extends ItemBase {
   categories: number[];
   tags: number[];
   attachments: number[];
+
+  // Event
+  eventAddress?: Address;
+  gpsLocation?: GpsLocation;
   startDate?: string;
   endDate?: string;
-  location?: string;
 }
 
 export type Articles = ArticlesItem[];

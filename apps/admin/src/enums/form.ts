@@ -16,6 +16,7 @@ export const registeredFormFields = {
   endDate: 'endDate',
   firstName: 'firstName',
   flatNo: 'flatNo',
+  gpsLocation: 'gpsLocation',
   id: 'id',
   lastName: 'lastName',
   locale: 'locale',

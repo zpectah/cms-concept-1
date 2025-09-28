@@ -34,7 +34,8 @@
     "country": "Country",
     "flatNo": "Flat Number",
     "read": "Read",
-    "color": "Color"
+    "color": "Color",
+    "gpsLocation": "GPS Location"
   },
   "message": {
     "error": {

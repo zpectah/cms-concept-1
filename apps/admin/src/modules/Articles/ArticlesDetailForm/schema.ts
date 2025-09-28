@@ -2,7 +2,7 @@ import z from 'zod';
 import i18next from 'i18next';
 import dayjs from 'dayjs';
 import { articlesTypeKeys, articlesTypeKeysArray } from '@common';
-import { formFieldsSchemas } from '../../../schema';
+import { AddressSchema, formFieldsSchemas, GpsLocationSchema } from '../../../schema';
 import { registeredFormFields } from '../../../enums';
 
 const LocaleSchema = z.record(
@@ -23,12 +23,15 @@ export const ArticlesDetailFormSchema = z
     deleted: formFieldsSchemas.boolean.optional(),
     created: formFieldsSchemas.string.optional(),
     updated: formFieldsSchemas.string.optional(),
-    startDate: formFieldsSchemas.date.nullable().optional(),
-    endDate: formFieldsSchemas.date.nullable().optional(),
-    location: formFieldsSchemas.string.optional(),
     categories: formFieldsSchemas.numberArray.optional(),
     tags: formFieldsSchemas.numberArray.optional(),
     attachments: formFieldsSchemas.numberArray.optional(),
+
+    // Event
+    startDate: formFieldsSchemas.date.nullable().optional(),
+    endDate: formFieldsSchemas.date.nullable().optional(),
+    eventAddress: AddressSchema.optional(),
+    gpsLocation: GpsLocationSchema.optional(),
   })
   .superRefine((model, context) => {
     const isEvent = model.type === articlesTypeKeys.event;
