@@ -6,6 +6,7 @@ export * from './Container';
 export * from './Content';
 export * from './debug';
 export * from './Dialog';
+export * from './favorites';
 export * from './fields';
 export * from './Footer';
 export * from './Form';

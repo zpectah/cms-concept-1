@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { Model } from '@common';
 import { ListItemsView, ListItemsSortOrder, ListItemsFilter } from '../components';
+import { createModelListFilterCommonDefaults } from '../helpers';
+import { CMS_MODEL_FILTER_KEY } from '../constants';
 
 interface ListItemModel {
   view: ListItemsView;
@@ -11,7 +13,6 @@ interface ListItemModel {
   perPage: number;
   selected: number[];
   filter: ListItemsFilter;
-  dirty: boolean;
 }
 
 type ListModel = Record<Model, ListItemModel>;
@@ -29,35 +30,23 @@ interface ModelListStore {
   resetModel: (model: Model) => void;
 }
 
-const createModelCommonDefaults = () => ({
-  view: 'table',
-  query: '',
-  orderBy: 'desc',
-  sortBy: 'id',
-  page: 1,
-  perPage: 10,
-  selected: [],
-  filter: { types: [], categories: [], tags: [] },
-  dirty: false,
-});
-
 const modelDefaults = {
-  articles: createModelCommonDefaults(),
-  attachments: createModelCommonDefaults(),
-  categories: createModelCommonDefaults(),
-  comments: createModelCommonDefaults(),
-  members: createModelCommonDefaults(),
-  menu: createModelCommonDefaults(),
-  menuItems: createModelCommonDefaults(),
-  messages: createModelCommonDefaults(),
-  pages: createModelCommonDefaults(),
-  tags: createModelCommonDefaults(),
-  translations: createModelCommonDefaults(),
-  users: createModelCommonDefaults(),
+  articles: createModelListFilterCommonDefaults(),
+  attachments: createModelListFilterCommonDefaults(),
+  categories: createModelListFilterCommonDefaults(),
+  comments: createModelListFilterCommonDefaults(),
+  members: createModelListFilterCommonDefaults(),
+  menu: createModelListFilterCommonDefaults(),
+  menuItems: createModelListFilterCommonDefaults(),
+  messages: createModelListFilterCommonDefaults(),
+  pages: createModelListFilterCommonDefaults(),
+  tags: createModelListFilterCommonDefaults(),
+  translations: createModelListFilterCommonDefaults(),
+  users: createModelListFilterCommonDefaults(),
 };
 
 const useModelListStore = create<ModelListStore>((set, getState) => {
-  const storageString = window.localStorage.getItem('model-list');
+  const storageString = window.localStorage.getItem(CMS_MODEL_FILTER_KEY);
   const storageJson = storageString ? JSON.parse(storageString) : Object.assign(modelDefaults);
 
   const modelStore = {
@@ -65,13 +54,13 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
   };
 
   const saveToStorage = (object: ModelListStore['model']) =>
-    window.localStorage.setItem('model-list', JSON.stringify(object));
+    window.localStorage.setItem(CMS_MODEL_FILTER_KEY, JSON.stringify(object));
 
   const resetModel = (model: Model) => {
     const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model] = {
-      ...createModelCommonDefaults(),
+      ...createModelListFilterCommonDefaults(),
       dirty: false,
     };
 
@@ -79,13 +68,10 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     saveToStorage(tmpModel);
   };
 
-  const areObjectsEqual = (obj1: object) => JSON.stringify(obj1) === JSON.stringify(createModelCommonDefaults());
-
   const setViewHandler = (model: Model, view: ListItemsView) => {
     const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].view = view;
-    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -95,7 +81,6 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].query = query;
-    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -105,7 +90,6 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].orderBy = orderBy;
-    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -115,7 +99,6 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].sortBy = sortBy;
-    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -125,7 +108,6 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].page = page;
-    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -135,7 +117,6 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].perPage = perPage;
-    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -145,7 +126,6 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].selected = selected;
-    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);
@@ -155,7 +135,6 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model].filter = { ...tmpModel[model].filter, ...filter };
-    tmpModel[model].dirty = areObjectsEqual(tmpModel[model]);
 
     set({ model: tmpModel });
     saveToStorage(tmpModel);

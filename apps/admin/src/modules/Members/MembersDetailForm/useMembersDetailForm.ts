@@ -10,6 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMembersQuery } from '../../../hooks-query';
+import { useModelFavorites } from '../../../hooks';
 import { MembersDetailFormSchema } from './schema';
 import { IMembersDetailForm } from './types';
 import { getMembersDetailFormDefaultValues } from './helpers';
@@ -25,6 +26,7 @@ export const useMembersDetailForm = () => {
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { membersDetailQuery, membersPatchQuery } = useMembersQuery(id);
   const { getTypeFieldOptions } = useSelectOptions();
+  const { removeItemFromFavorites } = useModelFavorites(modelKeys.members);
   const form = useForm<IMembersDetailForm>({
     resolver: zodResolver(MembersDetailFormSchema),
     defaultValues: getMembersDetailFormDefaultValues(),
@@ -59,6 +61,7 @@ export const useMembersDetailForm = () => {
       deleted: true,
     });
 
+    removeItemFromFavorites(master.id);
     patchHandler(master);
   };
 

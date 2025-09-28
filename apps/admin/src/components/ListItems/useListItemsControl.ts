@@ -295,6 +295,16 @@ export const useListItemsControl = <T extends ItemBase>({
     onPageChange: pageChangeHandler,
   };
 
+  const filter = {
+    types: typeOptions(),
+    categories: categoriesOptions,
+    tags: tagsOptions,
+    onCategoryToggle: toggleSelectCategoriesHandler,
+    onTagToggle: toggleSelectTagsHandler,
+    selected: modelStore[model].filter,
+    onTypeToggle: toggleSelectTypesHandler,
+  };
+
   return {
     rows,
     rawRows: filteredRows,
@@ -312,16 +322,7 @@ export const useListItemsControl = <T extends ItemBase>({
     onSelectAll: selectAllHandler,
     onDeselect: deselectHandler,
     pagination,
-    filter: {
-      types: typeOptions(),
-      categories: categoriesOptions,
-      tags: tagsOptions,
-      onCategoryToggle: toggleSelectCategoriesHandler,
-      onTagToggle: toggleSelectTagsHandler,
-      selected: modelStore[model].filter,
-      onTypeToggle: toggleSelectTypesHandler,
-      dirty: modelStore[model].dirty,
-    },
+    filter,
     onFilterReset: () => resetModel(model),
   };
 };

@@ -101,12 +101,15 @@ interface ViewBaseProps<T extends ItemBase> extends ListItemsInitialProps {
 }
 
 export interface TableViewProps<T extends ItemBase> extends ViewBaseProps<T> {
+  model: Model;
   columns: ListItemsTableColumn<T>[];
   onSelectAll: () => void;
   checkboxState: CheckboxState;
 }
 
-export type TilesViewProps<T extends ItemBase> = ViewBaseProps<T> & {};
+export interface TilesViewProps<T extends ItemBase> extends ViewBaseProps<T> {
+  model: Model;
+}
 
 export interface ListItemsFilter {
   types: string[];
@@ -161,7 +164,6 @@ export interface ListItemsControlsProps<T extends ItemBase> {
   types: string[];
   onTypeToggle: (type: string) => void;
   onFilterReset: () => void;
-  filterDirty: boolean;
   rowsOnPage: number;
 }
 

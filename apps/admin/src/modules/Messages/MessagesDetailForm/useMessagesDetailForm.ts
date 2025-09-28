@@ -10,6 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMessagesQuery } from '../../../hooks-query';
+import { useModelFavorites } from '../../../hooks';
 import { MessagesDetailFormSchema } from './schema';
 import { IMessagesDetailForm } from './types';
 import { getMessagesDetailFormDefaultValues, getMessagesTypeDefaultValue } from './helpers';
@@ -25,6 +26,7 @@ export const useMessagesDetailForm = () => {
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { messagesDetailQuery, messagesPatchQuery } = useMessagesQuery(id);
   const { getTypeFieldOptions } = useSelectOptions();
+  const { removeItemFromFavorites } = useModelFavorites(modelKeys.messages);
   const form = useForm<IMessagesDetailForm>({
     resolver: zodResolver(MessagesDetailFormSchema),
     defaultValues: getMessagesDetailFormDefaultValues(),
@@ -59,6 +61,7 @@ export const useMessagesDetailForm = () => {
       deleted: true,
     });
 
+    removeItemFromFavorites(master.id);
     patchHandler(master);
   };
 

@@ -10,6 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useArticlesQuery } from '../../../hooks-query';
+import { useModelFavorites } from '../../../hooks';
 import { ArticlesDetailFormSchema } from './schema';
 import { IArticlesDetailForm } from './types';
 import { getArticlesDetailFormDefaultValues } from './helpers';
@@ -25,6 +26,7 @@ export const useArticlesDetailForm = () => {
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { articlesDetailQuery, articlesPatchQuery } = useArticlesQuery(id);
   const { getTypeFieldOptions } = useSelectOptions();
+  const { removeItemFromFavorites } = useModelFavorites(modelKeys.articles);
   const { locales, locale, onLocaleChange } = useFormDetailControl();
   const form = useForm<IArticlesDetailForm>({
     resolver: zodResolver(ArticlesDetailFormSchema),
@@ -60,6 +62,7 @@ export const useArticlesDetailForm = () => {
       deleted: true,
     });
 
+    removeItemFromFavorites(master.id);
     patchHandler(master);
   };
 

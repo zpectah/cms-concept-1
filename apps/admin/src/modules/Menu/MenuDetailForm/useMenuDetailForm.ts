@@ -10,6 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMenuQuery } from '../../../hooks-query';
+import { useModelFavorites } from '../../../hooks';
 import { MenuDetailFormSchema } from './schema';
 import { IMenuDetailForm } from './types';
 import { getMenuDetailFormDefaultValues } from './helpers';
@@ -25,6 +26,7 @@ export const useMenuDetailForm = () => {
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { menuDetailQuery, menuPatchQuery } = useMenuQuery(id);
   const { getTypeFieldOptions } = useSelectOptions();
+  const { removeItemFromFavorites } = useModelFavorites(modelKeys.menu);
   const form = useForm<IMenuDetailForm>({
     resolver: zodResolver(MenuDetailFormSchema),
     defaultValues: getMenuDetailFormDefaultValues(),
@@ -59,6 +61,7 @@ export const useMenuDetailForm = () => {
       deleted: true,
     });
 
+    removeItemFromFavorites(master.id);
     patchHandler(master);
   };
 

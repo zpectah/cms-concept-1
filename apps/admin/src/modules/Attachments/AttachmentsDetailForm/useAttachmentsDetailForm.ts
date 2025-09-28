@@ -10,6 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useAttachmentsQuery } from '../../../hooks-query';
+import { useModelFavorites } from '../../../hooks';
 import { AttachmentsDetailFormSchema } from './schema';
 import { IAttachmentsDetailForm } from './types';
 import { getAttachmentsDetailFormDefaultValues } from './helpers';
@@ -25,6 +26,7 @@ export const useAttachmentsDetailForm = () => {
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { attachmentsDetailQuery, attachmentsPatchQuery } = useAttachmentsQuery(id);
   const { getTypeFieldOptions } = useSelectOptions();
+  const { removeItemFromFavorites } = useModelFavorites(modelKeys.attachments);
   const form = useForm<IAttachmentsDetailForm>({
     resolver: zodResolver(AttachmentsDetailFormSchema),
     defaultValues: getAttachmentsDetailFormDefaultValues(),
@@ -59,6 +61,7 @@ export const useAttachmentsDetailForm = () => {
       deleted: true,
     });
 
+    removeItemFromFavorites(master.id);
     patchHandler(master);
   };
 

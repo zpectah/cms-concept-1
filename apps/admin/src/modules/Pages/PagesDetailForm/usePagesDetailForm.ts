@@ -10,6 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { usePagesQuery } from '../../../hooks-query';
+import { useModelFavorites } from '../../../hooks';
 import { PagesDetailFormSchema } from './schema';
 import { IPagesDetailForm } from './types';
 import { getPagesDetailFormDefaultValues } from './helpers';
@@ -25,6 +26,7 @@ export const usePagesDetailForm = () => {
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { pagesDetailQuery, pagesPatchQuery } = usePagesQuery(id);
   const { getTypeFieldOptions } = useSelectOptions();
+  const { removeItemFromFavorites } = useModelFavorites(modelKeys.pages);
   const { locales, locale, onLocaleChange } = useFormDetailControl();
   const form = useForm<IPagesDetailForm>({
     resolver: zodResolver(PagesDetailFormSchema),
@@ -60,6 +62,7 @@ export const usePagesDetailForm = () => {
       deleted: true,
     });
 
+    removeItemFromFavorites(master.id);
     patchHandler(master);
   };
 

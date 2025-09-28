@@ -71,7 +71,7 @@ const ListItems = <T extends ItemBase>({
     onTagToggle,
     onTypeToggle,
     selected: selectedFilter,
-    dirty: filterDirty,
+    // dirty: filterDirty,
   } = filter;
 
   const isCategories = categories?.length > 0;
@@ -142,11 +142,11 @@ const ListItems = <T extends ItemBase>({
         onPerPageChange={pagination.onPerPageChange}
         types={typesOptions}
         onFilterReset={onFilterReset}
-        filterDirty={filterDirty}
         rowsOnPage={rows.length}
       />
       {view === listItemsViewKeys.table ? (
         <TableView<T>
+          model={model}
           name={name}
           pathPrefix={pathPrefix}
           rows={rows}
@@ -162,6 +162,7 @@ const ListItems = <T extends ItemBase>({
         />
       ) : (
         <TilesView<T>
+          model={model}
           name={name}
           pathPrefix={pathPrefix}
           rows={rows}

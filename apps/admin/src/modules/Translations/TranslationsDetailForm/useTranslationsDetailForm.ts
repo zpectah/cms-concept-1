@@ -10,6 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useTranslationsQuery } from '../../../hooks-query';
+import { useModelFavorites } from '../../../hooks';
 import { TranslationsDetailFormSchema } from './schema';
 import { ITranslationsDetailForm } from './types';
 import { getTranslationsDetailFormDefaultValues } from './helpers';
@@ -25,6 +26,7 @@ export const useTranslationsDetailForm = () => {
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { translationsDetailQuery, translationsPatchQuery } = useTranslationsQuery(id);
   const { getTypeFieldOptions } = useSelectOptions();
+  const { removeItemFromFavorites } = useModelFavorites(modelKeys.translations);
   const { locales, locale, onLocaleChange } = useFormDetailControl();
   const form = useForm<ITranslationsDetailForm>({
     resolver: zodResolver(TranslationsDetailFormSchema),
@@ -60,6 +62,7 @@ export const useTranslationsDetailForm = () => {
       deleted: true,
     });
 
+    removeItemFromFavorites(master.id);
     patchHandler(master);
   };
 

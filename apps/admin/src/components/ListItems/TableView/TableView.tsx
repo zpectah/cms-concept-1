@@ -18,6 +18,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import FileOpenIcon from '@mui/icons-material/FileOpen';
 import { ItemBase } from '@common';
 import { IconButtonPlus, IconButtonPlusProps } from '../../Button';
+import { FavoritesStar } from '../../favorites';
 import { TableViewProps } from '../types';
 import { checkboxStateKeys } from '../enums';
 import { muiCommonColorVariantKeys } from '../../../enums';
@@ -35,6 +36,7 @@ const TableView = <T extends ItemBase>({
   onDelete,
   onDisable,
   isLoading,
+  model,
 }: TableViewProps<T>) => {
   const { t } = useTranslation(['common', 'form']);
 
@@ -116,9 +118,12 @@ const TableView = <T extends ItemBase>({
                 return (
                   <TableCell variant="body" key={String(col.value)} align={col.isTitle ? 'left' : 'right'}>
                     {col.isTitle ? (
-                      <Typography variant="button" onClick={() => onDetail(row.id)} sx={{ cursor: 'pointer' }}>
-                        {value}
-                      </Typography>
+                      <Stack direction="row" gap={1.5} alignItems="center" justifyContent="start">
+                        <FavoritesStar model={model} id={row.id} />
+                        <Typography variant="button" onClick={() => onDetail(row.id)} sx={{ cursor: 'pointer' }}>
+                          {value}
+                        </Typography>
+                      </Stack>
                     ) : col?.renderValue ? (
                       col?.renderValue(row)
                     ) : (

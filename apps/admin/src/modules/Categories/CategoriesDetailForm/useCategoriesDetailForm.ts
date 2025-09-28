@@ -10,6 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useCategoriesQuery } from '../../../hooks-query';
+import { useModelFavorites } from '../../../hooks';
 import { CategoriesDetailFormSchema } from './schema';
 import { ICategoriesDetailForm } from './types';
 import { getCategoriesDetailFormDefaultValues } from './helpers';
@@ -25,6 +26,7 @@ export const useCategoriesDetailForm = () => {
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { categoriesDetailQuery, categoriesPatchQuery } = useCategoriesQuery(id);
   const { getTypeFieldOptions } = useSelectOptions();
+  const { removeItemFromFavorites } = useModelFavorites(modelKeys.categories);
   const { locales, locale, onLocaleChange } = useFormDetailControl();
   const form = useForm<ICategoriesDetailForm>({
     resolver: zodResolver(CategoriesDetailFormSchema),
@@ -60,6 +62,7 @@ export const useCategoriesDetailForm = () => {
       deleted: true,
     });
 
+    removeItemFromFavorites(master.id);
     patchHandler(master);
   };
 

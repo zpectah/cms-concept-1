@@ -10,6 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useTagsQuery } from '../../../hooks-query';
+import { useModelFavorites } from '../../../hooks';
 import { TagsDetailFormSchema } from './schema';
 import { ITagsDetailForm } from './types';
 import { getTagsDetailFormDefaultValues } from './helpers';
@@ -25,6 +26,7 @@ export const useTagsDetailForm = () => {
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
   const { tagsDetailQuery, tagsPatchQuery } = useTagsQuery(id);
   const { getTypeFieldOptions, getTranslatedOptionsFromList } = useSelectOptions();
+  const { removeItemFromFavorites } = useModelFavorites(modelKeys.tags);
   const form = useForm<ITagsDetailForm>({
     resolver: zodResolver(TagsDetailFormSchema),
     defaultValues: getTagsDetailFormDefaultValues(),
@@ -59,6 +61,7 @@ export const useTagsDetailForm = () => {
       deleted: true,
     });
 
+    removeItemFromFavorites(master.id);
     patchHandler(master);
   };
 

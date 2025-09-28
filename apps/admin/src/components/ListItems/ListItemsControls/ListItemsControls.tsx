@@ -16,7 +16,6 @@ import { LIST_ITEMS_PER_PAGE_OPTIONS } from '../constants';
 const ListItemsControls = <T extends ItemBase>({
   // model,
   // disableViewToggle,
-  // filterDirty,
   view,
   onViewToggle,
   query,
@@ -268,7 +267,13 @@ const ListItemsControls = <T extends ItemBase>({
                   {view}
                 </Button>
               )}
-              <Button color="warning" variant="outlined" size="small" onClick={onFilterReset}>
+              <Button
+                color="warning"
+                variant="outlined"
+                size="small"
+                onClick={onFilterReset}
+                // disabled={!isFilterDirty()}
+              >
                 {t('components:ListItems.resetFilter')}
               </Button>
               <Button
