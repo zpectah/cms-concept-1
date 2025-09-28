@@ -24,6 +24,7 @@ export interface DialogBaseProps extends Partial<WithChildren> {
   contentTextProps?: Partial<DialogContentTextProps>;
   actions?: ReactNode;
   actionsProps?: Partial<DialogActionsProps>;
+  disableCloseButton?: boolean;
 }
 
 export interface ConfirmDialogBaseProps {

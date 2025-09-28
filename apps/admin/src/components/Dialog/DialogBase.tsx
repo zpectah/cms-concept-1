@@ -1,6 +1,7 @@
 import { forwardRef, ReactElement, Ref } from 'react';
-import { Slide, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { Slide, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton } from '@mui/material';
 import { TransitionProps } from '@mui/material/transitions';
+import CloseIcon from '@mui/icons-material/Close';
 import { DialogBaseProps } from './types';
 
 const Transition = forwardRef(function Transition(
@@ -26,6 +27,7 @@ const DialogBase = ({
   contentTextProps,
   actions,
   actionsProps,
+  disableCloseButton,
 }: DialogBaseProps) => {
   return (
     <Dialog
@@ -37,6 +39,14 @@ const DialogBase = ({
       aria-describedby={id}
       {...dialogProps}
     >
+      {!disableCloseButton && (
+        <IconButton
+          onClick={onClose}
+          sx={({ spacing }) => ({ position: 'absolute', top: spacing(1), right: spacing(1), zIndex: 9999 })}
+        >
+          <CloseIcon />
+        </IconButton>
+      )}
       {title && <DialogTitle {...titleProps}>{title}</DialogTitle>}
       {(content || contentText) && (
         <DialogContent {...contentProps}>
