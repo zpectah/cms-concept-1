@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppStore } from '../../../store';
+import { modelKeys } from '@common';
+import { useAppStore, useModelListStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMessagesQuery } from '../../../hooks-query';
@@ -9,6 +10,7 @@ export const useMessagesList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
+  const { setSelected } = useModelListStore();
   const { messagesQuery } = useMessagesQuery();
 
   const { data: items, isLoading, refetch } = messagesQuery;
@@ -46,6 +48,7 @@ export const useMessagesList = () => {
     const toastMsg = ids.length === 1 ? t('message.success.updateRow') : t('message.success.updateSelected');
 
     addToast(toastMsg, 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+    setSelected(modelKeys.messages, []);
 
     // addToast(t('message.error.common'), 'error');
 
