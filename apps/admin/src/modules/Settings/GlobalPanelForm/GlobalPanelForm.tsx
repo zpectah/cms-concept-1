@@ -27,27 +27,27 @@ const GlobalPanelForm = () => {
     <ControlledForm form={form} formProps={{ onSubmit }}>
       <Content>
         <Section title={t('modules:settings.tabs.global.section.project.title')} cardContent contentSpacing="form">
-          <InputField name="projectName" label="Název projektu" isRequired />
-          <TextareaField name="projectDescription" label="Popis projektu" />
+          <InputField name="project.name" label="Název projektu" isRequired />
+          <TextareaField name="project.description" label="Popis projektu" />
         </Section>
         <Divider />
         <Section title={t('modules:settings.tabs.global.section.company.title')} cardContent contentSpacing="form">
-          <InputField name="companyName" label="Název společnosti" />
-          <TextareaField name="companyDescription" label="Popis společnosti" />
-          <InputField name="companyId" label="ID společnosti" />
+          <InputField name="company.name" label="Název společnosti" />
+          <TextareaField name="company.description" label="Popis společnosti" />
+          <InputField name="company.id" label="ID společnosti" />
           <EmailPickerField
-            name="companyEmail"
+            name="company.email"
             label="E-mail společnosti"
             fieldProps={{ placeholder: 'Zadejte e-mail' }}
           />
           <PhonePickerField
-            name="companyPhone"
+            name="company.phone"
             label="Telefon společnosti"
             fieldProps={{ placeholder: 'Zadejte telefon' }}
           />
-          <InputField name="companyBank" label="Bankovní spojení" />
-          <AddressField fieldPrefix="companyAddress" disableCard />
-          <GpsPickerField name="companyLocation" label={t('form:label.gpsLocation')} />
+          <InputField name="company.bank" label="Bankovní spojení" />
+          <AddressField fieldPrefix="company.address" disableCard />
+          <GpsPickerField name="company.location" label={t('form:label.gpsLocation')} />
         </Section>
         <Divider />
         <ActionBar>

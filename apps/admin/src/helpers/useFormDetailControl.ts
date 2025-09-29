@@ -14,8 +14,8 @@ export const useFormDetailControl = () => {
 
   useEffect(() => {
     if (settingsData) {
-      setLocales(settingsData.locales_active);
-      setLocale(settingsData.locales_default);
+      setLocales(settingsData.locales.active);
+      setLocale(settingsData.locales.default);
     }
   }, [settingsData]);
 

@@ -8,6 +8,7 @@ export * from './menuItems';
 export * from './messages';
 export * from './model';
 export * from './pages';
+export * from './settings';
 export * from './tags';
 export * from './translations';
 export * from './users';

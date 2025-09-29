@@ -20,7 +20,9 @@ export const formFieldsSchemas = {
   boolean: z.boolean(),
   string: z.string(),
   number: z.number(),
+  stringOrNumber: z.string().or(z.number()),
   date: z.custom<dayjs.Dayjs>(),
   numberArray: z.array(z.number()),
   stringArray: z.array(z.string()),
+  stringOrNumberArray: z.array(z.string().or(z.number())),
 };

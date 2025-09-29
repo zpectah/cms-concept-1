@@ -2,15 +2,25 @@ import z from 'zod';
 import { formFieldsSchemas } from '../../../schema';
 
 export const SettingsClientPanelFormSchema = z.object({
-  metaTitle: formFieldsSchemas.required_string,
-  metaDescription: formFieldsSchemas.string.optional(),
-  metaKeywords: formFieldsSchemas.stringArray.optional(),
-  metaRobots: formFieldsSchemas.required_string,
-  stateDebug: formFieldsSchemas.boolean,
-  stateMaintenance: formFieldsSchemas.boolean,
-  messagesActive: formFieldsSchemas.boolean,
-  messagesRecipients: formFieldsSchemas.stringArray.optional(),
-  commentsActive: formFieldsSchemas.boolean,
-  commentsAnonymous: formFieldsSchemas.boolean,
-  membersActive: formFieldsSchemas.boolean,
+  meta: z.object({
+    title: formFieldsSchemas.required_string,
+    description: formFieldsSchemas.string.optional(),
+    keywords: formFieldsSchemas.stringArray.optional(),
+    robots: formFieldsSchemas.required_string,
+  }),
+  state: z.object({
+    debug: formFieldsSchemas.boolean,
+    maintenance: formFieldsSchemas.boolean,
+  }),
+  messages: z.object({
+    active: formFieldsSchemas.boolean,
+    recipients: formFieldsSchemas.stringArray.optional(),
+  }),
+  comments: z.object({
+    active: formFieldsSchemas.boolean,
+    anonymous: formFieldsSchemas.boolean,
+  }),
+  members: z.object({
+    active: formFieldsSchemas.boolean,
+  }),
 });

@@ -26,38 +26,38 @@ const ClientPanelForm = () => {
     <ControlledForm form={form} formProps={{ onSubmit }}>
       <Content>
         <Section title={t('modules:settings.tabs.client.section.meta.title')} cardContent contentSpacing="form">
-          <InputField name="metaTitle" label="Titulek aplikace" isRequired />
-          <TextareaField name="metaDescription" label="Popis aplikace" />
+          <InputField name="meta.title" label="Titulek aplikace" isRequired />
+          <TextareaField name="meta.description" label="Popis aplikace" />
           <SelectField
-            name="metaRobots"
+            name="meta.robots"
             label="Meta roboti"
             items={fieldOptions.metaRobots}
             fieldProps={{ sx: { width: { xs: '100%', md: '33%' } } }}
           />
           <StringPickerField
-            name="metaKeywords"
+            name="meta.keywords"
             label="Klíčová slova"
             fieldProps={{ placeholder: 'Zadejte klíčové slovo' }}
           />
         </Section>
         <Section title="Stavy" cardContent contentSpacing="form">
-          <SwitchField name="stateDebug" fieldProps={{ label: 'Mód ladění' }} />
-          <SwitchField name="stateMaintenance" fieldProps={{ label: 'Mód údržby' }} />
+          <SwitchField name="state.debug" fieldProps={{ label: 'Mód ladění' }} />
+          <SwitchField name="state.maintenance" fieldProps={{ label: 'Mód údržby' }} />
         </Section>
         <Section title="Zprávy" cardContent contentSpacing="form">
-          <SwitchField name="messagesActive" fieldProps={{ label: 'Zprávy aktivní' }} />
+          <SwitchField name="messages.active" fieldProps={{ label: 'Zprávy aktivní' }} />
           <EmailPickerField
-            name="messagesRecipients"
+            name="messages.recipients"
             label="Příjemci zpráv"
             fieldProps={{ placeholder: 'Zadejte e-mail' }}
           />
         </Section>
         <Section title="Komentáře" cardContent contentSpacing="form">
-          <SwitchField name="commentsActive" fieldProps={{ label: 'Komentáře aktivní' }} />
-          <SwitchField name="commentsAnonymous" fieldProps={{ label: 'Komentovat mohou i anonymní uživatelé' }} />
+          <SwitchField name="comments.active" fieldProps={{ label: 'Komentáře aktivní' }} />
+          <SwitchField name="comments.anonymous" fieldProps={{ label: 'Komentovat mohou i anonymní uživatelé' }} />
         </Section>
         <Section title="Members" cardContent contentSpacing="form">
-          <SwitchField name="membersActive" fieldProps={{ label: 'Members aktivní' }} />
+          <SwitchField name="members.active" fieldProps={{ label: 'Members aktivní' }} />
         </Section>
         <Divider />
         <ActionBar>

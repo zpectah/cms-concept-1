@@ -1,17 +1,22 @@
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { META_ROBOTS_OPTIONS } from '../../../constants';
+import { useSettingsQuery } from '../../../hooks-query';
 import { useSelectOptions } from '../../../helpers';
 import { ISettingsClientPanelForm } from './types';
 import { SettingsClientPanelFormSchema } from './schema';
 import { getDataToFormMapper } from './helpers';
 
 export const useClientPanelForm = () => {
+  const { settingsQuery } = useSettingsQuery();
   const { getTranslatedOptionsFromList } = useSelectOptions();
   const form = useForm<ISettingsClientPanelForm>({
     defaultValues: getDataToFormMapper(),
     resolver: zodResolver(SettingsClientPanelFormSchema),
   });
+
+  const { data: settingsData } = settingsQuery;
 
   const submitHandler: SubmitHandler<ISettingsClientPanelForm> = (data, event) => {
     if (!data) return;
@@ -22,6 +27,14 @@ export const useClientPanelForm = () => {
 
     console.log('ClientPanelForm onSubmit', master);
   };
+
+  useEffect(() => {
+    if (settingsData) {
+      if (form.formState.isDirty) return;
+
+      form.reset({ ...getDataToFormMapper(settingsData) });
+    }
+  }, [settingsData]);
 
   return {
     form,
