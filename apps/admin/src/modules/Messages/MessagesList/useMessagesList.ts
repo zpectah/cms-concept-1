@@ -39,6 +39,19 @@ export const useMessagesList = () => {
     refetch();
   };
 
+  const markReadSelectedHandler = (ids: number[]) => {
+    // TODO #api-call
+    console.log('markReadSelectedHandler', ids);
+
+    const toastMsg = ids.length === 1 ? t('message.success.updateRow') : t('message.success.updateSelected');
+
+    addToast(toastMsg, 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+
+    // addToast(t('message.error.common'), 'error');
+
+    refetch();
+  };
+
   useEffect(() => {
     setTitle(t('modules:messages.listTitle'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,5 +63,6 @@ export const useMessagesList = () => {
 
     onDeleteSelected: deleteSelectedHandler,
     onDisableSelected: disableSelectedHandler,
+    onMarkSelected: markReadSelectedHandler,
   };
 };

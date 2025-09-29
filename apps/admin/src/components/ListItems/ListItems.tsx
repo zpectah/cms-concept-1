@@ -31,7 +31,10 @@ const ListItems = <T extends ItemBase>({
   disableViewToggle,
   categories = [],
   tags = [],
-  initialView = 'table',
+  initialView = listItemsViewKeys.table,
+  disableFavorites,
+  renderSelectedActions,
+  renderRowActions,
 }: ListItemsProps<T>) => {
   const { t } = useTranslation();
   const {
@@ -144,6 +147,7 @@ const ListItems = <T extends ItemBase>({
         types={typesOptions}
         onFilterReset={onFilterReset}
         rowsOnPage={rows.length}
+        renderSelectedActions={renderSelectedActions}
       />
       {view === listItemsViewKeys.table ? (
         <TableView<T>
@@ -160,6 +164,8 @@ const ListItems = <T extends ItemBase>({
           columns={columns}
           checkboxState={checkboxState}
           isLoading={isLoading}
+          disableFavorites={disableFavorites}
+          renderRowActions={renderRowActions}
         />
       ) : (
         <TilesView<T>
@@ -173,6 +179,8 @@ const ListItems = <T extends ItemBase>({
           onDelete={rowDeleteHandler}
           onDisable={rowDisableHandler}
           isLoading={isLoading}
+          disableFavorites={disableFavorites}
+          renderRowActions={renderRowActions}
         />
       )}
       <ListItemsPagination {...pagination} />

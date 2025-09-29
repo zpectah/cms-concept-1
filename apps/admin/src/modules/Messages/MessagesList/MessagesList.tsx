@@ -1,5 +1,8 @@
+import { Button } from '@mui/material';
+import MarkAsUnreadIcon from '@mui/icons-material/MarkAsUnread';
+import MarkunreadIcon from '@mui/icons-material/Markunread';
 import { modelKeys, MessagesItem } from '@common';
-import { ListItems, ValueType, ValueBoolean, ValueDate } from '../../../components';
+import { ListItems, ValueType, ValueDate, IconButtonPlus } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 import { useMessagesList } from './useMessagesList';
@@ -8,7 +11,7 @@ const MessagesList = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { messages, isLoading, onDeleteSelected, onDisableSelected } = useMessagesList();
+  const { messages, isLoading, onDeleteSelected, onDisableSelected, onMarkSelected } = useMessagesList();
 
   return (
     <ListItems<MessagesItem>
@@ -34,10 +37,6 @@ const MessagesList = () => {
           renderValue: (row) => <ValueType value={row.type} />,
         },
         {
-          value: registeredFormFields.read,
-          renderValue: (row) => <ValueBoolean value={row.read} />,
-        },
-        {
           value: registeredFormFields.updated,
           renderValue: (row) => <ValueDate value={row.updated} />,
         },
@@ -46,6 +45,22 @@ const MessagesList = () => {
       onDisableSelected={onDisableSelected}
       onRowDelete={(id) => onDeleteSelected([id])}
       onRowDisable={(id) => onDisableSelected([id])}
+      disableFavorites
+      renderSelectedActions={(selected) => (
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => onMarkSelected(selected)}
+          disabled={selected.length === 0}
+        >
+          Mark as read
+        </Button>
+      )}
+      renderRowActions={(row) => (
+        <IconButtonPlus tooltip="Mark as read" onClick={() => onMarkSelected([row.id])}>
+          {row.read ? <MarkAsUnreadIcon fontSize="small" /> : <MarkunreadIcon fontSize="small" />}
+        </IconButtonPlus>
+      )}
     />
   );
 };

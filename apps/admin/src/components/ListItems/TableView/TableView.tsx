@@ -24,19 +24,21 @@ import { checkboxStateKeys } from '../enums';
 import { muiCommonColorVariantKeys } from '../../../enums';
 
 const TableView = <T extends ItemBase>({
+  pathPrefix,
+  isLoading,
   name,
   columns,
   onSelectAll,
   checkboxState,
   rows = [],
-  pathPrefix,
   selected = [],
   onSelect,
   onDetail,
   onDelete,
   onDisable,
-  isLoading,
   model,
+  disableFavorites,
+  renderRowActions,
 }: TableViewProps<T>) => {
   const { t } = useTranslation(['common', 'form']);
 
@@ -119,7 +121,7 @@ const TableView = <T extends ItemBase>({
                   <TableCell variant="body" key={String(col.value)} align={col.isTitle ? 'left' : 'right'}>
                     {col.isTitle ? (
                       <Stack direction="row" gap={1.5} alignItems="center" justifyContent="start">
-                        <FavoritesStar model={model} id={row.id} />
+                        {!disableFavorites && <FavoritesStar model={model} id={row.id} />}
                         <Typography variant="button" onClick={() => onDetail(row.id)} sx={{ cursor: 'pointer' }}>
                           {value}
                         </Typography>
@@ -135,6 +137,7 @@ const TableView = <T extends ItemBase>({
 
               <TableCell align="right">
                 <Stack direction="row" gap={1} sx={{ display: 'inline-flex' }}>
+                  {renderRowActions?.(row)}
                   {getActions(row.id, row.active).map(
                     ({ hidden, ...button }, index) => !hidden && <IconButtonPlus key={index} {...button} />
                   )}

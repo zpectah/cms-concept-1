@@ -30,11 +30,22 @@ interface ListItemsInitialProps {
 export interface ListItemsProps<T extends ItemBase> extends ListItemsBase<T>, ListItemsInitialProps {
   columns: ListItemsTableColumn<T>[];
   disableViewToggle?: boolean;
+  disableFavorites?: boolean;
   initialView?: ListItemsView;
   itemsPerPage?: number;
   model: Model;
   orderKeys: (keyof T)[];
   searchKeys: (keyof T)[];
+
+  /**
+   * Custom render actions in controls for selected items
+   **/
+  renderSelectedActions?: (selected: ListItemsSelected) => ReactNode;
+
+  /**
+   * Custom render actions for each row
+   **/
+  renderRowActions?: (row: T) => ReactNode;
 
   /**
    * Optional callback when selected changes
@@ -93,12 +104,15 @@ export interface useListItemsControlProps<T extends ItemBase> extends ListItemsB
 }
 
 interface ViewBaseProps<T extends ItemBase> extends ListItemsInitialProps {
+  disableFavorites?: boolean;
+  model: Model;
   onDelete: (id: number) => void;
   onDetail: (id: number) => void;
   onDisable: (id: number) => void;
   onSelect: (id: number) => void;
   rows: T[];
   selected: ListItemsSelected;
+  renderRowActions?: (row: T) => ReactNode;
 }
 
 export interface TableViewProps<T extends ItemBase> extends ViewBaseProps<T> {
@@ -108,9 +122,7 @@ export interface TableViewProps<T extends ItemBase> extends ViewBaseProps<T> {
   onSelectAll: () => void;
 }
 
-export interface TilesViewProps<T extends ItemBase> extends ViewBaseProps<T> {
-  model: Model;
-}
+export type TilesViewProps<T extends ItemBase> = ViewBaseProps<T> & {};
 
 export interface ListItemsFilter {
   categories: number[];
@@ -166,6 +178,8 @@ export interface ListItemsControlsProps<T extends ItemBase> {
   tags: Tags;
   types: string[];
   view: ListItemsView;
+
+  renderSelectedActions?: (selected: ListItemsSelected) => ReactNode;
 }
 
 export type ListItemsPaginationProps = ListItemsPagination & {};

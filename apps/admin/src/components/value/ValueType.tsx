@@ -3,11 +3,12 @@ import { getOptionValue } from '../../helpers';
 
 interface ValueTypeProps {
   value: string;
+  prefix?: string;
   chipProps?: Partial<ChipProps>;
 }
 
-const ValueType = ({ value, chipProps }: ValueTypeProps) => (
-  <Chip label={getOptionValue(value)} size="small" color="info" variant="outlined" {...chipProps} />
+const ValueType = ({ value, prefix, chipProps }: ValueTypeProps) => (
+  <Chip label={getOptionValue(value, prefix)} size="small" color="info" variant="outlined" {...chipProps} />
 );
 
 export default ValueType;

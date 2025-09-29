@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import { useCallback, useEffect, useMemo } from 'react';
 import { ItemBase, Categories, Tags } from '@common';
 import { CheckboxState, ListItemsPagination, ListItemsSelected, useListItemsControlProps } from './types';
@@ -54,15 +52,18 @@ export const useListItemsControl = <T extends ItemBase>({
         return tags.some((t) => modelStore[model].filter.tags.includes(t));
       })
       .sort(sortItems(modelStore[model].sortBy as keyof T, modelStore[model].orderBy));
-  }, [rawRows, modelStore[model].filter, modelStore[model].sortBy, modelStore[model].orderBy]);
-  const pages = useMemo(() => Math.max(1, Math.ceil(filteredRows.length / modelStore[model].perPage)), [filteredRows]);
-  const isFirstDisabled = useMemo(() => modelStore[model].page === 1, []);
-  const isLastDisabled = useMemo(() => modelStore[model].page === pages, [pages]);
+  }, [model, modelStore, rawRows]);
+  const pages = useMemo(
+    () => Math.max(1, Math.ceil(filteredRows.length / modelStore[model].perPage)),
+    [filteredRows.length, model, modelStore]
+  );
+  const isFirstDisabled = useMemo(() => modelStore[model].page === 1, [model, modelStore]);
+  const isLastDisabled = useMemo(() => modelStore[model].page === pages, [model, modelStore, pages]);
   const rows = useMemo(() => {
     const start = (modelStore[model].page - 1) * modelStore[model].perPage;
 
     return filteredRows.slice(start, start + modelStore[model].perPage);
-  }, [filteredRows, modelStore[model].page, modelStore[model].perPage]);
+  }, [filteredRows, model, modelStore]);
 
   const pageChangeHandler = (page: number) => setPage(model, page);
 
@@ -73,11 +74,11 @@ export const useListItemsControl = <T extends ItemBase>({
 
   const onPageNextHandler = useCallback(
     () => pageChangeHandler(Math.min(modelStore[model].page + 1, pages)),
-    [modelStore[model].page, pages]
+    [model, modelStore, pages]
   );
   const onPagePrevHandler = useCallback(
     () => pageChangeHandler(Math.max(modelStore[model].page - 1, 1)),
-    [modelStore[model].page]
+    [model, modelStore]
   );
   const onPageFirstHandler = useCallback(() => pageChangeHandler(1), []);
   const onPageLastHandler = useCallback(() => pageChangeHandler(pages), [pages]);
@@ -87,16 +88,17 @@ export const useListItemsControl = <T extends ItemBase>({
       modelStore[model].view === listItemsViewKeys.table ? listItemsViewKeys.tiles : listItemsViewKeys.table;
 
     setView(model, newView);
-  }, [modelStore[model].view]);
+  }, [model, modelStore]);
 
-  const toggleOrderByHandler = useCallback(() => {
-    const newOrderBy =
-      modelStore[model].orderBy === listItemsSortOrderKeys.asc
-        ? listItemsSortOrderKeys.desc
-        : listItemsSortOrderKeys.asc;
-
-    setOrderBy(model, newOrderBy);
-  }, [modelStore[model].orderBy]);
+  // TODO
+  // const toggleOrderByHandler = useCallback(() => {
+  //   const newOrderBy =
+  //     modelStore[model].orderBy === listItemsSortOrderKeys.asc
+  //       ? listItemsSortOrderKeys.desc
+  //       : listItemsSortOrderKeys.asc;
+  //
+  //   setOrderBy(model, newOrderBy);
+  // }, [model, modelStore]);
 
   const orderHandler = useCallback(
     (key: keyof T) => {
@@ -112,7 +114,7 @@ export const useListItemsControl = <T extends ItemBase>({
         setOrderBy(model, listItemsSortOrderKeys.desc);
       }
     },
-    [modelStore[model].sortBy, modelStore[model].orderBy, toggleOrderByHandler]
+    [model, modelStore]
   );
 
   const queryChangeHandler = (query: string) => setQuery(model, query);
@@ -131,7 +133,7 @@ export const useListItemsControl = <T extends ItemBase>({
       setSelected(model, newSelected);
       onRowSelect?.(newSelected);
     },
-    [modelStore[model].selected, onRowSelect]
+    [model, modelStore, onRowSelect]
   );
 
   const selectAllHandler = useCallback(() => {
@@ -148,16 +150,16 @@ export const useListItemsControl = <T extends ItemBase>({
 
     setSelected(model, newSelected);
     onSelectAll?.(newSelected);
-  }, [filteredRows, modelStore[model].selected, onRowSelect]);
+  }, [filteredRows, model, modelStore, onSelectAll]);
 
-  const deselectHandler = useCallback(() => setSelected(model, []), []);
+  const deselectHandler = useCallback(() => setSelected(model, []), [model]);
 
   const checkboxState = useMemo<CheckboxState>(() => {
     if (modelStore[model].selected.length === 0) return checkboxStateKeys.none;
     if (modelStore[model].selected.length === filteredRows.length) return checkboxStateKeys.checked;
 
     return checkboxStateKeys.indeterminate;
-  }, [filteredRows, modelStore[model].selected]);
+  }, [filteredRows.length, model, modelStore]);
 
   const typeOptions = () => {
     const types: string[] = [];
@@ -241,7 +243,7 @@ export const useListItemsControl = <T extends ItemBase>({
 
       setFilter(model, { types: newSelected });
     },
-    [modelStore[model].filter]
+    [model, modelStore]
   );
 
   const toggleSelectCategoriesHandler = useCallback(
@@ -257,7 +259,7 @@ export const useListItemsControl = <T extends ItemBase>({
 
       setFilter(model, { categories: newSelected });
     },
-    [modelStore[model].filter]
+    [model, modelStore]
   );
 
   const toggleSelectTagsHandler = useCallback(
@@ -273,7 +275,7 @@ export const useListItemsControl = <T extends ItemBase>({
 
       setFilter(model, { tags: newSelected });
     },
-    [modelStore[model].filter]
+    [model, modelStore]
   );
 
   const pagination: ListItemsPagination = {

@@ -1,5 +1,5 @@
 import { modelKeys, TagsItem } from '@common';
-import { ListItems, ValueType, ValueDate } from '../../../components';
+import { ListItems, ValueType, ValueDate, ValueColor } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 import { useTagsList } from './useTagsList';
@@ -32,6 +32,10 @@ const TagsList = () => {
         {
           value: registeredFormFields.type,
           renderValue: (row) => <ValueType value={row.type} />,
+        },
+        {
+          value: registeredFormFields.color,
+          renderValue: (row) => <ValueColor value={row.color} />,
         },
         {
           value: registeredFormFields.updated,

@@ -15,7 +15,7 @@ import { LIST_ITEMS_PER_PAGE_OPTIONS } from '../constants';
 
 const ListItemsControls = <T extends ItemBase>({
   // model,
-  // disableViewToggle,
+  // disableViewToggle, TODO
   view,
   onViewToggle,
   query,
@@ -43,6 +43,7 @@ const ListItemsControls = <T extends ItemBase>({
   onPerPageChange,
   onFilterReset,
   rowsOnPage,
+  renderSelectedActions,
 }: ListItemsControlsProps<T>) => {
   const { viewToggleEnabled } = getConfig();
   const { t } = useTranslation(['common', 'form', 'options', 'components']);
@@ -216,7 +217,8 @@ const ListItemsControls = <T extends ItemBase>({
           </Button>
         );
       })}
-
+      {renderSelectedActions?.(selected)}
+      {/* TODO - make this look better */}
       <Stack direction="row" alignItems="center">
         &nbsp;
         <Typography variant="button">

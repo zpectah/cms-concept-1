@@ -42,6 +42,7 @@ const TranslationsList = () => {
       onDisableSelected={onDisableSelected}
       onRowDelete={(id) => onDeleteSelected([id])}
       onRowDisable={(id) => onDisableSelected([id])}
+      disableFavorites
     />
   );
 };

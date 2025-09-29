@@ -13,6 +13,8 @@ const TilesView = <T extends ItemBase>({
   onDelete,
   onDisable,
   isLoading,
+  disableFavorites,
+  renderRowActions,
 }: TilesViewProps<T>) => {
   return (
     <Box>

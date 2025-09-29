@@ -1,10 +1,12 @@
-export const createModelListFilterCommonDefaults = () => ({
-  view: 'table',
+import { ListItemsView } from '../components';
+
+export const createModelListFilterCommonDefaults = (view?: ListItemsView) => ({
+  view: view ? view : 'table',
   query: '',
   orderBy: 'desc',
   sortBy: 'id',
   page: 1,
-  perPage: 10,
+  perPage: 15,
   selected: [],
   filter: { types: [], categories: [], tags: [] },
 });
