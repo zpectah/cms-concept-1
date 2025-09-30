@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
+import { newItemKey } from '@common';
 import { getConfig } from '../utils';
 import { ToastList, AnnouncementsList } from '../modules';
 import { AuthLayout, AppLayout } from '../components';
@@ -33,6 +34,7 @@ const TagsList = lazy(() => import('../modules/Tags/TagsList/TagsList'));
 const TagsDetailForm = lazy(() => import('../modules/Tags/TagsDetailForm/TagsDetailForm'));
 const AttachmentsList = lazy(() => import('../modules/Attachments/AttachmentsList/AttachmentsList'));
 const AttachmentsDetailForm = lazy(() => import('../modules/Attachments/AttachmentsDetailForm/AttachmentsDetailForm'));
+const AttachmentsCreateForm = lazy(() => import('../modules/Attachments/AttachmentsCreateForm/AttachmentsCreateForm'));
 const MembersList = lazy(() => import('../modules/Members/MembersList/MembersList'));
 const MembersDetailForm = lazy(() => import('../modules/Members/MembersDetailForm/MembersDetailForm'));
 const MenuList = lazy(() => import('../modules/Menu/MenuList/MenuList'));
@@ -224,6 +226,10 @@ const AppRouter = () => {
                 {
                   path: `/${routes.attachments.path}`,
                   element: <AttachmentsList />,
+                },
+                {
+                  path: `/${routes.attachments.path}/${newItemKey}`,
+                  element: <AttachmentsCreateForm />,
                 },
                 {
                   path: `/${routes.attachments.path}/:id`,

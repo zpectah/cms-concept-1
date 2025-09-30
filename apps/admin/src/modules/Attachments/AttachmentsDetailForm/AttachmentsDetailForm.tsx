@@ -24,7 +24,13 @@ const AttachmentsDetailForm = () => {
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
 
   return (
-    <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
+    <ControlledForm
+      key={detailId}
+      form={form}
+      formProps={{
+        onSubmit,
+      }}
+    >
       <FormLayout
         actions={<FormDetailActions detailId={detailId} listPath={`/${routes.tags.path}`} />}
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
@@ -35,6 +41,7 @@ const AttachmentsDetailForm = () => {
           label={t('form:label.type')}
           items={fieldOptions.type}
           fieldProps={{ defaultValue: attachmentsTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
+          readOnly
         />
       </FormLayout>
     </ControlledForm>

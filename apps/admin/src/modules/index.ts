@@ -3,6 +3,7 @@ export * from './Attachments';
 export * from './Categories';
 export * from './Dashboard';
 export * from './Demo';
+export * from './FileUploader';
 export * from './Login';
 export * from './PasswordRecovery';
 export * from './Settings';
