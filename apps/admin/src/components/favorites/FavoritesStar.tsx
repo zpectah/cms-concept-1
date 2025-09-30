@@ -1,4 +1,5 @@
-import { IconProps, styled } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { styled, SvgIconProps } from '@mui/material';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import StarIcon from '@mui/icons-material/Star';
 import { Model } from '@common';
@@ -16,10 +17,11 @@ interface FavoriteStarsProps {
   model: Model;
   id: number;
   iconButtonProps?: Partial<IconButtonPlusProps>;
-  iconProps?: Partial<IconProps>;
+  iconProps?: SvgIconProps;
 }
 
 const FavoritesStar = ({ model, id, iconButtonProps, iconProps }: FavoriteStarsProps) => {
+  const { t } = useTranslation();
   const { toggleFavoriteItem, isItemFavorite } = useModelFavorites(model);
 
   const isFavorite = isItemFavorite(id);
@@ -29,7 +31,12 @@ const FavoritesStar = ({ model, id, iconButtonProps, iconProps }: FavoriteStarsP
   };
 
   return (
-    <IconButtonPlus tooltip="Favorite" size="small" onClick={() => toggleFavoriteItem(id)} {...iconButtonProps}>
+    <IconButtonPlus
+      tooltip={t('button.favorite')}
+      size="small"
+      onClick={() => toggleFavoriteItem(id)}
+      {...iconButtonProps}
+    >
       {isFavorite ? <StarIconFilled {...finalIconProps} /> : <StarIconEmpty {...finalIconProps} />}
     </IconButtonPlus>
   );

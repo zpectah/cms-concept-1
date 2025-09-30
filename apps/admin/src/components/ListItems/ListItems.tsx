@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Stack } from '@mui/material';
 import { ItemBase } from '@common';
 import { useViewLayoutContext } from '../layout';
+import { Content } from '../Content';
 import { ListItemsProps } from './types';
 import { listItemsViewKeys } from './enums';
 import { useListItemsControl } from './useListItemsControl';
@@ -11,6 +11,7 @@ import { ListItemsControls } from './ListItemsControls';
 import { ListItemsPagination } from './ListItemsPagination';
 import { TableView } from './TableView';
 import { TilesView } from './TilesView';
+import { AttachmentsView } from './AttachmentsView';
 
 const ListItems = <T extends ItemBase>({
   name,
@@ -115,8 +116,70 @@ const ListItems = <T extends ItemBase>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onDeleteSelected, onDeselect, selected]);
 
+  const renderView = () => {
+    switch (view) {
+      case listItemsViewKeys.tiles:
+        return (
+          <TilesView<T>
+            model={model}
+            name={name}
+            pathPrefix={pathPrefix}
+            rows={rows}
+            selected={selected}
+            onSelect={onSelect}
+            onDetail={rowDetailHandler}
+            onDelete={rowDeleteHandler}
+            onDisable={rowDisableHandler}
+            isLoading={isLoading}
+            disableFavorites={disableFavorites}
+            renderRowActions={renderRowActions}
+          />
+        );
+
+      case listItemsViewKeys.attachments:
+        return (
+          <AttachmentsView<T>
+            model={model}
+            name={name}
+            pathPrefix={pathPrefix}
+            rows={rows}
+            selected={selected}
+            onSelect={onSelect}
+            onDetail={rowDetailHandler}
+            onDelete={rowDeleteHandler}
+            onDisable={rowDisableHandler}
+            isLoading={isLoading}
+            disableFavorites={disableFavorites}
+            renderRowActions={renderRowActions}
+          />
+        );
+
+      case listItemsViewKeys.table:
+      default:
+        return (
+          <TableView<T>
+            model={model}
+            name={name}
+            pathPrefix={pathPrefix}
+            rows={rows}
+            selected={selected}
+            onSelect={onSelect}
+            onDetail={rowDetailHandler}
+            onDelete={rowDeleteHandler}
+            onDisable={rowDisableHandler}
+            onSelectAll={onSelectAllRows}
+            columns={columns}
+            checkboxState={checkboxState}
+            isLoading={isLoading}
+            disableFavorites={disableFavorites}
+            renderRowActions={renderRowActions}
+          />
+        );
+    }
+  };
+
   return (
-    <Stack gap={2}>
+    <Content>
       <ListItemsControls<T>
         model={model}
         disableViewToggle={disableViewToggle}
@@ -149,42 +212,9 @@ const ListItems = <T extends ItemBase>({
         rowsOnPage={rows.length}
         renderSelectedActions={renderSelectedActions}
       />
-      {view === listItemsViewKeys.table ? (
-        <TableView<T>
-          model={model}
-          name={name}
-          pathPrefix={pathPrefix}
-          rows={rows}
-          selected={selected}
-          onSelect={onSelect}
-          onDetail={rowDetailHandler}
-          onDelete={rowDeleteHandler}
-          onDisable={rowDisableHandler}
-          onSelectAll={onSelectAllRows}
-          columns={columns}
-          checkboxState={checkboxState}
-          isLoading={isLoading}
-          disableFavorites={disableFavorites}
-          renderRowActions={renderRowActions}
-        />
-      ) : (
-        <TilesView<T>
-          model={model}
-          name={name}
-          pathPrefix={pathPrefix}
-          rows={rows}
-          selected={selected}
-          onSelect={onSelect}
-          onDetail={rowDetailHandler}
-          onDelete={rowDeleteHandler}
-          onDisable={rowDisableHandler}
-          isLoading={isLoading}
-          disableFavorites={disableFavorites}
-          renderRowActions={renderRowActions}
-        />
-      )}
+      {renderView()}
       <ListItemsPagination {...pagination} />
-    </Stack>
+    </Content>
   );
 };
 

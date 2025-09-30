@@ -4,7 +4,13 @@
 
   "model": {
     "default": "Default",
-    "event": "Event"
+    "event": "Event",
+    "unknown": "Unknown",
+    "image": "Image",
+    "audio": "Audio",
+    "video": "Video",
+    "document": "Document",
+    "archive": "Archive"
   },
 
   "robots": {

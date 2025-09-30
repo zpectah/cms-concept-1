@@ -40,10 +40,10 @@ class Attachments {
       return [
         'id' => $id,
         'name' => 'attachment-name-' . $id,
-        'type' => 'default',
+        'type' => 'image',
 
-        'file_name' => 'file-name-' . $id,
-        'file_type' => 'image/png',
+        'file_name' => 'test-image-001.jpg',
+        'file_type' => 'image/jpeg',
         'file_ext' => 'png',
         'file_size' => 125454,
 
@@ -60,10 +60,10 @@ class Attachments {
         $categories[] = [
           'id' => $i,
           'name' => "attachment-name-$i",
-          'type' => 'default',
+          'type' => 'image',
 
-          'file_name' => 'file-name-' . $id,
-          'file_type' => 'image/png',
+          'file_name' => 'test-image-001.jpg',
+          'file_type' => 'image/jpeg',
           'file_ext' => 'png',
           'file_size' => 125454,
 

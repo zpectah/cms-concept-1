@@ -32,7 +32,7 @@ interface ModelListStore {
 
 const modelDefaults = {
   articles: createModelListFilterCommonDefaults(),
-  attachments: createModelListFilterCommonDefaults('table'),
+  attachments: createModelListFilterCommonDefaults('attachments'),
   categories: createModelListFilterCommonDefaults(),
   comments: createModelListFilterCommonDefaults(),
   members: createModelListFilterCommonDefaults(),
@@ -60,7 +60,7 @@ const useModelListStore = create<ModelListStore>((set, getState) => {
     const tmpModel = Object.assign({ ...getState().model });
 
     tmpModel[model] = {
-      ...createModelListFilterCommonDefaults(model === 'attachments' ? 'tiles' : undefined),
+      ...createModelListFilterCommonDefaults(model === 'attachments' ? 'attachments' : undefined),
     };
 
     set({ model: tmpModel });

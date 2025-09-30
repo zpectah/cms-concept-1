@@ -1,3 +1,3 @@
 import { attachmentsTypeKeys } from '../../enums';
 
-export const attachmentsTypeDefault = attachmentsTypeKeys.default;
+export const attachmentsTypeDefault = attachmentsTypeKeys.unknown;

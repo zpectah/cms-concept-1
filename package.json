@@ -6,6 +6,7 @@
     "start:admin": "nx serve admin",
     "start:client": "nx serve client",
     "start:api": "nx serve api",
+    "start:uploads": "php -S localhost:8080 -t dist/uploads",
     "build:admin": "nx build admin --configuration=production",
     "build:client": "nx build client --configuration=production",
     "build:api": "nx build api"

@@ -14,14 +14,23 @@
 ## Scripts
 
 ### Development
+
+#### Starts Admin app
 ```sh
 yarn start:admin
 ```
 
+#### Starts PHP api server
 ```sh
 yarn start:api
 ```
 
+#### Starts PHP uploads server
+```sh
+yarn start:uploads
+```
+
+#### Starts Client app
 ```sh
 yarn start:client
 ```

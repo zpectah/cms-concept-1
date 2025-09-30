@@ -33,7 +33,9 @@
     "dismiss": "Dismiss",
     "save": "Save",
     "saveChanges": "Save changes",
-    "markAsRead": "Mark as read"
+    "markAsRead": "Mark as read",
+    "select": "Select",
+    "favorite": "Favorite"
   },
   "label": {
     "yesterday": "Yesterday",

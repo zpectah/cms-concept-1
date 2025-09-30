@@ -1,5 +1,5 @@
 import { modelKeys, AttachmentsItem } from '@common';
-import { ListItems, ValueType, ValueDate } from '../../../components';
+import { ListItems, ValueType, ValueDate, listItemsViewKeys } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 import { useAttachmentsList } from './useAttachmentsList';
@@ -14,7 +14,7 @@ const AttachmentsList = () => {
     <ListItems<AttachmentsItem>
       name={`${modelKeys.attachments}-list-items`}
       model={modelKeys.attachments}
-      initialView="tiles"
+      initialView={listItemsViewKeys.attachments}
       items={attachments}
       isLoading={isLoading}
       searchKeys={[registeredFormFields.name, registeredFormFields.type]}

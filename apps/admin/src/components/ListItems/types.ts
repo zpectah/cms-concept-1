@@ -124,6 +124,21 @@ export interface TableViewProps<T extends ItemBase> extends ViewBaseProps<T> {
 
 export type TilesViewProps<T extends ItemBase> = ViewBaseProps<T> & {};
 
+export type AttachmentsViewProps<T extends ItemBase> = ViewBaseProps<T> & {};
+
+export interface AttachmentsViewItemProps<T extends ItemBase> {
+  item: T;
+  onDelete: (id: number) => void;
+  onDetail: (id: number) => void;
+  onDisable: (id: number) => void;
+  onSelect: (id: number) => void;
+  renderRowActions?: (row: T) => ReactNode;
+  isSelected: boolean;
+  isLoading: boolean;
+  disableFavorites: boolean;
+  pathPrefix: string;
+}
+
 export interface ListItemsFilter {
   categories: number[];
   tags: number[];

@@ -1,6 +1,7 @@
 export const listItemsViewKeys = {
   table: 'table',
   tiles: 'tiles',
+  attachments: 'attachments',
 } as const;
 
 export const listItemsSortOrderKeys = {
