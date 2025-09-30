@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, Link } from 'react-router-dom';
 import { Breadcrumbs as MuiBreadcrumbs, Typography } from '@mui/material';
+import { newItemKey } from '@common';
 import { getConfig } from '../../utils';
-import { useEffect, useState } from 'react';
 
 interface BreadcrumbsProps {
   disabled?: boolean;
@@ -20,6 +21,8 @@ const Breadcrumbs = ({ disabled }: BreadcrumbsProps) => {
   const routeName = attrs[0];
   const subRouteName = attrs[1];
 
+  const isId = id || subRouteName === newItemKey;
+
   const route = (admin.routes as Record<string, { path: string; panels?: Record<string, unknown> }>)[routeName];
 
   useEffect(() => {
@@ -31,14 +34,14 @@ const Breadcrumbs = ({ disabled }: BreadcrumbsProps) => {
   return (
     <MuiBreadcrumbs role="presentation" aria-label="breadcrumbs">
       <Typography variant="caption">{admin.meta.title}</Typography>
-      {id ? (
+      {isId ? (
         <Typography variant="caption" component={Link} to={`/${routeName}`} sx={{ color: 'inherit' }}>
           {t(`routes.${routeName}`)}
         </Typography>
       ) : (
         <Typography variant="caption">{t(`routes.${routeName}`)}</Typography>
       )}
-      {id && <Typography variant="caption">#{id}</Typography>}
+      {isId && <Typography variant="caption">#{id ?? subRouteName}</Typography>}
       {isPanels && <Typography variant="caption">{t(`modules:${routeName}.tabs.${subRouteName}.title`)}</Typography>}
     </MuiBreadcrumbs>
   );

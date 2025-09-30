@@ -1,15 +1,21 @@
-import { useState, useRef } from 'react';
-import { Box } from '@mui/material';
+import { useRef, useState } from 'react';
 import { getClearFileName, getFileExtension } from '@common';
-import { FileUploaderQueue, FileUploaderQueueItem } from '../../../types';
-import { FileUploaderProps } from './types';
+import { FileUploaderQueue, FileUploaderQueueItem } from '../../types';
+import { useFileUploaderProps } from './types';
 
-const FileUploader = ({ onQueueUpdate, renderQueue, multiple = true, boxProps }: FileUploaderProps) => {
-  const [queue, setQueue] = useState<FileUploaderQueue>([]);
+export const useFileUploader = ({
+  initialQueue,
+  onLoad,
+  onLoadEnd,
+  onError,
+  onQueueUpdate,
+  multiple,
+}: useFileUploaderProps) => {
+  const [queue, setQueue] = useState<FileUploaderQueue>(initialQueue ?? []);
 
   const inputElement = useRef<HTMLInputElement | null>(null);
 
-  const handleFiles = (files: FileList | null) => {
+  const fileListHandler = (files: FileList | null) => {
     if (!files) return;
 
     const readers = Array.from(files).map(
@@ -18,7 +24,7 @@ const FileUploader = ({ onQueueUpdate, renderQueue, multiple = true, boxProps }:
           const reader = new FileReader();
 
           reader.onloadend = () => {
-            console.log('on load end');
+            onLoadEnd?.();
           };
           reader.onload = () => {
             const base64 = reader.result as string;
@@ -32,13 +38,12 @@ const FileUploader = ({ onQueueUpdate, renderQueue, multiple = true, boxProps }:
               extension: getFileExtension(file.name),
             });
 
-            console.log('on load');
+            onLoad?.();
           };
 
           reader.onerror = () => {
             reject(reader.error);
-
-            console.log('on error');
+            onError?.(reader.error);
           };
 
           reader.readAsDataURL(file);
@@ -55,13 +60,9 @@ const FileUploader = ({ onQueueUpdate, renderQueue, multiple = true, boxProps }:
     });
   };
 
-  return (
-    <Box {...boxProps}>
-      <input type="file" multiple={multiple} onChange={(e) => handleFiles(e.target.files)} ref={inputElement} />
-
-      {renderQueue?.(queue)}
-    </Box>
-  );
+  return {
+    queue,
+    inputElement,
+    onInputChange: fileListHandler,
+  };
 };
-
-export default FileUploader;

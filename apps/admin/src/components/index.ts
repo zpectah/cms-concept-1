@@ -8,6 +8,7 @@ export * from './debug';
 export * from './Dialog';
 export * from './favorites';
 export * from './fields';
+export * from './FileUploader';
 export * from './Footer';
 export * from './Form';
 export * from './FormField';

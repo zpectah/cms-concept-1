@@ -1,31 +1,17 @@
-import { FileUploader } from '../../FileUploader';
-import { ControlledForm } from '../../../components';
+import { ControlledForm, FileUploader, DebugFormModel, Content } from '../../../components';
 import { useAttachmentsCreateForm } from './useAttachmentsCreateForm';
+import AttachmentsQueue from './AttachmentsQueue';
 
 const AttachmentsCreateForm = () => {
-  const { form } = useAttachmentsCreateForm();
+  const { form, onSubmit, onQueueUpdate, queueFieldArray } = useAttachmentsCreateForm();
 
   return (
-    <ControlledForm
-      form={form}
-      formProps={{
-        onSubmit: (data) => {
-          console.log('on submit', data);
-        },
-      }}
-    >
-      ...AttachmentsCreateForm...
-      <FileUploader
-        renderQueue={(queue) => {
-          return (
-            <ul>
-              {queue.map((file, index) => {
-                return <li key={index}>{file.name}</li>;
-              })}
-            </ul>
-          );
-        }}
-      />
+    <ControlledForm form={form} formProps={{ onSubmit }}>
+      <Content>
+        <FileUploader onQueueUpdate={onQueueUpdate} />
+        <AttachmentsQueue queue={queueFieldArray.fields} />
+        <DebugFormModel name="AttachmentsCreateForm" />
+      </Content>
     </ControlledForm>
   );
 };

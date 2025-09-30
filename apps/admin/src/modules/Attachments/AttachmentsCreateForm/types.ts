@@ -2,8 +2,12 @@ import { FileUploaderQueue } from '../../../types';
 
 export interface IAttachmentsCreateForm {
   // TODO #schema
-  files: FileUploaderQueue;
+  queue: FileUploaderQueue;
   options: {
     path: '';
   };
+}
+
+export interface AttachmentsQueueProps {
+  queue: FileUploaderQueue;
 }
