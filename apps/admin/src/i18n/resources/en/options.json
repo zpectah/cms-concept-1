@@ -6,6 +6,7 @@
     "default": "Default",
     "event": "Event",
     "unknown": "Unknown",
+    "unsupported": "Unsupported",
     "image": "Image",
     "audio": "Audio",
     "video": "Video",

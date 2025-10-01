@@ -1,13 +1,10 @@
+import z from 'zod';
 import { FileUploaderQueue } from '../../../types';
+import { AttachmentsCreateFormSchema } from './schema';
 
-export interface IAttachmentsCreateForm {
-  // TODO #schema
-  queue: FileUploaderQueue;
-  options: {
-    path: '';
-  };
-}
+export type IAttachmentsCreateForm = z.infer<typeof AttachmentsCreateFormSchema>;
 
 export interface AttachmentsQueueProps {
   queue: FileUploaderQueue;
+  onRemove: (index: number) => void;
 }

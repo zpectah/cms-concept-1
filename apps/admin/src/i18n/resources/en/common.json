@@ -35,7 +35,11 @@
     "saveChanges": "Save changes",
     "markAsRead": "Mark as read",
     "select": "Select",
-    "favorite": "Favorite"
+    "favorite": "Favorite",
+    "selectOrDropFiles": "Select or drop file(s) to upload",
+    "uploadQueue": "Upload queue",
+    "clearQueue": "Clear queue",
+    "removeFromQueue": "Remove from queue"
   },
   "label": {
     "yesterday": "Yesterday",

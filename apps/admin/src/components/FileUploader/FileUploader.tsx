@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Box, Button } from '@mui/material';
 import { FileUploaderProps } from './types';
 import { useFileUploader } from './useFileUploader';
@@ -12,8 +13,10 @@ const FileUploader = ({
   onLoadEnd,
   onError,
   renderInput,
+  buttonLabel,
 }: FileUploaderProps) => {
-  const { queue, inputElement, onInputChange } = useFileUploader({
+  const { t } = useTranslation();
+  const { queue, inputElement, onInputChange, onQueueClear } = useFileUploader({
     initialQueue,
     multiple,
     onQueueUpdate,
@@ -25,18 +28,30 @@ const FileUploader = ({
   return (
     <Box {...boxProps}>
       {renderInput ? (
-        renderInput?.((files: FileList) => onInputChange(files))
+        renderInput?.((files: FileList) => onInputChange(files), onQueueClear)
       ) : (
-        <Button variant="contained" color="secondary" component="label">
-          Select files to upload
-          <input
-            type="file"
-            multiple={multiple}
-            onChange={(e) => onInputChange(e.target.files)}
-            ref={inputElement}
-            hidden
-          />
-        </Button>
+        <Box
+          sx={({ palette, shape }) => ({
+            width: '100%',
+            height: queue.length > 0 ? '25vh' : '50vh',
+            backgroundColor: 'transparent',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: `2px dashed ${palette.divider}`,
+            borderRadius: shape.borderRadius,
+          })}
+          onDragOver={(event) => event.preventDefault()}
+          onDrop={(event) => {
+            event.preventDefault();
+            onInputChange(event.dataTransfer.files);
+          }}
+        >
+          <Button variant="contained" color="secondary" component="label">
+            {buttonLabel ? buttonLabel : t('button.selectOrDropFiles')}
+            <input type="file" multiple onChange={(e) => onInputChange(e.target.files)} ref={inputElement} hidden />
+          </Button>
+        </Box>
       )}
       {renderQueue?.(queue)}
     </Box>

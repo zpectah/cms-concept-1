@@ -35,7 +35,11 @@
     "flatNo": "Flat Number",
     "read": "Read",
     "color": "Color",
-    "gpsLocation": "GPS Location"
+    "gpsLocation": "GPS Location",
+    "fileName": "File name",
+    "fileType": "File type",
+    "fileMime": "File mime",
+    "fileSize": "File size"
   },
   "message": {
     "error": {

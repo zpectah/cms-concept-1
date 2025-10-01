@@ -13,8 +13,9 @@ interface FileUploaderBase {
 
 export interface FileUploaderProps extends FileUploaderBase {
   renderQueue?: (queue: FileUploaderQueue) => ReactNode;
-  renderInput?: (onInputChange: (files: FileList) => void) => ReactNode;
+  renderInput?: (onInputChange: (files: FileList) => void, onQueueClear: () => void) => ReactNode;
   boxProps?: Partial<BoxProps>;
+  buttonLabel?: string;
 }
 
 export type useFileUploaderProps = FileUploaderBase & {};

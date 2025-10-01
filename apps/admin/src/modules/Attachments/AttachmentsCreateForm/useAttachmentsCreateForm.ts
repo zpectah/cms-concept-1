@@ -1,20 +1,22 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
-import { FileUploaderQueue } from '../../../types';
-import { useViewLayoutContext } from '../../../components';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAppStore } from '../../../store';
+import { FEEDBACK_COMMON_TIMEOUT_DEFAULT } from '../../../constants';
+import { useViewLayoutContext, useFileUploader } from '../../../components';
 import { IAttachmentsCreateForm } from './types';
+import { AttachmentsCreateFormSchema } from './schema';
+import { getAttachmentsCreateFormDefaultValues } from './helpers';
 
 export const useAttachmentsCreateForm = () => {
   const { t } = useTranslation();
   const { setTitle } = useViewLayoutContext();
+  const { addToast } = useAppStore();
+  const { queue, inputElement, onInputChange, onQueueClear } = useFileUploader({});
   const form = useForm<IAttachmentsCreateForm>({
-    defaultValues: {
-      queue: [],
-      options: {
-        path: '',
-      },
-    },
+    defaultValues: getAttachmentsCreateFormDefaultValues(),
+    resolver: zodResolver(AttachmentsCreateFormSchema),
   });
   const queueFieldArray = useFieldArray({ control: form.control, name: 'queue' });
 
@@ -25,15 +27,34 @@ export const useAttachmentsCreateForm = () => {
 
     // TODO #submit
 
+    // 1. First request - create file on disk
+
+    // 2. Second request (by first response) save data to DB
+
     console.log('master create', master);
-  };
 
-  const queueUpdateHandler = (queue: FileUploaderQueue) => {
-    console.log('on queue update ... write to model', queue);
-
+    // TODO: Reset field as callback
     form.resetField('queue');
-    queueFieldArray.insert(0, queue);
   };
+
+  useEffect(() => {
+    if (queue.length > 0) {
+      queue.forEach((item) => {
+        // TODO: Check duplicity a) in queue, b) in attachments
+
+        if (item.type === 'unsupported') {
+          addToast(`Unsupported file extension "${item.extension}"`, 'warning', FEEDBACK_COMMON_TIMEOUT_DEFAULT);
+        } else if (item.type === 'unknown') {
+          // Just in case
+          addToast(`Unknown file extension "${item.extension}"`, 'warning', FEEDBACK_COMMON_TIMEOUT_DEFAULT);
+        } else {
+          queueFieldArray.insert(0, item);
+        }
+      });
+
+      onQueueClear();
+    }
+  }, [queue]);
 
   useEffect(() => {
     setTitle(t('button.new.attachments'));
@@ -43,6 +64,8 @@ export const useAttachmentsCreateForm = () => {
     form,
     queueFieldArray,
     onSubmit: form.handleSubmit(submitHandler),
-    onQueueUpdate: queueUpdateHandler,
+
+    inputElement,
+    onInputChange,
   };
 };

@@ -1,5 +1,6 @@
 export const attachmentsTypeKeys = {
   unknown: 'unknown',
+  unsupported: 'unsupported',
   image: 'image',
   audio: 'audio',
   video: 'video',

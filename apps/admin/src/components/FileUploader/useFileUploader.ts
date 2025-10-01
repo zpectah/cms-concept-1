@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
-import { getClearFileName, getFileExtension } from '@common';
+import { getClearFileName, getFileExtension, getRandomId } from '@common';
 import { FileUploaderQueue, FileUploaderQueueItem } from '../../types';
 import { useFileUploaderProps } from './types';
+import { getTypeFromExtension } from '../../utils';
 
 export const useFileUploader = ({
   initialQueue,
@@ -28,6 +29,7 @@ export const useFileUploader = ({
           };
           reader.onload = () => {
             const base64 = reader.result as string;
+            const extension = getFileExtension(file.name);
 
             resolve({
               content: base64,
@@ -35,7 +37,9 @@ export const useFileUploader = ({
               size: file.size,
               name: getClearFileName(file.name),
               filename: file.name,
-              extension: getFileExtension(file.name),
+              extension,
+              type: getTypeFromExtension(extension),
+              uid: getRandomId(),
             });
 
             onLoad?.();
@@ -64,5 +68,6 @@ export const useFileUploader = ({
     queue,
     inputElement,
     onInputChange: fileListHandler,
+    onQueueClear: () => setQueue([]),
   };
 };
