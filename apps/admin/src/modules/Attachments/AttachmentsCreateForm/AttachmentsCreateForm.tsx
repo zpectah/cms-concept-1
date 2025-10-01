@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Divider } from '@mui/material';
-import { FileUploaderQueue } from '../../../types';
-import { ControlledForm, DebugFormModel, Content, SubmitButton, ActionBar } from '../../../components';
+import { ControlledForm, Content, SubmitButton, ActionBar } from '../../../components';
 import { useAttachmentsCreateForm } from './useAttachmentsCreateForm';
 import AttachmentsQueue from './AttachmentsQueue';
 
@@ -10,9 +9,9 @@ const AttachmentsCreateForm = () => {
   const [dragOver, setDragOver] = useState(false);
 
   const { t } = useTranslation();
-  const { form, onSubmit, queueFieldArray, inputElement, onInputChange } = useAttachmentsCreateForm();
+  const { form, onSubmit, inputElement, onInputChange, onReset } = useAttachmentsCreateForm();
 
-  const queueFields = queueFieldArray.fields as FileUploaderQueue;
+  const queue = form.watch('queue');
 
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
@@ -20,7 +19,7 @@ const AttachmentsCreateForm = () => {
         <Box
           sx={({ palette, shape }) => ({
             width: '100%',
-            height: queueFields.length > 0 ? '25vh' : '50vh',
+            height: queue.length > 0 ? '25vh' : '50vh',
             backgroundColor: 'transparent',
             display: 'flex',
             alignItems: 'center',
@@ -46,16 +45,14 @@ const AttachmentsCreateForm = () => {
             <input type="file" multiple onChange={(e) => onInputChange(e.target.files)} ref={inputElement} hidden />
           </Button>
         </Box>
-        <AttachmentsQueue queue={queueFields} onRemove={queueFieldArray.remove} />
+        <AttachmentsQueue />
         <Divider />
         <ActionBar>
-          <SubmitButton disabled={queueFields.length < 1}>{t('button.uploadQueue')}</SubmitButton>
-          <Button type="reset" variant="outlined">
+          <SubmitButton disabled={queue.length < 1}>{t('button.uploadQueue')}</SubmitButton>
+          <Button variant="outlined" onClick={onReset}>
             {t('button.clearQueue')}
           </Button>
         </ActionBar>
-
-        <DebugFormModel name="AttachmentsCreateForm" />
       </Content>
     </ControlledForm>
   );

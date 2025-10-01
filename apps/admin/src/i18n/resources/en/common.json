@@ -39,7 +39,9 @@
     "selectOrDropFiles": "Select or drop file(s) to upload",
     "uploadQueue": "Upload queue",
     "clearQueue": "Clear queue",
-    "removeFromQueue": "Remove from queue"
+    "removeFromQueue": "Remove from queue",
+    "cropImage": "Crop image",
+    "saveAndExit": "Save and exit"
   },
   "label": {
     "yesterday": "Yesterday",

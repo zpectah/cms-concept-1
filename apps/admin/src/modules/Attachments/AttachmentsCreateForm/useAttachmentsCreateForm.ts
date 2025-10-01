@@ -48,7 +48,7 @@ export const useAttachmentsCreateForm = () => {
           // Just in case
           addToast(`Unknown file extension "${item.extension}"`, 'warning', FEEDBACK_COMMON_TIMEOUT_DEFAULT);
         } else {
-          queueFieldArray.insert(0, item);
+          queueFieldArray.prepend(item);
         }
       });
 
@@ -64,6 +64,7 @@ export const useAttachmentsCreateForm = () => {
     form,
     queueFieldArray,
     onSubmit: form.handleSubmit(submitHandler),
+    onReset: () => form.reset(getAttachmentsCreateFormDefaultValues()),
 
     inputElement,
     onInputChange,

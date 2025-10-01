@@ -14,6 +14,7 @@ export * from './Form';
 export * from './FormField';
 export * from './GpsPicker';
 export * from './Header';
+export * from './ImageCropper';
 export * from './input';
 export * from './Label';
 export * from './layout';

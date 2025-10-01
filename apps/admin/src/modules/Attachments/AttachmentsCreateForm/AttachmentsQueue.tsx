@@ -1,15 +1,41 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useFormContext, useFieldArray } from 'react-hook-form';
 import { Button, Stack, Grid } from '@mui/material';
 import AudioFileIcon from '@mui/icons-material/AudioFile';
 import VideoFileIcon from '@mui/icons-material/VideoFile';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { getOptionValue } from '../../../helpers';
-import { Card, InputField, Literal, FormContent } from '../../../components';
-import { AttachmentsQueueProps } from './types';
+import { Card, InputField, Literal, FormContent, ImageCropper } from '../../../components';
+import { IAttachmentsCreateForm } from './types';
 
-const AttachmentsQueue = ({ queue, onRemove }: AttachmentsQueueProps) => {
+const AttachmentsQueue = () => {
+  const [cropSource, setCropSource] = useState<{ source: string; index: number } | null>(null);
+
   const { t } = useTranslation(['common', 'form']);
+  const { control, watch } = useFormContext<IAttachmentsCreateForm>();
+  const { remove, update } = useFieldArray({
+    control,
+    name: 'queue',
+  });
+
+  const queue = watch('queue');
+
+  const openCropperHandler = (source: string, index: number) => {
+    setCropSource({ source, index });
+  };
+
+  const closeCropperHandler = () => {
+    setCropSource(null);
+  };
+
+  const saveHandler = (source: string, index: number) => {
+    update(index, {
+      ...queue[index],
+      content: source,
+    });
+  };
 
   return (
     <>
@@ -60,15 +86,19 @@ const AttachmentsQueue = ({ queue, onRemove }: AttachmentsQueueProps) => {
                   <Literal label="Uid" value={file.uid} />
                 </Grid>
               </Grid>
-              <Stack direction="row" sx={{ mt: { xs: 2 } }}>
-                <Button onClick={() => onRemove(index)} variant="outlined" color="warning">
+              <Stack direction="row" sx={{ mt: { xs: 2 } }} gap={2}>
+                <Button onClick={() => remove(index)} variant="outlined" color="warning">
                   {t('button.removeFromQueue')}
+                </Button>
+                <Button onClick={() => openCropperHandler(file.content, index)} variant="outlined">
+                  {t('button.cropImage')}
                 </Button>
               </Stack>
             </FormContent>
           </Card>
         );
       })}
+      <ImageCropper open={!!cropSource} onClose={closeCropperHandler} cropSource={cropSource} onSave={saveHandler} />
     </>
   );
 };
