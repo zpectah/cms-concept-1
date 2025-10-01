@@ -5,3 +5,5 @@ export const fileUploaderSupportedFileExtensions = {
   document: ['pdf'],
   archive: ['zip', 'rar'],
 };
+
+export const fileUploaderMaxFileSize = 250000000;

@@ -6,16 +6,12 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import FileOpenIcon from '@mui/icons-material/FileOpen';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import AudioFileIcon from '@mui/icons-material/AudioFile';
-import VideoFileIcon from '@mui/icons-material/VideoFile';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import DescriptionIcon from '@mui/icons-material/Description';
-import HelpCenterIcon from '@mui/icons-material/HelpCenter';
-import { AttachmentsItem, attachmentsTypeKeys, ItemBase } from '@common';
+import { AttachmentsItem, ItemBase } from '@common';
 import { AttachmentsViewItemProps } from '../types';
 import { listItemsViewKeys } from '../enums';
 import { IconButtonPlus } from '../../Button';
 import { FavoritesStar } from '../../favorites';
+import { useAttachmentTypeElement } from '../../../helpers';
 
 const AttachmentsViewItem = <T extends ItemBase>({
   item,
@@ -30,58 +26,58 @@ const AttachmentsViewItem = <T extends ItemBase>({
   pathPrefix,
 }: AttachmentsViewItemProps<T>) => {
   const { t } = useTranslation();
+  const { getElementByType } = useAttachmentTypeElement();
 
   const attachment = item as unknown as AttachmentsItem;
 
   const sourcePrefix = 'http://localhost:8080/'; // TODO
 
-  const renderContent = () => {
-    switch (attachment.type) {
-      case attachmentsTypeKeys.image:
-        return <img src={`${sourcePrefix}${attachment.file_name}`} alt={attachment.name} loading="lazy" />;
-
-      case attachmentsTypeKeys.audio:
-        return <AudioFileIcon sx={{ fontSize: '350%' }} />;
-
-      case attachmentsTypeKeys.video:
-        return <VideoFileIcon sx={{ fontSize: '350%' }} />;
-
-      case attachmentsTypeKeys.document:
-        return <PictureAsPdfIcon sx={{ fontSize: '350%' }} />;
-
-      case attachmentsTypeKeys.archive:
-        return <DescriptionIcon sx={{ fontSize: '350%' }} />;
-
-      case attachmentsTypeKeys.unknown:
-      default:
-        return <HelpCenterIcon sx={{ fontSize: '350%' }} />;
-    }
-  };
+  const renderContent = () =>
+    getElementByType(attachment.type, {
+      source: `${sourcePrefix}${attachment.file_name}`,
+      alt: attachment.name,
+      iconProps: { sx: { fontSize: '350%' } },
+    });
 
   return (
     <Card
       sx={({ palette }) => ({
         borderColor: isSelected ? palette.info.main : palette.divider,
-        // borderWidth: isSelected ? '4px' : '1px',
+        position: 'relative',
+
+        '&::before': {
+          content: '""',
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          zIndex: 0,
+          border: `2px solid ${isSelected ? palette.info.main : 'transparent'}`,
+          borderRadius: '4px',
+        },
       })}
     >
-      <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography variant="button" onClick={() => onDetail(attachment.id)} sx={{ cursor: 'pointer' }}>
+      <CardContent
+        sx={({ palette }) => ({
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        })}
+      >
+        <Typography variant="button" onClick={() => onDetail(attachment.id)} sx={{ cursor: 'pointer', zIndex: 99 }}>
           {attachment.file_name}
         </Typography>
         {!disableFavorites && <FavoritesStar model={listItemsViewKeys.attachments} id={item.id} />}
       </CardContent>
       <CardContent
-        sx={({ palette }) => ({
+        sx={() => ({
           height: {
             xs: '80vw',
             sm: '45vw',
             md: '250px',
           },
           padding: 0,
-          backgroundColor: 'transparent',
-          borderTop: `1px solid ${palette.divider}`,
-          borderBottom: `1px solid ${palette.divider}`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -101,7 +97,11 @@ const AttachmentsViewItem = <T extends ItemBase>({
       <CardActions sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Stack direction="row" gap={1}>
           <IconButtonPlus tooltip={t('button.select')} onClick={() => onSelect(item.id)} size="small">
-            {isSelected ? <CheckCircleIcon fontSize="small" /> : <RadioButtonUncheckedIcon fontSize="small" />}
+            {isSelected ? (
+              <CheckCircleIcon fontSize="small" color="primary" />
+            ) : (
+              <RadioButtonUncheckedIcon fontSize="small" />
+            )}
           </IconButtonPlus>
           {renderRowActions?.(item)}
         </Stack>
