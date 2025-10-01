@@ -24,6 +24,8 @@ const AttachmentsDetailForm = () => {
   const type = useWatch({ name: registeredFormFields.type, control: form.control });
 
   const fileName = useWatch({ name: 'file_name', control: form.control });
+  const fileSize = useWatch({ name: 'file_size', control: form.control });
+  const fileType = useWatch({ name: 'file_type', control: form.control });
 
   return (
     <ControlledForm
@@ -35,7 +37,19 @@ const AttachmentsDetailForm = () => {
     >
       <FormLayout
         actions={<FormDetailActions detailId={detailId} listPath={`/${routes.tags.path}`} />}
-        sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
+        sidebar={
+          <FormDetailSidebar
+            detailId={detailId}
+            created={created}
+            updated={updated}
+            cardContent={
+              <>
+                <Literal label="File size" value={fileSize} />
+                <Literal label="File mime" value={fileType} />
+              </>
+            }
+          />
+        }
       >
         <Literal label={t('form:label.name')} value={fileName} />
         <Literal label={t('form:label.type')} value={getOptionValue(type, 'model')} />

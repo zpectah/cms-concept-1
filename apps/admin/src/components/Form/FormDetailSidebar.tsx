@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { newItemKey, WithChildren } from '@common';
@@ -12,9 +13,17 @@ type FormDetailSidebarProps = Partial<WithChildren> & {
   updated?: string;
   detailId?: string;
   disableActions?: boolean;
+  cardContent?: ReactNode;
 };
 
-const FormDetailSidebar = ({ children, detailId, created, updated, disableActions }: FormDetailSidebarProps) => {
+const FormDetailSidebar = ({
+  children,
+  detailId,
+  created,
+  updated,
+  disableActions,
+  cardContent,
+}: FormDetailSidebarProps) => {
   const { t } = useTranslation(['form']);
 
   return (
@@ -23,6 +32,7 @@ const FormDetailSidebar = ({ children, detailId, created, updated, disableAction
         <Stack gap={2}>
           <Literal label={t('form:label.created')} value={getFormattedDateString(created)} />
           <Literal label={t('form:label.updated')} value={getFormattedDateString(updated, true)} />
+          {cardContent}
         </Stack>
       </HiddenCard>
       {!disableActions && (
