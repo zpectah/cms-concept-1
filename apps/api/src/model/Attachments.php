@@ -39,7 +39,7 @@ class Attachments {
       // Mock detail
       return [
         'id' => $id,
-        'name' => 'attachment-name-' . $id,
+        'name' => 'test-image-00' . $id,
         'type' => 'image',
 
         'file_name' => 'test-image-001.jpg',
@@ -59,7 +59,7 @@ class Attachments {
       for ($i = 1; $i <= 15; $i++) {
         $categories[] = [
           'id' => $i,
-          'name' => "attachment-name-$i",
+          'name' => "test-image-00$i",
           'type' => 'image',
 
           'file_name' => 'test-image-001.jpg',

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button, Divider } from '@mui/material';
-import { ControlledForm, Content, SubmitButton, ActionBar } from '../../../components';
+import { ControlledForm, Content, SubmitButton, ActionBar, DebugFormModel } from '../../../components';
 import { useAttachmentsCreateForm } from './useAttachmentsCreateForm';
 import AttachmentsQueue from './AttachmentsQueue';
 
@@ -53,6 +53,7 @@ const AttachmentsCreateForm = () => {
             {t('button.clearQueue')}
           </Button>
         </ActionBar>
+        <DebugFormModel name="AttachmentsCreateForm" />
       </Content>
     </ControlledForm>
   );

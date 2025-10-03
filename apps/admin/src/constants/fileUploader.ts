@@ -6,4 +6,4 @@ export const fileUploaderSupportedFileExtensions = {
   archive: ['zip', 'rar'],
 };
 
-export const fileUploaderMaxFileSize = 250000000;
+export const fileUploaderMaxFileSize = 25000000;

@@ -1,3 +1,4 @@
+export * from './model';
 export * from './getOptionValue';
 export * from './modelList';
 export * from './useAttachmentTypeElement';
