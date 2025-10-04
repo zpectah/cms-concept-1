@@ -46,7 +46,8 @@
       "required": "Field is required",
       "endDateBeforeStartDate": "End date must be after start date",
       "emailFormat": "Email is in wrong format",
-      "insufficientChars": "Insufficient number of characters"
+      "insufficientChars": "Insufficient number of characters",
+      "duplicityName": "This name is already in use, try another one"
     }
   }
 }

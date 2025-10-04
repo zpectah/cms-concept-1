@@ -24,6 +24,7 @@ export const registeredFormFields = {
   name: 'name',
   parent: 'parent',
   password: 'password',
+  queue: 'queue',
   read: 'read',
   sender: 'sender',
   startDate: 'startDate',
@@ -36,4 +37,8 @@ export const registeredFormFields = {
   updated: 'updated',
   value: 'value',
   zip: 'zip',
+
+  file_name: 'file_name', // TODO
+  file_size: 'file_size', // TODO
+  file_type: 'file_type', // TODO
 } as const;

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormContext, useFieldArray } from 'react-hook-form';
-import { Button, Stack, Grid } from '@mui/material';
+import { Button, Stack, Grid, CircularProgress } from '@mui/material';
+import { registeredFormFields } from '../../../enums';
 import { getOptionValue, useAttachmentTypeElement } from '../../../helpers';
 import { Card, InputField, Literal, FormContent, ImageCropper } from '../../../components';
 import { IAttachmentsCreateForm } from './types';
@@ -14,19 +15,15 @@ const AttachmentsQueue = () => {
   const { control, watch } = useFormContext<IAttachmentsCreateForm>();
   const { remove, update } = useFieldArray({
     control,
-    name: 'queue',
+    name: registeredFormFields.queue,
   });
   const { getElementByType, isTypeImage } = useAttachmentTypeElement();
 
-  const queue = watch('queue');
+  const queue = watch(registeredFormFields.queue);
 
-  const openCropperHandler = (source: string, index: number) => {
-    setCropSource({ source, index });
-  };
+  const openCropperHandler = (source: string, index: number) => setCropSource({ source, index });
 
-  const closeCropperHandler = () => {
-    setCropSource(null);
-  };
+  const closeCropperHandler = () => setCropSource(null);
 
   const saveHandler = (source: string, index: number) => {
     update(index, {
@@ -42,6 +39,7 @@ const AttachmentsQueue = () => {
           <Card key={file.uid}>
             <FormContent>
               <Stack alignItems="center" justifyContent="center" sx={{ p: 2 }}>
+                {!file.content && <CircularProgress />}
                 {getElementByType(file.type as AttachmentsType, {
                   source: file.content,
                   alt: file.name,
@@ -52,7 +50,7 @@ const AttachmentsQueue = () => {
               <Grid container spacing={1}>
                 <Grid size={{ xs: 12, md: 12 }}>
                   <InputField
-                    name={`queue.${index}.name`}
+                    name={`${registeredFormFields.queue}.${index}.${registeredFormFields.name}`}
                     label={t('form:label.fileName')}
                     fieldProps={{
                       endAdornment: <span>.{file.extension}</span>,

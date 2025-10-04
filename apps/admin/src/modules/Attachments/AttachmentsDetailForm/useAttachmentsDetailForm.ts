@@ -35,12 +35,6 @@ export const useAttachmentsDetailForm = () => {
   const { data: detailData, ...detailQuery } = attachmentsDetailQuery;
   const { mutate: patchMutate } = attachmentsPatchQuery;
 
-  const createHandler = (master: IAttachmentsDetailForm) => {
-    // TODO #submit
-
-    console.log('master create', master);
-  };
-
   const patchHandler = (master: IAttachmentsDetailForm) => {
     patchMutate(master as AttachmentsDetail, {
       onSuccess: () => {
@@ -82,11 +76,7 @@ export const useAttachmentsDetailForm = () => {
       ...data,
     });
 
-    if (data.id === 0) {
-      createHandler(master);
-    } else {
-      patchHandler(master);
-    }
+    patchHandler(master);
   };
 
   useEffect(() => {

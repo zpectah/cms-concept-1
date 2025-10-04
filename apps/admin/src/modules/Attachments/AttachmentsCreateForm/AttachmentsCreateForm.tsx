@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Button, Divider } from '@mui/material';
-import { ControlledForm, Content, SubmitButton, ActionBar, DebugFormModel } from '../../../components';
+import { Box, Button, Divider, Alert } from '@mui/material';
+import { registeredFormFields } from '../../../enums';
+import { ControlledForm, Content, SubmitButton, ActionBar } from '../../../components';
 import { useAttachmentsCreateForm } from './useAttachmentsCreateForm';
 import AttachmentsQueue from './AttachmentsQueue';
 
 const AttachmentsCreateForm = () => {
   const [dragOver, setDragOver] = useState(false);
 
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common', 'form']);
   const { form, onSubmit, inputElement, onInputChange, onReset } = useAttachmentsCreateForm();
 
-  const queue = form.watch('queue');
+  const queue = form.watch(registeredFormFields.queue);
 
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
@@ -46,6 +47,7 @@ const AttachmentsCreateForm = () => {
           </Button>
         </Box>
         <AttachmentsQueue />
+        {form.formState.errors.queue && <Alert severity="error">{t('message.error.formErrors')}</Alert>}
         <Divider />
         <ActionBar>
           <SubmitButton disabled={queue.length < 1}>{t('button.uploadQueue')}</SubmitButton>
@@ -53,7 +55,6 @@ const AttachmentsCreateForm = () => {
             {t('button.clearQueue')}
           </Button>
         </ActionBar>
-        <DebugFormModel name="AttachmentsCreateForm" />
       </Content>
     </ControlledForm>
   );

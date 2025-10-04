@@ -1,1 +1,1 @@
-export * from './useUniqueAttachments';
+export * from './useAttachmentsHelpers';
