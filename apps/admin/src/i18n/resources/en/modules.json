@@ -136,7 +136,22 @@
       "blacklist": {
         "title": "Blacklist",
         "description": "Blacklist panel description",
-        "section": {}
+        "section": {
+          "title": "Access blocking",
+          "table": {
+            "placeholder": {
+              "search": "Type to search",
+              "email": "E-mail",
+              "ipaddress": "IP address, 123.456..."
+            },
+            "label": {
+              "email": "E-mail",
+              "ipaddress": "IP Address",
+              "created": "Created",
+              "action": "Action"
+            }
+          }
+        }
       }
     }
   },

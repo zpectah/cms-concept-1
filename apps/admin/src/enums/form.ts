@@ -59,4 +59,5 @@ export const registeredFormFields = {
   comments: 'comments',
   anonymous: 'anonymous',
   members: 'members',
+  ipaddress: 'ipaddress',
 } as const;

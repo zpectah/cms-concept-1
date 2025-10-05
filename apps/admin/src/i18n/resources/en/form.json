@@ -39,7 +39,8 @@
     "fileName": "File name",
     "fileType": "File type",
     "fileMime": "File mime",
-    "fileSize": "File size"
+    "fileSize": "File size",
+    "ipaddress": "IP Address"
   },
   "message": {
     "error": {
@@ -47,7 +48,8 @@
       "endDateBeforeStartDate": "End date must be after start date",
       "emailFormat": "Email is in wrong format",
       "insufficientChars": "Insufficient number of characters",
-      "duplicityName": "This name is already in use, try another one"
+      "duplicityName": "This name is already in use, try another one",
+      "requiredAtLeastOne": "At least one value is required"
     }
   }
 }

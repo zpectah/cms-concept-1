@@ -11,6 +11,8 @@ import { Search } from '../../input';
 import { listItemsSortOrderKeys } from '../enums';
 import { ListItemsControlsProps } from '../types';
 import { LIST_ITEMS_PER_PAGE_OPTIONS } from '../constants';
+import { IconButtonPlus } from '../../Button';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const ListItemsControls = <T extends ItemBase>({
   // model,
@@ -257,6 +259,13 @@ const ListItemsControls = <T extends ItemBase>({
               onChange={(event) => onQueryChange(event.target.value)}
               fullWidth
               placeholder={t('components:ListItems.searchInputPlaceholder')}
+              endAdornment={
+                query.length > 0 && (
+                  <IconButtonPlus onClick={() => onQueryChange('')}>
+                    <ClearIcon fontSize="small" />
+                  </IconButtonPlus>
+                )
+              }
             />
           </Grid>
           <Grid size={6}>{renderListOptionsMenu()}</Grid>

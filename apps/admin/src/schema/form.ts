@@ -17,6 +17,7 @@ export const formFieldsSchemas = {
     .nonempty({ message: i18next.t('form:message.error.required') })
     .email({ message: i18next.t('form:message.error.emailFormat') }),
 
+  email: z.string().email({ message: i18next.t('form:message.error.emailFormat') }),
   boolean: z.boolean(),
   string: z.string(),
   number: z.number(),

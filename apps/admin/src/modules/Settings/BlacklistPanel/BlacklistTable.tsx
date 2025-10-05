@@ -1,64 +1,51 @@
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Stack } from '@mui/material';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Stack } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Blacklist, BlacklistItem } from '@common';
-import { IconButtonPlus, Search, Input, Email } from '../../../components';
+import ClearIcon from '@mui/icons-material/Clear';
+import { IconButtonPlus, Search } from '../../../components';
 import { muiCommonColorVariantKeys } from '../../../enums';
+import { BlacklistItemForm } from './BlacklistItemForm';
+import { useBlacklist } from './useBlacklist';
 
-interface BlacklistTableProps {
-  blacklistItems: Blacklist;
-
-  onDelete: (id: number) => void;
-  onToggle: (id: number) => void;
-  onCreate: (item: BlacklistItem) => void;
-}
-
-const DEFAULT_ITEM = { id: 0, email: '', ipaddress: '', created: '', active: true };
-
-const BlacklistTable = ({ blacklistItems, onDelete, onToggle, onCreate }: BlacklistTableProps) => {
-  const [newItem, setNewItem] = useState<BlacklistItem>(Object.assign(DEFAULT_ITEM));
-
-  const { t } = useTranslation(['common']);
-
-  const newItemChangeHandler = (key: keyof BlacklistItem, value: BlacklistItem[keyof BlacklistItem]) => {
-    const master = Object.assign({ ...newItem });
-
-    master[key] = value;
-
-    setNewItem(master);
-  };
-
-  const newItemSubmitHandler = () => {
-    const master = Object.assign(newItem);
-
-    onCreate(master);
-
-    setNewItem(Object.assign(DEFAULT_ITEM));
-  };
+const BlacklistTable = () => {
+  const { t } = useTranslation(['common', 'modules']);
+  const { rows, rawRows, onRowDelete, onRowToggle, query, setQuery } = useBlacklist();
 
   return (
     <Stack gap={2}>
-      <div>
-        <Search fullWidth />
-      </div>
+      <BlacklistItemForm />
+
+      <Search
+        fullWidth
+        placeholder={t('modules:settings.tabs.blacklist.section.table.placeholder.search')}
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+        endAdornment={
+          query.length > 0 && (
+            <IconButtonPlus onClick={() => setQuery('')}>
+              <ClearIcon fontSize="small" />
+            </IconButtonPlus>
+          )
+        }
+        disabled={rawRows.length === 0}
+      />
 
       <TableContainer component={Paper} variant="outlined">
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell width="auto">E-mail</TableCell>
-              <TableCell width="auto">IP Adresa</TableCell>
-              <TableCell width="20%">Datum přidání</TableCell>
+              <TableCell width="auto">{t('modules:settings.tabs.blacklist.section.table.label.email')}</TableCell>
+              <TableCell width="auto">{t('modules:settings.tabs.blacklist.section.table.label.ipaddress')}</TableCell>
+              <TableCell width="20%">{t('modules:settings.tabs.blacklist.section.table.label.created')}</TableCell>
               <TableCell width="20%" align="right">
-                Akce
+                {t('modules:settings.tabs.blacklist.section.table.label.action')}
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {blacklistItems.map((row) => (
+            {rows.map((row) => (
               <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   {row.email}
@@ -70,7 +57,7 @@ const BlacklistTable = ({ blacklistItems, onDelete, onToggle, onCreate }: Blackl
                     <IconButtonPlus
                       size="small"
                       color={muiCommonColorVariantKeys.error}
-                      onClick={() => onDelete(row.id)}
+                      onClick={() => onRowDelete(row.id)}
                       tooltip={t('button.delete')}
                     >
                       <DeleteIcon fontSize="inherit" />
@@ -78,7 +65,7 @@ const BlacklistTable = ({ blacklistItems, onDelete, onToggle, onCreate }: Blackl
                     <IconButtonPlus
                       size="small"
                       color={muiCommonColorVariantKeys.warning}
-                      onClick={() => onToggle(row.id)}
+                      onClick={() => onRowToggle(row.id)}
                       tooltip={t('button.disable')}
                     >
                       {row.active ? <VisibilityOffIcon fontSize="inherit" /> : <VisibilityIcon fontSize="inherit" />}
@@ -90,29 +77,6 @@ const BlacklistTable = ({ blacklistItems, onDelete, onToggle, onCreate }: Blackl
           </TableBody>
         </Table>
       </TableContainer>
-
-      <Stack direction="row" gap={1.5} alignItems="center">
-        <Email
-          fullWidth
-          size="small"
-          placeholder="E-mail"
-          value={newItem.email}
-          onChange={(event) => newItemChangeHandler('email', event.target.value)}
-        />
-        <span>or</span>
-        <Input
-          fullWidth
-          size="small"
-          placeholder="IP Adress"
-          value={newItem.ipaddress}
-          onChange={(event) => newItemChangeHandler('ipaddress', event.target.value)}
-        />
-        <Stack direction="row" gap={1} sx={{ display: 'inline-flex' }}>
-          <Button variant="contained" color="inherit" onClick={newItemSubmitHandler}>
-            Přidat
-          </Button>
-        </Stack>
-      </Stack>
     </Stack>
   );
 };

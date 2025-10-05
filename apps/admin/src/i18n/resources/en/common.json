@@ -47,7 +47,8 @@
     "yesterday": "Yesterday",
     "today": "Today",
     "tomorrow": "Tomorrow",
-    "loading": "Loading"
+    "loading": "Loading",
+    "or": "or"
   },
   "routes": {
     "articles": "Articles",
