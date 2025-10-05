@@ -6,4 +6,5 @@ export interface GpsPickerProps {
   isError?: boolean;
   disableThumbMap?: boolean;
   onMapChange?: (center: GpsLocation, zoom: number) => void;
+  thumbZoom?: number;
 }

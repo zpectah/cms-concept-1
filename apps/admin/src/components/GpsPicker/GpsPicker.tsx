@@ -5,6 +5,7 @@ import { styled, Box, Stack, Button } from '@mui/material';
 import AddLocationIcon from '@mui/icons-material/AddLocation';
 import ClearIcon from '@mui/icons-material/Clear';
 import { GpsLocation } from '@common';
+import { LOCATION_CENTER_DEFAULT, LOCATION_CENTER_INITIAL, LOCATION_ZOOM_DEFAULT } from '../../constants';
 import { getConfig } from '../../utils';
 import { GpsPickerProps } from './types';
 import { DialogBase } from '../Dialog';
@@ -37,11 +38,16 @@ const MapThumbWrapper = styled('div')(() => ({
   },
 }));
 
-const CENTER_INITIAL: GpsLocation = [0, 0];
-const CENTER_DEFAULT: GpsLocation = [14.420780083888587, 50.087045878155095];
-const ZOOM_DEFAULT = 10.15;
+const THUMB_ZOOM_DEFAULT = 15;
 
-const GpsPicker = ({ value = [0, 0], onChange, isError, onMapChange, disableThumbMap }: GpsPickerProps) => {
+const GpsPicker = ({
+  value = [0, 0],
+  onChange,
+  isError,
+  onMapChange,
+  disableThumbMap,
+  thumbZoom = THUMB_ZOOM_DEFAULT,
+}: GpsPickerProps) => {
   const {
     apps: { mapbox },
   } = getConfig();
@@ -55,23 +61,37 @@ const GpsPicker = ({ value = [0, 0], onChange, isError, onMapChange, disableThum
   const thumbMapContainerRef = useRef<HTMLDivElement | null>(null);
 
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [center, setCenter] = useState<GpsLocation>(CENTER_DEFAULT);
-  const [zoom, setZoom] = useState<number>(ZOOM_DEFAULT);
+  const [center, setCenter] = useState<GpsLocation>(LOCATION_CENTER_DEFAULT);
+  const [zoom, setZoom] = useState<number>(LOCATION_ZOOM_DEFAULT);
+  const [temporaryCenter, setTemporaryCenter] = useState<GpsLocation>(value);
   const [selectedCenter, setSelectedCenter] = useState<GpsLocation>(value);
 
   const mainSelectedMarker = new mapboxgl.Marker();
   const thumbSelectedMarker = new mapboxgl.Marker();
 
-  const isValueSet = useMemo(() => JSON.stringify(selectedCenter) !== JSON.stringify(CENTER_INITIAL), [selectedCenter]);
+  const isTemporaryValueSet = useMemo(
+    () => JSON.stringify(temporaryCenter) !== JSON.stringify(LOCATION_CENTER_INITIAL),
+    [temporaryCenter]
+  );
+  const isSelectedValueSet = useMemo(
+    () => JSON.stringify(selectedCenter) !== JSON.stringify(LOCATION_CENTER_INITIAL),
+    [selectedCenter]
+  );
+  const isValueSet = useMemo(() => JSON.stringify(value) !== JSON.stringify(LOCATION_CENTER_INITIAL), [value]);
+
+  const initialCenter = useMemo(
+    () => (isTemporaryValueSet ? temporaryCenter : isSelectedValueSet ? selectedCenter : isValueSet ? value : center),
+    [isTemporaryValueSet, temporaryCenter, isSelectedValueSet, selectedCenter, isValueSet, value, center]
+  );
 
   useEffect(() => {
     if (disableThumbMap) return;
-    if (!isValueSet || !thumbMapContainerRef.current) return;
+    if (!isSelectedValueSet || !thumbMapContainerRef.current) return;
 
     thumbMapRef.current = new mapboxgl.Map({
       container: thumbMapContainerRef.current as HTMLElement,
       center: selectedCenter,
-      zoom: ZOOM_DEFAULT,
+      zoom: thumbZoom,
     });
 
     thumbMapRef.current.on('load', (event) => {
@@ -79,14 +99,14 @@ const GpsPicker = ({ value = [0, 0], onChange, isError, onMapChange, disableThum
         thumbSelectedMarker.setLngLat(selectedCenter).addTo(thumbMapRef.current);
       }
     });
-  }, [disableThumbMap, isValueSet]);
+  }, [selectedCenter, disableThumbMap, isSelectedValueSet]);
 
   useEffect(() => {
     if (!dialogOpen || !mainMapContainerRef.current) return;
 
     mainMapRef.current = new mapboxgl.Map({
       container: mainMapContainerRef.current,
-      center: isValueSet ? value : center,
+      center: initialCenter,
       zoom,
     });
 
@@ -109,7 +129,7 @@ const GpsPicker = ({ value = [0, 0], onChange, isError, onMapChange, disableThum
     mainMapRef.current.on('click', (event) => {
       const newLocation: GpsLocation = [event.lngLat.lng, event.lngLat.lat];
 
-      setSelectedCenter(newLocation);
+      setTemporaryCenter(newLocation);
 
       if (!mainMapRef.current) return;
 
@@ -119,57 +139,65 @@ const GpsPicker = ({ value = [0, 0], onChange, isError, onMapChange, disableThum
     return () => mainMapRef?.current?.remove();
   }, [dialogOpen]);
 
+  const cleanMainMapHandler = () => {
+    // Only way to reload (clean) map
+    if (mainMapRef.current) {
+      mainMapRef.current.remove();
+      mainMapRef.current = new mapboxgl.Map({
+        container: mainMapContainerRef.current as HTMLElement,
+        center: initialCenter,
+        zoom,
+      });
+    }
+  };
+
+  const resetHandler = () => {
+    mainSelectedMarker.remove();
+    thumbSelectedMarker.remove();
+    setSelectedCenter(LOCATION_CENTER_INITIAL);
+    setTemporaryCenter(LOCATION_CENTER_INITIAL);
+    cleanMainMapHandler();
+  };
+
+  const openHandler = () => setDialogOpen(true);
+
+  const closeHandler = () => setDialogOpen(false);
+
+  const saveHandler = () => {
+    setSelectedCenter(temporaryCenter);
+    closeHandler();
+    onChange(temporaryCenter);
+  };
+
   return (
     <>
       <Stack direction="column" gap={1}>
-        {isValueSet && !disableThumbMap && <MapThumbWrapper id="thumb-map-container" ref={thumbMapContainerRef} />}
+        {isSelectedValueSet && !disableThumbMap && (
+          <MapThumbWrapper id="thumb-map-container" ref={thumbMapContainerRef} />
+        )}
         <Stack direction="row" gap={1}>
-          <Input value={JSON.stringify(selectedCenter)} readOnly fullWidth />
-          <Button variant="outlined" color="warning" onClick={() => setSelectedCenter([0, 0])} disabled={!isValueSet}>
+          <Input value={JSON.stringify(selectedCenter)} readOnly fullWidth error={isError} />
+          <Button variant="outlined" color="warning" onClick={resetHandler} disabled={!isSelectedValueSet}>
             <ClearIcon />
           </Button>
-          <Button variant="contained" color="inherit" onClick={() => setDialogOpen(true)}>
+          <Button variant="contained" color="inherit" onClick={openHandler}>
             <AddLocationIcon />
           </Button>
         </Stack>
       </Stack>
-
       <DialogBase
         open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
+        onClose={closeHandler}
         dialogProps={{ keepMounted: true, maxWidth: 'md', fullWidth: true }}
         actions={
           <>
-            <Button
-              onClick={() => {
-                onChange(selectedCenter);
-
-                setDialogOpen(false);
-              }}
-              variant="contained"
-              disabled={!isValueSet}
-            >
+            <Button onClick={saveHandler} variant="contained" disabled={!isTemporaryValueSet}>
               {t('button.save')}
             </Button>
-            <Button
-              onClick={() => {
-                setSelectedCenter(CENTER_INITIAL);
-                mainSelectedMarker.remove();
-              }}
-              variant="outlined"
-              color="warning"
-              disabled={!isValueSet}
-            >
+            <Button onClick={resetHandler} variant="outlined" color="warning" disabled={!isTemporaryValueSet}>
               {t('button.reset')}
             </Button>
-            <Button
-              onClick={() => {
-                // setSelectedCenter(CENTER_INITIAL);
-                setDialogOpen(false);
-              }}
-              variant="outlined"
-              color="inherit"
-            >
+            <Button onClick={closeHandler} variant="outlined" color="inherit">
               {t('button.cancel')}
             </Button>
           </>

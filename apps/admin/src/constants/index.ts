@@ -4,5 +4,6 @@ export * from './feedback';
 export * from './fileUploader';
 export * from './form';
 export * from './localStorage';
+export * from './location';
 export * from './options';
 export * from './ui';

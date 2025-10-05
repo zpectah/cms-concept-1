@@ -55,10 +55,11 @@ class Settings {
           'district' => 'District',
           'city' => 'My City',
           'country' => 'My Country',
-          'zip' => '555248',
+          'zip' => '555248'
         ],
         'location' => [0, 0],
-        'bank' => '0000/123456789/0330'
+        'bank' => '0000/123456789/0330',
+        'id' => 'CZ56456787484'
       ],
 
       'meta' => [
