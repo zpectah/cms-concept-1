@@ -11,7 +11,7 @@ interface LocalesTabsProps {
 
 const LocalesTabs = ({ render, locales, locale, onLocaleChange }: LocalesTabsProps) => {
   const renderContent = useMemo(() => {
-    return locales.map((loc) => (
+    return locales?.map((loc) => (
       <Box
         key={loc}
         sx={{
@@ -24,7 +24,7 @@ const LocalesTabs = ({ render, locales, locale, onLocaleChange }: LocalesTabsPro
     ));
   }, [locale, locales, render]);
 
-  if (locales.length === 1) return renderContent;
+  if (locales?.length === 1) return renderContent;
 
   return (
     <Card sx={{ my: 1.5 }}>
@@ -38,7 +38,7 @@ const LocalesTabs = ({ render, locales, locale, onLocaleChange }: LocalesTabsPro
           size="small"
           color="primary"
         >
-          {locales.map((loc) => (
+          {locales?.map((loc) => (
             <ToggleButton key={loc} value={loc} sx={{ textTransform: 'uppercase' }}>
               &nbsp;{loc}&nbsp;
             </ToggleButton>
