@@ -1,5 +1,6 @@
 export * from './articles';
 export * from './attachments';
+export * from './blacklist';
 export * from './categories';
 export * from './comments';
 export * from './members';

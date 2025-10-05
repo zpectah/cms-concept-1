@@ -1,15 +1,14 @@
-import { useBlacklistPanel } from './useBlacklistPanel';
 import { Content, Section } from '../../../components';
+import { useBlacklistPanel } from './useBlacklistPanel';
+import BlacklistTable from './BlacklistTable';
 
 const BlacklistPanel = () => {
-  const {} = useBlacklistPanel();
-
-  // TODO
+  const { blacklistItems, onDelete, onToggle, onCreate } = useBlacklistPanel();
 
   return (
     <Content>
       <Section title="Blokování přístupu" cardContent>
-        - tabulka s IP adresama nebo emailem [IP Address, e-mail]
+        <BlacklistTable blacklistItems={blacklistItems} onDelete={onDelete} onToggle={onToggle} onCreate={onCreate} />
       </Section>
     </Content>
   );

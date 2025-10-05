@@ -35,16 +35,16 @@ const LocalesTable = ({
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>{t('modules:settings.tabs.language.section.table.language')}</TableCell>
-            <TableCell>{t('modules:settings.tabs.language.section.table.installed')}</TableCell>
-            <TableCell>{t('modules:settings.tabs.language.section.table.active')}</TableCell>
-            <TableCell>{t('modules:settings.tabs.language.section.table.default')}</TableCell>
+            <TableCell width="auto"></TableCell>
+            <TableCell width="20%">{t('modules:settings.tabs.language.section.table.installed')}</TableCell>
+            <TableCell width="20%">{t('modules:settings.tabs.language.section.table.active')}</TableCell>
+            <TableCell width="20%">{t('modules:settings.tabs.language.section.table.default')}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {isUpdating && (
             <tr>
-              <td>{t('label.loading')}</td>
+              <td colSpan={4}>{t('label.loading')}</td>
             </tr>
           )}
           {availableLocales.map((locale) => {
@@ -52,10 +52,10 @@ const LocalesTable = ({
 
             return (
               <TableRow key={locale} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell component="th" scope="row" width="auto">
+                <TableCell component="th" scope="row">
                   {(locales as Record<string, { label: string }>)[locale].label}
                 </TableCell>
-                <TableCell width="20%">
+                <TableCell>
                   {isInstalled ? (
                     <CheckIcon fontSize="small" color="success" />
                   ) : (
@@ -70,7 +70,7 @@ const LocalesTable = ({
                     </Button>
                   )}
                 </TableCell>
-                <TableCell width="20%">
+                <TableCell>
                   <Radio
                     checked={isLocaleActive(locale)}
                     onClick={() => onLocaleToggle(locale)}
@@ -78,7 +78,7 @@ const LocalesTable = ({
                     disabled={!isInstalled}
                   />
                 </TableCell>
-                <TableCell width="20%">
+                <TableCell>
                   <Radio
                     checked={isLocaleDefault(locale)}
                     onClick={() => onLocaleDefault(locale)}
