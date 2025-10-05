@@ -1,0 +1,73 @@
+{
+  "en": {
+    "label": "English",
+    "format": {
+      "date": "YYYY.MM.DD.",
+      "time": "HH:mm"
+    }
+  },
+  "cs": {
+    "label": "Čeština",
+    "format": {
+      "date": "DD.MM.YYYY",
+      "time": "HH:mm"
+    }
+  },
+  "sk": {
+    "label": "Slovenčina",
+    "format": {
+      "date": "DD.MM.YYYY",
+      "time": "HH:mm"
+    }
+  },
+  "pl": {
+    "label": "Polski",
+    "format": {
+      "date": "DD.MM.YYYY",
+      "time": "HH:mm"
+    }
+  },
+  "hu": {
+    "label": "Magyar",
+    "format": {
+      "date": "YYYY.MM.DD.",
+      "time": "HH:mm"
+    }
+  },
+  "uk": {
+    "label": "Українська",
+    "format": {
+      "date": "DD.MM.YYYY",
+      "time": "HH:mm"
+    }
+  },
+  "it": {
+    "label": "Italiano",
+    "format": {
+      "date": "DD/MM/YYYY",
+      "time": "HH:mm"
+    }
+  },
+  "fr": {
+    "label": "Français",
+    "format": {
+      "date": "DD/MM/YYYY",
+      "time": "HH:mm"
+    }
+  },
+  "es": {
+    "label": "Español",
+    "format": {
+      "date": "DD/MM/YYYY",
+      "time": "HH:mm"
+    }
+  },
+  "pt": {
+    "label": "Português",
+    "format": {
+      "date": "DD/MM/YYYY",
+      "time": "HH:mm"
+    }
+  }
+}
+

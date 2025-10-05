@@ -1,5 +1,7 @@
 // eslint-disable-next-line @nx/enforce-module-boundaries
-import config from '../../../../project.config.json';
+import config from '../../../../config.project.json';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import locales from '../../../../config.locales.json';
 
 const getConfig = () => {
   const env = import.meta.env.MODE ?? 'unknown';
@@ -8,9 +10,7 @@ const getConfig = () => {
     env,
     isDev: env === 'development',
 
-    // TODO
-    viewToggleEnabled: false,
-    //
+    locales,
 
     ...config,
   };

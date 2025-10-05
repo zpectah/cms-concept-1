@@ -41,4 +41,22 @@ export const registeredFormFields = {
   file_name: 'file_name', // TODO
   file_size: 'file_size', // TODO
   file_type: 'file_type', // TODO
+  file: 'file', // TODO
+  size: 'size', // TODO
+
+  project: 'project',
+  company: 'company',
+  phone: 'phone',
+  bank: 'bank',
+  meta: 'meta',
+  keywords: 'keywords',
+  robots: 'robots',
+  state: 'state',
+  debug: 'debug',
+  maintenance: 'maintenance',
+  messages: 'messages',
+  recipients: 'recipients',
+  comments: 'comments',
+  anonymous: 'anonymous',
+  members: 'members',
 } as const;

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Button, Divider } from '@mui/material';
-// import { registeredFormFields } from '../../../enums';
+import { registeredFormFields } from '../../../enums';
 import {
   ControlledForm,
   Content,
@@ -27,27 +27,40 @@ const GlobalPanelForm = () => {
     <ControlledForm form={form} formProps={{ onSubmit }}>
       <Content>
         <Section title={t('modules:settings.tabs.global.section.project.title')} cardContent contentSpacing="form">
-          <InputField name="project.name" label="Název projektu" isRequired />
-          <TextareaField name="project.description" label="Popis projektu" />
+          <InputField
+            name={`${registeredFormFields.project}.${registeredFormFields.name}`}
+            label="Název projektu"
+            isRequired
+          />
+          <TextareaField
+            name={`${registeredFormFields.project}.${registeredFormFields.description}`}
+            label="Popis projektu"
+          />
         </Section>
         <Divider />
         <Section title={t('modules:settings.tabs.global.section.company.title')} cardContent contentSpacing="form">
-          <InputField name="company.name" label="Název společnosti" />
-          <TextareaField name="company.description" label="Popis společnosti" />
-          <InputField name="company.id" label="ID společnosti" />
+          <InputField name={`${registeredFormFields.company}.${registeredFormFields.name}`} label="Název společnosti" />
+          <TextareaField
+            name={`${registeredFormFields.company}.${registeredFormFields.description}`}
+            label="Popis společnosti"
+          />
+          <InputField name={`${registeredFormFields.company}.${registeredFormFields.id}`} label="ID společnosti" />
           <EmailPickerField
-            name="company.email"
+            name={`${registeredFormFields.company}.${registeredFormFields.email}`}
             label="E-mail společnosti"
             fieldProps={{ placeholder: 'Zadejte e-mail' }}
           />
           <PhonePickerField
-            name="company.phone"
+            name={`${registeredFormFields.company}.${registeredFormFields.phone}`}
             label="Telefon společnosti"
             fieldProps={{ placeholder: 'Zadejte telefon' }}
           />
-          <InputField name="company.bank" label="Bankovní spojení" />
-          <AddressField fieldPrefix="company.address" disableCard />
-          <GpsPickerField name="company.location" label={t('form:label.gpsLocation')} />
+          <InputField name={`${registeredFormFields.company}.${registeredFormFields.bank}`} label="Bankovní spojení" />
+          <AddressField fieldPrefix={`${registeredFormFields.company}.${registeredFormFields.address}`} disableCard />
+          <GpsPickerField
+            name={`${registeredFormFields.company}.${registeredFormFields.location}`}
+            label={t('form:label.gpsLocation')}
+          />
         </Section>
         <Divider />
         <ActionBar>

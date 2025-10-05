@@ -115,7 +115,18 @@
       "language": {
         "title": "Languages",
         "description": "Languages panel description",
-        "section": {}
+        "section": {
+          "title": "Language management",
+          "table": {
+            "language": "Language",
+            "installed": "Installed",
+            "active": "Active",
+            "default": "Default"
+          },
+          "button": {
+            "install": "Install"
+          }
+        }
       },
       "maintenance": {
         "title": "Maintenance",

@@ -1,4 +1,5 @@
 export * from './model';
+export * from './getFormatByLocale';
 export * from './getOptionValue';
 export * from './modelList';
 export * from './useAttachmentTypeElement';

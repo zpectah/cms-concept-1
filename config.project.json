@@ -5,8 +5,8 @@
     "description": "Main CMS description ..."
   },
   "project": {
-    "name": "PROJECT NAME",
-    "description": "PROJECT DESCRIPTION"
+    "name": "YOUR PROJECT NAME",
+    "description": "YOUR PROJECT DESCRIPTION"
   },
   "apps": {
     "mapbox": {
@@ -20,17 +20,7 @@
     },
     "locale": {
       "default": "en",
-      "locales": ["en"],
-      "format": {
-        "en": {
-          "date": "DD.MM. YYYY",
-          "time": "HH:mm"
-        },
-        "cs": {
-          "date": "DD.MM. YYYY",
-          "time": "HH:mm"
-        }
-      }
+      "active": ["en"]
     },
     "theme": {
       "default": "light"

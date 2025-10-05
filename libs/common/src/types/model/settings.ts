@@ -8,7 +8,7 @@ export interface SettingsProject {
 export interface SettingsLocales {
   active: string[];
   default: string;
-  available: string[];
+  installed: string[];
 }
 
 export interface SettingsCompany {

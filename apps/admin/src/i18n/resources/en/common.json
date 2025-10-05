@@ -46,7 +46,8 @@
   "label": {
     "yesterday": "Yesterday",
     "today": "Today",
-    "tomorrow": "Tomorrow"
+    "tomorrow": "Tomorrow",
+    "loading": "Loading"
   },
   "routes": {
     "articles": "Articles",

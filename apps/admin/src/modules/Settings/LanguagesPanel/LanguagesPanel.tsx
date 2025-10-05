@@ -1,18 +1,39 @@
-import { useLanguagesPanel } from './useLanguagesPanel';
+import { useTranslation } from 'react-i18next';
 import { Content, Section } from '../../../components';
+import { useLanguagesPanel } from './useLanguagesPanel';
+import LocalesTable from './LocalesTable';
 
 const LanguagesPanel = () => {
-  const {} = useLanguagesPanel();
+  const { t } = useTranslation(['common', 'modules']);
+  const {
+    isLoading,
+    isLocaleInstalled,
+    isLocaleActive,
+    isLocaleDefault,
+    onLocaleInstall,
+    onLocaleToggle,
+    onLocaleDefault,
+    isInstalling,
+    isUpdating,
+  } = useLanguagesPanel();
 
-  // TODO
+  if (isLoading) {
+    return <div>{t('label.loading')}</div>;
+  }
 
   return (
     <Content>
-      <Section title="Správa jazyků" cardContent>
-        - seznam nainstalovaných jazyků [klíč, aktivní, výchozí]
-      </Section>
-      <Section title="Instalace nového jazyka" cardContent>
-        - výběr a instalace nového jazyka
+      <Section title={t('modules:settings.tabs.language.section.title')} cardContent>
+        <LocalesTable
+          isLocaleInstalled={isLocaleInstalled}
+          isLocaleActive={isLocaleActive}
+          isLocaleDefault={isLocaleDefault}
+          onLocaleInstall={onLocaleInstall}
+          onLocaleToggle={onLocaleToggle}
+          onLocaleDefault={onLocaleDefault}
+          isInstalling={isInstalling}
+          isUpdating={isUpdating}
+        />
       </Section>
     </Content>
   );

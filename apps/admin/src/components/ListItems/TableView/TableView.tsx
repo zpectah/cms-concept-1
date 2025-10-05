@@ -108,7 +108,7 @@ const TableView = <T extends ItemBase>({
 
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell>
                 <Checkbox checked={selected.includes(row.id)} onClick={() => onSelect(row.id)} />
               </TableCell>

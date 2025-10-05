@@ -4,7 +4,6 @@ import { Button, Stack, Grid, Collapse, ButtonProps, Divider, Typography } from 
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { ItemBase } from '@common';
-import { getConfig } from '../../../utils';
 import { muiCommonColorVariantKeys } from '../../../enums';
 import { Card } from '../../Card';
 import { Literal } from '../../Literal';
@@ -15,7 +14,7 @@ import { LIST_ITEMS_PER_PAGE_OPTIONS } from '../constants';
 
 const ListItemsControls = <T extends ItemBase>({
   // model,
-  // disableViewToggle, TODO
+  disableViewToggle,
   view,
   onViewToggle,
   query,
@@ -45,7 +44,6 @@ const ListItemsControls = <T extends ItemBase>({
   rowsOnPage,
   renderSelectedActions,
 }: ListItemsControlsProps<T>) => {
-  const { viewToggleEnabled } = getConfig();
   const { t } = useTranslation(['common', 'form', 'options', 'components']);
 
   const [expanded, setExpanded] = useState(false);
@@ -264,7 +262,7 @@ const ListItemsControls = <T extends ItemBase>({
           <Grid size={6}>{renderListOptionsMenu()}</Grid>
           <Grid size={6}>
             <Stack direction="row" gap={1} justifyContent="end">
-              {viewToggleEnabled ?? (
+              {!disableViewToggle && (
                 <Button variant="outlined" color="inherit" size="small" onClick={onViewToggle}>
                   {view}
                 </Button>

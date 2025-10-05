@@ -39,9 +39,9 @@ class Settings {
       ],
 
       'locales' => [
-        'active' => ['en', 'cs'],
         'default' => 'en',
-        'available' => ['en', 'cs', 'sk', 'de'],
+        'active' => ['en', 'cs'],
+        'installed' => ['en', 'cs', 'sk'],
       ],
 
       'company' => [
