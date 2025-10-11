@@ -4,10 +4,11 @@ import AddIcon from '@mui/icons-material/Add';
 import { ControlledForm, EmailField, InputField } from '../../../../components';
 import { useBlacklistItemForm } from './useBlacklistItemForm';
 import { registeredFormFields } from '../../../../enums';
+import { BlacklistItemFormProps } from './types';
 
-const BlacklistItemForm = () => {
+const BlacklistItemForm = ({ afterSubmit }: BlacklistItemFormProps) => {
   const { t } = useTranslation(['common', 'form']);
-  const { form, onSubmit } = useBlacklistItemForm();
+  const { form, onSubmit } = useBlacklistItemForm({ afterSubmit });
 
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>

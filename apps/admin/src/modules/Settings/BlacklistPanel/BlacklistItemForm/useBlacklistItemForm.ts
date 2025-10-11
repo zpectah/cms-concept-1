@@ -5,9 +5,9 @@ import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../../constants';
 import { useAppStore } from '../../../../store';
 import { getDataToFormMapper } from './helpers';
 import { BlacklistItemFormSchema } from './schema';
-import { IBlacklistItemForm } from './types';
+import { IBlacklistItemForm, useBlacklistItemFormProps } from './types';
 
-export const useBlacklistItemForm = () => {
+export const useBlacklistItemForm = ({ afterSubmit }: useBlacklistItemFormProps) => {
   const { t } = useTranslation(['common']);
   const { addToast } = useAppStore();
   const form = useForm<IBlacklistItemForm>({
@@ -24,6 +24,7 @@ export const useBlacklistItemForm = () => {
     addToast(t('message.success.createDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
 
     form.reset(getDataToFormMapper());
+    afterSubmit?.();
   };
 
   return {

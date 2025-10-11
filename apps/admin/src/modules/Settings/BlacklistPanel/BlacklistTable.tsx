@@ -6,7 +6,6 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ClearIcon from '@mui/icons-material/Clear';
 import { IconButtonPlus, Search } from '../../../components';
 import { muiCommonColorVariantKeys } from '../../../enums';
-import { BlacklistItemForm } from './BlacklistItemForm';
 import { useBlacklist } from './useBlacklist';
 
 const BlacklistTable = () => {
@@ -15,8 +14,6 @@ const BlacklistTable = () => {
 
   return (
     <Stack gap={2}>
-      <BlacklistItemForm />
-
       <Search
         fullWidth
         placeholder={t('modules:settings.tabs.blacklist.section.table.placeholder.search')}

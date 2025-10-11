@@ -13,4 +13,5 @@ export interface SectionProps extends WithChildren {
   formSpacing?: boolean;
   contentSpacing?: SectionContentSpacing;
   stackProps?: Partial<StackProps>;
+  titleSlot?: ReactNode;
 }

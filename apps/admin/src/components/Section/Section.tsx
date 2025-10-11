@@ -11,6 +11,7 @@ const Section = ({
   cardProps,
   contentSpacing = sectionSpacingKeys.default,
   stackProps,
+  titleSlot,
 }: SectionProps) => {
   const renderContent = () => {
     switch (contentSpacing) {
@@ -31,7 +32,10 @@ const Section = ({
 
   return (
     <Stack component="section" gap={UI_SPACING.content} {...stackProps}>
-      {title && <Typography variant="h3">{title}</Typography>}
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        {title && <Typography variant="h3">{title}</Typography>}
+        {titleSlot && titleSlot}
+      </Stack>
       {cardContent ? <Card {...cardProps}>{renderContent()}</Card> : renderContent()}
     </Stack>
   );

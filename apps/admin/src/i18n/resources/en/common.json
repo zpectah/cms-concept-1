@@ -41,14 +41,16 @@
     "clearQueue": "Clear queue",
     "removeFromQueue": "Remove from queue",
     "cropImage": "Crop image",
-    "saveAndExit": "Save and exit"
+    "saveAndExit": "Save and exit",
+    "newRecord": "New record"
   },
   "label": {
     "yesterday": "Yesterday",
     "today": "Today",
     "tomorrow": "Tomorrow",
     "loading": "Loading",
-    "or": "or"
+    "or": "or",
+    "newRecord": "New record"
   },
   "routes": {
     "articles": "Articles",
