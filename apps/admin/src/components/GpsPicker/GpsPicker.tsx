@@ -151,12 +151,12 @@ const GpsPicker = ({
     }
   };
 
-  const resetHandler = () => {
+  const resetHandler = (isMain?: boolean) => {
     mainSelectedMarker.remove();
     thumbSelectedMarker.remove();
     setSelectedCenter(LOCATION_CENTER_INITIAL);
     setTemporaryCenter(LOCATION_CENTER_INITIAL);
-    cleanMainMapHandler();
+    if (isMain) cleanMainMapHandler();
   };
 
   const openHandler = () => setDialogOpen(true);
@@ -177,7 +177,7 @@ const GpsPicker = ({
         )}
         <Stack direction="row" gap={1}>
           <Input value={JSON.stringify(selectedCenter)} readOnly fullWidth error={isError} />
-          <Button variant="outlined" color="warning" onClick={resetHandler} disabled={!isSelectedValueSet}>
+          <Button variant="outlined" color="warning" onClick={() => resetHandler()} disabled={!isSelectedValueSet}>
             <ClearIcon />
           </Button>
           <Button variant="contained" color="inherit" onClick={openHandler}>
@@ -194,7 +194,12 @@ const GpsPicker = ({
             <Button onClick={saveHandler} variant="contained" disabled={!isTemporaryValueSet}>
               {t('button.save')}
             </Button>
-            <Button onClick={resetHandler} variant="outlined" color="warning" disabled={!isTemporaryValueSet}>
+            <Button
+              onClick={() => resetHandler(true)}
+              variant="outlined"
+              color="warning"
+              disabled={!isTemporaryValueSet}
+            >
               {t('button.reset')}
             </Button>
             <Button onClick={closeHandler} variant="outlined" color="inherit">
