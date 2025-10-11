@@ -16,6 +16,7 @@ export * from './GpsPicker';
 export * from './Header';
 export * from './ImageCropper';
 export * from './input';
+export * from './JsonViewer';
 export * from './Label';
 export * from './layout';
 export * from './ListItems';

@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Textarea, TextareaProps } from '../input';
+import { JsonViewer } from '../JsonViewer';
+import { Card } from '../Card';
 
 interface DebugFormModelProps {
   name: string;
-  textareaProps?: Partial<Omit<TextareaProps, 'ref'>>;
 }
 
-const DebugFormModel = ({ name, textareaProps }: DebugFormModelProps) => {
+const DebugFormModel = ({ name }: DebugFormModelProps) => {
   const form = useFormContext();
 
   useEffect(() => {
@@ -17,14 +17,9 @@ const DebugFormModel = ({ name, textareaProps }: DebugFormModelProps) => {
   }, [form.formState.errors, name]);
 
   return (
-    <Textarea
-      value={JSON.stringify(form.watch(), null, 2)}
-      readOnly
-      rows={20}
-      {...textareaProps}
-      sx={{ border: 'none', ...textareaProps?.sx }}
-      slotProps={{ input: { sx: { border: '1px dashed' } }, ...textareaProps?.slotProps }}
-    />
+    <Card>
+      <JsonViewer data={form.watch()} label={name} />
+    </Card>
   );
 };
 

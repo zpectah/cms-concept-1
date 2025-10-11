@@ -1,0 +1,44 @@
+.json-viewer {
+  font-family: monospace;
+  background: #1e1e1e;
+  color: #dcdcdc;
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+details summary {
+  cursor: pointer;
+  list-style: none;
+  color: #9cdcfe;
+}
+
+details summary::-webkit-details-marker {
+  color: #858585;
+}
+
+.key {
+  color: #4ec9b0;
+}
+
+.string {
+  color: #ce9178;
+}
+
+.number {
+  color: #b5cea8;
+}
+
+.boolean {
+  color: #569cd6;
+}
+
+.null {
+  color: #808080;
+  font-style: italic;
+}
+
+.braces, .brackets {
+  color: #888;
+}
