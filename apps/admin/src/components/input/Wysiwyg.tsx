@@ -79,6 +79,7 @@ const FieldWrapper = styled(Stack, {
     borderTopRightRadius: 0,
     borderTopWidth: '1px',
     color: theme.palette.text.primary,
+    fontFamily: '"JetBrains Mono Variable", monospace',
 
     '&.rsw-html': {},
   },

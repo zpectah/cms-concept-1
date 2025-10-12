@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFormContext, useFieldArray } from 'react-hook-form';
 import { Button, Stack, Grid, CircularProgress } from '@mui/material';
+import { getBase64Size, formatBytes, AttachmentsType } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getOptionValue, useAttachmentTypeElement } from '../../../helpers';
 import { Card, InputField, Literal, FormContent, ImageCropper } from '../../../components';
 import { IAttachmentsCreateForm } from './types';
-import { AttachmentsType } from '@common';
 
 const AttachmentsQueue = () => {
   const [cropSource, setCropSource] = useState<{ source: string; index: number } | null>(null);
@@ -29,6 +29,7 @@ const AttachmentsQueue = () => {
     update(index, {
       ...queue[index],
       content: source,
+      size: getBase64Size(source),
     });
   };
 
@@ -65,7 +66,7 @@ const AttachmentsQueue = () => {
                   <Literal label={t('form:label.fileMime')} value={file.mime} />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 3 }}>
-                  <Literal label={t('form:label.fileSize')} value={`${file.size} b`} />
+                  <Literal label={t('form:label.fileSize')} value={formatBytes(file.size)} />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 3 }}>
                   <Literal label="UID" value={file.uid} />

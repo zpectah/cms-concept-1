@@ -1,7 +1,7 @@
 import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Stack } from '@mui/material';
-import { AttachmentsType } from '@common';
+import { formatBytes, AttachmentsType } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getConfig } from '../../../utils';
 import { getOptionValue, useAttachmentTypeElement } from '../../../helpers';
@@ -37,7 +37,7 @@ const AttachmentsDetailForm = () => {
             updated={updated}
             cardContent={
               <>
-                <Literal label={t('form:label.fileSize')} value={fileSize} />
+                <Literal label={t('form:label.fileSize')} value={formatBytes(fileSize ?? 0)} />
                 <Literal label={t('form:label.fileMime')} value={fileType} />
               </>
             }
