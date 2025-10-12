@@ -31,7 +31,7 @@ class Users extends Model {
     ];
   }
 
-  public function getDetail($id): array {
+  public function getDetail($id, $email): array {
     $isEven = $id % 2;
 
     return [
@@ -39,7 +39,7 @@ class Users extends Model {
       'name' => 'user-name-' . $id,
       'type' => 'default',
 
-      'email' => 'email-' . $id . '@company.com',
+      'email' => $email ?? 'email-' . $id . '@company.com',
       // 'password' => 'Random string',
       'firstName' => 'First name ' . $id,
       'lastName' => 'Last name ' . $id,

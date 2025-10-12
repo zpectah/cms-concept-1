@@ -2,28 +2,23 @@
 
 namespace router;
 
-class Pages {
-
-  private function get($id): array {
+class Pages extends Router {
+  public function resolve($env, $method, $url, $data): array {
     $pages = new \model\Pages;
 
-    if ($id) {
-      return $pages -> getDetail($id);
-    } else {
-      return $pages -> getList();
-    }
-
-  }
-
-  public function resolve($env, $method, $url, $data): array {
     $response = [];
 
     if ($env === 'private') {
       switch ($method) {
 
         case 'GET':
-          $id = $url['a'];
-          $response = $this -> get($id);
+          if (self::isIdValidParameter($url)) {
+            $id = $url['b'];
+
+            $response = $pages -> getDetail($id);
+          } else {
+            $response = $pages -> getList();
+          }
           break;
 
         case 'PATCH':
@@ -34,8 +29,9 @@ class Pages {
           break;
 
       }
+    } else if ($env === 'public') {
+      $response = [];
     }
-    if ($env === 'public') {}
 
     // TODO
     http_response_code(200);

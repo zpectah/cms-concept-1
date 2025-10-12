@@ -13,7 +13,7 @@ export const usePagesQuery = (id?: string) => {
 
   const pagesDetailQuery = useQuery<unknown, unknown, PagesDetail>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
-    queryFn: () => axios.get(`${API_URL.pages}/${id}`).then((response) => response.data),
+    queryFn: () => axios.get(`${API_URL.pages}/id/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
 

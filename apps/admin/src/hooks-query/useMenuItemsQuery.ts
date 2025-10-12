@@ -20,7 +20,7 @@ export const useMenuItemsQuery = ({ id, menuId }: useMenuItemsQueryProps) => {
 
   const menuItemsDetailQuery = useQuery<unknown, unknown, MenuItemsDetail>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
-    queryFn: () => axios.get(`${API_URL.menuItems}/${id}`).then((response) => response.data),
+    queryFn: () => axios.get(`${API_URL.menuItems}/id/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
 

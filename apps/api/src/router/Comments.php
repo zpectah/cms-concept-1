@@ -2,33 +2,28 @@
 
 namespace router;
 
-class Comments {
-
-  private function get($id, $contentType, $contentId): array {
+class Comments extends Router {
+  public function resolve($env, $method, $url, $data): array {
     $comments = new \model\Comments;
 
-    if ($id) {
-      return $comments -> getDetail($id, $contentType, $contentId);
-    } else {
-      return $comments -> getList($contentType, $contentId);
-    }
-
-  }
-
-  public function resolve($env, $method, $url, $data): array {
     $response = [];
 
     if ($env === 'private') {
       switch ($method) {
 
         case 'GET':
+          if (self::isTwoParameterValid($url)) {
+            if (self::isIdValidParameter($url)) {
+              $id = $url['b'];
 
-          if ($url['a'] && $url['b']) {
-            $response = $this -> get(null, $url['a'], $url['b']);
-          } else if (is_numeric($url['a'])) {
-            $response = $this -> get($url['a'], null, null);
+              $response = $comments -> getDetail($id, null, null);
+            } else {
+              $contentType = $url['a'];
+              $contentId = $url['b'];
+
+              $response = $comments -> getList($contentType, $contentId);
+            }
           }
-
           break;
 
         case 'PATCH':
@@ -39,8 +34,9 @@ class Comments {
           break;
 
       }
+    } else if ($env === 'public') {
+      $response = [];
     }
-    if ($env === 'public') {}
 
     // TODO
     http_response_code(200);

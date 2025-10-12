@@ -13,7 +13,7 @@ export const useAttachmentsQuery = (id?: string) => {
 
   const attachmentsDetailQuery = useQuery<unknown, unknown, AttachmentsDetail>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
-    queryFn: () => axios.get(`${API_URL.attachments}/${id}`).then((response) => response.data),
+    queryFn: () => axios.get(`${API_URL.attachments}/id/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
 

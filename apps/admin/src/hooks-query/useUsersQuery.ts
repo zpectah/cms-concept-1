@@ -13,7 +13,7 @@ export const useUsersQuery = (id?: string) => {
 
   const usersDetailQuery = useQuery<unknown, unknown, UsersDetail>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
-    queryFn: () => axios.get(`${API_URL.users}/${id}`).then((response) => response.data),
+    queryFn: () => axios.get(`${API_URL.users}/id/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
 

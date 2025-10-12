@@ -10,4 +10,6 @@ class Model {
     return date('c'); // ISO 8601 format
   }
 
+  // TODO: common methods across model
+
 }

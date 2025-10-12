@@ -1,5 +1,7 @@
 <?php
 
+require_once PATH_ROOT . 'Response.php';
+
 require_once PATH_ROOT . 'router/Router.php';
 require_once PATH_ROOT . 'router/Articles.php';
 require_once PATH_ROOT . 'router/Attachments.php';

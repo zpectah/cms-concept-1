@@ -13,7 +13,7 @@ export const useMessagesQuery = (id?: string) => {
 
   const messagesDetailQuery = useQuery<unknown, unknown, MessagesDetail>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
-    queryFn: () => axios.get(`${API_URL.messages}/${id}`).then((response) => response.data),
+    queryFn: () => axios.get(`${API_URL.messages}/id/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
 

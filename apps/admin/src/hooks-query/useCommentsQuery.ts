@@ -21,7 +21,7 @@ export const useCommentsQuery = ({ id, contentType, contentId }: useCommentsQuer
 
   const commentsDetailQuery = useQuery<unknown, unknown, CommentsDetail>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
-    queryFn: () => axios.get(`${API_URL.comments}/${id}`).then((response) => response.data),
+    queryFn: () => axios.get(`${API_URL.comments}/id/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
 

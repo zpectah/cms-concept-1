@@ -24,13 +24,11 @@ if (isset($_SERVER['HTTP_CONTENT_ENCODING']) && $_SERVER['HTTP_CONTENT_ENCODING'
 require PATH_ROOT . 'env.php';
 require PATH_ROOT . 'libs.php';
 
-use router\Router;
-
-$router = new Router();
+$response = new Response();
 
 print_r(
   json_encode(
-    $router -> resolveRequest(),
+    $response -> resolveRequest(),
     JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
   )
 );

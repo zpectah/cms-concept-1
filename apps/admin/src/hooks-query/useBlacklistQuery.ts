@@ -13,7 +13,7 @@ export const useBlacklistQuery = (id?: string) => {
 
   const blacklistDetailQuery = useQuery<unknown, unknown, BlacklistItem>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
-    queryFn: () => axios.get(`${API_URL.blacklist}/${id}`).then((response) => response.data),
+    queryFn: () => axios.get(`${API_URL.blacklist}/id/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
 

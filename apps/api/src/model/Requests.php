@@ -23,12 +23,12 @@ class Requests extends Model {
     ];
   }
 
-  public function getDetail($id): array {
+  public function getDetail($id, $token): array {
     $isEven = $id % 2;
 
     return [
       'id' => $id,
-      'token' => "sd6f5g4s6d5f4g6s5d4fg-$id",
+      'token' => $token ?? "sd6f5g4s6d5f4g6s5d4fg-$id",
       'type' => 'password-recovery',
       'active' => true,
       'created' => $this -> getNow(),

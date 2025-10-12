@@ -2,28 +2,29 @@
 
 namespace router;
 
-class Users {
-
-  private function get($id): array {
+class Users extends Router {
+  public function resolve($env, $method, $url, $data): array {
     $users = new \model\Users;
 
-    if ($id) {
-      return $users -> getDetail($id);
-    } else {
-      return $users -> getList();
-    }
-
-  }
-
-  public function resolve($env, $method, $url, $data): array {
     $response = [];
 
     if ($env === 'private') {
       switch ($method) {
 
         case 'GET':
-          $id = $url['a'];
-          $response = $this -> get($id);
+          if (self::isTwoParameterValid($url)) {
+            if (self::isIdValidParameter($url)) {
+              $id = $url['b'];
+
+              $response = $users -> getDetail($id, null);
+            } else if (self::isEmailValidParameter($url)) {
+              $email = $url['b'];
+
+              $response = $users -> getDetail(null, $email);
+            }
+          } else {
+            $response = $users -> getList();
+          }
           break;
 
         case 'PATCH':
@@ -34,8 +35,9 @@ class Users {
           break;
 
       }
+    } else if ($env === 'public') {
+      $response = [];
     }
-    if ($env === 'public') {}
 
     // TODO
     http_response_code(200);

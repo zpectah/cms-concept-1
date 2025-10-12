@@ -13,7 +13,7 @@ export const useCategoriesQuery = (id?: string) => {
 
   const categoriesDetailQuery = useQuery<unknown, unknown, CategoriesDetail>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
-    queryFn: () => axios.get(`${API_URL.categories}/${id}`).then((response) => response.data),
+    queryFn: () => axios.get(`${API_URL.categories}/id/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
 

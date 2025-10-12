@@ -2,22 +2,16 @@
 
 namespace router;
 
-class Settings {
-
-  private function get(): array {
-    $settings = new \model\Settings;
-
-    return $settings -> getList();
-  }
-
+class Settings extends Router {
   public function resolve($env, $method, $url, $data): array {
+    $settings = new \model\Settings;
     $response = [];
 
     if ($env === 'private') {
       switch ($method) {
 
         case 'GET':
-          $response = $this -> get();
+          $response = $settings -> getList();
           break;
 
         case 'PATCH':
@@ -27,8 +21,9 @@ class Settings {
           break;
 
       }
+    } else if ($env === 'public') {
+      $response = [];
     }
-    if ($env === 'public') {}
 
     // TODO
     http_response_code(200);

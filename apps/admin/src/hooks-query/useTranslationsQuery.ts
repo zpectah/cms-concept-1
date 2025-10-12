@@ -13,7 +13,7 @@ export const useTranslationsQuery = (id?: string) => {
 
   const translationsDetailQuery = useQuery<unknown, unknown, TranslationsDetail>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
-    queryFn: () => axios.get(`${API_URL.translations}/${id}`).then((response) => response.data),
+    queryFn: () => axios.get(`${API_URL.translations}/id/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
 

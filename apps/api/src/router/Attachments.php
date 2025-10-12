@@ -2,28 +2,23 @@
 
 namespace router;
 
-class Attachments {
-
-  private function get($id): array {
+class Attachments extends Router {
+  public function resolve($env, $method, $url, $data): array {
     $attachments = new \model\Attachments;
 
-    if ($id) {
-      return $attachments -> getDetail($id);
-    } else {
-      return $attachments -> getList();
-    }
-
-  }
-
-  public function resolve($env, $method, $url, $data): array {
     $response = [];
 
     if ($env === 'private') {
       switch ($method) {
 
         case 'GET':
-          $id = $url['a'];
-          $response = $this -> get($id);
+          if (self::isIdValidParameter($url)) {
+            $id = $url['b'];
+
+            $response = $attachments -> getDetail($id);
+          } else {
+            $response = $attachments -> getList();
+          }
           break;
 
         case 'PATCH':
@@ -34,8 +29,9 @@ class Attachments {
           break;
 
       }
+    } else if ($env === 'public') {
+      $response = [];
     }
-    if ($env === 'public') {}
 
     // TODO
     http_response_code(200);

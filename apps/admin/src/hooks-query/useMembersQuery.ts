@@ -13,7 +13,7 @@ export const useMembersQuery = (id?: string) => {
 
   const membersDetailQuery = useQuery<unknown, unknown, MembersDetail>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
-    queryFn: () => axios.get(`${API_URL.members}/${id}`).then((response) => response.data),
+    queryFn: () => axios.get(`${API_URL.members}/id/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
 

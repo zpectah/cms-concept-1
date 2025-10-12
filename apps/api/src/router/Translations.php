@@ -2,28 +2,23 @@
 
 namespace router;
 
-class Translations {
-
-  private function get($id): array {
+class Translations extends Router {
+  public function resolve($env, $method, $url, $data): array {
     $translations = new \model\Translations;
 
-    if ($id) {
-      return $translations -> getDetail($id);
-    } else {
-      return $translations -> getList();
-    }
-
-  }
-
-  public function resolve($env, $method, $url, $data): array {
     $response = [];
 
     if ($env === 'private') {
       switch ($method) {
 
         case 'GET':
-          $id = $url['a'];
-          $response = $this -> get($id);
+          if (self::isIdValidParameter($url)) {
+            $id = $url['b'];
+
+            $response = $translations -> getDetail($id);
+          } else {
+            $response = $translations -> getList();
+          }
           break;
 
         case 'PATCH':
@@ -34,8 +29,9 @@ class Translations {
           break;
 
       }
+    } else if ($env === 'public') {
+      $response = [];
     }
-    if ($env === 'public') {}
 
     // TODO
     http_response_code(200);

@@ -2,28 +2,23 @@
 
 namespace router;
 
-class Messages {
-
-  private function get($id): array {
+class Messages extends Router {
+  public function resolve($env, $method, $url, $data): array {
     $messages = new \model\Messages;
 
-    if ($id) {
-      return $messages -> getDetail($id);
-    } else {
-      return $messages -> getList();
-    }
-
-  }
-
-  public function resolve($env, $method, $url, $data): array {
     $response = [];
 
     if ($env === 'private') {
       switch ($method) {
 
         case 'GET':
-          $id = $url['a'];
-          $response = $this -> get($id);
+          if (self::isIdValidParameter($url)) {
+            $id = $url['b'];
+
+            $response = $messages -> getDetail($id);
+          } else {
+            $response = $messages -> getList();
+          }
           break;
 
         case 'PATCH':
@@ -34,8 +29,9 @@ class Messages {
           break;
 
       }
+    } else if ($env === 'public') {
+      $response = [];
     }
-    if ($env === 'public') {}
 
     // TODO
     http_response_code(200);

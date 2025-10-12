@@ -2,31 +2,28 @@
 
 namespace router;
 
-class MenuItems {
-
-  private function get($id, $menuId): array {
+class MenuItems extends Router {
+  public function resolve($env, $method, $url, $data): array {
     $menuItems = new \model\MenuItems;
 
-    if ($id) {
-      return $menuItems -> getDetail($id, $menuId);
-    } else {
-      return $menuItems -> getList($menuId);
-    }
-
-  }
-
-  public function resolve($env, $method, $url, $data): array {
     $response = [];
 
     if ($env === 'private') {
       switch ($method) {
 
         case 'GET':
+          if (self::isTwoParameterValid($url)) {
+            if (self::isIdValidParameter($url)) {
+              $id = $url['b'];
 
-          if ($url['a'] === 'menu' && $url['b']) {
-            $response = $this -> get(null, $url['b']);
-          } else if (is_numeric($url['a'])) {
-            $response = $this -> get($url['a'], null);
+              $response = $menuItems -> getDetail($id, null);
+            } else if (self::isMenuIdValidParameter($url)) {
+              $menuId = $url['b'];
+
+              $response = $menuItems -> getList($menuId);
+            } else {
+              $response = $menuItems -> getList(null);
+            }
           }
 
           break;
@@ -39,8 +36,9 @@ class MenuItems {
           break;
 
       }
+    } else if ($env === 'public') {
+      $response = [];
     }
-    if ($env === 'public') {}
 
     // TODO
     http_response_code(200);

@@ -2,28 +2,23 @@
 
 namespace router;
 
-class Menu {
-
-  private function get($id): array {
+class Menu extends Router {
+  public function resolve($env, $method, $url, $data): array {
     $menu = new \model\Menu;
 
-    if ($id) {
-      return $menu -> getDetail($id);
-    } else {
-      return $menu -> getList();
-    }
-
-  }
-
-  public function resolve($env, $method, $url, $data): array {
     $response = [];
 
     if ($env === 'private') {
       switch ($method) {
 
         case 'GET':
-          $id = $url['a'];
-          $response = $this -> get($id);
+          if (self::isIdValidParameter($url)) {
+            $id = $url['b'];
+
+            $response = $menu -> getDetail($id);
+          } else {
+            $response = $menu -> getList();
+          }
           break;
 
         case 'PATCH':
@@ -34,8 +29,9 @@ class Menu {
           break;
 
       }
+    } else if ($env === 'public') {
+      $response = [];
     }
-    if ($env === 'public') {}
 
     // TODO
     http_response_code(200);
