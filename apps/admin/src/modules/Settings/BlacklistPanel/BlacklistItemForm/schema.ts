@@ -1,5 +1,6 @@
 import z from 'zod';
 import i18next from 'i18next';
+import { blacklistTypeKeysArray } from '@common';
 import { formFieldsSchemas } from '../../../../schema';
 import { registeredFormFields } from '../../../../enums';
 import { VALID_EMAIL_REGEX } from '../../../../constants';
@@ -7,6 +8,7 @@ import { VALID_EMAIL_REGEX } from '../../../../constants';
 export const BlacklistItemFormSchema = z
   .object({
     id: formFieldsSchemas.number,
+    type: z.enum(blacklistTypeKeysArray),
     ipaddress: formFieldsSchemas.string.optional(),
     email: formFieldsSchemas.string.optional(),
   })

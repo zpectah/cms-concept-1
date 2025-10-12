@@ -43,81 +43,93 @@ class Router {
         switch ($model) {
 
           case 'settings':
-            $settings = new \model\Settings;
+            $settings = new Settings;
 
-            $response = $settings -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $settings -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'articles':
-            $articles = new \model\Articles;
+            $articles = new Articles;
 
-            $response = $articles -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $articles -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'tags':
-            $tags = new \model\Tags;
+            $tags = new Tags;
 
-            $response = $tags -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $tags -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'categories':
-            $categories = new \model\Categories;
+            $categories = new Categories;
 
-            $response = $categories -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $categories -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'attachments':
-            $attachments = new \model\Attachments;
+            $attachments = new Attachments;
 
-            $response = $attachments -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $attachments -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'pages':
-            $pages = new \model\Pages;
+            $pages = new Pages;
 
-            $response = $pages -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $pages -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'users':
-            $users = new \model\Users;
+            $users = new Users;
 
-            $response = $users -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $users -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'members':
-            $members = new \model\Members;
+            $members = new Members;
 
-            $response = $members -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $members -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'menu':
-            $menu = new \model\Menu;
+            $menu = new Menu;
 
-            $response = $menu -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $menu -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'menuitems':
-            $menuItems = new \model\MenuItems;
+            $menuItems = new MenuItems;
 
-            $response = $menuItems -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $menuItems -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'messages':
-            $messages = new \model\Messages;
+            $messages = new Messages;
 
-            $response = $messages -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $messages -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'translations':
-            $translations = new \model\Translations;
+            $translations = new Translations;
 
-            $response = $translations -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $translations -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           case 'comments':
-            $comments = new \model\Comments;
+            $comments = new Comments;
 
-            $response = $comments -> process($environment, $method, $parsed_url, $jsonData);
+            $response = $comments -> resolve($environment, $method, $parsed_url, $jsonData);
+            break;
+
+          case 'blacklist':
+            $blacklist = new Blacklist;
+
+            $response = $blacklist -> resolve($environment, $method, $parsed_url, $jsonData);
+            break;
+
+          case 'requests':
+            $requests = new Requests;
+
+            $response = $requests -> resolve($environment, $method, $parsed_url, $jsonData);
             break;
 
           default:

@@ -1,6 +1,6 @@
 <?php
 
-const PATH_ROOT = './';
+const PATH_ROOT = __DIR__ . '/';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   header('Access-Control-Allow-Origin: *');
@@ -24,7 +24,9 @@ if (isset($_SERVER['HTTP_CONTENT_ENCODING']) && $_SERVER['HTTP_CONTENT_ENCODING'
 require PATH_ROOT . 'env.php';
 require PATH_ROOT . 'libs.php';
 
-$router = new \router\Router();
+use router\Router;
+
+$router = new Router();
 
 print_r(
   json_encode(

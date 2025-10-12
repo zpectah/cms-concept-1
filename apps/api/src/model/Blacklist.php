@@ -2,25 +2,26 @@
 
 namespace model;
 
-class Menu extends Model {
+class Blacklist extends Model {
 
   public function getList(): array {
-    $menu = [];
+    $blacklist = [];
 
     for ($i = 1; $i <= 10; $i++) {
-      $menu[] = [
+      $isEven = $i % 2;
+
+      $blacklist[] = [
         'id' => $i,
-        'name' => "menu-name-$i",
         'type' => 'default',
+        'ipaddress' => $isEven ? '123.456.789.' . $i : '',
+        'email' => $isEven ? '' : 'blockedemail-' . $i . '@email.com',
         'active' => true,
-        'deleted' => false,
         'created' => $this -> getNow(),
-        'updated' => $this -> getNow(),
       ];
     }
 
     return [
-      ...$menu,
+      ...$blacklist,
     ];
   }
 
@@ -29,12 +30,11 @@ class Menu extends Model {
 
     return [
       'id' => $id,
-      'name' => 'menu-name-' . $id,
       'type' => 'default',
+      'ipaddress' => $isEven ? '123.456.789.' . $id : '',
+      'email' => $isEven ? '' : 'blockedemail-' . $id . '@email.com',
       'active' => true,
-      'deleted' => false,
       'created' => $this -> getNow(),
-      'updated' => $this -> getNow(),
     ];
   }
 

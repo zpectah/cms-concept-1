@@ -14,6 +14,8 @@ export const API_URL = {
   tags: `${API_URL_BASE}private/tags`,
   translations: `${API_URL_BASE}private/translations`,
   users: `${API_URL_BASE}private/users`,
+  blacklist: `${API_URL_BASE}private/blacklist`,
+  requests: `${API_URL_BASE}private/requests`,
 };
 
 export const API_KEYS = {
@@ -30,4 +32,6 @@ export const API_KEYS = {
   tags: 'tags',
   translations: 'translations',
   users: 'users',
+  blacklist: 'blacklist',
+  requests: 'requests',
 };

@@ -2,25 +2,24 @@
 
 namespace model;
 
-class Menu extends Model {
+class Requests extends Model {
 
   public function getList(): array {
-    $menu = [];
+    $requests = [];
 
     for ($i = 1; $i <= 10; $i++) {
-      $menu[] = [
+      $requests[] = [
         'id' => $i,
-        'name' => "menu-name-$i",
-        'type' => 'default',
+        'token' => "sd6f5g4s6d5f4g6s5d4fg-$i",
+        'type' => 'password-recovery',
         'active' => true,
-        'deleted' => false,
         'created' => $this -> getNow(),
         'updated' => $this -> getNow(),
       ];
     }
 
     return [
-      ...$menu,
+      ...$requests,
     ];
   }
 
@@ -29,10 +28,9 @@ class Menu extends Model {
 
     return [
       'id' => $id,
-      'name' => 'menu-name-' . $id,
-      'type' => 'default',
+      'token' => "sd6f5g4s6d5f4g6s5d4fg-$id",
+      'type' => 'password-recovery',
       'active' => true,
-      'deleted' => false,
       'created' => $this -> getNow(),
       'updated' => $this -> getNow(),
     ];

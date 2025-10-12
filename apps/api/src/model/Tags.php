@@ -2,72 +2,42 @@
 
 namespace model;
 
-class Tags {
+class Tags extends Model {
 
-  public function process($env, $method, $url, $data): array {
-    $response = [];
+  public function getList(): array {
+    $tags = [];
 
-    if ($env === 'private') {
-      switch ($method) {
-
-        case 'GET':
-          $id = $url['a'];
-          $response = $this -> get($id);
-          break;
-
-        case 'PATCH':
-        case 'POST':
-          $response = [
-            'request' => $data,
-          ];
-          break;
-
-      }
-    }
-    if ($env === 'public') {}
-
-    // TODO
-    http_response_code(200);
-
-    return $response;
-  }
-
-  public function get($id): array {
-    $now = date('c'); // ISO 8601 format
-
-    if ($id) {
-      // Mock detail
-      return [
-        'id' => $id,
-        'name' => 'tag-name-' . $id,
+    for ($i = 1; $i <= 10; $i++) {
+      $tags[] = [
+        'id' => $i,
+        'name' => "tag-name-$i",
         'type' => 'default',
-        'color' => 'red',
+        'color' => 'none',
         'active' => true,
         'deleted' => false,
-        'created' => $now,
-        'updated' => $now,
-      ];
-    } else {
-      // Mock list
-      $tags = [];
-
-      for ($i = 1; $i <= 10; $i++) {
-        $tags[] = [
-          'id' => $i,
-          'name' => "tag-name-$i",
-          'type' => 'default',
-          'color' => 'none',
-          'active' => true,
-          'deleted' => false,
-          'created' => $now,
-          'updated' => $now,
-        ];
-      }
-
-      return [
-        ...$tags,
+        'created' => $this -> getNow(),
+        'updated' => $this -> getNow(),
       ];
     }
+
+    return [
+      ...$tags,
+    ];
+  }
+
+  public function getDetail($id): array {
+    $isEven = $id % 2;
+
+    return [
+      'id' => $id,
+      'name' => 'tag-name-' . $id,
+      'type' => 'default',
+      'color' => 'red',
+      'active' => true,
+      'deleted' => false,
+      'created' => $this -> getNow(),
+      'updated' => $this -> getNow(),
+    ];
   }
 
 }

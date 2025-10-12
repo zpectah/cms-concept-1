@@ -2,36 +2,9 @@
 
 namespace model;
 
-class Settings {
+class Settings extends Model {
 
-  public function process($env, $method, $url, $data): array {
-    $response = [];
-
-    if ($env === 'private') {
-      switch ($method) {
-
-        case 'GET':
-          $response = $this -> get();
-          break;
-
-        case 'PATCH':
-          $response = [
-            'request' => $data,
-          ];
-          break;
-
-      }
-    }
-    if ($env === 'public') {}
-
-    // TODO
-    http_response_code(200);
-
-    return $response;
-  }
-
-  public function get(): array {
-    // TODO
+  public function getList(): array {
     return [
       'project' => [
         'name' => 'PROJECT NAME',

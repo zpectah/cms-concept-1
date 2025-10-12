@@ -1,5 +1,6 @@
 export * from './useArticlesQuery';
 export * from './useAttachmentsQuery';
+export * from './useBlacklistQuery';
 export * from './useCategories';
 export * from './useCommentsQuery';
 export * from './useMembersQuery';

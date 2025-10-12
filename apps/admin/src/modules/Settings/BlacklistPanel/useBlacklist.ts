@@ -2,38 +2,26 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Blacklist } from '@common';
 import { useViewLayoutContext } from '../../../components';
+import { useBlacklistQuery } from '../../../hooks-query';
 
 export const useBlacklist = () => {
   const [query, setQuery] = useState('');
 
   const { t } = useTranslation(['common']);
   const { openConfirmDialog } = useViewLayoutContext();
+  const { blacklistQuery } = useBlacklistQuery();
 
-  // TODO
-  const blacklistItems: Blacklist = [
-    {
-      id: 1,
-      ipaddress: '123.456.789.1',
-      email: '',
-      created: '2025-10-03T11:26:13+00:00',
-      active: true,
-    },
-    {
-      id: 2,
-      ipaddress: '',
-      email: 'blocked.email@email.com',
-      created: '2025-10-04T11:26:13+00:00',
-      active: true,
-    },
-  ];
+  const { data: blacklistItems } = blacklistQuery;
 
   const results = useMemo(() => {
     let match: Blacklist = [];
 
+    if (!blacklistItems) return [];
+
     if (query.length > 3) {
       const normalizedQuery = query.toLowerCase().trim();
 
-      match = blacklistItems.filter(
+      match = blacklistItems?.filter(
         (item) =>
           String(item.email).toLowerCase().includes(normalizedQuery) ||
           String(item.ipaddress).toLowerCase().includes(normalizedQuery)
@@ -43,7 +31,7 @@ export const useBlacklist = () => {
     }
 
     return match;
-  }, [query]);
+  }, [query, blacklistItems]);
 
   const rowDeleteConfirmHandler = (id: number) => {
     // TODO
@@ -64,7 +52,7 @@ export const useBlacklist = () => {
   };
 
   return {
-    rawRows: blacklistItems,
+    rawRows: blacklistItems ?? [],
     rows: results,
     onRowDelete: rowDeleteHandler,
     onRowToggle: rowToggleHandler,
