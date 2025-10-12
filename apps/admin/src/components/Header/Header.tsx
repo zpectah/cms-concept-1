@@ -5,7 +5,9 @@ import { MainMenu } from '../MainMenu';
 
 const Wrapper = styled('header')(({ theme }) => ({
   width: '100%',
-  borderBottom: `solid 1px ${theme.palette.divider}`,
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.getContrastText(theme.palette.primary.main),
+  borderBottom: `solid 1px ${theme.palette.primary.dark}`,
 }));
 
 const WrapperInner = styled('div')(({ theme }) => ({
@@ -23,9 +25,10 @@ const Block = styled('div')({
   alignItems: 'center',
 });
 
-const PrimaryBlock = styled(Block)({
+const PrimaryBlock = styled(Block)(({ theme }) => ({
   justifyContent: 'flex-start',
-});
+  gap: theme.spacing(2),
+}));
 const SecondaryBlock = styled(Block)({
   justifyContent: 'flex-end',
 });
@@ -43,10 +46,9 @@ const Header = () => (
       <WrapperInner>
         <PrimaryBlock>
           <MainMenu />
-        </PrimaryBlock>
-        <TertiaryBlock>
           <CmsLogo />
-        </TertiaryBlock>
+        </PrimaryBlock>
+        <TertiaryBlock></TertiaryBlock>
         <SecondaryBlock>
           <Stack direction="row" gap={1.5}>
             <UserMenu />

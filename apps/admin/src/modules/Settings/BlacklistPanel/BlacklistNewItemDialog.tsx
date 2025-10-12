@@ -19,7 +19,8 @@ const BlacklistNewItemDialog = () => {
         id="blacklist-new-item-button"
         aria-haspopup="true"
         aria-expanded={dialogOpen ? 'true' : undefined}
-        variant="outlined"
+        variant="contained"
+        color="success"
         size="small"
         onClick={openHandler}
       >

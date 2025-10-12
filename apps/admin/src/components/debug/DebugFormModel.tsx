@@ -17,7 +17,7 @@ const DebugFormModel = ({ name }: DebugFormModelProps) => {
   }, [form.formState.errors, name]);
 
   return (
-    <Card>
+    <Card sx={{ marginTop: 2 }}>
       <JsonViewer data={form.watch()} label={name} />
     </Card>
   );

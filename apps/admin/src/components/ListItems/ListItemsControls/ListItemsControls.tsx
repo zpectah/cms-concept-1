@@ -15,7 +15,7 @@ import { IconButtonPlus } from '../../Button';
 import ClearIcon from '@mui/icons-material/Clear';
 
 const ListItemsControls = <T extends ItemBase>({
-  // model,
+  model,
   disableViewToggle,
   view,
   onViewToggle,
@@ -250,7 +250,7 @@ const ListItemsControls = <T extends ItemBase>({
   );
 
   return (
-    <Card>
+    <Card id={`list-items-${model}-controls`}>
       <Stack direction="column" gap={2}>
         <Grid container spacing={2}>
           <Grid size={12}>

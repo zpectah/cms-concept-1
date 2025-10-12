@@ -26,8 +26,9 @@ const UserMenu = () => {
         aria-expanded={open ? 'true' : undefined}
         onClick={openHandler}
         tooltip="User menu"
+        color="inherit"
       >
-        {open ? <CloseIcon /> : <AccountCircleIcon />}
+        {open ? <CloseIcon color="inherit" /> : <AccountCircleIcon color="inherit" />}
       </IconButtonPlus>
       <Menu
         id="user-menu"

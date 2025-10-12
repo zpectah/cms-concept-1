@@ -29,7 +29,7 @@ const ListItems = <T extends ItemBase>({
   onRowDetail,
   onSelectAll,
   pathPrefix,
-  disableViewToggle,
+  disableViewToggle = true,
   categories = [],
   tags = [],
   initialView = listItemsViewKeys.table,

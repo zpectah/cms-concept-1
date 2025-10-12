@@ -19,6 +19,7 @@ import {
   AddressField,
   DebugFormModel,
   GpsPickerField,
+  FormContent,
 } from '../../../components';
 import { TagsPickerField } from '../../Tags';
 import { CategoriesPickerField } from '../../Categories';
@@ -54,22 +55,28 @@ const ArticlesDetailForm = () => {
           items={fieldOptions.type}
           fieldProps={{ defaultValue: articlesTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
-        <HiddenCard visible={type === 'event'}>
-          <Grid container spacing={2}>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <DateTimePickerField name={registeredFormFields.startDate} label={t('form:label.startDate')} isRequired />
+        <HiddenCard visible={type === 'event'} sx={{ marginTop: 1.5 }}>
+          <FormContent>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12, sm: 6 }}>
+                <DateTimePickerField
+                  name={registeredFormFields.startDate}
+                  label={t('form:label.startDate')}
+                  isRequired
+                />
+              </Grid>
+              <Grid size={{ xs: 12, sm: 6 }}>
+                <DateTimePickerField
+                  name={registeredFormFields.endDate}
+                  label={t('form:label.endDate')}
+                  fieldProps={{ minDate: getTypedDate(startDate) }}
+                  isRequired
+                />
+              </Grid>
             </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <DateTimePickerField
-                name={registeredFormFields.endDate}
-                label={t('form:label.endDate')}
-                fieldProps={{ minDate: getTypedDate(startDate) }}
-                isRequired
-              />
-            </Grid>
-          </Grid>
-          <AddressField fieldPrefix="eventAddress" disableCard />
-          <GpsPickerField name={registeredFormFields.gpsLocation} label={t('form:label.gpsLocation')} />
+            <AddressField fieldPrefix="eventAddress" disableCard />
+            <GpsPickerField name={registeredFormFields.gpsLocation} label={t('form:label.gpsLocation')} />
+          </FormContent>
         </HiddenCard>
         <LocalesTabs
           locales={locales}

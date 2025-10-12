@@ -12,7 +12,7 @@ const Wrapper = styled(Link)(({ theme }) => ({
   cursor: 'pointer',
   textDecoration: 'none',
   textTransform: 'uppercase',
-  color: theme.palette.text.primary,
+  color: 'inherit',
 
   '&:hover': {
     opacity: 1,

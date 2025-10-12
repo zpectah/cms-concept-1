@@ -26,8 +26,9 @@ const MainMenu = () => {
         aria-expanded={open ? 'true' : undefined}
         onClick={openHandler}
         tooltip="Main menu"
+        color="inherit"
       >
-        {open ? <CloseIcon /> : <MenuIcon />}
+        {open ? <CloseIcon color="inherit" /> : <MenuIcon color="inherit" />}
       </IconButtonPlus>
       <Menu
         id="main-menu"
