@@ -19,12 +19,7 @@ const MessagesDetailForm = () => {
       <FormLayout
         actions={
           <FormDetailActions detailId={detailId} listPath={`/${routes.messages.path}`} disableActions>
-            <Button
-              size="large"
-              color="secondary"
-              variant="outlined"
-              onClick={() => detailId && onRead([Number(detailId)])}
-            >
+            <Button size="large" color="secondary" variant="outlined" onClick={() => detailId && onRead(detailId)}>
               {t('button.markAsRead')}
             </Button>
           </FormDetailActions>

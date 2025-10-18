@@ -102,12 +102,13 @@ export const useMessagesDetailForm = () => {
     }
   };
 
-  const readHandler = (ids: number[]) => {
-    // TODO
-    console.log('Marked as read', ids);
-    navigate(`/${routes.messages.path}`);
-    addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-    // TODO: same as delete...
+  const readHandler = (id: number | string) => {
+    if (id === '0') return;
+
+    const values = form.getValues();
+    const master = Object.assign({ ...values, read: true });
+
+    patchHandler(master);
   };
 
   useEffect(() => {
