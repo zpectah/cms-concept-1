@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Settings } from '@common';
 import { API_URL, API_KEYS } from '../constants';
@@ -11,7 +11,13 @@ export const useSettingsQuery = () => {
     queryFn: () => axios.get(API_URL.settings).then((response) => response.data),
   });
 
+  const settingsUpdateQuery = useMutation<unknown, unknown, Partial<Settings>>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-update`],
+    mutationFn: (data) => axios.post(`${API_URL.settings}/update`, data).then((response) => response.data),
+  });
+
   return {
     settingsQuery,
+    settingsUpdateQuery,
   };
 };

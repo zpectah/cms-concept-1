@@ -5,7 +5,7 @@ import { API_URL, API_KEYS } from '../constants';
 
 const QUERY_KEY_BASE = API_KEYS.pages;
 
-export const usePagesQuery = (id?: string) => {
+export const usePagesQuery = ({ id }: { id?: string }) => {
   const pagesQuery = useQuery<unknown, unknown, Pages>({
     queryKey: [QUERY_KEY_BASE],
     queryFn: () => axios.get(API_URL.pages).then((response) => response.data),
@@ -27,10 +27,22 @@ export const usePagesQuery = (id?: string) => {
     mutationFn: (data) => axios.patch(`${API_URL.pages}/patch`, data).then((response) => response.data),
   });
 
+  const pagesToggleQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
+    mutationFn: (data) => axios.post(`${API_URL.pages}/toggle`, data).then((response) => response.data),
+  });
+
+  const pagesDeleteQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
+    mutationFn: (data) => axios.post(`${API_URL.pages}/delete`, data).then((response) => response.data),
+  });
+
   return {
     pagesQuery,
     pagesDetailQuery,
     pagesCreateQuery,
     pagesPatchQuery,
+    pagesToggleQuery,
+    pagesDeleteQuery,
   };
 };

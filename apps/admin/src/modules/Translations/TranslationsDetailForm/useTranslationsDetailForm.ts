@@ -24,7 +24,7 @@ export const useTranslationsDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { translationsDetailQuery, translationsPatchQuery } = useTranslationsQuery(id);
+  const { translationsDetailQuery, translationsPatchQuery } = useTranslationsQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.translations);
   const { locales, locale, onLocaleChange } = useFormDetailControl();

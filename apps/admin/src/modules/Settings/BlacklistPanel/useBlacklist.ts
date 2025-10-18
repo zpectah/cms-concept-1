@@ -9,7 +9,7 @@ export const useBlacklist = () => {
 
   const { t } = useTranslation(['common']);
   const { openConfirmDialog } = useViewLayoutContext();
-  const { blacklistQuery } = useBlacklistQuery();
+  const { blacklistQuery } = useBlacklistQuery({});
 
   const { data: blacklistItems } = blacklistQuery;
 

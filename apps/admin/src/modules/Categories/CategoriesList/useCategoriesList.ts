@@ -9,7 +9,7 @@ export const useCategoriesList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
-  const { categoriesQuery } = useCategoriesQuery();
+  const { categoriesQuery } = useCategoriesQuery({});
 
   const { data: items, isLoading, refetch } = categoriesQuery;
 

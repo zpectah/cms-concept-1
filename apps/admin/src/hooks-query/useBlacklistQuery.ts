@@ -5,7 +5,7 @@ import { API_URL, API_KEYS } from '../constants';
 
 const QUERY_KEY_BASE = API_KEYS.blacklist;
 
-export const useBlacklistQuery = (id?: string) => {
+export const useBlacklistQuery = ({ id }: { id?: string }) => {
   const blacklistQuery = useQuery<unknown, unknown, Blacklist>({
     queryKey: [QUERY_KEY_BASE],
     queryFn: () => axios.get(API_URL.blacklist).then((response) => response.data),
@@ -27,10 +27,22 @@ export const useBlacklistQuery = (id?: string) => {
     mutationFn: (data) => axios.patch(`${API_URL.blacklist}/patch`, data).then((response) => response.data),
   });
 
+  const blacklistToggleQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
+    mutationFn: (data) => axios.post(`${API_URL.blacklist}/toggle`, data).then((response) => response.data),
+  });
+
+  const blacklistDeleteQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
+    mutationFn: (data) => axios.post(`${API_URL.blacklist}/delete`, data).then((response) => response.data),
+  });
+
   return {
     blacklistQuery,
     blacklistDetailQuery,
     blacklistCreateQuery,
     blacklistPatchQuery,
+    blacklistToggleQuery,
+    blacklistDeleteQuery,
   };
 };

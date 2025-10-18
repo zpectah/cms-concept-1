@@ -5,7 +5,7 @@ import { API_URL, API_KEYS } from '../constants';
 
 const QUERY_KEY_BASE = API_KEYS.tags;
 
-export const useTagsQuery = (id?: string) => {
+export const useTagsQuery = ({ id }: { id?: string }) => {
   const tagsQuery = useQuery<unknown, unknown, Tags>({
     queryKey: [QUERY_KEY_BASE],
     queryFn: () => axios.get(API_URL.tags).then((response) => response.data),
@@ -27,10 +27,22 @@ export const useTagsQuery = (id?: string) => {
     mutationFn: (data) => axios.patch(`${API_URL.tags}/patch`, data).then((response) => response.data),
   });
 
+  const tagsToggleQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
+    mutationFn: (data) => axios.post(`${API_URL.tags}/toggle`, data).then((response) => response.data),
+  });
+
+  const tagsDeleteQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
+    mutationFn: (data) => axios.post(`${API_URL.tags}/delete`, data).then((response) => response.data),
+  });
+
   return {
     tagsQuery,
     tagsDetailQuery,
     tagsCreateQuery,
     tagsPatchQuery,
+    tagsToggleQuery,
+    tagsDeleteQuery,
   };
 };

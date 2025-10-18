@@ -34,10 +34,22 @@ export const useMenuItemsQuery = ({ id, menuId }: useMenuItemsQueryProps) => {
     mutationFn: (data) => axios.patch(`${API_URL.menuItems}/patch`, data).then((response) => response.data),
   });
 
+  const menuItemsToggleQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
+    mutationFn: (data) => axios.post(`${API_URL.menuItems}/toggle`, data).then((response) => response.data),
+  });
+
+  const menuItemsDeleteQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
+    mutationFn: (data) => axios.post(`${API_URL.menuItems}/delete`, data).then((response) => response.data),
+  });
+
   return {
     menuItemsQuery,
     menuItemsDetailQuery,
     menuItemsCreateQuery,
     menuItemsPatchQuery,
+    menuItemsToggleQuery,
+    menuItemsDeleteQuery,
   };
 };

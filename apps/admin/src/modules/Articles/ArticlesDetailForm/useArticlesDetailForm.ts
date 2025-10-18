@@ -24,7 +24,7 @@ export const useArticlesDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { articlesDetailQuery, articlesPatchQuery } = useArticlesQuery(id);
+  const { articlesDetailQuery, articlesPatchQuery } = useArticlesQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.articles);
   const { locales, locale, onLocaleChange } = useFormDetailControl();

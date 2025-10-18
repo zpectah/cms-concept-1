@@ -9,7 +9,7 @@ export const useTranslationsList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
-  const { translationsQuery } = useTranslationsQuery();
+  const { translationsQuery } = useTranslationsQuery({});
 
   const { data: items, isLoading, refetch } = translationsQuery;
 

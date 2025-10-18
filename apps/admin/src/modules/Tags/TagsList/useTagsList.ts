@@ -9,7 +9,7 @@ export const useTagsList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
-  const { tagsQuery } = useTagsQuery();
+  const { tagsQuery } = useTagsQuery({});
 
   const { data: items, isLoading, refetch } = tagsQuery;
 

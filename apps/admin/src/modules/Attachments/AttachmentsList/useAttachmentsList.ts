@@ -9,7 +9,7 @@ export const useAttachmentsList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
-  const { attachmentsQuery } = useAttachmentsQuery();
+  const { attachmentsQuery } = useAttachmentsQuery({});
 
   const { data: items, isLoading, refetch } = attachmentsQuery;
 

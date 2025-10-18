@@ -5,7 +5,7 @@ import { API_URL, API_KEYS } from '../constants';
 
 const QUERY_KEY_BASE = API_KEYS.attachments;
 
-export const useAttachmentsQuery = (id?: string) => {
+export const useAttachmentsQuery = ({ id }: { id?: string }) => {
   const attachmentsQuery = useQuery<unknown, unknown, Attachments>({
     queryKey: [QUERY_KEY_BASE],
     queryFn: () => axios.get(API_URL.attachments).then((response) => response.data),
@@ -27,10 +27,22 @@ export const useAttachmentsQuery = (id?: string) => {
     mutationFn: (data) => axios.patch(`${API_URL.attachments}/patch`, data).then((response) => response.data),
   });
 
+  const attachmentsToggleQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
+    mutationFn: (data) => axios.post(`${API_URL.attachments}/toggle`, data).then((response) => response.data),
+  });
+
+  const attachmentsDeleteQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
+    mutationFn: (data) => axios.post(`${API_URL.attachments}/delete`, data).then((response) => response.data),
+  });
+
   return {
     attachmentsQuery,
     attachmentsDetailQuery,
     attachmentsCreateQuery,
     attachmentsPatchQuery,
+    attachmentsToggleQuery,
+    attachmentsDeleteQuery,
   };
 };

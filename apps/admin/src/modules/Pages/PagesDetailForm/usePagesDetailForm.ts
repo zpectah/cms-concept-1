@@ -24,7 +24,7 @@ export const usePagesDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { pagesDetailQuery, pagesPatchQuery } = usePagesQuery(id);
+  const { pagesDetailQuery, pagesPatchQuery } = usePagesQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.pages);
   const { locales, locale, onLocaleChange } = useFormDetailControl();

@@ -24,7 +24,7 @@ export const useAttachmentsDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { attachmentsDetailQuery, attachmentsPatchQuery } = useAttachmentsQuery(id);
+  const { attachmentsDetailQuery, attachmentsPatchQuery } = useAttachmentsQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.attachments);
   const form = useForm<IAttachmentsDetailForm>({

@@ -11,7 +11,7 @@ export const useMessagesList = () => {
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
   const { setSelected } = useModelListStore();
-  const { messagesQuery } = useMessagesQuery();
+  const { messagesQuery } = useMessagesQuery({});
 
   const { data: items, isLoading, refetch } = messagesQuery;
 

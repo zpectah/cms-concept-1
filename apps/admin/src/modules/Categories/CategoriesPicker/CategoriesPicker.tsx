@@ -10,7 +10,7 @@ type CategoriesPickerProps = Omit<SelectProps, 'items'> & {
 const CategoriesPicker = forwardRef<HTMLSelectElement, CategoriesPickerProps>((props, ref) => {
   const { ignored = [], onChange, multiple, ...rest } = props;
 
-  const { categoriesQuery } = useCategoriesQuery();
+  const { categoriesQuery } = useCategoriesQuery({});
 
   const { data: categoriesData } = categoriesQuery;
 

@@ -24,7 +24,7 @@ export const useTagsDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { tagsDetailQuery, tagsPatchQuery } = useTagsQuery(id);
+  const { tagsDetailQuery, tagsPatchQuery } = useTagsQuery({ id });
   const { getTypeFieldOptions, getTranslatedOptionsFromList } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.tags);
   const form = useForm<ITagsDetailForm>({

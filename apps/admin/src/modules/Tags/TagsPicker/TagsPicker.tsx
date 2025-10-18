@@ -10,7 +10,7 @@ type TagsPickerProps = Omit<SelectProps, 'items'> & {
 const TagsPicker = forwardRef<HTMLSelectElement, TagsPickerProps>((props, ref) => {
   const { ignored = [], onChange, multiple, ...rest } = props;
 
-  const { tagsQuery } = useTagsQuery();
+  const { tagsQuery } = useTagsQuery({});
 
   const { data: tagsData } = tagsQuery;
 

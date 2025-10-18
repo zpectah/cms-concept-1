@@ -5,7 +5,7 @@ import { API_URL, API_KEYS } from '../constants';
 
 const QUERY_KEY_BASE = API_KEYS.requests;
 
-export const useRequestsQuery = (id?: string) => {
+export const useRequestsQuery = ({ id, token }: { id?: string; token?: string }) => {
   const requestsQuery = useQuery<unknown, unknown, Requests>({
     queryKey: [QUERY_KEY_BASE],
     queryFn: () => axios.get(API_URL.requests).then((response) => response.data),
@@ -14,6 +14,12 @@ export const useRequestsQuery = (id?: string) => {
   const requestsDetailQuery = useQuery<unknown, unknown, RequestsItem>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
     queryFn: () => axios.get(`${API_URL.requests}/id/${id}`).then((response) => response.data),
+    enabled: !!id && id !== newItemKey,
+  });
+
+  const requestsDetailByTokenQuery = useQuery<unknown, unknown, RequestsItem>({
+    queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
+    queryFn: () => axios.get(`${API_URL.requests}/token/${token}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
   });
 
@@ -27,10 +33,23 @@ export const useRequestsQuery = (id?: string) => {
     mutationFn: (data) => axios.patch(`${API_URL.requests}/patch`, data).then((response) => response.data),
   });
 
+  const requestsToggleQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
+    mutationFn: (data) => axios.post(`${API_URL.requests}/toggle`, data).then((response) => response.data),
+  });
+
+  const requestsDeleteQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
+    mutationFn: (data) => axios.post(`${API_URL.requests}/delete`, data).then((response) => response.data),
+  });
+
   return {
     requestsQuery,
     requestsDetailQuery,
+    requestsDetailByTokenQuery,
     requestsCreateQuery,
     requestsPatchQuery,
+    requestsToggleQuery,
+    requestsDeleteQuery,
   };
 };

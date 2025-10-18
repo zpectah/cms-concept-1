@@ -24,7 +24,7 @@ export const useMessagesDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { messagesDetailQuery, messagesPatchQuery } = useMessagesQuery(id);
+  const { messagesDetailQuery, messagesPatchQuery } = useMessagesQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.messages);
   const form = useForm<IMessagesDetailForm>({

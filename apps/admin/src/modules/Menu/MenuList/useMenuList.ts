@@ -9,7 +9,7 @@ export const useMenuList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
-  const { menuQuery } = useMenuQuery();
+  const { menuQuery } = useMenuQuery({});
 
   const { data: items, isLoading, refetch } = menuQuery;
 

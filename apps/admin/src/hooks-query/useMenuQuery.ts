@@ -5,7 +5,7 @@ import { API_URL, API_KEYS } from '../constants';
 
 const QUERY_KEY_BASE = API_KEYS.menu;
 
-export const useMenuQuery = (id?: string) => {
+export const useMenuQuery = ({ id }: { id?: string }) => {
   const menuQuery = useQuery<unknown, unknown, Menu>({
     queryKey: [QUERY_KEY_BASE],
     queryFn: () => axios.get(API_URL.menu).then((response) => response.data),
@@ -27,10 +27,22 @@ export const useMenuQuery = (id?: string) => {
     mutationFn: (data) => axios.patch(`${API_URL.menu}/patch`, data).then((response) => response.data),
   });
 
+  const menuToggleQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
+    mutationFn: (data) => axios.post(`${API_URL.menu}/toggle`, data).then((response) => response.data),
+  });
+
+  const menuDeleteQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
+    mutationFn: (data) => axios.post(`${API_URL.menu}/delete`, data).then((response) => response.data),
+  });
+
   return {
     menuQuery,
     menuDetailQuery,
     menuCreateQuery,
     menuPatchQuery,
+    menuToggleQuery,
+    menuDeleteQuery,
   };
 };

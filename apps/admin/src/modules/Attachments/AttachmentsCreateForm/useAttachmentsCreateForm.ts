@@ -18,7 +18,7 @@ export const useAttachmentsCreateForm = () => {
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
   const { queue, inputElement, onInputChange, onQueueClear } = useFileUploader({});
-  const { attachmentsQuery } = useAttachmentsQuery();
+  const { attachmentsQuery } = useAttachmentsQuery({});
   const { checkQueueDuplicities, isValidFileSize } = useAttachmentsHelpers();
   const form = useForm<IAttachmentsCreateForm>({
     defaultValues: getAttachmentsCreateFormDefaultValues(),

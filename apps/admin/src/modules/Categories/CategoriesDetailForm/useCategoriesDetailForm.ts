@@ -24,7 +24,7 @@ export const useCategoriesDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { categoriesDetailQuery, categoriesPatchQuery } = useCategoriesQuery(id);
+  const { categoriesDetailQuery, categoriesPatchQuery } = useCategoriesQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.categories);
   const { locales, locale, onLocaleChange } = useFormDetailControl();

@@ -9,7 +9,7 @@ export const usePagesList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
-  const { pagesQuery } = usePagesQuery();
+  const { pagesQuery } = usePagesQuery({});
 
   const { data: items, isLoading, refetch } = pagesQuery;
 

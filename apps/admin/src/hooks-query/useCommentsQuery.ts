@@ -35,10 +35,22 @@ export const useCommentsQuery = ({ id, contentType, contentId }: useCommentsQuer
     mutationFn: (data) => axios.patch(`${API_URL.comments}/patch`, data).then((response) => response.data),
   });
 
+  const commentsToggleQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
+    mutationFn: (data) => axios.post(`${API_URL.comments}/toggle`, data).then((response) => response.data),
+  });
+
+  const commentsDeleteQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
+    mutationFn: (data) => axios.post(`${API_URL.comments}/delete`, data).then((response) => response.data),
+  });
+
   return {
     commentsQuery,
     commentsDetailQuery,
     commentsCreateQuery,
     commentsPatchQuery,
+    commentsToggleQuery,
+    commentsDeleteQuery,
   };
 };

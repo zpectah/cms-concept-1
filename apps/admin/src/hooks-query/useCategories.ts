@@ -5,7 +5,7 @@ import { API_URL, API_KEYS } from '../constants';
 
 const QUERY_KEY_BASE = API_KEYS.categories;
 
-export const useCategoriesQuery = (id?: string) => {
+export const useCategoriesQuery = ({ id }: { id?: string }) => {
   const categoriesQuery = useQuery<unknown, unknown, Categories>({
     queryKey: [QUERY_KEY_BASE],
     queryFn: () => axios.get(API_URL.categories).then((response) => response.data),
@@ -27,10 +27,22 @@ export const useCategoriesQuery = (id?: string) => {
     mutationFn: (data) => axios.patch(`${API_URL.categories}/patch`, data).then((response) => response.data),
   });
 
+  const categoriesToggleQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
+    mutationFn: (data) => axios.post(`${API_URL.categories}/toggle`, data).then((response) => response.data),
+  });
+
+  const categoriesDeleteQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
+    mutationFn: (data) => axios.post(`${API_URL.categories}/delete`, data).then((response) => response.data),
+  });
+
   return {
     categoriesQuery,
     categoriesDetailQuery,
     categoriesCreateQuery,
     categoriesPatchQuery,
+    categoriesToggleQuery,
+    categoriesDeleteQuery,
   };
 };

@@ -24,7 +24,7 @@ export const useMenuDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { menuDetailQuery, menuPatchQuery } = useMenuQuery(id);
+  const { menuDetailQuery, menuPatchQuery } = useMenuQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.menu);
   const form = useForm<IMenuDetailForm>({

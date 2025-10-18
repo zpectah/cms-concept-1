@@ -5,7 +5,7 @@ import { API_URL, API_KEYS } from '../constants';
 
 const QUERY_KEY_BASE = API_KEYS.messages;
 
-export const useMessagesQuery = (id?: string) => {
+export const useMessagesQuery = ({ id }: { id?: string }) => {
   const messagesQuery = useQuery<unknown, unknown, Messages>({
     queryKey: [QUERY_KEY_BASE],
     queryFn: () => axios.get(API_URL.messages).then((response) => response.data),
@@ -27,10 +27,28 @@ export const useMessagesQuery = (id?: string) => {
     mutationFn: (data) => axios.patch(`${API_URL.messages}/patch`, data).then((response) => response.data),
   });
 
+  const messagesToggleQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
+    mutationFn: (data) => axios.post(`${API_URL.messages}/toggle`, data).then((response) => response.data),
+  });
+
+  const messagesDeleteQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
+    mutationFn: (data) => axios.post(`${API_URL.messages}/delete`, data).then((response) => response.data),
+  });
+
+  const messagesReadQuery = useMutation<unknown, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-read`],
+    mutationFn: (data) => axios.post(`${API_URL.messages}/read`, data).then((response) => response.data),
+  });
+
   return {
     messagesQuery,
     messagesDetailQuery,
     messagesCreateQuery,
     messagesPatchQuery,
+    messagesToggleQuery,
+    messagesDeleteQuery,
+    messagesReadQuery,
   };
 };

@@ -9,7 +9,7 @@ export const useMembersList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
-  const { membersQuery } = useMembersQuery();
+  const { membersQuery } = useMembersQuery({});
 
   const { data: items, isLoading, refetch } = membersQuery;
 

@@ -24,7 +24,7 @@ export const useMembersDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { membersDetailQuery, membersPatchQuery } = useMembersQuery(id);
+  const { membersDetailQuery, membersPatchQuery } = useMembersQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.members);
   const form = useForm<IMembersDetailForm>({

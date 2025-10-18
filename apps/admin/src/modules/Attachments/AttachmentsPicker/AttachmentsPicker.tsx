@@ -10,7 +10,7 @@ type AttachmentsPickerProps = Omit<SelectProps, 'items'> & {
 const AttachmentsPicker = forwardRef<HTMLSelectElement, AttachmentsPickerProps>((props, ref) => {
   const { ignored = [], onChange, multiple, ...rest } = props;
 
-  const { attachmentsQuery } = useAttachmentsQuery();
+  const { attachmentsQuery } = useAttachmentsQuery({});
 
   const { data: attachmentsData } = attachmentsQuery;
 
