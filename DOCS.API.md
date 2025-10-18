@@ -1,296 +1,221 @@
 # RestApi
 
-## Articles
+## Private
+
+### Articles
+
+|  Method  | Model               |     Request      |     Response      |
+|:--------:|:--------------------|:----------------:|:-----------------:|
+|   GET    | `/articles`         |        ``        |    `Articles`     |
+|   GET    | `/articles/id/$id`  |        ``        | `ArticlesDetail`  |
+|   POST   | `/articles/create`  | `ArticlesDetail` |       `{}`        |
+|  PATCH   | `/articles/patch`   | `ArticlesDetail` |       `{}`        |
+|  PATCH   | `/articles/toggle`  |    `number[]`    |       `{}`        |
+|  PATCH   | `/articles/delete`  |    `number[]`    |       `{}`        |
 
 * $id = Item ID
 
-```
-[GET] /private/articles
-[GET] /private/articles/id/$id
-```
-* ArticlesDetail
-```
-[POST] /private/articles/create
-[PATCH] /private/articles/patch
-```
-* number[]
-```
-[PATCH] /private/articles/toggle
-[PATCH] /private/articles/delete
-```
+### Attachments
 
-## Attachments
+|  Method  | Model                 |       Request       |      Response       |
+|:--------:|:----------------------|:-------------------:|:-------------------:|
+|   GET    | `/attachments`        |         ``          |    `Attachments`    |
+|   GET    | `/attachments/id/$id` |         ``          | `AttachmentsDetail` |
+|   POST   | `/attachments/create` | `AttachmentsDetail` |        `{}`         |
+|  PATCH   | `/attachments/patch`  | `AttachmentsDetail` |        `{}`         |
+|  PATCH   | `/attachments/toggle` |     `number[]`      |        `{}`         |
+|  PATCH   | `/attachments/delete` |     `number[]`      |        `{}`         |
 
 * $id = Item ID
 
-```
-[GET] /private/attachments
-[GET] /private/attachments/id/$id
-```
+### Categories
 
-* AttachmentsDetail
-```
-[POST] /private/attachments/create
-[PATCH] /private/attachments/patch
-```
-* number[]
-```
-[PATCH] /private/attachments/toggle
-[PATCH] /private/attachments/delete
-```
-
-## Categories
+|  Method  | Model                |       Request       |      Response       |
+|:--------:|:---------------------|:-------------------:|:-------------------:|
+|   GET    | `/categories`        |         ``          |    `Categories`     |
+|   GET    | `/categories/id/$id` |         ``          | `CategoriesDetail`  |
+|   POST   | `/categories/create` | `CategoriesDetail`  |        `{}`         |
+|  PATCH   | `/categories/patch`  | `CategoriesDetail`  |        `{}`         |
+|  PATCH   | `/categories/toggle` |     `number[]`      |        `{}`         |
+|  PATCH   | `/categories/delete` |     `number[]`      |        `{}`         |
 
 * $id = Item ID
 
-```
-[GET] /private/categories
-[GET] /private/categories/id/$id
-```
-* CategoriesDetail
-```
-[POST] /private/categories/create
-[PATCH] /private/categories/patch
-```
-* number[]
-```
-[PATCH] /private/categories/toggle
-[PATCH] /private/categories/delete
-```
+### Comments
 
-## Comments
+|  Method  | Model                               |     Request      |     Response     |
+|:--------:|:------------------------------------|:----------------:|:----------------:|
+|   GET    | `/comments`                         |        ``        |    `Comments`    |
+|   GET    | `/comments/id/$id`                  |        ``        | `CommentsDetail` |
+|   GET    | `/comments/$contentType/$contentId` |        ``        | `CommentsDetail` |
+|   POST   | `/comments/create`                  | `CommentsDetail` |       `{}`       |
+|  PATCH   | `/comments/patch`                   | `CommentsDetail` |       `{}`       |
+|  PATCH   | `/comments/toggle`                  |    `number[]`    |       `{}`       |
+|  PATCH   | `/comments/delete`                  |    `number[]`    |       `{}`       |
 
 * $id = Item ID
 * $contentType = Content model type
 * $contentId = Id of content by type
 
-```
-[GET] /private/comments
-[GET] /private/comments/id/$id
-[GET] /private/comments/$contentType/$contentId
-```
-* CommentsDetail
-```
-[POST] /private/comments/create
-[PATCH] /private/comments/patch
-```
-* number[]
-```
-[PATCH] /private/comments/toggle
-[PATCH] /private/comments/delete
-```
 
-## Members
+### Members
+
+|  Method  | Model                   |     Request     |    Response     |
+|:--------:|:------------------------|:---------------:|:---------------:|
+|   GET    | `/members`              |       ``        |    `Members`    |
+|   GET    | `/members/id/$id`       |       ``        | `MembersDetail` |
+|   GET    | `/members/email/$email` |       ``        | `MembersDetail` |
+|   POST   | `/members/create`       | `MembersDetail` |      `{}`       |
+|  PATCH   | `/members/patch`        | `MembersDetail` |      `{}`       |
+|  PATCH   | `/members/toggle`       |   `number[]`    |      `{}`       |
+|  PATCH   | `/members/delete`       |   `number[]`    |      `{}`       |
 
 * $id = Item ID
 * $email = Member email
 
-```
-[GET] /private/members
-[GET] /private/members/id/$id
-[GET] /private/members/email/$email
-```
-* MembersDetail
-```
-[POST] /private/members/create
-[PATCH] /private/members/patch
-```
-* number[]
-```
-[PATCH] /private/members/toggle
-[PATCH] /private/members/delete
-```
 
-## Menu
+### Menu
+
+|  Method  | Model          |   Request    |   Response   |
+|:--------:|:---------------|:------------:|:------------:|
+|   GET    | `/menu`        |      ``      |    `Menu`    |
+|   GET    | `/menu/id/$id` |      ``      | `MenuDetail` |
+|   POST   | `/menu/create` | `MenuDetail` |     `{}`     |
+|  PATCH   | `/menu/patch`  | `MenuDetail` |     `{}`     |
+|  PATCH   | `/menu/toggle` |  `number[]`  |     `{}`     |
+|  PATCH   | `/menu/delete` |  `number[]`  |     `{}`     |
 
 * $id = Item ID
 
-```
-[GET] /private/menu
-[GET] /private/menu/id/$id
-```
-* MenuDetail
-```
-[POST] /private/menu/create
-[PATCH] /private/menu/patch
-```
-* number[]
-```
-[PATCH] /private/menu/toggle
-[PATCH] /private/menu/delete
-```
 
-## MenuItems
+### MenuItems
+
+|  Method  | Model                     |      Request      |     Response      |
+|:--------:|:--------------------------|:-----------------:|:-----------------:|
+|   GET    | `/menuitems`              |        ``         |    `MenuItems`    |
+|   GET    | `/menuitems/id/$id`       |        ``         | `MenuItemsDetail` |
+|   GET    | `/menuitems/menu/$menuId` |        ``         | `MenuItemsDetail` |
+|   POST   | `/menuitems/create`       | `MenuItemsDetail` |       `{}`        |
+|  PATCH   | `/menuitems/patch`        | `MenuItemsDetail` |       `{}`        |
+|  PATCH   | `/menuitems/toggle`       |    `number[]`     |       `{}`        |
+|  PATCH   | `/menuitems/delete`       |    `number[]`     |       `{}`        |
 
 * $id = Item ID
 * $menuId = Parent menu id
 
-```
-[GET] /private/menuitems
-[GET] /private/menuitems/id/$id
-[GET] /private/menuitems/menu/$menuId
-```
-* MenuItemsDetail
-```
-[POST] /private/menuitems/create
-[PATCH] /private/menuitems/patch
-```
-* number[]
-```
-[PATCH] /private/menuitems/toggle
-[PATCH] /private/menuitems/delete
-```
 
 ## Messages
 
-* $id = Item ID
-
-```
-[GET] /private/messages
-[GET] /private/messages/id/$id
-```
-* MessagesDetail
-```
-[POST] /private/messages/create
-[PATCH] /private/messages/patch
-```
-* number[]
-```
-[PATCH] /private/messages/toggle
-[PATCH] /private/messages/delete
-[PATCH] /private/messages/read
-```
-
-## Pages
+|  Method  | Model              |     Request      |     Response     |
+|:--------:|:-------------------|:----------------:|:----------------:|
+|   GET    | `/messages`        |        ``        |    `Messages`    |
+|   GET    | `/messages/id/$id` |        ``        | `MessagesDetail` |
+|   POST   | `/messages/create` | `MessagesDetail` |       `{}`       |
+|  PATCH   | `/messages/patch`  | `MessagesDetail` |       `{}`       |
+|  PATCH   | `/messages/toggle` |    `number[]`    |       `{}`       |
+|  PATCH   | `/messages/delete` |    `number[]`    |       `{}`       |
+|  PATCH   | `/messages/read`   |    `number[]`    |       `{}`       |
 
 * $id = Item ID
 
-```
-[GET] /private/pages
-[GET] /private/pages/id/$id
-```
-* PagesDetail
-```
-[POST] /private/pages/create
-[PATCH] /private/pages/patch
-```
-* number[]
-```
-[PATCH] /private/pages/toggle
-[PATCH] /private/pages/delete
-```
 
-## Tags
+### Pages
+
+|  Method  | Model               |    Request    |   Response    |
+|:--------:|:--------------------|:-------------:|:-------------:|
+|   GET    | `/pages`            |      ``       |    `Pages`    |
+|   GET    | `/pages/id/$id`     |      ``       | `PagesDetail` |
+|   POST   | `/pages/create`     | `PagesDetail` |     `{}`      |
+|  PATCH   | `/pages/patch`      | `PagesDetail` |     `{}`      |
+|  PATCH   | `/pages/toggle`     |  `number[]`   |     `{}`      |
+|  PATCH   | `/pages/delete`     |  `number[]`   |     `{}`      |
 
 * $id = Item ID
 
-```
-[GET] /private/tags
-[GET] /private/tags/id/$id
-```
-* TagsDetail
-```
-[POST] /private/tags/create
-[PATCH] /private/tags/patch
-```
-* number[]
-```
-[PATCH] /private/tags/toggle
-[PATCH] /private/tags/delete
-```
 
-## Translations
+### Tags
+
+|  Method  | Model               |   Request    |   Response   |
+|:--------:|:--------------------|:------------:|:------------:|
+|   GET    | `/tags`             |      ``      |    `Tags`    |
+|   GET    | `/tags/id/$id`      |      ``      | `TagsDetail` |
+|   POST   | `/tags/create`      | `TagsDetail` |     `{}`     |
+|  PATCH   | `/tags/patch`       | `TagsDetail` |     `{}`     |
+|  PATCH   | `/tags/toggle`      |  `number[]`  |     `{}`     |
+|  PATCH   | `/tags/delete`      |  `number[]`  |     `{}`     |
 
 * $id = Item ID
 
-```
-[GET] /private/translations
-[GET] /private/translations/id/$id
-```
-* TranslationsDetail
-```
-[POST] /private/translations/create
-[PATCH] /private/translations/patch
-```
-* number[]
-```
-[PATCH] /private/translations/toggle
-[PATCH] /private/translations/delete
-```
 
-## Users
+### Translations
+
+|  Method  | Model                  |       Request        |       Response       |
+|:--------:|:-----------------------|:--------------------:|:--------------------:|
+|   GET    | `/translations`        |          ``          |    `Translations`    |
+|   GET    | `/translations/id/$id` |          ``          | `TranslationsDetail` |
+|   POST   | `/translations/create` | `TranslationsDetail` |         `{}`         |
+|  PATCH   | `/translations/patch`  | `TranslationsDetail` |         `{}`         |
+|  PATCH   | `/translations/toggle` |      `number[]`      |         `{}`         |
+|  PATCH   | `/translations/delete` |      `number[]`      |         `{}`         |
+
+* $id = Item ID
+
+
+### Users
+
+|  Method  | Model                 |    Request    |   Response    |
+|:--------:|:----------------------|:-------------:|:-------------:|
+|   GET    | `/users`              |      ``       |    `Users`    |
+|   GET    | `/users/id/$id`       |      ``       | `UsersDetail` |
+|   GET    | `/users/email/$email` |      ``       | `UsersDetail` |
+|   POST   | `/users/create`       | `UsersDetail` |     `{}`      |
+|  PATCH   | `/users/patch`        | `UsersDetail` |     `{}`      |
+|  PATCH   | `/users/toggle`       |  `number[]`   |     `{}`      |
+|  PATCH   | `/users/delete`       |  `number[]`   |     `{}`      |
 
 * $id = Item ID
 * $email = User email
 
-```
-[GET] /private/users
-[GET] /private/users/id/$id
-[GET] /private/users/email/$email
-```
-* UsersDetail
-```
-[POST] /private/users/create
-[PATCH] /private/users/patch
-```
-* number[]
-```
-[PATCH] /private/users/toggle
-[PATCH] /private/users/delete
-```
 
-## Blacklist
+### Blacklist
+
+|  Method  | Model               |     Request     |    Response     |
+|:--------:|:--------------------|:---------------:|:---------------:|
+|   GET    | `/blacklist`        |       ``        |   `Blacklist`   |
+|   GET    | `/blacklist/id/$id` |       ``        | `BlacklistItem` |
+|   POST   | `/blacklist/create` | `BlacklistItem` |      `{}`       |
+|  PATCH   | `/blacklist/patch`  | `BlacklistItem` |      `{}`       |
+|  PATCH   | `/blacklist/toggle` |   `number[]`    |      `{}`       |
+|  PATCH   | `/blacklist/delete` |   `number[]`    |      `{}`       |
 
 * $id = Item ID
 
-```
-[GET] /private/blacklist
-[GET] /private/blacklist/id/$id
-```
-* BlacklistItem
-```
-[POST] /private/blacklist/create
-[PATCH] /private/blacklist/patch
-```
-* number[]
-```
-[PATCH] /private/blacklist/toggle
-[PATCH] /private/blacklist/delete
-```
 
-## Requests
+### Requests
+
+|  Method  | Model                    |    Request     |    Response    |
+|:--------:|:-------------------------|:--------------:|:--------------:|
+|   GET    | `/requests`              |       ``       |   `Requests`   |
+|   GET    | `/requests/id/$id`       |       ``       | `RequestsItem` |
+|   GET    | `/requests/token/$token` |       ``       | `RequestsItem` |
+|   POST   | `/requests/create`       | `RequestsItem` |      `{}`      |
+|  PATCH   | `/requests/patch`        | `RequestsItem` |      `{}`      |
+|  PATCH   | `/requests/toggle`       |   `number[]`   |      `{}`      |
+|  PATCH   | `/requests/delete`       |   `number[]`   |      `{}`      |
 
 * $id = Item ID
 * $token = request token
 
-```
-[GET] /private/requests
-[GET] /private/requests/id/$id
-[GET] /private/requests/token/$token
-```
-* RequestsItem
-```
-[POST] /private/requests/create
-[PATCH] /private/requests/patch
-```
-* number[]
-```
-[PATCH] /private/requests/toggle
-[PATCH] /private/requests/delete
-```
 
-## Settings
+### Settings
 
-```
-[GET] /private/settings
-```
-* Partial(Settings)
-```
-[PATCH] /private/settings/update
-```
-* { locale: string }
-```
-[PATCH] /private/settings/locale-install
-[PATCH] /private/settings/locale-default
-[PATCH] /private/settings/locale-toggle
-```
+|  Method   | Model                      |       Request        |  Response  |
+|:---------:|:---------------------------|:--------------------:|:----------:|
+|    GET    | `/settings`                |          ``          | `Settings` |
+|   PATCH   | `/settings/patch`          | `Partial<Settings>`  |    `{}`    |
+|   PATCH   | `/settings/locale-install` | `{ locale: string }` |    `{}`    |
+|   PATCH   | `/settings/locale-default` | `{ locale: string }` |    `{}`    |
+|   PATCH   | `/settings/locale-toggle`  | `{ locale: string }` |    `{}`    |
+
+
+## Public

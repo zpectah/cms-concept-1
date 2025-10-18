@@ -12,7 +12,7 @@ export const useSettingsQuery = () => {
   });
 
   const settingsPatchMutation = useMutation<unknown, unknown, Partial<Settings>>({
-    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-update`],
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
     mutationFn: (data) => axios.patch(`${API_URL.settings}/patch`, data).then((response) => response.data),
   });
 
