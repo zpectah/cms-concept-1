@@ -24,7 +24,7 @@ export const useAttachmentsDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { attachmentsDetailQuery, attachmentsPatchQuery } = useAttachmentsQuery({ id });
+  const { attachmentsQuery, attachmentsDetailQuery, attachmentsPatchMutation } = useAttachmentsQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.attachments);
   const form = useForm<IAttachmentsDetailForm>({
@@ -32,22 +32,24 @@ export const useAttachmentsDetailForm = () => {
     defaultValues: getAttachmentsDetailFormDefaultValues(),
   });
 
+  const { refetch } = attachmentsQuery;
   const { data: detailData, ...detailQuery } = attachmentsDetailQuery;
-  const { mutate: patchMutate } = attachmentsPatchQuery;
+  const { mutate: onPatch } = attachmentsPatchMutation;
 
-  const patchHandler = (master: IAttachmentsDetailForm) => {
-    patchMutate(master as AttachmentsDetail, {
-      onSuccess: () => {
+  const patchHandler = (master: IAttachmentsDetailForm) =>
+    onPatch(master as AttachmentsDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
         navigate(`/${routes.attachments.path}`);
         addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-        console.info('onSuccess', master);
+        refetch();
       },
-      onError: () => {
+      onError: (err) => {
         addToast(t('message.error.common'), 'error');
-        console.info('onError', master);
+        console.warn(err);
       },
     });
-  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -103,5 +105,6 @@ export const useAttachmentsDetailForm = () => {
     detailData,
     detailQuery,
     detailId: id,
+    isSubmitting: false,
   };
 };

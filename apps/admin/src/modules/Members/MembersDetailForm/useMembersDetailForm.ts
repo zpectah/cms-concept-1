@@ -24,7 +24,7 @@ export const useMembersDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { membersDetailQuery, membersPatchQuery } = useMembersQuery({ id });
+  const { membersQuery, membersDetailQuery, membersPatchMutation, membersCreateMutation } = useMembersQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.members);
   const form = useForm<IMembersDetailForm>({
@@ -32,28 +32,39 @@ export const useMembersDetailForm = () => {
     defaultValues: getMembersDetailFormDefaultValues(),
   });
 
+  const { refetch } = membersQuery;
   const { data: detailData, ...detailQuery } = membersDetailQuery;
-  const { mutate: patchMutate } = membersPatchQuery;
+  const { mutate: onCreate } = membersCreateMutation;
+  const { mutate: onPatch } = membersPatchMutation;
 
-  const createHandler = (master: IMembersDetailForm) => {
-    // TODO #submit
-
-    console.log('master create', master);
+  const onError = (err: unknown) => {
+    addToast(t('message.error.common'), 'error');
+    console.warn(err);
   };
 
-  const patchHandler = (master: IMembersDetailForm) => {
-    patchMutate(master as MembersDetail, {
-      onSuccess: () => {
+  const createHandler = (master: IMembersDetailForm) =>
+    onCreate(master as MembersDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
+        navigate(`/${routes.members.path}`);
+        addToast(t('message.success.createDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        refetch();
+      },
+      onError,
+    });
+
+  const patchHandler = (master: IMembersDetailForm) =>
+    onPatch(master as MembersDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
         navigate(`/${routes.members.path}`);
         addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-        console.info('onSuccess', master);
+        refetch();
       },
-      onError: () => {
-        addToast(t('message.error.common'), 'error');
-        console.info('onError', master);
-      },
+      onError,
     });
-  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -113,5 +124,6 @@ export const useMembersDetailForm = () => {
     detailData,
     detailQuery,
     detailId: id,
+    isSubmitting: false,
   };
 };

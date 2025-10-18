@@ -17,22 +17,22 @@ export const useMembersQuery = ({ id }: { id?: string }) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const membersCreateQuery = useMutation<unknown, unknown, MembersDetail>({
+  const membersCreateMutation = useMutation<unknown, unknown, MembersDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
     mutationFn: (data) => axios.post(`${API_URL.members}/create`, data).then((response) => response.data),
   });
 
-  const membersPatchQuery = useMutation<unknown, unknown, MembersDetail>({
+  const membersPatchMutation = useMutation<unknown, unknown, MembersDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
     mutationFn: (data) => axios.patch(`${API_URL.members}/patch`, data).then((response) => response.data),
   });
 
-  const membersToggleQuery = useMutation<unknown, unknown, number[]>({
+  const membersToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
     mutationFn: (data) => axios.post(`${API_URL.members}/toggle`, data).then((response) => response.data),
   });
 
-  const membersDeleteQuery = useMutation<unknown, unknown, number[]>({
+  const membersDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
     mutationFn: (data) => axios.post(`${API_URL.members}/delete`, data).then((response) => response.data),
   });
@@ -40,9 +40,9 @@ export const useMembersQuery = ({ id }: { id?: string }) => {
   return {
     membersQuery,
     membersDetailQuery,
-    membersCreateQuery,
-    membersPatchQuery,
-    membersToggleQuery,
-    membersDeleteQuery,
+    membersCreateMutation,
+    membersPatchMutation,
+    membersToggleMutation,
+    membersDeleteMutation,
   };
 };

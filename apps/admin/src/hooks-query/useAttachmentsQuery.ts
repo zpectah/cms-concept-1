@@ -17,22 +17,22 @@ export const useAttachmentsQuery = ({ id }: { id?: string }) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const attachmentsCreateQuery = useMutation<unknown, unknown, AttachmentsDetail>({
+  const attachmentsCreateMutation = useMutation<unknown, unknown, AttachmentsDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
     mutationFn: (data) => axios.post(`${API_URL.attachments}/create`, data).then((response) => response.data),
   });
 
-  const attachmentsPatchQuery = useMutation<unknown, unknown, AttachmentsDetail>({
+  const attachmentsPatchMutation = useMutation<unknown, unknown, AttachmentsDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
     mutationFn: (data) => axios.patch(`${API_URL.attachments}/patch`, data).then((response) => response.data),
   });
 
-  const attachmentsToggleQuery = useMutation<unknown, unknown, number[]>({
+  const attachmentsToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
     mutationFn: (data) => axios.post(`${API_URL.attachments}/toggle`, data).then((response) => response.data),
   });
 
-  const attachmentsDeleteQuery = useMutation<unknown, unknown, number[]>({
+  const attachmentsDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
     mutationFn: (data) => axios.post(`${API_URL.attachments}/delete`, data).then((response) => response.data),
   });
@@ -40,9 +40,9 @@ export const useAttachmentsQuery = ({ id }: { id?: string }) => {
   return {
     attachmentsQuery,
     attachmentsDetailQuery,
-    attachmentsCreateQuery,
-    attachmentsPatchQuery,
-    attachmentsToggleQuery,
-    attachmentsDeleteQuery,
+    attachmentsCreateMutation,
+    attachmentsPatchMutation,
+    attachmentsToggleMutation,
+    attachmentsDeleteMutation,
   };
 };

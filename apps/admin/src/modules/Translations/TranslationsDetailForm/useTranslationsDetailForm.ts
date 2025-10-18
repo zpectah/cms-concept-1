@@ -24,7 +24,8 @@ export const useTranslationsDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { translationsDetailQuery, translationsPatchQuery } = useTranslationsQuery({ id });
+  const { translationsQuery, translationsDetailQuery, translationsPatchMutation, translationsCreateMutation } =
+    useTranslationsQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.translations);
   const { locales, locale, onLocaleChange } = useFormDetailControl();
@@ -33,28 +34,39 @@ export const useTranslationsDetailForm = () => {
     defaultValues: getTranslationsDetailFormDefaultValues(locales),
   });
 
+  const { refetch } = translationsQuery;
   const { data: detailData, ...detailQuery } = translationsDetailQuery;
-  const { mutate: patchMutate } = translationsPatchQuery;
+  const { mutate: onCreate } = translationsCreateMutation;
+  const { mutate: onPatch } = translationsPatchMutation;
 
-  const createHandler = (master: ITranslationsDetailForm) => {
-    // TODO #submit
-
-    console.log('master create', master);
+  const onError = (err: unknown) => {
+    addToast(t('message.error.common'), 'error');
+    console.warn(err);
   };
 
-  const patchHandler = (master: ITranslationsDetailForm) => {
-    patchMutate(master as TranslationsDetail, {
-      onSuccess: () => {
+  const createHandler = (master: ITranslationsDetailForm) =>
+    onCreate(master as TranslationsDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
+        navigate(`/${routes.translations.path}`);
+        addToast(t('message.success.createDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        refetch();
+      },
+      onError,
+    });
+
+  const patchHandler = (master: ITranslationsDetailForm) =>
+    onPatch(master as TranslationsDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
         navigate(`/${routes.translations.path}`);
         addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-        console.info('onSuccess', master);
+        refetch();
       },
-      onError: () => {
-        addToast(t('message.error.common'), 'error');
-        console.info('onError', master);
-      },
+      onError,
     });
-  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -117,5 +129,6 @@ export const useTranslationsDetailForm = () => {
     locales,
     locale,
     onLocaleChange,
+    isSubmitting: false,
   };
 };

@@ -24,7 +24,9 @@ export const useArticlesDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { articlesDetailQuery, articlesPatchQuery } = useArticlesQuery({ id });
+  const { articlesQuery, articlesDetailQuery, articlesPatchMutation, articlesCreateMutation } = useArticlesQuery({
+    id,
+  });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.articles);
   const { locales, locale, onLocaleChange } = useFormDetailControl();
@@ -33,28 +35,39 @@ export const useArticlesDetailForm = () => {
     defaultValues: getArticlesDetailFormDefaultValues(locales),
   });
 
+  const { refetch } = articlesQuery;
   const { data: detailData, ...detailQuery } = articlesDetailQuery;
-  const { mutate: patchMutate } = articlesPatchQuery;
+  const { mutate: onCreate } = articlesCreateMutation;
+  const { mutate: onPatch } = articlesPatchMutation;
 
-  const createHandler = (master: IArticlesDetailForm) => {
-    // TODO #submit
-
-    console.log('master create', master);
+  const onError = (err: unknown) => {
+    addToast(t('message.error.common'), 'error');
+    console.warn(err);
   };
 
-  const patchHandler = (master: IArticlesDetailForm) => {
-    patchMutate(master as ArticlesDetail, {
-      onSuccess: () => {
+  const createHandler = (master: IArticlesDetailForm) =>
+    onCreate(master as ArticlesDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
+        navigate(`/${routes.articles.path}`);
+        addToast(t('message.success.createDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        refetch();
+      },
+      onError,
+    });
+
+  const patchHandler = (master: IArticlesDetailForm) =>
+    onPatch(master as ArticlesDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
         navigate(`/${routes.articles.path}`);
         addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-        console.info('onSuccess', master);
+        refetch();
       },
-      onError: () => {
-        addToast(t('message.error.common'), 'error');
-        console.info('onError', master);
-      },
+      onError,
     });
-  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -117,5 +130,6 @@ export const useArticlesDetailForm = () => {
     locales,
     locale,
     onLocaleChange,
+    isSubmitting: false,
   };
 };

@@ -24,7 +24,9 @@ export const useMessagesDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { messagesDetailQuery, messagesPatchQuery } = useMessagesQuery({ id });
+  const { messagesQuery, messagesDetailQuery, messagesPatchMutation, messagesCreateMutation } = useMessagesQuery({
+    id,
+  });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.messages);
   const form = useForm<IMessagesDetailForm>({
@@ -32,28 +34,39 @@ export const useMessagesDetailForm = () => {
     defaultValues: getMessagesDetailFormDefaultValues(),
   });
 
+  const { refetch } = messagesQuery;
   const { data: detailData, ...detailQuery } = messagesDetailQuery;
-  const { mutate: patchMutate } = messagesPatchQuery;
+  const { mutate: onCreate } = messagesCreateMutation;
+  const { mutate: onPatch } = messagesPatchMutation;
 
-  const createHandler = (master: IMessagesDetailForm) => {
-    // TODO #submit
-
-    console.log('master create', master);
+  const onError = (err: unknown) => {
+    addToast(t('message.error.common'), 'error');
+    console.warn(err);
   };
 
-  const patchHandler = (master: IMessagesDetailForm) => {
-    patchMutate(master as MessagesDetail, {
-      onSuccess: () => {
+  const createHandler = (master: IMessagesDetailForm) =>
+    onCreate(master as MessagesDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
+        navigate(`/${routes.messages.path}`);
+        addToast(t('message.success.createDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        refetch();
+      },
+      onError,
+    });
+
+  const patchHandler = (master: IMessagesDetailForm) =>
+    onPatch(master as MessagesDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
         navigate(`/${routes.messages.path}`);
         addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-        console.info('onSuccess', master);
+        refetch();
       },
-      onError: () => {
-        addToast(t('message.error.common'), 'error');
-        console.info('onError', master);
-      },
+      onError,
     });
-  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -94,6 +107,7 @@ export const useMessagesDetailForm = () => {
     console.log('Marked as read', ids);
     navigate(`/${routes.messages.path}`);
     addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+    // TODO: same as delete...
   };
 
   useEffect(() => {
@@ -120,5 +134,6 @@ export const useMessagesDetailForm = () => {
     detailData,
     detailQuery,
     detailId: id,
+    isSubmitting: false,
   };
 };

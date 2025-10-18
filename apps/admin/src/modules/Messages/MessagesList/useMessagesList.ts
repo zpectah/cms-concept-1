@@ -11,48 +11,70 @@ export const useMessagesList = () => {
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
   const { setSelected } = useModelListStore();
-  const { messagesQuery } = useMessagesQuery({});
+  const { messagesQuery, messagesDeleteMutation, messagesToggleMutation, messagesReadMutation } = useMessagesQuery({});
 
   const { data: items, isLoading, refetch } = messagesQuery;
 
+  const onError = (err: unknown) => {
+    addToast(t('message.error.common'), 'error');
+    console.warn(err);
+  };
+
   const deleteSelectedHandler = (ids: number[]) => {
-    // TODO #api-call
-    console.log('deleteSelectedHandler', ids);
+    if (!ids || ids.length === 0) return;
 
-    const toastMsg = ids.length === 1 ? t('message.success.deleteRow') : t('message.success.deleteSelected');
-
-    addToast(toastMsg, 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-
-    // addToast(t('message.error.common'), 'error');
-
-    refetch();
+    messagesDeleteMutation.mutate(ids, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
+        addToast(
+          ids.length === 1 ? t('message.success.deleteRow') : t('message.success.deleteSelected'),
+          'success',
+          TOAST_SUCCESS_TIMEOUT_DEFAULT
+        );
+        setSelected(modelKeys.messages, []);
+        refetch();
+      },
+      onError,
+    });
   };
 
   const disableSelectedHandler = (ids: number[]) => {
-    // TODO #api-call
-    console.log('disableSelectedHandler', ids);
+    if (!ids || ids.length === 0) return;
 
-    const toastMsg = ids.length === 1 ? t('message.success.updateRow') : t('message.success.updateSelected');
-
-    addToast(toastMsg, 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-
-    // addToast(t('message.error.common'), 'error');
-
-    refetch();
+    messagesToggleMutation.mutate(ids, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
+        addToast(
+          ids.length === 1 ? t('message.success.updateRow') : t('message.success.updateSelected'),
+          'success',
+          TOAST_SUCCESS_TIMEOUT_DEFAULT
+        );
+        setSelected(modelKeys.messages, []);
+        refetch();
+      },
+      onError,
+    });
   };
 
   const markReadSelectedHandler = (ids: number[]) => {
-    // TODO #api-call
-    console.log('markReadSelectedHandler', ids);
+    if (!ids || ids.length === 0) return;
 
-    const toastMsg = ids.length === 1 ? t('message.success.updateRow') : t('message.success.updateSelected');
-
-    addToast(toastMsg, 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-    setSelected(modelKeys.messages, []);
-
-    // addToast(t('message.error.common'), 'error');
-
-    refetch();
+    messagesReadMutation.mutate(ids, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
+        addToast(
+          ids.length === 1 ? t('message.success.updateRow') : t('message.success.updateSelected'),
+          'success',
+          TOAST_SUCCESS_TIMEOUT_DEFAULT
+        );
+        setSelected(modelKeys.messages, []);
+        refetch();
+      },
+      onError,
+    });
   };
 
   useEffect(() => {
@@ -63,7 +85,6 @@ export const useMessagesList = () => {
   return {
     messages: items ?? [],
     isLoading,
-
     onDeleteSelected: deleteSelectedHandler,
     onDisableSelected: disableSelectedHandler,
     onMarkSelected: markReadSelectedHandler,

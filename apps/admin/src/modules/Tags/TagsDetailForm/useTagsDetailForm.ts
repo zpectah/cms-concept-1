@@ -24,7 +24,7 @@ export const useTagsDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { tagsDetailQuery, tagsPatchQuery } = useTagsQuery({ id });
+  const { tagsQuery, tagsDetailQuery, tagsPatchMutation, tagsCreateMutation } = useTagsQuery({ id });
   const { getTypeFieldOptions, getTranslatedOptionsFromList } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.tags);
   const form = useForm<ITagsDetailForm>({
@@ -32,28 +32,39 @@ export const useTagsDetailForm = () => {
     defaultValues: getTagsDetailFormDefaultValues(),
   });
 
+  const { refetch } = tagsQuery;
   const { data: detailData, ...detailQuery } = tagsDetailQuery;
-  const { mutate: patchMutate } = tagsPatchQuery;
+  const { mutate: onCreate } = tagsCreateMutation;
+  const { mutate: onPatch } = tagsPatchMutation;
 
-  const createHandler = (master: ITagsDetailForm) => {
-    // TODO #submit
-
-    console.log('master create', master);
+  const onError = (err: unknown) => {
+    addToast(t('message.error.common'), 'error');
+    console.warn(err);
   };
 
-  const patchHandler = (master: ITagsDetailForm) => {
-    patchMutate(master as TagsDetail, {
-      onSuccess: () => {
+  const createHandler = (master: ITagsDetailForm) =>
+    onCreate(master as TagsDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
+        navigate(`/${routes.tags.path}`);
+        addToast(t('message.success.createDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        refetch();
+      },
+      onError,
+    });
+
+  const patchHandler = (master: ITagsDetailForm) =>
+    onPatch(master as TagsDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
         navigate(`/${routes.tags.path}`);
         addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-        console.info('onSuccess', master);
+        refetch();
       },
-      onError: () => {
-        addToast(t('message.error.common'), 'error');
-        console.info('onError', master);
-      },
+      onError,
     });
-  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -114,5 +125,6 @@ export const useTagsDetailForm = () => {
     detailData,
     detailQuery,
     detailId: id,
+    isSubmitting: false,
   };
 };

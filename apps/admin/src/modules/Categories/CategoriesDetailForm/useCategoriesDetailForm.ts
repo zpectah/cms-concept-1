@@ -24,7 +24,8 @@ export const useCategoriesDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { categoriesDetailQuery, categoriesPatchQuery } = useCategoriesQuery({ id });
+  const { categoriesQuery, categoriesDetailQuery, categoriesPatchMutation, categoriesCreateMutation } =
+    useCategoriesQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.categories);
   const { locales, locale, onLocaleChange } = useFormDetailControl();
@@ -33,28 +34,39 @@ export const useCategoriesDetailForm = () => {
     defaultValues: getCategoriesDetailFormDefaultValues(locales),
   });
 
+  const { refetch } = categoriesQuery;
   const { data: detailData, ...detailQuery } = categoriesDetailQuery;
-  const { mutate: patchMutate } = categoriesPatchQuery;
+  const { mutate: onCreate } = categoriesCreateMutation;
+  const { mutate: onPatch } = categoriesPatchMutation;
 
-  const createHandler = (master: ICategoriesDetailForm) => {
-    // TODO #submit
-
-    console.log('master create', master);
+  const onError = (err: unknown) => {
+    addToast(t('message.error.common'), 'error');
+    console.warn(err);
   };
 
-  const patchHandler = (master: ICategoriesDetailForm) => {
-    patchMutate(master as CategoriesDetail, {
-      onSuccess: () => {
+  const createHandler = (master: ICategoriesDetailForm) =>
+    onCreate(master as CategoriesDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
+        navigate(`/${routes.categories.path}`);
+        addToast(t('message.success.createDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        refetch();
+      },
+      onError,
+    });
+
+  const patchHandler = (master: ICategoriesDetailForm) =>
+    onPatch(master as CategoriesDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
         navigate(`/${routes.categories.path}`);
         addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-        console.info('onSuccess', master);
+        refetch();
       },
-      onError: () => {
-        addToast(t('message.error.common'), 'error');
-        console.info('onError', master);
-      },
+      onError,
     });
-  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -117,5 +129,6 @@ export const useCategoriesDetailForm = () => {
     locales,
     locale,
     onLocaleChange,
+    isSubmitting: false,
   };
 };

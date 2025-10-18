@@ -92,7 +92,10 @@
       "updateSelected": "Selected items was successfully updated",
       "deleteDetail": "Item was successfully deleted",
       "deleteRow": "Item was successfully deleted",
-      "deleteSelected": "Selected items was successfully deleted"
+      "deleteSelected": "Selected items was successfully deleted",
+      "itemsCreated": "Items was created successfully",
+      "filesCreated": "Files was successfully created",
+      "dataSaved": "Data was successfully saved"
     },
     "info": {},
     "warning": {},

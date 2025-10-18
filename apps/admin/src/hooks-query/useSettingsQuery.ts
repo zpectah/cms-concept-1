@@ -11,13 +11,13 @@ export const useSettingsQuery = () => {
     queryFn: () => axios.get(API_URL.settings).then((response) => response.data),
   });
 
-  const settingsUpdateQuery = useMutation<unknown, unknown, Partial<Settings>>({
+  const settingsUpdateMutation = useMutation<unknown, unknown, Partial<Settings>>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-update`],
     mutationFn: (data) => axios.post(`${API_URL.settings}/update`, data).then((response) => response.data),
   });
 
   return {
     settingsQuery,
-    settingsUpdateQuery,
+    settingsUpdateMutation,
   };
 };

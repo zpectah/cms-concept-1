@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppStore } from '../../../store';
+import { modelKeys } from '@common';
+import { useAppStore, useModelListStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMembersQuery } from '../../../hooks-query';
@@ -9,34 +10,52 @@ export const useMembersList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
-  const { membersQuery } = useMembersQuery({});
+  const { setSelected } = useModelListStore();
+  const { membersQuery, membersDeleteMutation, membersToggleMutation } = useMembersQuery({});
 
   const { data: items, isLoading, refetch } = membersQuery;
 
+  const onError = (err: unknown) => {
+    addToast(t('message.error.common'), 'error');
+    console.warn(err);
+  };
+
   const deleteSelectedHandler = (ids: number[]) => {
-    // TODO #api-call
-    console.log('deleteSelectedHandler', ids);
+    if (!ids || ids.length === 0) return;
 
-    const toastMsg = ids.length === 1 ? t('message.success.deleteRow') : t('message.success.deleteSelected');
-
-    addToast(toastMsg, 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-
-    // addToast(t('message.error.common'), 'error');
-
-    refetch();
+    membersDeleteMutation.mutate(ids, {
+      onSuccess: (res) => {
+        // TODO: results
+        console.log('res', res);
+        addToast(
+          ids.length === 1 ? t('message.success.deleteRow') : t('message.success.deleteSelected'),
+          'success',
+          TOAST_SUCCESS_TIMEOUT_DEFAULT
+        );
+        setSelected(modelKeys.members, []);
+        refetch();
+      },
+      onError,
+    });
   };
 
   const disableSelectedHandler = (ids: number[]) => {
-    // TODO #api-call
-    console.log('disableSelectedHandler', ids);
+    if (!ids || ids.length === 0) return;
 
-    const toastMsg = ids.length === 1 ? t('message.success.updateRow') : t('message.success.updateSelected');
-
-    addToast(toastMsg, 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-
-    // addToast(t('message.error.common'), 'error');
-
-    refetch();
+    membersToggleMutation.mutate(ids, {
+      onSuccess: (res) => {
+        // TODO: results
+        console.log('res', res);
+        addToast(
+          ids.length === 1 ? t('message.success.updateRow') : t('message.success.updateSelected'),
+          'success',
+          TOAST_SUCCESS_TIMEOUT_DEFAULT
+        );
+        setSelected(modelKeys.members, []);
+        refetch();
+      },
+      onError,
+    });
   };
 
   useEffect(() => {
@@ -47,7 +66,6 @@ export const useMembersList = () => {
   return {
     members: items ?? [],
     isLoading,
-
     onDeleteSelected: deleteSelectedHandler,
     onDisableSelected: disableSelectedHandler,
   };

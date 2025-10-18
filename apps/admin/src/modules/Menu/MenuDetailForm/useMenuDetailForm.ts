@@ -24,7 +24,7 @@ export const useMenuDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { menuDetailQuery, menuPatchQuery } = useMenuQuery({ id });
+  const { menuQuery, menuDetailQuery, menuPatchMutation, menuCreateMutation } = useMenuQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.menu);
   const form = useForm<IMenuDetailForm>({
@@ -32,28 +32,39 @@ export const useMenuDetailForm = () => {
     defaultValues: getMenuDetailFormDefaultValues(),
   });
 
+  const { refetch } = menuQuery;
   const { data: detailData, ...detailQuery } = menuDetailQuery;
-  const { mutate: patchMutate } = menuPatchQuery;
+  const { mutate: onCreate } = menuCreateMutation;
+  const { mutate: onPatch } = menuPatchMutation;
 
-  const createHandler = (master: IMenuDetailForm) => {
-    // TODO #submit
-
-    console.log('master create', master);
+  const onError = (err: unknown) => {
+    addToast(t('message.error.common'), 'error');
+    console.warn(err);
   };
 
-  const patchHandler = (master: IMenuDetailForm) => {
-    patchMutate(master as MenuDetail, {
-      onSuccess: () => {
+  const createHandler = (master: IMenuDetailForm) =>
+    onCreate(master as MenuDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
+        navigate(`/${routes.menu.path}`);
+        addToast(t('message.success.createDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        refetch();
+      },
+      onError,
+    });
+
+  const patchHandler = (master: IMenuDetailForm) =>
+    onPatch(master as MenuDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
         navigate(`/${routes.menu.path}`);
         addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-        console.info('onSuccess', master);
+        refetch();
       },
-      onError: () => {
-        addToast(t('message.error.common'), 'error');
-        console.info('onError', master);
-      },
+      onError,
     });
-  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -113,5 +124,6 @@ export const useMenuDetailForm = () => {
     detailData,
     detailQuery,
     detailId: id,
+    isSubmitting: false,
   };
 };

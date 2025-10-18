@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { getConfig } from '../../../utils';
 import { useAppStore } from '../../../store';
-import { FEEDBACK_COMMON_TIMEOUT_DEFAULT } from '../../../constants';
+import { FEEDBACK_COMMON_TIMEOUT_DEFAULT, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext, useFileUploader } from '../../../components';
 import { useAttachmentsHelpers } from '../../../helpers';
 import { FileUploaderQueue } from '../../../types';
@@ -15,10 +17,14 @@ import { getAttachmentsCreateFormDefaultValues } from './helpers';
 
 export const useAttachmentsCreateForm = () => {
   const { t } = useTranslation(['common', 'form']);
+  const navigate = useNavigate();
+  const {
+    admin: { routes },
+  } = getConfig();
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
   const { queue, inputElement, onInputChange, onQueueClear } = useFileUploader({});
-  const { attachmentsQuery } = useAttachmentsQuery({});
+  const { attachmentsQuery, attachmentsCreateMutation } = useAttachmentsQuery({});
   const { checkQueueDuplicities, isValidFileSize } = useAttachmentsHelpers();
   const form = useForm<IAttachmentsCreateForm>({
     defaultValues: getAttachmentsCreateFormDefaultValues(),
@@ -27,6 +33,7 @@ export const useAttachmentsCreateForm = () => {
   const queueFieldArray = useFieldArray({ control: form.control, name: registeredFormFields.queue });
 
   const { data: attachments } = attachmentsQuery;
+  const { mutate: onCreate } = attachmentsCreateMutation;
 
   const submitHandler: SubmitHandler<IAttachmentsCreateForm> = (data) => {
     const master = Object.assign({
@@ -48,13 +55,24 @@ export const useAttachmentsCreateForm = () => {
       return;
     }
 
+    //
+    // TODO: create files on disk first !!!
+    addToast(t('message.success.filesCreated'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
     console.log('master create', master);
+    //
 
-    // TODO #submit
-    // 1. First request - create file on disk
-    // 2. Second request (by first response) save data to DB
-    // TODO: Reset field as callback
-    form.resetField(registeredFormFields.queue);
+    onCreate(master, {
+      onSuccess: (res) => {
+        // TODO: response
+        navigate(`/${routes.attachments.path}`);
+        addToast(t('message.success.itemsCreated'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        form.resetField(registeredFormFields.queue);
+      },
+      onError: (err) => {
+        addToast(t('message.error.common'), 'error');
+        console.warn(err);
+      },
+    });
   };
 
   useEffect(() => {
@@ -96,5 +114,6 @@ export const useAttachmentsCreateForm = () => {
     onReset: () => form.reset(getAttachmentsCreateFormDefaultValues()),
     inputElement,
     onInputChange,
+    isSubmitting: false,
   };
 };

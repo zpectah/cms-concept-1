@@ -1,15 +1,19 @@
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { META_ROBOTS_OPTIONS } from '../../../constants';
+import { META_ROBOTS_OPTIONS, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useSettingsQuery } from '../../../hooks-query';
+import { useAppStore } from '../../../store';
 import { useSelectOptions } from '../../../helpers';
 import { ISettingsClientPanelForm } from './types';
 import { SettingsClientPanelFormSchema } from './schema';
 import { getDataToFormMapper } from './helpers';
 
 export const useClientPanelForm = () => {
-  const { settingsQuery } = useSettingsQuery();
+  const { t } = useTranslation(['common']);
+  const { addToast } = useAppStore();
+  const { settingsQuery, settingsUpdateMutation } = useSettingsQuery();
   const { getTranslatedOptionsFromList } = useSelectOptions();
   const form = useForm<ISettingsClientPanelForm>({
     defaultValues: getDataToFormMapper(),
@@ -17,6 +21,7 @@ export const useClientPanelForm = () => {
   });
 
   const { data: settingsData } = settingsQuery;
+  const { mutate: onUpdate } = settingsUpdateMutation;
 
   const submitHandler: SubmitHandler<ISettingsClientPanelForm> = (data, event) => {
     if (!data) return;
@@ -25,7 +30,17 @@ export const useClientPanelForm = () => {
       ...data,
     });
 
-    console.log('ClientPanelForm onSubmit', master);
+    onUpdate(master, {
+      onSuccess: (res) => {
+        // TODO: results
+        console.log('res', res);
+        addToast(t('message.success.dataSaved'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+      },
+      onError: (err) => {
+        addToast(t('message.error.common'), 'error');
+        console.warn(err);
+      },
+    });
   };
 
   useEffect(() => {

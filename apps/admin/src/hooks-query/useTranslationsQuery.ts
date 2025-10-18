@@ -17,22 +17,22 @@ export const useTranslationsQuery = ({ id }: { id?: string }) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const translationsCreateQuery = useMutation<unknown, unknown, TranslationsDetail>({
+  const translationsCreateMutation = useMutation<unknown, unknown, TranslationsDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
     mutationFn: (data) => axios.post(`${API_URL.translations}/create`, data).then((response) => response.data),
   });
 
-  const translationsPatchQuery = useMutation<unknown, unknown, TranslationsDetail>({
+  const translationsPatchMutation = useMutation<unknown, unknown, TranslationsDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
     mutationFn: (data) => axios.patch(`${API_URL.translations}/patch`, data).then((response) => response.data),
   });
 
-  const translationsToggleQuery = useMutation<unknown, unknown, number[]>({
+  const translationsToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
     mutationFn: (data) => axios.post(`${API_URL.translations}/toggle`, data).then((response) => response.data),
   });
 
-  const translationsDeleteQuery = useMutation<unknown, unknown, number[]>({
+  const translationsDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
     mutationFn: (data) => axios.post(`${API_URL.translations}/delete`, data).then((response) => response.data),
   });
@@ -40,9 +40,9 @@ export const useTranslationsQuery = ({ id }: { id?: string }) => {
   return {
     translationsQuery,
     translationsDetailQuery,
-    translationsCreateQuery,
-    translationsPatchQuery,
-    translationsToggleQuery,
-    translationsDeleteQuery,
+    translationsCreateMutation,
+    translationsPatchMutation,
+    translationsToggleMutation,
+    translationsDeleteMutation,
   };
 };

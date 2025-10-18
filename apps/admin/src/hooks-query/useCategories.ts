@@ -17,22 +17,22 @@ export const useCategoriesQuery = ({ id }: { id?: string }) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const categoriesCreateQuery = useMutation<unknown, unknown, CategoriesDetail>({
+  const categoriesCreateMutation = useMutation<unknown, unknown, CategoriesDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
     mutationFn: (data) => axios.post(`${API_URL.categories}/create`, data).then((response) => response.data),
   });
 
-  const categoriesPatchQuery = useMutation<unknown, unknown, CategoriesDetail>({
+  const categoriesPatchMutation = useMutation<unknown, unknown, CategoriesDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
     mutationFn: (data) => axios.patch(`${API_URL.categories}/patch`, data).then((response) => response.data),
   });
 
-  const categoriesToggleQuery = useMutation<unknown, unknown, number[]>({
+  const categoriesToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
     mutationFn: (data) => axios.post(`${API_URL.categories}/toggle`, data).then((response) => response.data),
   });
 
-  const categoriesDeleteQuery = useMutation<unknown, unknown, number[]>({
+  const categoriesDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
     mutationFn: (data) => axios.post(`${API_URL.categories}/delete`, data).then((response) => response.data),
   });
@@ -40,9 +40,9 @@ export const useCategoriesQuery = ({ id }: { id?: string }) => {
   return {
     categoriesQuery,
     categoriesDetailQuery,
-    categoriesCreateQuery,
-    categoriesPatchQuery,
-    categoriesToggleQuery,
-    categoriesDeleteQuery,
+    categoriesCreateMutation,
+    categoriesPatchMutation,
+    categoriesToggleMutation,
+    categoriesDeleteMutation,
   };
 };

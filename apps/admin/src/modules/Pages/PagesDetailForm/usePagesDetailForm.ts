@@ -24,7 +24,7 @@ export const usePagesDetailForm = () => {
   } = getConfig();
   const { addToast } = useAppStore();
   const { setTitle, openConfirmDialog } = useViewLayoutContext();
-  const { pagesDetailQuery, pagesPatchQuery } = usePagesQuery({ id });
+  const { pagesQuery, pagesDetailQuery, pagesPatchMutation, pagesCreateMutation } = usePagesQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.pages);
   const { locales, locale, onLocaleChange } = useFormDetailControl();
@@ -33,28 +33,39 @@ export const usePagesDetailForm = () => {
     defaultValues: getPagesDetailFormDefaultValues(locales),
   });
 
+  const { refetch } = pagesQuery;
   const { data: detailData, ...detailQuery } = pagesDetailQuery;
-  const { mutate: patchMutate } = pagesPatchQuery;
+  const { mutate: onCreate } = pagesCreateMutation;
+  const { mutate: onPatch } = pagesPatchMutation;
 
-  const createHandler = (master: IPagesDetailForm) => {
-    // TODO #submit
-
-    console.log('master create', master);
+  const onError = (err: unknown) => {
+    addToast(t('message.error.common'), 'error');
+    console.warn(err);
   };
 
-  const patchHandler = (master: IPagesDetailForm) => {
-    patchMutate(master as PagesDetail, {
-      onSuccess: () => {
+  const createHandler = (master: IPagesDetailForm) =>
+    onCreate(master as PagesDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
         navigate(`/${routes.pages.path}`);
         addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-        console.info('onSuccess', master);
+        refetch();
       },
-      onError: () => {
-        addToast(t('message.error.common'), 'error');
-        console.info('onError', master);
-      },
+      onError,
     });
-  };
+
+  const patchHandler = (master: IPagesDetailForm) =>
+    onPatch(master as PagesDetail, {
+      onSuccess: (res) => {
+        // TODO: result
+        console.log('res', res);
+        navigate(`/${routes.pages.path}`);
+        addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        refetch();
+      },
+      onError,
+    });
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -117,5 +128,6 @@ export const usePagesDetailForm = () => {
     locales,
     locale,
     onLocaleChange,
+    isSubmitting: false,
   };
 };

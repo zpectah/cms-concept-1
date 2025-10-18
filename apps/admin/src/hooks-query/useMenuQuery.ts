@@ -17,22 +17,22 @@ export const useMenuQuery = ({ id }: { id?: string }) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const menuCreateQuery = useMutation<unknown, unknown, MenuDetail>({
+  const menuCreateMutation = useMutation<unknown, unknown, MenuDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
     mutationFn: (data) => axios.post(`${API_URL.menu}/create`, data).then((response) => response.data),
   });
 
-  const menuPatchQuery = useMutation<unknown, unknown, MenuDetail>({
+  const menuPatchMutation = useMutation<unknown, unknown, MenuDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
     mutationFn: (data) => axios.patch(`${API_URL.menu}/patch`, data).then((response) => response.data),
   });
 
-  const menuToggleQuery = useMutation<unknown, unknown, number[]>({
+  const menuToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
     mutationFn: (data) => axios.post(`${API_URL.menu}/toggle`, data).then((response) => response.data),
   });
 
-  const menuDeleteQuery = useMutation<unknown, unknown, number[]>({
+  const menuDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
     mutationFn: (data) => axios.post(`${API_URL.menu}/delete`, data).then((response) => response.data),
   });
@@ -40,9 +40,9 @@ export const useMenuQuery = ({ id }: { id?: string }) => {
   return {
     menuQuery,
     menuDetailQuery,
-    menuCreateQuery,
-    menuPatchQuery,
-    menuToggleQuery,
-    menuDeleteQuery,
+    menuCreateMutation,
+    menuPatchMutation,
+    menuToggleMutation,
+    menuDeleteMutation,
   };
 };
