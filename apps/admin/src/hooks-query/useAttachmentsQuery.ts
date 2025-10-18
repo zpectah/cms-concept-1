@@ -29,12 +29,12 @@ export const useAttachmentsQuery = ({ id }: { id?: string }) => {
 
   const attachmentsToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
-    mutationFn: (data) => axios.post(`${API_URL.attachments}/toggle`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.attachments}/toggle`, data).then((response) => response.data),
   });
 
   const attachmentsDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
-    mutationFn: (data) => axios.post(`${API_URL.attachments}/delete`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.attachments}/delete`, data).then((response) => response.data),
   });
 
   return {

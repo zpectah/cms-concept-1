@@ -29,12 +29,12 @@ export const usePagesQuery = ({ id }: { id?: string }) => {
 
   const pagesToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
-    mutationFn: (data) => axios.post(`${API_URL.pages}/toggle`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.pages}/toggle`, data).then((response) => response.data),
   });
 
   const pagesDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
-    mutationFn: (data) => axios.post(`${API_URL.pages}/delete`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.pages}/delete`, data).then((response) => response.data),
   });
 
   return {

@@ -1,5 +1,18 @@
 import { useTranslation } from 'react-i18next';
-import { Button, Paper, Radio, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+  Button,
+  Paper,
+  Radio,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Stack,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { getConfig } from '../../../utils';
 
@@ -7,8 +20,8 @@ interface LocalesTableProps {
   onLocaleInstall: (locale: string) => void;
   onLocaleToggle: (locale: string) => void;
   onLocaleDefault: (locale: string) => void;
-  isInstalling: boolean;
-  isUpdating: boolean;
+  isInstalling: string | null;
+  isUpdating: string | null;
   isLocaleInstalled: (locale: string) => boolean | undefined;
   isLocaleActive: (locale: string) => boolean | undefined;
   isLocaleDefault: (locale: string) => boolean | undefined;
@@ -42,18 +55,19 @@ const LocalesTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {isUpdating && (
-            <tr>
-              <td colSpan={4}>{t('label.loading')}</td>
-            </tr>
-          )}
           {availableLocales.map((locale) => {
             const isInstalled = isLocaleInstalled(locale);
 
             return (
               <TableRow key={locale} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
-                  {(locales as Record<string, { label: string }>)[locale].label}
+                  <Stack direction="row" gap={1.5} alignItems="center">
+                    <Typography variant="button">
+                      {(locales as Record<string, { label: string }>)[locale].label}
+                    </Typography>
+                    <Typography variant="caption">{locale}</Typography>
+                    {(isUpdating === locale || isInstalling === locale) && <CircularProgress size={15} />}
+                  </Stack>
                 </TableCell>
                 <TableCell>
                   {isInstalled ? (
@@ -64,7 +78,7 @@ const LocalesTable = ({
                       color="primary"
                       size="small"
                       onClick={() => onLocaleInstall(locale)}
-                      loading={isInstalling}
+                      loading={isInstalling === locale}
                     >
                       {t('modules:settings.tabs.language.section.button.install')}
                     </Button>

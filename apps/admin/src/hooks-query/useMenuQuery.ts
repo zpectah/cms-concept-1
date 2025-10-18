@@ -29,12 +29,12 @@ export const useMenuQuery = ({ id }: { id?: string }) => {
 
   const menuToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
-    mutationFn: (data) => axios.post(`${API_URL.menu}/toggle`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.menu}/toggle`, data).then((response) => response.data),
   });
 
   const menuDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
-    mutationFn: (data) => axios.post(`${API_URL.menu}/delete`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.menu}/delete`, data).then((response) => response.data),
   });
 
   return {

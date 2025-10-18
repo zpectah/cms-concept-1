@@ -126,6 +126,11 @@
           "button": {
             "install": "Install"
           }
+        },
+        "message": {
+          "localeInstalled": "Locale '{{locale}}' was successfully installed",
+          "localeUpdated": "Locale '{{locale}}' was updated",
+          "localeDefault": "Locale '{{locale}}' was set as default"
         }
       },
       "maintenance": {

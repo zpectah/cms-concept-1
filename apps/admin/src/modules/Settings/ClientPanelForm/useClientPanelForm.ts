@@ -13,7 +13,7 @@ import { getDataToFormMapper } from './helpers';
 export const useClientPanelForm = () => {
   const { t } = useTranslation(['common']);
   const { addToast } = useAppStore();
-  const { settingsQuery, settingsUpdateMutation } = useSettingsQuery();
+  const { settingsQuery, settingsPatchMutation } = useSettingsQuery();
   const { getTranslatedOptionsFromList } = useSelectOptions();
   const form = useForm<ISettingsClientPanelForm>({
     defaultValues: getDataToFormMapper(),
@@ -21,7 +21,7 @@ export const useClientPanelForm = () => {
   });
 
   const { data: settingsData } = settingsQuery;
-  const { mutate: onUpdate } = settingsUpdateMutation;
+  const { mutate: onPatch } = settingsPatchMutation;
 
   const submitHandler: SubmitHandler<ISettingsClientPanelForm> = (data, event) => {
     if (!data) return;
@@ -30,7 +30,7 @@ export const useClientPanelForm = () => {
       ...data,
     });
 
-    onUpdate(master, {
+    onPatch(master, {
       onSuccess: (res) => {
         // TODO: results
         console.log('res', res);

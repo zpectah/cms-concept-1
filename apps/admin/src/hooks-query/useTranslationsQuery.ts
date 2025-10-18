@@ -29,12 +29,12 @@ export const useTranslationsQuery = ({ id }: { id?: string }) => {
 
   const translationsToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
-    mutationFn: (data) => axios.post(`${API_URL.translations}/toggle`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.translations}/toggle`, data).then((response) => response.data),
   });
 
   const translationsDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
-    mutationFn: (data) => axios.post(`${API_URL.translations}/delete`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.translations}/delete`, data).then((response) => response.data),
   });
 
   return {

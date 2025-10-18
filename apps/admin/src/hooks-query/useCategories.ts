@@ -29,12 +29,12 @@ export const useCategoriesQuery = ({ id }: { id?: string }) => {
 
   const categoriesToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
-    mutationFn: (data) => axios.post(`${API_URL.categories}/toggle`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.categories}/toggle`, data).then((response) => response.data),
   });
 
   const categoriesDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
-    mutationFn: (data) => axios.post(`${API_URL.categories}/delete`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.categories}/delete`, data).then((response) => response.data),
   });
 
   return {

@@ -29,12 +29,12 @@ export const useUsersQuery = ({ id }: { id?: string }) => {
 
   const usersToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
-    mutationFn: (data) => axios.post(`${API_URL.users}/toggle`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.users}/toggle`, data).then((response) => response.data),
   });
 
   const usersDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
-    mutationFn: (data) => axios.post(`${API_URL.users}/delete`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.users}/delete`, data).then((response) => response.data),
   });
 
   return {

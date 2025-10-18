@@ -29,17 +29,17 @@ export const useMessagesQuery = ({ id }: { id?: string }) => {
 
   const messagesToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
-    mutationFn: (data) => axios.post(`${API_URL.messages}/toggle`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.messages}/toggle`, data).then((response) => response.data),
   });
 
   const messagesDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
-    mutationFn: (data) => axios.post(`${API_URL.messages}/delete`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.messages}/delete`, data).then((response) => response.data),
   });
 
   const messagesReadMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-read`],
-    mutationFn: (data) => axios.post(`${API_URL.messages}/read`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.messages}/read`, data).then((response) => response.data),
   });
 
   return {

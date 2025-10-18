@@ -12,14 +12,14 @@ import { getDataToFormMapper } from './helpers';
 export const useGlobalPanelForm = () => {
   const { t } = useTranslation(['common']);
   const { addToast } = useAppStore();
-  const { settingsQuery, settingsUpdateMutation } = useSettingsQuery();
+  const { settingsQuery, settingsPatchMutation } = useSettingsQuery();
   const form = useForm<ISettingsGlobalPanelForm>({
     defaultValues: getDataToFormMapper(),
     resolver: zodResolver(SettingsGlobalPanelFormSchema),
   });
 
   const { data: settingsData } = settingsQuery;
-  const { mutate: onUpdate } = settingsUpdateMutation;
+  const { mutate: onPatch } = settingsPatchMutation;
 
   const submitHandler: SubmitHandler<ISettingsGlobalPanelForm> = (data, event) => {
     if (!data) return;
@@ -28,7 +28,7 @@ export const useGlobalPanelForm = () => {
       ...data,
     });
 
-    onUpdate(master, {
+    onPatch(master, {
       onSuccess: (res) => {
         // TODO: results
         console.log('res', res);

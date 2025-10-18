@@ -15,8 +15,8 @@
 ```
 * number[]
 ```
-[POST] /private/articles/toggle
-[POST] /private/articles/delete
+[PATCH] /private/articles/toggle
+[PATCH] /private/articles/delete
 ```
 
 ## Attachments
@@ -35,8 +35,8 @@
 ```
 * number[]
 ```
-[POST] /private/attachments/toggle
-[POST] /private/attachments/delete
+[PATCH] /private/attachments/toggle
+[PATCH] /private/attachments/delete
 ```
 
 ## Categories
@@ -54,8 +54,8 @@
 ```
 * number[]
 ```
-[POST] /private/categories/toggle
-[POST] /private/categories/delete
+[PATCH] /private/categories/toggle
+[PATCH] /private/categories/delete
 ```
 
 ## Comments
@@ -76,8 +76,8 @@
 ```
 * number[]
 ```
-[POST] /private/comments/toggle
-[POST] /private/comments/delete
+[PATCH] /private/comments/toggle
+[PATCH] /private/comments/delete
 ```
 
 ## Members
@@ -97,8 +97,8 @@
 ```
 * number[]
 ```
-[POST] /private/members/toggle
-[POST] /private/members/delete
+[PATCH] /private/members/toggle
+[PATCH] /private/members/delete
 ```
 
 ## Menu
@@ -116,8 +116,8 @@
 ```
 * number[]
 ```
-[POST] /private/menu/toggle
-[POST] /private/menu/delete
+[PATCH] /private/menu/toggle
+[PATCH] /private/menu/delete
 ```
 
 ## MenuItems
@@ -137,8 +137,8 @@
 ```
 * number[]
 ```
-[POST] /private/menuitems/toggle
-[POST] /private/menuitems/delete
+[PATCH] /private/menuitems/toggle
+[PATCH] /private/menuitems/delete
 ```
 
 ## Messages
@@ -156,9 +156,9 @@
 ```
 * number[]
 ```
-[POST] /private/messages/toggle
-[POST] /private/messages/delete
-[POST] /private/messages/read
+[PATCH] /private/messages/toggle
+[PATCH] /private/messages/delete
+[PATCH] /private/messages/read
 ```
 
 ## Pages
@@ -176,8 +176,8 @@
 ```
 * number[]
 ```
-[POST] /private/pages/toggle
-[POST] /private/pages/delete
+[PATCH] /private/pages/toggle
+[PATCH] /private/pages/delete
 ```
 
 ## Tags
@@ -195,8 +195,8 @@
 ```
 * number[]
 ```
-[POST] /private/tags/toggle
-[POST] /private/tags/delete
+[PATCH] /private/tags/toggle
+[PATCH] /private/tags/delete
 ```
 
 ## Translations
@@ -214,8 +214,8 @@
 ```
 * number[]
 ```
-[POST] /private/translations/toggle
-[POST] /private/translations/delete
+[PATCH] /private/translations/toggle
+[PATCH] /private/translations/delete
 ```
 
 ## Users
@@ -235,8 +235,8 @@
 ```
 * number[]
 ```
-[POST] /private/users/toggle
-[POST] /private/users/delete
+[PATCH] /private/users/toggle
+[PATCH] /private/users/delete
 ```
 
 ## Blacklist
@@ -254,8 +254,8 @@
 ```
 * number[]
 ```
-[POST] /private/blacklist/toggle
-[POST] /private/blacklist/delete
+[PATCH] /private/blacklist/toggle
+[PATCH] /private/blacklist/delete
 ```
 
 ## Requests
@@ -275,8 +275,8 @@
 ```
 * number[]
 ```
-[POST] /private/requests/toggle
-[POST] /private/requests/delete
+[PATCH] /private/requests/toggle
+[PATCH] /private/requests/delete
 ```
 
 ## Settings
@@ -286,5 +286,11 @@
 ```
 * Partial(Settings)
 ```
-[POST] /private/settings/update
+[PATCH] /private/settings/update
+```
+* { locale: string }
+```
+[PATCH] /private/settings/locale-install
+[PATCH] /private/settings/locale-default
+[PATCH] /private/settings/locale-toggle
 ```

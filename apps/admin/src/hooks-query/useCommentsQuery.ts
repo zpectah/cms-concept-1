@@ -37,12 +37,12 @@ export const useCommentsQuery = ({ id, contentType, contentId }: useCommentsQuer
 
   const commentsToggleMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
-    mutationFn: (data) => axios.post(`${API_URL.comments}/toggle`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.comments}/toggle`, data).then((response) => response.data),
   });
 
   const commentsDeleteMutation = useMutation<unknown, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
-    mutationFn: (data) => axios.post(`${API_URL.comments}/delete`, data).then((response) => response.data),
+    mutationFn: (data) => axios.patch(`${API_URL.comments}/delete`, data).then((response) => response.data),
   });
 
   return {
