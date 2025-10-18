@@ -6,7 +6,7 @@ interface JsonObject {
 }
 
 interface JsonViewerProps {
-  data: JsonValue;
+  data: JsonValue | unknown;
   level?: number;
   label?: string;
 }

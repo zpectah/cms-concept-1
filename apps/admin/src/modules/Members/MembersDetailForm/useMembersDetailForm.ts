@@ -13,7 +13,7 @@ import { useMembersQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
 import { MembersDetailFormSchema } from './schema';
 import { IMembersDetailForm } from './types';
-import { getMembersDetailFormDefaultValues } from './helpers';
+import { getMembersDetailFormDefaultValues, getMembersDetailFormMapper } from './helpers';
 
 export const useMembersDetailForm = () => {
   const { t } = useTranslation();
@@ -98,7 +98,7 @@ export const useMembersDetailForm = () => {
         if (form.formState.isDirty) return;
 
         setTitle(detailData.name);
-        form.reset(detailData);
+        form.reset(getMembersDetailFormMapper(detailData));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

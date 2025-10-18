@@ -1,4 +1,4 @@
-import { attachmentsTypeDefault } from '@common';
+import { attachmentsTypeDefault, AttachmentsDetail } from '@common';
 import { IAttachmentsDetailForm } from './types';
 
 export const getAttachmentsDetailFormDefaultValues = (): IAttachmentsDetailForm => {
@@ -12,5 +12,11 @@ export const getAttachmentsDetailFormDefaultValues = (): IAttachmentsDetailForm 
     file_type: '',
     file_ext: '',
     file_size: 0,
+  };
+};
+
+export const getAttachmentsDetailFormMapper = (data: AttachmentsDetail): IAttachmentsDetailForm => {
+  return {
+    ...data,
   };
 };

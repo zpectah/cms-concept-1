@@ -6,6 +6,7 @@ import { AddressSchema, formFieldsSchemas, GpsLocationSchema } from '../../../sc
 import { registeredFormFields } from '../../../enums';
 
 const LocaleSchema = z.record(
+  z.string(),
   z.object({
     title: formFieldsSchemas.required_string,
     description: formFieldsSchemas.string.optional(),

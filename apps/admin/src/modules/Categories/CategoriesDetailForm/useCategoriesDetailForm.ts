@@ -13,7 +13,7 @@ import { useCategoriesQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
 import { CategoriesDetailFormSchema } from './schema';
 import { ICategoriesDetailForm } from './types';
-import { getCategoriesDetailFormDefaultValues } from './helpers';
+import { getCategoriesDetailFormDefaultValues, getCategoriesDetailFormMapper } from './helpers';
 
 export const useCategoriesDetailForm = () => {
   const { t } = useTranslation();
@@ -99,7 +99,7 @@ export const useCategoriesDetailForm = () => {
         if (form.formState.isDirty) return;
 
         setTitle(detailData.name);
-        form.reset(detailData);
+        form.reset(getCategoriesDetailFormMapper(detailData));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

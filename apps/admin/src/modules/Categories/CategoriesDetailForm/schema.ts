@@ -3,6 +3,7 @@ import { categoriesTypeKeysArray } from '@common';
 import { formFieldsSchemas } from '../../../schema';
 
 const LocaleSchema = z.record(
+  z.string(),
   z.object({
     title: formFieldsSchemas.required_string,
     description: formFieldsSchemas.string.optional(),

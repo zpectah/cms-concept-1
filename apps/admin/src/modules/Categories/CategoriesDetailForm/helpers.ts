@@ -1,4 +1,4 @@
-import { categoriesTypeDefault } from '@common';
+import { categoriesTypeDefault, CategoriesDetail } from '@common';
 import { getModelLocales } from '../../../utils';
 import { ICategoriesDetailForm } from './types';
 
@@ -14,5 +14,11 @@ export const getCategoriesDetailFormDefaultValues = (locales: string[]): ICatego
     parent: 0,
     active: true,
     deleted: false,
+  };
+};
+
+export const getCategoriesDetailFormMapper = (data: CategoriesDetail): ICategoriesDetailForm => {
+  return {
+    ...data,
   };
 };

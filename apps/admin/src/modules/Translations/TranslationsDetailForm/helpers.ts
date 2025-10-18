@@ -1,4 +1,4 @@
-import { translationsTypeDefault } from '@common';
+import { translationsTypeDefault, TranslationsDetail } from '@common';
 import { getModelLocales } from '../../../utils';
 import { ITranslationsDetailForm } from './types';
 
@@ -12,5 +12,11 @@ export const getTranslationsDetailFormDefaultValues = (locales: string[]): ITran
     }),
     active: true,
     deleted: false,
+  };
+};
+
+export const getTranslationsDetailFormMapper = (data: TranslationsDetail): ITranslationsDetailForm => {
+  return {
+    ...data,
   };
 };

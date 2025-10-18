@@ -13,7 +13,7 @@ import { useTagsQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
 import { TagsDetailFormSchema } from './schema';
 import { ITagsDetailForm } from './types';
-import { getTagsDetailFormDefaultValues } from './helpers';
+import { getTagsDetailFormDefaultValues, getTagsDetailFormMapper } from './helpers';
 
 export const useTagsDetailForm = () => {
   const { t } = useTranslation();
@@ -98,7 +98,7 @@ export const useTagsDetailForm = () => {
         if (form.formState.isDirty) return;
 
         setTitle(detailData.name);
-        form.reset(detailData);
+        form.reset(getTagsDetailFormMapper(detailData));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

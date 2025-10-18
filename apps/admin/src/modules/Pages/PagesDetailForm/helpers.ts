@@ -1,4 +1,4 @@
-import { pagesTypeDefault } from '@common';
+import { pagesTypeDefault, PagesDetail } from '@common';
 import { getModelLocales } from '../../../utils';
 import { IPagesDetailForm } from './types';
 
@@ -14,5 +14,11 @@ export const getPagesDetailFormDefaultValues = (locales: string[]): IPagesDetail
     }),
     active: true,
     deleted: false,
+  };
+};
+
+export const getPagesDetailFormMapper = (data: PagesDetail): IPagesDetailForm => {
+  return {
+    ...data,
   };
 };

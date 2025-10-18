@@ -13,7 +13,7 @@ import { useAttachmentsQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
 import { AttachmentsDetailFormSchema } from './schema';
 import { IAttachmentsDetailForm } from './types';
-import { getAttachmentsDetailFormDefaultValues } from './helpers';
+import { getAttachmentsDetailFormDefaultValues, getAttachmentsDetailFormMapper } from './helpers';
 
 export const useAttachmentsDetailForm = () => {
   const { t } = useTranslation();
@@ -88,7 +88,7 @@ export const useAttachmentsDetailForm = () => {
         if (form.formState.isDirty) return;
 
         setTitle(detailData.name);
-        form.reset(detailData);
+        form.reset(getAttachmentsDetailFormMapper(detailData));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

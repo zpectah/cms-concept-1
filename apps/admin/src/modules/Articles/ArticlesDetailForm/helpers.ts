@@ -1,4 +1,5 @@
-import { articlesTypeDefault } from '@common';
+import dayjs from 'dayjs';
+import { articlesTypeDefault, ArticlesDetail } from '@common';
 import { getModelLocales } from '../../../utils';
 import { addressFormDefaults } from '../../../constants';
 import { IArticlesDetailForm } from './types';
@@ -24,5 +25,14 @@ export const getArticlesDetailFormDefaultValues = (locales: string[]): IArticles
     eventAddress: addressFormDefaults,
     startDate: null,
     endDate: null,
+  };
+};
+
+export const getArticlesDetailFormMapper = (data: ArticlesDetail): IArticlesDetailForm => {
+  return {
+    ...data,
+
+    startDate: data.startDate ? dayjs(data.startDate) : null,
+    endDate: data.endDate ? dayjs(data.endDate) : null,
   };
 };

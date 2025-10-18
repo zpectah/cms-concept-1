@@ -3,6 +3,7 @@ import { translationsTypeKeysArray } from '@common';
 import { formFieldsSchemas } from '../../../schema';
 
 const LocaleSchema = z.record(
+  z.string(),
   z.object({
     value: formFieldsSchemas.required_string,
   })

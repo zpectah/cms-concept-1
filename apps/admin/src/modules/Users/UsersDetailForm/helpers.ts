@@ -1,4 +1,4 @@
-import { usersTypeDefault } from '@common';
+import { usersTypeDefault, UsersDetail } from '@common';
 import { IUsersDetailForm } from './types';
 
 export const getUsersDetailFormDefaultValues = (): IUsersDetailForm => {
@@ -17,5 +17,14 @@ export const getUsersDetailFormDefaultValues = (): IUsersDetailForm => {
 
     active: true,
     deleted: false,
+  };
+};
+
+export const getUsersDetailFormMapper = (data: UsersDetail): IUsersDetailForm => {
+  return {
+    ...data,
+
+    firstName: data.firstName ?? '',
+    lastName: data.lastName ?? '',
   };
 };

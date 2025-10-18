@@ -1,4 +1,4 @@
-import { menuTypeDefault } from '@common';
+import { menuTypeDefault, MenuDetail } from '@common';
 import { IMenuDetailForm } from './types';
 
 export const getMenuDetailFormDefaultValues = (): IMenuDetailForm => {
@@ -8,5 +8,11 @@ export const getMenuDetailFormDefaultValues = (): IMenuDetailForm => {
     type: menuTypeDefault,
     active: true,
     deleted: false,
+  };
+};
+
+export const getMenuDetailFormMapper = (data: MenuDetail): IMenuDetailForm => {
+  return {
+    ...data,
   };
 };

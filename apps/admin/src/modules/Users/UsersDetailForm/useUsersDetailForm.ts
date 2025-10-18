@@ -13,7 +13,7 @@ import { useUsersQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
 import { UsersDetailFormSchema } from './schema';
 import { IUsersDetailForm } from './types';
-import { getUsersDetailFormDefaultValues } from './helpers';
+import { getUsersDetailFormDefaultValues, getUsersDetailFormMapper } from './helpers';
 
 export const useUsersDetailForm = () => {
   const { t } = useTranslation();
@@ -98,7 +98,7 @@ export const useUsersDetailForm = () => {
         if (form.formState.isDirty) return;
 
         setTitle(detailData.name);
-        form.reset(detailData);
+        form.reset(getUsersDetailFormMapper(detailData));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,11 +1,5 @@
-import { getConfig } from '../../../utils';
+import { messagesTypeDefault, MessagesDetail } from '@common';
 import { IMessagesDetailForm } from './types';
-
-export const getMessagesTypeDefaultValue = () => {
-  const { model } = getConfig();
-
-  return model.messages.default;
-};
 
 export const getMessagesDetailFormDefaultValues = (): IMessagesDetailForm => {
   return {
@@ -14,8 +8,16 @@ export const getMessagesDetailFormDefaultValues = (): IMessagesDetailForm => {
     sender: '',
     subject: '',
     content: '',
-    type: getMessagesTypeDefaultValue(),
+    type: messagesTypeDefault,
     active: true,
     deleted: false,
+  };
+};
+
+export const getMessagesDetailFormMapper = (data: MessagesDetail): IMessagesDetailForm => {
+  return {
+    ...data,
+
+    content: data.content ?? '',
   };
 };

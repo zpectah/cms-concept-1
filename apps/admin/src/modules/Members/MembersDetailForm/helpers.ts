@@ -1,4 +1,4 @@
-import { membersTypeDefault } from '@common';
+import { membersTypeDefault, MembersDetail } from '@common';
 import { addressFormDefaults } from '../../../constants';
 import { IMembersDetailForm } from './types';
 
@@ -20,5 +20,14 @@ export const getMembersDetailFormDefaultValues = (): IMembersDetailForm => {
     type: membersTypeDefault,
     active: true,
     deleted: false,
+  };
+};
+
+export const getMembersDetailFormMapper = (data: MembersDetail): IMembersDetailForm => {
+  return {
+    ...data,
+
+    firstName: data.firstName ?? '',
+    lastName: data.lastName ?? '',
   };
 };

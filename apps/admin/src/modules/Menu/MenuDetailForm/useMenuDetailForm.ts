@@ -13,7 +13,7 @@ import { useMenuQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
 import { MenuDetailFormSchema } from './schema';
 import { IMenuDetailForm } from './types';
-import { getMenuDetailFormDefaultValues } from './helpers';
+import { getMenuDetailFormDefaultValues, getMenuDetailFormMapper } from './helpers';
 
 export const useMenuDetailForm = () => {
   const { t } = useTranslation();
@@ -98,7 +98,7 @@ export const useMenuDetailForm = () => {
         if (form.formState.isDirty) return;
 
         setTitle(detailData.name);
-        form.reset(detailData);
+        form.reset(getMenuDetailFormMapper(detailData));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

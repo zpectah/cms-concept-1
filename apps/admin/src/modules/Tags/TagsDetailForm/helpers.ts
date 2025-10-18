@@ -1,4 +1,4 @@
-import { tagsColorDefault, tagsTypeDefault } from '@common';
+import { tagsColorDefault, tagsTypeDefault, TagsDetail } from '@common';
 import { ITagsDetailForm } from './types';
 
 export const getTagsDetailFormDefaultValues = (): ITagsDetailForm => {
@@ -9,5 +9,11 @@ export const getTagsDetailFormDefaultValues = (): ITagsDetailForm => {
     color: tagsColorDefault,
     active: true,
     deleted: false,
+  };
+};
+
+export const getTagsDetailFormMapper = (data: TagsDetail): ITagsDetailForm => {
+  return {
+    ...data,
   };
 };

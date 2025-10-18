@@ -13,7 +13,7 @@ import { usePagesQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
 import { PagesDetailFormSchema } from './schema';
 import { IPagesDetailForm } from './types';
-import { getPagesDetailFormDefaultValues } from './helpers';
+import { getPagesDetailFormDefaultValues, getPagesDetailFormMapper } from './helpers';
 
 export const usePagesDetailForm = () => {
   const { t } = useTranslation();
@@ -99,7 +99,7 @@ export const usePagesDetailForm = () => {
         if (form.formState.isDirty) return;
 
         setTitle(detailData.name);
-        form.reset(detailData);
+        form.reset(getPagesDetailFormMapper(detailData));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { modelKeys, newItemKey, MessagesDetail } from '@common';
+import { modelKeys, newItemKey, MessagesDetail, messagesTypeDefault } from '@common';
 import { getConfig } from '../../../utils';
 import { useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
@@ -13,7 +13,7 @@ import { useMessagesQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
 import { MessagesDetailFormSchema } from './schema';
 import { IMessagesDetailForm } from './types';
-import { getMessagesDetailFormDefaultValues, getMessagesTypeDefaultValue } from './helpers';
+import { getMessagesDetailFormDefaultValues, getMessagesDetailFormMapper } from './helpers';
 
 export const useMessagesDetailForm = () => {
   const { t } = useTranslation();
@@ -105,7 +105,7 @@ export const useMessagesDetailForm = () => {
         if (form.formState.isDirty) return;
 
         setTitle(detailData.name);
-        form.reset(detailData);
+        form.reset(getMessagesDetailFormMapper(detailData));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -114,7 +114,7 @@ export const useMessagesDetailForm = () => {
   return {
     form,
     typeFieldOptions: getTypeFieldOptions(modelKeys.messages),
-    typeFieldDefault: getMessagesTypeDefaultValue(),
+    typeFieldDefault: messagesTypeDefault,
     onSubmit: form.handleSubmit(submitHandler),
     onRead: readHandler,
     detailData,
