@@ -6,42 +6,68 @@ class MenuItems extends Router {
   public function resolve($env, $method, $url, $data): array {
     $menuItems = new \model\MenuItems;
 
-    $response = [];
+    switch ($env) {
 
-    if ($env === 'private') {
-      switch ($method) {
+      case self::env_private:
+        switch ($method) {
 
-        case 'GET':
-          if (self::isTwoParameterValid($url)) {
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
+          case self::method_get:
+            if (self::isTwoParameterValid($url)) {
+              if (self::isIdValidParameter($url)) {
+                $id = $url['b'];
 
-              $response = $menuItems -> getDetail($id, null);
-            } else if (self::isMenuIdValidParameter($url)) {
-              $menuId = $url['b'];
+                $response = $menuItems -> getDetail($id, null);
+              } else if (self::isMenuIdValidParameter($url)) {
+                $menuId = $url['b'];
 
-              $response = $menuItems -> getList($menuId);
-            } else {
-              $response = $menuItems -> getList(null);
+                $response = $menuItems -> getList($menuId);
+              } else {
+                $response = $menuItems -> getList(null);
+              }
             }
-          }
 
-          break;
+            break;
 
-        case 'PATCH':
-        case 'POST':
-          $response = [
-            'request' => $data,
-          ];
-          break;
+          case self::method_post:
+            switch ($url['a']) {
 
-      }
-    } else if ($env === 'public') {
-      $response = [];
+              case 'create':
+                $response = $menuItems -> create($data);
+                break;
+
+            }
+            break;
+
+          case self::method_patch:
+            switch ($url['a']) {
+
+              case 'patch':
+                $response = $menuItems -> patch($data);
+                break;
+
+              case 'toggle':
+                $response = $menuItems -> toggle($data);
+                break;
+
+              case 'delete':
+                $response = $menuItems -> delete($data);
+                break;
+
+            }
+            break;
+
+        }
+        break;
+
+      case self::env_public:
+        $response = [];
+        break;
+
+      default:
+        http_response_code(200);
+        $response = [];
+        break;
     }
-
-    // TODO
-    http_response_code(200);
 
     return $response;
   }

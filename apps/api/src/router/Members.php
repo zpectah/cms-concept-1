@@ -6,41 +6,67 @@ class Members extends Router {
   public function resolve($env, $method, $url, $data): array {
     $members = new \model\Members;
 
-    $response = [];
+    switch ($env) {
 
-    if ($env === 'private') {
-      switch ($method) {
+      case self::env_private:
+        switch ($method) {
 
-        case 'GET':
-          if (self::isTwoParameterValid($url)) {
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
+          case self::method_get:
+            if (self::isTwoParameterValid($url)) {
+              if (self::isIdValidParameter($url)) {
+                $id = $url['b'];
 
-              $response = $members -> getDetail($id, null);
-            } else if (self::isEmailValidParameter($url)) {
-              $email = $url['b'];
+                $response = $members -> getDetail($id, null);
+              } else if (self::isEmailValidParameter($url)) {
+                $email = $url['b'];
 
-              $response = $members -> getDetail(null, $email);
+                $response = $members -> getDetail(null, $email);
+              }
+            } else {
+              $response = $members -> getList();
             }
-          } else {
-            $response = $members -> getList();
-          }
-          break;
+            break;
 
-        case 'PATCH':
-        case 'POST':
-          $response = [
-            'request' => $data,
-          ];
-          break;
+          case self::method_post:
+            switch ($url['a']) {
 
-      }
-    } else if ($env === 'public') {
-      $response = [];
+              case 'create':
+                $response = $members -> create($data);
+                break;
+
+            }
+            break;
+
+          case self::method_patch:
+            switch ($url['a']) {
+
+              case 'patch':
+                $response = $members -> patch($data);
+                break;
+
+              case 'toggle':
+                $response = $members -> toggle($data);
+                break;
+
+              case 'delete':
+                $response = $members -> delete($data);
+                break;
+
+            }
+            break;
+
+        }
+        break;
+
+      case self::env_public:
+        $response = [];
+        break;
+
+      default:
+        http_response_code(200);
+        $response = [];
+        break;
     }
-
-    // TODO
-    http_response_code(200);
 
     return $response;
   }

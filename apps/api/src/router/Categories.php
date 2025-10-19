@@ -6,35 +6,61 @@ class Categories extends Router {
   public function resolve($env, $method, $url, $data): array {
     $categories = new \model\Categories;
 
-    $response = [];
+    switch ($env) {
 
-    if ($env === 'private') {
-      switch ($method) {
+      case self::env_private:
+        switch ($method) {
 
-        case 'GET':
-          if (self::isIdValidParameter($url)) {
-            $id = $url['b'];
+          case self::method_get:
+            if (self::isIdValidParameter($url)) {
+              $id = $url['b'];
 
-            $response = $categories -> getDetail($id);
-          } else {
-            $response = $categories -> getList();
-          }
-          break;
+              $response = $categories -> getDetail($id);
+            } else {
+              $response = $categories -> getList();
+            }
+            break;
 
-        case 'PATCH':
-        case 'POST':
-          $response = [
-            'request' => $data,
-          ];
-          break;
+          case self::method_post:
+            switch ($url['a']) {
 
-      }
-    } else if ($env === 'public') {
-      $response = [];
+              case 'create':
+                $response = $categories -> create($data);
+                break;
+
+            }
+            break;
+
+          case self::method_patch:
+            switch ($url['a']) {
+
+              case 'patch':
+                $response = $categories -> patch($data);
+                break;
+
+              case 'toggle':
+                $response = $categories -> toggle($data);
+                break;
+
+              case 'delete':
+                $response = $categories -> delete($data);
+                break;
+
+            }
+            break;
+
+        }
+        break;
+
+      case self::env_public:
+        $response = [];
+        break;
+
+      default:
+        http_response_code(200);
+        $response = [];
+        break;
     }
-
-    // TODO
-    http_response_code(200);
 
     return $response;
   }

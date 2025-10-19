@@ -4,7 +4,7 @@ namespace model;
 
 class Settings extends Model {
 
-  public function getList(): array {
+  public function getTable(): array {
     return [
       'project' => [
         'name' => 'PROJECT NAME',
@@ -61,6 +61,41 @@ class Settings extends Model {
         'active' => true,
       ],
 
+    ];
+  }
+
+  public function patch($data): array {
+    // TODO: patch table by custom input
+
+    return [
+      'incomeData' => $data,
+    ];
+  }
+
+  public function localeInstall($data): array {
+    // TODO: install new locale
+
+    return [
+      'incomeData' => $data,
+      'method' => 'localeInstall',
+    ];
+  }
+
+  public function localeToggle($data): array {
+    // TODO: set locale as active/disable
+
+    return [
+      'incomeData' => $data,
+      'method' => 'localeToggle',
+    ];
+  }
+
+  public function localeDefault($data): array {
+    // TODO: set locale as default
+
+    return [
+      'incomeData' => $data,
+      'method' => 'localeDefault',
     ];
   }
 

@@ -50,4 +50,34 @@ class Comments extends Model {
     ];
   }
 
+  public function create($data): array {
+    // TODO: create new item in table
+
+    return [
+      'toCreate' => $data,
+    ];
+  }
+
+  public function patch($data): array {
+    // TODO: patch item in table
+
+    return [
+      'toPatch' => $data,
+    ];
+  }
+
+  public function toggle($data): array {
+
+    return [
+      'toToggle' => $data,
+    ];
+  }
+
+  public function delete($data): array {
+
+    return [
+      'toDelete' => $data,
+    ];
+  }
+
 }

@@ -3,8 +3,14 @@
 namespace router;
 
 class Router {
-
   public function __construct() {}
+
+  protected const env_private = 'private';
+  protected const env_public = 'public';
+
+  protected const method_get = 'GET';
+  protected const method_post = 'POST';
+  protected const method_patch = 'PATCH';
 
   protected function isTwoParameterValid($url): bool {
     return $url['a'] && $url['b'];

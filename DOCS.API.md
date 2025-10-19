@@ -105,7 +105,7 @@
 * $menuId = Parent menu id
 
 
-## Messages
+### Messages
 
 |  Method  | Model              |     Request      |     Response     |
 |:--------:|:-------------------|:----------------:|:----------------:|
