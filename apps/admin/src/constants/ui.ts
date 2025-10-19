@@ -5,3 +5,5 @@ export const UI_SPACING = {
   layout: 4,
   action: 2,
 };
+
+export const UI_HEADER_HEIGHT = '59px';

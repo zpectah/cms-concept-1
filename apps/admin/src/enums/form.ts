@@ -24,6 +24,7 @@ export const registeredFormFields = {
   name: 'name',
   parent: 'parent',
   password: 'password',
+  passwordConfirm: 'passwordConfirm',
   queue: 'queue',
   read: 'read',
   sender: 'sender',

@@ -27,6 +27,9 @@ const MainMenu = () => {
         onClick={openHandler}
         tooltip="Main menu"
         color="inherit"
+        sx={(theme) => ({
+          textShadow: `1px 1px 0 ${theme.palette.text.disabled}`,
+        })}
       >
         {open ? <CloseIcon color="inherit" /> : <MenuIcon color="inherit" />}
       </IconButtonPlus>
@@ -41,11 +44,14 @@ const MainMenu = () => {
           },
         }}
       >
-        {items.map((item) => (
-          <MenuItem key={item.id} component={Link} to={item.path} onClick={closeHandler}>
-            {item.label}
-          </MenuItem>
-        ))}
+        {items.map(
+          ({ hidden, ...item }) =>
+            !hidden && (
+              <MenuItem key={item.id} component={Link} to={item.path} onClick={closeHandler}>
+                {item.label}
+              </MenuItem>
+            )
+        )}
       </Menu>
     </>
   );

@@ -1,4 +1,5 @@
 import { styled, Container, Stack } from '@mui/material';
+import { UI_HEADER_HEIGHT } from '../../constants';
 import { CmsLogo } from '../CmsLogo';
 import { UserMenu } from '../UserMenu';
 import { MainMenu } from '../MainMenu';
@@ -12,7 +13,7 @@ const Wrapper = styled('header')(({ theme }) => ({
 
 const WrapperInner = styled('div')(({ theme }) => ({
   width: '100%',
-  height: '59px',
+  height: UI_HEADER_HEIGHT,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',

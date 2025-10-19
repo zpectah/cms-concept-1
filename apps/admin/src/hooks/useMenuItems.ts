@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { getConfig } from '../utils';
 
 interface MenuItem {
@@ -5,114 +6,110 @@ interface MenuItem {
   path: string;
   label: string;
   order?: number;
+  hidden: boolean;
 }
 
 export const useMenuItems = () => {
   const {
     admin: { routes },
   } = getConfig();
+  const { t } = useTranslation(['common']);
 
   const mainMenu: MenuItem[] = [
     {
-      id: '0',
+      id: '10',
       path: '/demo',
       label: 'Demo *',
-    },
-    {
-      id: '1',
-      path: `/${routes.login.path}`,
-      label: 'Login *',
-    },
-    {
-      id: '2',
-      path: `/${routes.passwordRecovery.path}`,
-      label: 'Password recovery *',
-    },
-    {
-      id: '3',
-      path: `/${routes.dashboard.path}`,
-      label: 'Dashboard',
-    },
-
-    {
-      id: '4',
-      path: `/${routes.articles.path}`,
-      label: 'Articles',
-    },
-    {
-      id: '5',
-      path: `/${routes.categories.path}`,
-      label: 'Categories',
-    },
-    {
-      id: '6',
-      path: `/${routes.tags.path}`,
-      label: 'Tags',
-    },
-    {
-      id: '7',
-      path: `/${routes.attachments.path}`,
-      label: 'Attachments',
-    },
-
-    {
-      id: '8',
-      path: `/${routes.members.path}`,
-      label: 'Members',
-    },
-    {
-      id: '9',
-      path: `/${routes.menu.path}`,
-      label: 'Menu',
-    },
-    {
-      id: '10',
-      path: `/${routes.messages.path}`,
-      label: 'Messages',
+      hidden: false,
     },
     {
       id: '11',
-      path: `/${routes.pages.path}`,
-      label: 'Pages',
+      path: `/${routes.login.path}`,
+      label: 'Login *',
+      hidden: false,
     },
-
     {
       id: '12',
-      path: `/${routes.translations.path}`,
-      label: 'Translations',
+      path: `/${routes.passwordRecovery.path}`,
+      label: 'Password recovery *',
+      hidden: false,
     },
-    {
-      id: '13',
-      path: `/${routes.users.path}`,
-      label: 'Users',
-    },
-    {
-      id: '14',
-      path: `/${routes.profile.path}`,
-      label: 'Profile',
-    },
-    {
-      id: '15',
-      path: `/${routes.settings.path}`,
-      label: 'Settings',
-    },
-  ];
 
-  const userMenu: MenuItem[] = [
     {
-      id: '0',
-      path: `/${routes.profile.path}`,
-      label: 'Profile',
+      id: '100',
+      path: `/${routes.dashboard.path}`,
+      label: t('routes.dashboard'),
+      hidden: false,
     },
     {
-      id: '1',
-      path: `/${routes.login.path}/?exit=true`,
-      label: 'Logout',
+      id: '101',
+      path: `/${routes.settings.path}`,
+      label: t('routes.settings'),
+      hidden: false,
+    },
+    {
+      id: '102',
+      path: `/${routes.users.path}`,
+      label: t('routes.users'),
+      hidden: false,
+    },
+    {
+      id: '103',
+      path: `/${routes.members.path}`,
+      label: t('routes.members'),
+      hidden: false,
+    },
+    {
+      id: '104',
+      path: `/${routes.pages.path}`,
+      label: t('routes.pages'),
+      hidden: false,
+    },
+    {
+      id: '105',
+      path: `/${routes.articles.path}`,
+      label: t('routes.articles'),
+      hidden: false,
+    },
+    {
+      id: '106',
+      path: `/${routes.categories.path}`,
+      label: t('routes.categories'),
+      hidden: false,
+    },
+    {
+      id: '107',
+      path: `/${routes.tags.path}`,
+      label: t('routes.tags'),
+      hidden: false,
+    },
+    {
+      id: '108',
+      path: `/${routes.attachments.path}`,
+      label: t('routes.attachments'),
+      hidden: false,
+    },
+    {
+      id: '109',
+      path: `/${routes.menu.path}`,
+      label: t('routes.menu'),
+      hidden: false,
+    },
+    {
+      id: '110',
+      path: `/${routes.translations.path}`,
+      label: t('routes.translations'),
+      hidden: false,
+    },
+    {
+      id: '111',
+      path: `/${routes.messages.path}`,
+      label: t('routes.messages'),
+      hidden: false,
     },
   ];
 
   return {
     mainMenu,
-    userMenu,
   };
 };

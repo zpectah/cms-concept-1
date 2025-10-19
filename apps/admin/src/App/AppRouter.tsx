@@ -2,7 +2,7 @@ import { lazy } from 'react';
 import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
 import { newItemKey } from '@common';
 import { getConfig } from '../utils';
-import { ToastList, AnnouncementsList } from '../modules';
+import { ToastList, AnnouncementsList, AccountFormDialog } from '../modules';
 import { AuthLayout, AppLayout } from '../components';
 import {
   ArticlesView,
@@ -14,7 +14,6 @@ import {
   ErrorBoundary,
   LoginView,
   PasswordRecoveryView,
-  ProfileView,
   SettingsView,
   TagsView,
   MembersView,
@@ -43,7 +42,6 @@ const MessagesList = lazy(() => import('../modules/Messages/MessagesList/Message
 const MessagesDetailForm = lazy(() => import('../modules/Messages/MessagesDetailForm/MessagesDetailForm'));
 const PagesList = lazy(() => import('../modules/Pages/PagesList/PagesList'));
 const PagesDetailForm = lazy(() => import('../modules/Pages/PagesDetailForm/PagesDetailForm'));
-const ProfileAccountPanel = lazy(() => import('../modules/Profile/AccountPanelForm/AccountPanelForm'));
 const SettingsClientPanel = lazy(() => import('../modules/Settings/ClientPanelForm/ClientPanelForm'));
 const SettingsGlobalPanel = lazy(() => import('../modules/Settings/GlobalPanelForm/GlobalPanelForm'));
 const SettingsLanguagesPanel = lazy(() => import('../modules/Settings/LanguagesPanel/LanguagesPanel'));
@@ -102,7 +100,13 @@ const AppRouter = () => {
       errorElement: <ErrorBoundary />,
       children: [
         {
-          element: <AppLayout toastsSlot={<ToastList />} announcementsSlot={<AnnouncementsList />} />,
+          element: (
+            <AppLayout
+              toastsSlot={<ToastList />}
+              announcementsSlot={<AnnouncementsList />}
+              drawerSlot={<AccountFormDialog />}
+            />
+          ),
           children: [
             // Demo
             {
@@ -118,22 +122,6 @@ const AppRouter = () => {
                 {
                   index: true,
                   element: <Dashboard />,
-                },
-              ],
-            },
-
-            // Profile
-            {
-              path: `/${routes.profile.path}`,
-              element: <ProfileView />,
-              children: [
-                {
-                  index: true,
-                  element: <Navigate replace to={`/${routes.profile.path}/${routes.profile.panels.account}`} />,
-                },
-                {
-                  path: routes.profile.panels.account,
-                  element: <ProfileAccountPanel />,
                 },
               ],
             },

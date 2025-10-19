@@ -19,6 +19,9 @@ interface AppStore {
   announcements: AnnouncementsItem[];
   addAnnouncement: (title: string, severity?: AnnouncementsItemSeverity, autoclose?: number | boolean) => void;
   removeAnnouncement: (id: string) => void;
+  // Profile dialog
+  profileDialogOpen: boolean;
+  toggleProfileDialog: () => void;
 }
 
 const useAppStore = create<AppStore>((set, getState) => {
@@ -30,6 +33,7 @@ const useAppStore = create<AppStore>((set, getState) => {
   const mode = window.localStorage.getItem(CMS_THEME_MODE_KEY) ?? theme.default;
   const toasts: ToastsItem[] = [];
   const announcements: AnnouncementsItem[] = [];
+  const profileDialogOpen = false;
 
   const setLocalesHandler = (locale: string) => {
     set({ locale });
@@ -105,6 +109,10 @@ const useAppStore = create<AppStore>((set, getState) => {
     set({ announcements: tmpAnnouncements });
   };
 
+  const toggleProfileDialogHandler = () => {
+    set({ profileDialogOpen: !getState().profileDialogOpen });
+  };
+
   return {
     // Locale
     locale,
@@ -120,6 +128,9 @@ const useAppStore = create<AppStore>((set, getState) => {
     announcements,
     addAnnouncement: addAnnouncementHandler,
     removeAnnouncement: removeAnnouncementHandler,
+
+    profileDialogOpen,
+    toggleProfileDialog: toggleProfileDialogHandler,
   };
 });
 

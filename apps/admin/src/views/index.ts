@@ -11,7 +11,6 @@ export { default as MenuView } from './Menu';
 export { default as MessagesView } from './Messages';
 export { default as PagesView } from './Pages';
 export { default as PasswordRecoveryView } from './PasswordRecovery';
-export { default as ProfileView } from './Profile';
 export { default as SettingsView } from './Settings';
 export { default as TagsView } from './Tags';
 export { default as TranslationsView } from './Translations';

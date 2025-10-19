@@ -77,12 +77,6 @@
       },
       "translations": {
         "path": "translations"
-      },
-      "profile": {
-        "path": "profile",
-        "panels": {
-          "account": "account"
-        }
       }
     }
   },

@@ -13,6 +13,7 @@ const Wrapper = styled(Link)(({ theme }) => ({
   textDecoration: 'none',
   textTransform: 'uppercase',
   color: 'inherit',
+  textShadow: `1px 1px 0 ${theme.palette.text.disabled}`,
 
   '&:hover': {
     opacity: 1,

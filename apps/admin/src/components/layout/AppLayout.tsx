@@ -15,6 +15,7 @@ interface AppLayoutProps {
   variant?: keyof typeof layoutVariantKeys;
   toastsSlot?: ReactNode;
   announcementsSlot?: ReactNode;
+  drawerSlot?: ReactNode;
 }
 
 const Wrapper = styled('main')({
@@ -36,7 +37,12 @@ const Content = styled(Box)(({ theme }) => ({
   gap: theme.spacing(4),
 }));
 
-const AppLayout = ({ variant = layoutVariantKeys.default, toastsSlot, announcementsSlot }: AppLayoutProps) => {
+const AppLayout = ({
+  variant = layoutVariantKeys.default,
+  toastsSlot,
+  announcementsSlot,
+  drawerSlot,
+}: AppLayoutProps) => {
   const wrapperProps = {
     id: 'cms-layout',
     className: `variant--${variant}`,
@@ -78,6 +84,7 @@ const AppLayout = ({ variant = layoutVariantKeys.default, toastsSlot, announceme
               </Wrapper>
             </LayoutBase>
             {toastsSlot}
+            {drawerSlot}
           </>
         );
     }
