@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, CategoriesDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useFormDetailControl, useSelectOptions } from '../../../helpers';
+import { useCategoriesHelpers, useFormDetailControl, useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -14,6 +14,7 @@ import { useModelFavorites } from '../../../hooks';
 import { CategoriesDetailFormSchema } from './schema';
 import { ICategoriesDetailForm } from './types';
 import { getCategoriesDetailFormDefaultValues, getCategoriesDetailFormMapper } from './helpers';
+import { registeredFormFields } from '../../../enums';
 
 export const useCategoriesDetailForm = () => {
   const { t } = useTranslation();
@@ -33,8 +34,9 @@ export const useCategoriesDetailForm = () => {
     resolver: zodResolver(CategoriesDetailFormSchema),
     defaultValues: getCategoriesDetailFormDefaultValues(locales),
   });
+  const { isAttributeUnique } = useCategoriesHelpers();
 
-  const { refetch } = categoriesQuery;
+  const { data: categories, refetch } = categoriesQuery;
   const { data: detailData, ...detailQuery } = categoriesDetailQuery;
   const { mutate: onCreate } = categoriesCreateMutation;
   const { mutate: onPatch } = categoriesPatchMutation;
@@ -86,6 +88,14 @@ export const useCategoriesDetailForm = () => {
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),
         onConfirm: deleteConfirmHandler,
+      });
+
+      return;
+    }
+
+    if (!isAttributeUnique(categories ?? [], registeredFormFields.name, data as CategoriesDetail)) {
+      form.setError(registeredFormFields.name, {
+        message: t('form:message.error.duplicityName'),
       });
 
       return;

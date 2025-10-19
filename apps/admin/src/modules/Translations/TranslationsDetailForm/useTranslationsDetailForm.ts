@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, TranslationsDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useFormDetailControl, useSelectOptions } from '../../../helpers';
+import { useFormDetailControl, useSelectOptions, useTranslationsHelpers } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -14,6 +14,7 @@ import { useModelFavorites } from '../../../hooks';
 import { TranslationsDetailFormSchema } from './schema';
 import { ITranslationsDetailForm } from './types';
 import { getTranslationsDetailFormDefaultValues, getTranslationsDetailFormMapper } from './helpers';
+import { registeredFormFields } from '../../../enums';
 
 export const useTranslationsDetailForm = () => {
   const { t } = useTranslation();
@@ -33,8 +34,9 @@ export const useTranslationsDetailForm = () => {
     resolver: zodResolver(TranslationsDetailFormSchema),
     defaultValues: getTranslationsDetailFormDefaultValues(locales),
   });
+  const { isAttributeUnique } = useTranslationsHelpers();
 
-  const { refetch } = translationsQuery;
+  const { data: translations, refetch } = translationsQuery;
   const { data: detailData, ...detailQuery } = translationsDetailQuery;
   const { mutate: onCreate } = translationsCreateMutation;
   const { mutate: onPatch } = translationsPatchMutation;
@@ -86,6 +88,14 @@ export const useTranslationsDetailForm = () => {
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),
         onConfirm: deleteConfirmHandler,
+      });
+
+      return;
+    }
+
+    if (!isAttributeUnique(translations ?? [], registeredFormFields.name, data as TranslationsDetail)) {
+      form.setError(registeredFormFields.name, {
+        message: t('form:message.error.duplicityName'),
       });
 
       return;

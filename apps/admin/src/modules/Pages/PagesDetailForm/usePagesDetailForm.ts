@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, PagesDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useFormDetailControl, useSelectOptions } from '../../../helpers';
+import { useFormDetailControl, usePagesHelpers, useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -14,6 +14,7 @@ import { useModelFavorites } from '../../../hooks';
 import { PagesDetailFormSchema } from './schema';
 import { IPagesDetailForm } from './types';
 import { getPagesDetailFormDefaultValues, getPagesDetailFormMapper } from './helpers';
+import { registeredFormFields } from '../../../enums';
 
 export const usePagesDetailForm = () => {
   const { t } = useTranslation();
@@ -32,8 +33,9 @@ export const usePagesDetailForm = () => {
     resolver: zodResolver(PagesDetailFormSchema),
     defaultValues: getPagesDetailFormDefaultValues(locales),
   });
+  const { isAttributeUnique } = usePagesHelpers();
 
-  const { refetch } = pagesQuery;
+  const { data: pages, refetch } = pagesQuery;
   const { data: detailData, ...detailQuery } = pagesDetailQuery;
   const { mutate: onCreate } = pagesCreateMutation;
   const { mutate: onPatch } = pagesPatchMutation;
@@ -85,6 +87,14 @@ export const usePagesDetailForm = () => {
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),
         onConfirm: deleteConfirmHandler,
+      });
+
+      return;
+    }
+
+    if (!isAttributeUnique(pages ?? [], registeredFormFields.name, data as PagesDetail)) {
+      form.setError(registeredFormFields.name, {
+        message: t('form:message.error.duplicityName'),
       });
 
       return;

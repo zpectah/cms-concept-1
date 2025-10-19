@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, MembersDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useSelectOptions } from '../../../helpers';
+import { useMembersHelpers, useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -14,6 +14,7 @@ import { useModelFavorites } from '../../../hooks';
 import { MembersDetailFormSchema } from './schema';
 import { IMembersDetailForm } from './types';
 import { getMembersDetailFormDefaultValues, getMembersDetailFormMapper } from './helpers';
+import { registeredFormFields } from '../../../enums';
 
 export const useMembersDetailForm = () => {
   const { t } = useTranslation();
@@ -31,8 +32,9 @@ export const useMembersDetailForm = () => {
     resolver: zodResolver(MembersDetailFormSchema),
     defaultValues: getMembersDetailFormDefaultValues(),
   });
+  const { isAttributeUnique } = useMembersHelpers();
 
-  const { refetch } = membersQuery;
+  const { data: members, refetch } = membersQuery;
   const { data: detailData, ...detailQuery } = membersDetailQuery;
   const { mutate: onCreate } = membersCreateMutation;
   const { mutate: onPatch } = membersPatchMutation;
@@ -84,6 +86,14 @@ export const useMembersDetailForm = () => {
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),
         onConfirm: deleteConfirmHandler,
+      });
+
+      return;
+    }
+
+    if (!isAttributeUnique(members ?? [], registeredFormFields.email, data as MembersDetail)) {
+      form.setError(registeredFormFields.email, {
+        message: t('form:message.error.duplicityEmail'),
       });
 
       return;

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, ArticlesDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useFormDetailControl, useSelectOptions } from '../../../helpers';
+import { useFormDetailControl, useSelectOptions, useArticlesHelpers } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -14,6 +14,7 @@ import { useModelFavorites } from '../../../hooks';
 import { ArticlesDetailFormSchema } from './schema';
 import { IArticlesDetailForm } from './types';
 import { getArticlesDetailFormDefaultValues, getArticlesDetailFormMapper } from './helpers';
+import { registeredFormFields } from '../../../enums';
 
 export const useArticlesDetailForm = () => {
   const { t } = useTranslation();
@@ -34,8 +35,9 @@ export const useArticlesDetailForm = () => {
     resolver: zodResolver(ArticlesDetailFormSchema),
     defaultValues: getArticlesDetailFormDefaultValues(locales),
   });
+  const { isAttributeUnique } = useArticlesHelpers();
 
-  const { refetch } = articlesQuery;
+  const { data: articles, refetch } = articlesQuery;
   const { data: detailData, ...detailQuery } = articlesDetailQuery;
   const { mutate: onCreate } = articlesCreateMutation;
   const { mutate: onPatch } = articlesPatchMutation;
@@ -87,6 +89,14 @@ export const useArticlesDetailForm = () => {
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),
         onConfirm: deleteConfirmHandler,
+      });
+
+      return;
+    }
+
+    if (!isAttributeUnique(articles ?? [], registeredFormFields.name, data as ArticlesDetail)) {
+      form.setError(registeredFormFields.name, {
+        message: t('form:message.error.duplicityName'),
       });
 
       return;

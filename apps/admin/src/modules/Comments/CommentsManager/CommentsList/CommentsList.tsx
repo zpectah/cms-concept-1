@@ -6,7 +6,7 @@ interface CommentsListProps {
   onReact: (parentId: number) => void;
 }
 
-const CommentsList = ({ comments = [], onReact }: CommentsListProps) => {
+const CommentsList = ({ comments, onReact }: CommentsListProps) => {
   if (comments.length === 0) return <div>Alert: No comments added yet ...</div>;
 
   return (

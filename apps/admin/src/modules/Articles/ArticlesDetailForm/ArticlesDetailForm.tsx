@@ -1,7 +1,7 @@
 import { useWatch } from 'react-hook-form';
 import { Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { articlesTypeDefault, modelKeys } from '@common';
+import { articlesTypeDefault, modelKeys, newItemKey } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getTypedDate, getConfig } from '../../../utils';
 import {
@@ -34,7 +34,7 @@ const ArticlesDetailForm = () => {
   const { t } = useTranslation(['common', 'form']);
   const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = useArticlesDetailForm();
 
-  const isComments = true; // TODO
+  const isComments = detailId !== newItemKey; // TODO
 
   const type = useWatch({ name: registeredFormFields.type, control: form.control });
   const startDate = useWatch({ name: registeredFormFields.startDate, control: form.control });
@@ -46,7 +46,9 @@ const ArticlesDetailForm = () => {
       <FormLayout
         actions={<FormDetailActions detailId={detailId} listPath={`/${routes.articles.path}`} />}
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
-        actionbar={<CommentsManager isEnabled={isComments} contentType={modelKeys.articles} contentId={detailId} />}
+        actionbar={
+          isComments && <CommentsManager isEnabled={isComments} contentType={modelKeys.articles} contentId={detailId} />
+        }
       >
         <InputField name={registeredFormFields.name} label={t('form:label.name')} />
         <SelectField

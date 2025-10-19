@@ -23,7 +23,7 @@ const CommentsManager = ({ isEnabled, contentType, contentId }: CommentsManagerP
     console.log('comments', comments);
   }, [comments]);
 
-  if (!isEnabled) return null;
+  if (!comments || !isEnabled) return null;
 
   return (
     <>
@@ -47,13 +47,15 @@ const CommentsManager = ({ isEnabled, contentType, contentId }: CommentsManagerP
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <CommentsList
-            comments={comments ?? []}
-            onReact={(parentId) => {
-              setDialogOpen(true);
-              console.log('react to comment with id', parentId);
-            }}
-          />
+          {comments && (
+            <CommentsList
+              comments={comments}
+              onReact={(parentId) => {
+                setDialogOpen(true);
+                console.log('react to comment with id', parentId);
+              }}
+            />
+          )}
         </AccordionDetails>
         <AccordionActions>
           <Button variant="contained" color="secondary" onClick={() => setDialogOpen(true)}>

@@ -49,6 +49,7 @@
       "emailFormat": "Email is in wrong format",
       "insufficientChars": "Insufficient number of characters",
       "duplicityName": "This name is already in use, try another one",
+      "duplicityEmail": "This email is already in use, try another one",
       "requiredAtLeastOne": "At least one value is required",
       "invalidString": "Invalid string",
       "invalidNumber": "Invalid number",

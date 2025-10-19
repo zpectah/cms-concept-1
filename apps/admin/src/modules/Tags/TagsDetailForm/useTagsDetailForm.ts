@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, tagsColorKeysArray, TagsDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useSelectOptions } from '../../../helpers';
+import { useSelectOptions, useTagsHelpers } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -14,6 +14,7 @@ import { useModelFavorites } from '../../../hooks';
 import { TagsDetailFormSchema } from './schema';
 import { ITagsDetailForm } from './types';
 import { getTagsDetailFormDefaultValues, getTagsDetailFormMapper } from './helpers';
+import { registeredFormFields } from '../../../enums';
 
 export const useTagsDetailForm = () => {
   const { t } = useTranslation();
@@ -31,8 +32,9 @@ export const useTagsDetailForm = () => {
     resolver: zodResolver(TagsDetailFormSchema),
     defaultValues: getTagsDetailFormDefaultValues(),
   });
+  const { isAttributeUnique } = useTagsHelpers();
 
-  const { refetch } = tagsQuery;
+  const { data: tags, refetch } = tagsQuery;
   const { data: detailData, ...detailQuery } = tagsDetailQuery;
   const { mutate: onCreate } = tagsCreateMutation;
   const { mutate: onPatch } = tagsPatchMutation;
@@ -84,6 +86,14 @@ export const useTagsDetailForm = () => {
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),
         onConfirm: deleteConfirmHandler,
+      });
+
+      return;
+    }
+
+    if (!isAttributeUnique(tags ?? [], registeredFormFields.name, data as TagsDetail)) {
+      form.setError(registeredFormFields.name, {
+        message: t('form:message.error.duplicityName'),
       });
 
       return;

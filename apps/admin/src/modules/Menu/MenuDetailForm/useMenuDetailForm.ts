@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, MenuDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useSelectOptions } from '../../../helpers';
+import { useMenuHelpers, useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -14,6 +14,7 @@ import { useModelFavorites } from '../../../hooks';
 import { MenuDetailFormSchema } from './schema';
 import { IMenuDetailForm } from './types';
 import { getMenuDetailFormDefaultValues, getMenuDetailFormMapper } from './helpers';
+import { registeredFormFields } from '../../../enums';
 
 export const useMenuDetailForm = () => {
   const { t } = useTranslation();
@@ -31,8 +32,9 @@ export const useMenuDetailForm = () => {
     resolver: zodResolver(MenuDetailFormSchema),
     defaultValues: getMenuDetailFormDefaultValues(),
   });
+  const { isAttributeUnique } = useMenuHelpers();
 
-  const { refetch } = menuQuery;
+  const { data: menu, refetch } = menuQuery;
   const { data: detailData, ...detailQuery } = menuDetailQuery;
   const { mutate: onCreate } = menuCreateMutation;
   const { mutate: onPatch } = menuPatchMutation;
@@ -84,6 +86,14 @@ export const useMenuDetailForm = () => {
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),
         onConfirm: deleteConfirmHandler,
+      });
+
+      return;
+    }
+
+    if (!isAttributeUnique(menu ?? [], registeredFormFields.name, data as MenuDetail)) {
+      form.setError(registeredFormFields.name, {
+        message: t('form:message.error.duplicityName'),
       });
 
       return;
