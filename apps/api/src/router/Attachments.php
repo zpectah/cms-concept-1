@@ -5,6 +5,7 @@ namespace router;
 class Attachments extends Router {
   public function resolve($env, $method, $url, $data): array {
     $attachments = new \model\Attachments;
+    $response = [];
 
     switch ($env) {
 

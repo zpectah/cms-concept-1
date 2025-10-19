@@ -5,6 +5,7 @@ namespace router;
 class Messages extends Router {
   public function resolve($env, $method, $url, $data): array {
     $messages = new \model\Messages;
+    $response = [];
 
     switch ($env) {
 

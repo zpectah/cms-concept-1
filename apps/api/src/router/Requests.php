@@ -5,6 +5,7 @@ namespace router;
 class Requests extends Router {
   public function resolve($env, $method, $url, $data): array {
     $requests = new \model\Requests;
+    $response = [];
 
     switch ($env) {
 

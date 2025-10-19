@@ -3,6 +3,7 @@ export * from './useAttachmentsQuery';
 export * from './useBlacklistQuery';
 export * from './useCategories';
 export * from './useCommentsQuery';
+export * from './useMaintenanceQuery';
 export * from './useMembersQuery';
 export * from './useMenuItemsQuery';
 export * from './useMenuQuery';

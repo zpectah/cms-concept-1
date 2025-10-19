@@ -5,6 +5,7 @@ namespace router;
 class Pages extends Router {
   public function resolve($env, $method, $url, $data): array {
     $pages = new \model\Pages;
+    $response = [];
 
     switch ($env) {
 

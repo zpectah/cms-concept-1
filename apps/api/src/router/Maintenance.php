@@ -8,6 +8,7 @@ class Maintenance extends Router {
 
   public function resolve($env, $method, $url, $data): array {
     $maintenanceService = new MaintenanceService;
+    $response = [];
 
     switch ($env) {
 
@@ -18,10 +19,10 @@ class Maintenance extends Router {
             switch ($url['a']) {
 
               case 'analyze-model-items':
-                $response = $maintenanceService -> analyzeModelItemsToDelete($data);
+                $response = $maintenanceService -> analyzeModelItemsToDelete();
                 break;
 
-              case 'delete-permanent-model-items':
+              case 'permanent-delete-model-items':
                 $response = $maintenanceService -> deletePermanentlyModelItems($data);
                 break;
 

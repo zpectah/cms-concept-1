@@ -5,6 +5,7 @@ namespace router;
 class MenuItems extends Router {
   public function resolve($env, $method, $url, $data): array {
     $menuItems = new \model\MenuItems;
+    $response = [];
 
     switch ($env) {
 

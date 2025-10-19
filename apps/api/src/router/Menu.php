@@ -5,6 +5,7 @@ namespace router;
 class Menu extends Router {
   public function resolve($env, $method, $url, $data): array {
     $menu = new \model\Menu;
+    $response = [];
 
     switch ($env) {
 

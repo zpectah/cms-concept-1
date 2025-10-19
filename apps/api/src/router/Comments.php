@@ -5,6 +5,7 @@ namespace router;
 class Comments extends Router {
   public function resolve($env, $method, $url, $data): array {
     $comments = new \model\Comments;
+    $response = [];
 
     switch ($env) {
 

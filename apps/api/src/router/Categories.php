@@ -5,6 +5,7 @@ namespace router;
 class Categories extends Router {
   public function resolve($env, $method, $url, $data): array {
     $categories = new \model\Categories;
+    $response = [];
 
     switch ($env) {
 

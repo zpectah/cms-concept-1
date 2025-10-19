@@ -5,6 +5,7 @@ namespace router;
 class Articles extends Router {
   public function resolve($env, $method, $url, $data): array {
     $articles = new \model\Articles;
+    $response = [];
 
     switch ($env) {
 

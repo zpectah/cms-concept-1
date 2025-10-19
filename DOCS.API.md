@@ -224,7 +224,7 @@
 |  Method   | Model                                       |  Request  | Response  |
 |:---------:|:--------------------------------------------|:---------:|:---------:|
 |   PATCH   | `/maintenance/analyze-model-items`          |   `{}`    | `{ ... }` |
-|   PATCH   | `/maintenance/delete-permanent-model-items` | `{ ... }` |   `{}`    |
+|   PATCH   | `/maintenance/permanent-delete-model-items` | `{ ... }` |   `{}`    |
 
 
 

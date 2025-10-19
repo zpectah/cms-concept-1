@@ -5,6 +5,7 @@ namespace router;
 class Blacklist extends Router {
   public function resolve($env, $method, $url, $data): array {
     $blacklist = new \model\Blacklist;
+    $response = [];
 
     switch ($env) {
 

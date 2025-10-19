@@ -5,6 +5,7 @@ namespace router;
 class Members extends Router {
   public function resolve($env, $method, $url, $data): array {
     $members = new \model\Members;
+    $response = [];
 
     switch ($env) {
 

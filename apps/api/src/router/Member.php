@@ -4,6 +4,7 @@ namespace router;
 
 class Member extends Router {
   public function resolve($env, $method, $url, $data): array {
+    $response = [];
 
     switch ($env) {
 

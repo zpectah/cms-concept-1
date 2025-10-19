@@ -5,6 +5,7 @@ namespace router;
 class Tags extends Router {
   public function resolve($env, $method, $url, $data): array {
     $tags = new \model\Tags;
+    $response = [];
 
     switch ($env) {
 

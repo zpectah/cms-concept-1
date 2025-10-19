@@ -5,6 +5,7 @@ namespace router;
 class Translations extends Router {
   public function resolve($env, $method, $url, $data): array {
     $translations = new \model\Translations;
+    $response = [];
 
     switch ($env) {
 
