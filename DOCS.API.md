@@ -17,14 +17,15 @@
 
 ### Attachments
 
-|  Method  | Model                 |       Request       |      Response       |
-|:--------:|:----------------------|:-------------------:|:-------------------:|
-|   GET    | `/attachments`        |         ``          |    `Attachments`    |
-|   GET    | `/attachments/id/$id` |         ``          | `AttachmentsDetail` |
-|   POST   | `/attachments/create` | `AttachmentsDetail` |        `{}`         |
-|  PATCH   | `/attachments/patch`  | `AttachmentsDetail` |        `{}`         |
-|  PATCH   | `/attachments/toggle` |     `number[]`      |        `{}`         |
-|  PATCH   | `/attachments/delete` |     `number[]`      |        `{}`         |
+|  Method  | Model                      |              Request               |      Response       |
+|:--------:|:---------------------------|:----------------------------------:|:-------------------:|
+|   GET    | `/attachments`             |                 ``                 |    `Attachments`    |
+|   GET    | `/attachments/id/$id`      |                 ``                 | `AttachmentsDetail` |
+|   POST   | `/attachments/file-create` |    `FileUploaderTransportQueue`    |        `{}`         |
+|   POST   | `/attachments/create`      | `FileUploaderTransportQueueItem[]` |        `{}`         |
+|  PATCH   | `/attachments/patch`       |        `AttachmentsDetail`         |        `{}`         |
+|  PATCH   | `/attachments/toggle`      |             `number[]`             |        `{}`         |
+|  PATCH   | `/attachments/delete`      |             `number[]`             |        `{}`         |
 
 * $id = Item ID
 

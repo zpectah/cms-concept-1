@@ -15,3 +15,14 @@ export interface FileUploaderQueueItem {
 }
 
 export type FileUploaderQueue = FileUploaderQueueItem[];
+
+export type FileUploaderTransportQueueItem = FileUploaderQueueItem & {
+  content?: string;
+};
+
+export type FileUploaderTransportQueue = {
+  queue: FileUploaderTransportQueueItem[];
+  options: {
+    path: string;
+  };
+};

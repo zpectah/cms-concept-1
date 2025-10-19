@@ -83,7 +83,7 @@ const AppRouter = () => {
           element: <PasswordRecoveryView />,
           children: [
             {
-              path: `/${routes.passwordRecovery.path}/:token`,
+              path: ':token',
               element: <PasswordRecoveryView />,
             },
           ],
@@ -116,7 +116,7 @@ const AppRouter = () => {
               element: <DashboardView />,
               children: [
                 {
-                  path: `/${routes.dashboard.path}`,
+                  index: true,
                   element: <Dashboard />,
                 },
               ],
@@ -128,11 +128,11 @@ const AppRouter = () => {
               element: <ProfileView />,
               children: [
                 {
-                  path: `/${routes.profile.path}`,
+                  index: true,
                   element: <Navigate replace to={`/${routes.profile.path}/${routes.profile.panels.account}`} />,
                 },
                 {
-                  path: `/${routes.profile.path}/${routes.profile.panels.account}`,
+                  path: routes.profile.panels.account,
                   element: <ProfileAccountPanel />,
                 },
               ],
@@ -144,27 +144,27 @@ const AppRouter = () => {
               element: <SettingsView />,
               children: [
                 {
-                  path: `/${routes.settings.path}`,
+                  index: true,
                   element: <Navigate replace to={`/${routes.settings.path}/${routes.settings.panels.global}`} />,
                 },
                 {
-                  path: `/${routes.settings.path}/${routes.settings.panels.global}`,
+                  path: routes.settings.panels.global,
                   element: <SettingsGlobalPanel />,
                 },
                 {
-                  path: `/${routes.settings.path}/${routes.settings.panels.client}`,
+                  path: routes.settings.panels.client,
                   element: <SettingsClientPanel />,
                 },
                 {
-                  path: `/${routes.settings.path}/${routes.settings.panels.languages}`,
+                  path: routes.settings.panels.languages,
                   element: <SettingsLanguagesPanel />,
                 },
                 {
-                  path: `/${routes.settings.path}/${routes.settings.panels.maintenance}`,
+                  path: routes.settings.panels.maintenance,
                   element: <SettingsMaintenancePanel />,
                 },
                 {
-                  path: `/${routes.settings.path}/${routes.settings.panels.blacklist}`,
+                  path: routes.settings.panels.blacklist,
                   element: <SettingsBlacklistPanel />,
                 },
               ],
@@ -176,11 +176,11 @@ const AppRouter = () => {
               element: <ArticlesView />,
               children: [
                 {
-                  path: `/${routes.articles.path}`,
+                  index: true,
                   element: <ArticlesList />,
                 },
                 {
-                  path: `/${routes.articles.path}/:id`,
+                  path: ':id',
                   element: <ArticlesDetailForm />,
                 },
               ],
@@ -192,11 +192,11 @@ const AppRouter = () => {
               element: <CategoriesView />,
               children: [
                 {
-                  path: `/${routes.categories.path}`,
+                  index: true,
                   element: <CategoriesList />,
                 },
                 {
-                  path: `/${routes.categories.path}/:id`,
+                  path: ':id',
                   element: <CategoriesDetailForm />,
                 },
               ],
@@ -208,11 +208,11 @@ const AppRouter = () => {
               element: <TagsView />,
               children: [
                 {
-                  path: `/${routes.tags.path}`,
+                  index: true,
                   element: <TagsList />,
                 },
                 {
-                  path: `/${routes.tags.path}/:id`,
+                  path: ':id',
                   element: <TagsDetailForm />,
                 },
               ],
@@ -224,15 +224,15 @@ const AppRouter = () => {
               element: <AttachmentsView />,
               children: [
                 {
-                  path: `/${routes.attachments.path}`,
+                  index: true,
                   element: <AttachmentsList />,
                 },
                 {
-                  path: `/${routes.attachments.path}/${newItemKey}`,
+                  path: newItemKey,
                   element: <AttachmentsCreateForm />,
                 },
                 {
-                  path: `/${routes.attachments.path}/:id`,
+                  path: ':id',
                   element: <AttachmentsDetailForm />,
                 },
               ],
@@ -244,11 +244,11 @@ const AppRouter = () => {
               element: <PagesView />,
               children: [
                 {
-                  path: `/${routes.pages.path}`,
+                  index: true,
                   element: <PagesList />,
                 },
                 {
-                  path: `/${routes.pages.path}/:id`,
+                  path: ':id',
                   element: <PagesDetailForm />,
                 },
               ],
@@ -260,11 +260,11 @@ const AppRouter = () => {
               element: <UsersView />,
               children: [
                 {
-                  path: `/${routes.users.path}`,
+                  index: true,
                   element: <UsersList />,
                 },
                 {
-                  path: `/${routes.users.path}/:id`,
+                  path: ':id',
                   element: <UsersDetailForm />,
                 },
               ],
@@ -276,11 +276,11 @@ const AppRouter = () => {
               element: <MembersView />,
               children: [
                 {
-                  path: `/${routes.members.path}`,
+                  index: true,
                   element: <MembersList />,
                 },
                 {
-                  path: `/${routes.members.path}/:id`,
+                  path: ':id',
                   element: <MembersDetailForm />,
                 },
               ],
@@ -292,11 +292,11 @@ const AppRouter = () => {
               element: <MenuView />,
               children: [
                 {
-                  path: `/${routes.menu.path}`,
+                  index: true,
                   element: <MenuList />,
                 },
                 {
-                  path: `/${routes.menu.path}/:id`,
+                  path: ':id',
                   element: <MenuDetailForm />,
                 },
               ],
@@ -308,11 +308,11 @@ const AppRouter = () => {
               element: <MessagesView />,
               children: [
                 {
-                  path: `/${routes.messages.path}`,
+                  index: true,
                   element: <MessagesList />,
                 },
                 {
-                  path: `/${routes.messages.path}/:id`,
+                  path: ':id',
                   element: <MessagesDetailForm />,
                 },
               ],
@@ -324,11 +324,11 @@ const AppRouter = () => {
               element: <TranslationsView />,
               children: [
                 {
-                  path: `/${routes.translations.path}`,
+                  index: true,
                   element: <TranslationsList />,
                 },
                 {
-                  path: `/${routes.translations.path}/:id`,
+                  path: ':id',
                   element: <TranslationsDetailForm />,
                 },
               ],

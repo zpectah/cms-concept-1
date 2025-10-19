@@ -100,7 +100,7 @@
     "info": {},
     "warning": {},
     "error": {
-      "common": "There was a problem during the update",
+      "common": "There was a problem during update",
       "formErrors": "Form contains some errors",
       "maxFileSize": "Maximum file size exceeded",
       "unsupportedFileExt": "Unsupported file extension '{{value}}'",

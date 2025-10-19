@@ -1,14 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getConfig } from '../../../utils';
 import { useAppStore } from '../../../store';
 import { FEEDBACK_COMMON_TIMEOUT_DEFAULT, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext, useFileUploader } from '../../../components';
 import { useAttachmentsHelpers } from '../../../helpers';
-import { FileUploaderQueue } from '../../../types';
+import { FileUploaderQueue, FileUploaderTransportQueueItem } from '../../../types';
 import { useAttachmentsQuery } from '../../../hooks-query';
 import { registeredFormFields } from '../../../enums';
 import { IAttachmentsCreateForm } from './types';
@@ -16,15 +14,14 @@ import { AttachmentsCreateFormSchema } from './schema';
 import { getAttachmentsCreateFormDefaultValues } from './helpers';
 
 export const useAttachmentsCreateForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isFileCreating, setIsFileCreating] = useState(false);
+
   const { t } = useTranslation(['common', 'form']);
-  const navigate = useNavigate();
-  const {
-    admin: { routes },
-  } = getConfig();
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
   const { queue, inputElement, onInputChange, onQueueClear } = useFileUploader({});
-  const { attachmentsQuery, attachmentsCreateMutation } = useAttachmentsQuery({});
+  const { attachmentsQuery, attachmentsFileCreateMutation, attachmentsCreateMutation } = useAttachmentsQuery({});
   const { checkQueueDuplicities, isValidFileSize } = useAttachmentsHelpers();
   const form = useForm<IAttachmentsCreateForm>({
     defaultValues: getAttachmentsCreateFormDefaultValues(),
@@ -33,6 +30,7 @@ export const useAttachmentsCreateForm = () => {
   const queueFieldArray = useFieldArray({ control: form.control, name: registeredFormFields.queue });
 
   const { data: attachments } = attachmentsQuery;
+  const { mutate: onFileCreate } = attachmentsFileCreateMutation;
   const { mutate: onCreate } = attachmentsCreateMutation;
 
   const submitHandler: SubmitHandler<IAttachmentsCreateForm> = (data) => {
@@ -42,6 +40,9 @@ export const useAttachmentsCreateForm = () => {
     });
 
     if (!attachments) return;
+
+    setIsSubmitting(true);
+    setIsFileCreating(true);
 
     const { duplicities } = checkQueueDuplicities(data.queue as FileUploaderQueue, attachments);
 
@@ -55,20 +56,36 @@ export const useAttachmentsCreateForm = () => {
       return;
     }
 
-    //
-    // TODO: create files on disk first !!!
-    addToast(t('message.success.filesCreated'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-    console.log('master create', master);
-    //
-
-    onCreate(master, {
+    onFileCreate(master, {
       onSuccess: (res) => {
         // TODO: response
-        navigate(`/${routes.attachments.path}`);
-        addToast(t('message.success.itemsCreated'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
-        form.resetField(registeredFormFields.queue);
+        console.log('onFileCreate res', res);
+
+        setIsFileCreating(false);
+        addToast(t('message.success.filesCreated'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+
+        const updatedQueue = (master.queue as FileUploaderQueue).map(
+          ({ content, ...keepAttrs }) => keepAttrs
+        ) as FileUploaderTransportQueueItem[];
+
+        onCreate(updatedQueue, {
+          onSuccess: (res) => {
+            // TODO: response
+            console.log('onCreate res', res);
+            setIsSubmitting(false);
+            form.resetField(registeredFormFields.queue);
+            addToast(t('message.success.itemsCreated'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+          },
+          onError: (err) => {
+            setIsSubmitting(false);
+            addToast(t('message.error.common'), 'error');
+            console.warn(err);
+          },
+        });
       },
       onError: (err) => {
+        setIsSubmitting(false);
+        setIsFileCreating(false);
         addToast(t('message.error.common'), 'error');
         console.warn(err);
       },
@@ -114,6 +131,7 @@ export const useAttachmentsCreateForm = () => {
     onReset: () => form.reset(getAttachmentsCreateFormDefaultValues()),
     inputElement,
     onInputChange,
-    isSubmitting: false,
+    isSubmitting,
+    isFileCreating,
   };
 };
