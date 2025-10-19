@@ -1,4 +1,4 @@
-# RestApi
+# Api Docs
 
 ## Private
 
@@ -219,4 +219,43 @@
 |   PATCH   | `/settings/locale-toggle`  | `{ locale: string }` |    `{}`    |
 
 
+### Maintenance
+
+|  Method   | Model                                       |  Request  | Response  |
+|:---------:|:--------------------------------------------|:---------:|:---------:|
+|   PATCH   | `/maintenance/analyze-model-items`          |   `{}`    | `{ ... }` |
+|   PATCH   | `/maintenance/delete-permanent-model-items` | `{ ... }` |   `{}`    |
+
+
+
 ## Public
+
+### Articles
+
+### Attachments
+
+### Categories
+
+### Comments
+
+### Members
+
+### Menu
+
+### MenuItems
+
+### Messages
+
+### Pages
+
+### Tags
+
+### Translations
+
+### Users
+
+### Blacklist
+
+### Requests
+
+### Settings

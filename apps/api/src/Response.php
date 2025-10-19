@@ -25,6 +25,7 @@ class Response {
       'c' => $url_attributes[4] ?? null,
       'd' => $url_attributes[5] ?? null,
       'e' => $url_attributes[6] ?? null,
+      // TODO: if needed
     ];
   }
 
@@ -128,6 +129,12 @@ class Response {
         $requests = new router\Requests;
 
         $response = $requests -> resolve($environment, $method, $parsed_url, $jsonData);
+        break;
+
+      case 'maintenance':
+        $maintenance = new router\Maintenance;
+
+        $response = $maintenance -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       default:
