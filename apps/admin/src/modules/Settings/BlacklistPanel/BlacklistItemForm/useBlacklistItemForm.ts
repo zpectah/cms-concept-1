@@ -16,7 +16,9 @@ export const useBlacklistItemForm = ({ afterSubmit }: useBlacklistItemFormProps)
   });
 
   const submitHandler: SubmitHandler<IBlacklistItemForm> = (data, event) => {
-    const master = Object.assign(data);
+    const master = Object.assign({
+      ...data,
+    });
 
     // TODO
     console.log('on submit', master);

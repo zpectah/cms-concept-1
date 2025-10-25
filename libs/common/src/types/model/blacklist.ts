@@ -8,6 +8,7 @@ export interface BlacklistItem {
   ipaddress?: string;
   email: string;
   active: boolean;
+  deleted: boolean;
   created: string;
 }
 

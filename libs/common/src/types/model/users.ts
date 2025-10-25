@@ -9,10 +9,10 @@ export interface UsersItem extends ItemBase {
   email: string;
   password?: string;
 
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  last_name?: string;
 
-  accessLevel: number; // TODO
+  access_rights: number; // TODO
 }
 
 export type Users = UsersItem[];

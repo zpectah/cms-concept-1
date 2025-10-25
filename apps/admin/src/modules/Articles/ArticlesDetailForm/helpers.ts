@@ -21,10 +21,10 @@ export const getArticlesDetailFormDefaultValues = (locales: string[]): IArticles
     deleted: false,
 
     // Event
-    gpsLocation: [0, 0],
-    eventAddress: addressFormDefaults,
-    startDate: null,
-    endDate: null,
+    event_location: [0, 0],
+    event_address: addressFormDefaults,
+    event_start: null,
+    event_end: null,
   };
 };
 
@@ -32,7 +32,7 @@ export const getArticlesDetailFormMapper = (data: ArticlesDetail): IArticlesDeta
   return {
     ...data,
 
-    startDate: data.startDate ? dayjs(data.startDate) : null,
-    endDate: data.endDate ? dayjs(data.endDate) : null,
+    event_start: data.event_start ? dayjs(data.event_start) : null,
+    event_end: data.event_end ? dayjs(data.event_end) : null,
   };
 };

@@ -7,6 +7,8 @@ export interface MenuItemsItem extends ItemBase {
   type: MenuItemsType;
   parent_id: number;
   menu_id: number;
+  link_page?: number;
+  link_url?: string;
 }
 
 export type MenuItems = MenuItemsItem[];

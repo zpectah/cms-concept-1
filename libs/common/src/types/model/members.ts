@@ -11,11 +11,13 @@ export interface MembersItem extends ItemBase {
   email: string;
   password?: string;
 
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  last_name?: string;
 
-  address: Partial<Address>;
-  flatNo?: string;
+  address?: Partial<Address>;
+  flat_no?: string;
+
+  description?: string;
 }
 
 export type Members = MembersItem[];

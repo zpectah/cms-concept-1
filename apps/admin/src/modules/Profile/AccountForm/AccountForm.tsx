@@ -19,8 +19,8 @@ const AccountForm = () => {
           label="Password confirm"
           isHidden={!watchedPassword}
         />
-        <InputField name={registeredFormFields.firstName} label="First name" />
-        <InputField name={registeredFormFields.lastName} label="Last name" />
+        <InputField name={registeredFormFields.first_name} label="First name" />
+        <InputField name={registeredFormFields.last_name} label="Last name" />
 
         <ActionBar>
           <Button type="submit" variant="contained" color="primary">

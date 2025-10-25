@@ -5,8 +5,8 @@ export const getDataToFormMapper = (): IProfileAccountForm => {
 
   return {
     id: 0,
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
     password: '',
     passwordConfirm: '',

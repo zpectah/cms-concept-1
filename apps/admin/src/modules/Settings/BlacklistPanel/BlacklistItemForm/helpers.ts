@@ -6,5 +6,7 @@ export const getDataToFormMapper = () => {
     type: blacklistTypeKeys.default,
     ipaddress: '',
     email: '',
+    active: 1,
+    deleted: 0,
   };
 };

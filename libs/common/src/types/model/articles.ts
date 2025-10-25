@@ -11,10 +11,11 @@ export interface ArticlesItem extends ItemBase {
   attachments: number[];
 
   // Event
-  eventAddress?: Address;
-  gpsLocation?: GpsLocation;
-  startDate?: string;
-  endDate?: string;
+  event_address?: Address;
+  event_location?: GpsLocation;
+
+  event_start?: string;
+  event_end?: string;
 }
 
 export type Articles = ArticlesItem[];

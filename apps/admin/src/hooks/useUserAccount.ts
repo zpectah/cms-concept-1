@@ -6,8 +6,8 @@ export const useUserAccount = () => {
       id: 1,
       email: 'user@email.com',
       name: 'fg54jhgf5h4j65gf',
-      firstName: '',
-      lastName: '',
+      first_name: '',
+      last_name: '',
     },
   };
 };

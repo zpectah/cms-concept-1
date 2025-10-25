@@ -48,12 +48,12 @@ const UsersDetailForm = () => {
           isRequired={detailId === newItemKey}
         />
 
-        <InputField name={registeredFormFields.firstName} label={t('form:label.firstName')} />
-        <InputField name={registeredFormFields.lastName} label={t('form:label.lastName')} />
+        <InputField name={registeredFormFields.first_name} label={t('form:label.firstName')} />
+        <InputField name={registeredFormFields.last_name} label={t('form:label.lastName')} />
 
         <NumberField
-          name={registeredFormFields.accessLevel}
-          label={t('form:label.accessLevel')}
+          name={registeredFormFields.access_rights}
+          label={t('form:label.accessRights')}
           fieldProps={{ sx: { width: { xs: '100%', md: '33%' } } }}
         />
       </FormLayout>

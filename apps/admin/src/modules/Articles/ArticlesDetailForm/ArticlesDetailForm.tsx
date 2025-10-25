@@ -37,7 +37,7 @@ const ArticlesDetailForm = () => {
   const isComments = detailId !== newItemKey; // TODO
 
   const type = useWatch({ name: registeredFormFields.type, control: form.control });
-  const startDate = useWatch({ name: registeredFormFields.startDate, control: form.control });
+  const startDate = useWatch({ name: registeredFormFields.event_start, control: form.control });
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
 
@@ -62,22 +62,22 @@ const ArticlesDetailForm = () => {
             <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <DateTimePickerField
-                  name={registeredFormFields.startDate}
-                  label={t('form:label.startDate')}
+                  name={registeredFormFields.event_start}
+                  label={t('form:label.eventStart')}
                   isRequired
                 />
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <DateTimePickerField
-                  name={registeredFormFields.endDate}
-                  label={t('form:label.endDate')}
+                  name={registeredFormFields.event_end}
+                  label={t('form:label.eventEnd')}
                   fieldProps={{ minDate: getTypedDate(startDate) }}
                   isRequired
                 />
               </Grid>
             </Grid>
-            <AddressField fieldPrefix="eventAddress" disableCard />
-            <GpsPickerField name={registeredFormFields.gpsLocation} label={t('form:label.gpsLocation')} />
+            <AddressField fieldPrefix={registeredFormFields.event_address} disableCard />
+            <GpsPickerField name={registeredFormFields.event_location} label={t('form:label.eventLocation')} />
           </FormContent>
         </HiddenCard>
         <LocalesTabs

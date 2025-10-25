@@ -10,10 +10,10 @@ export const getUsersDetailFormDefaultValues = (): IUsersDetailForm => {
     email: '',
     password: '',
 
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
 
-    accessLevel: 0,
+    access_rights: 0,
 
     active: true,
     deleted: false,
@@ -24,7 +24,7 @@ export const getUsersDetailFormMapper = (data: UsersDetail): IUsersDetailForm =>
   return {
     ...data,
 
-    firstName: data.firstName ?? '',
-    lastName: data.lastName ?? '',
+    first_name: data.first_name ?? '',
+    last_name: data.last_name ?? '',
   };
 };

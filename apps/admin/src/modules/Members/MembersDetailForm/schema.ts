@@ -13,11 +13,13 @@ export const MembersDetailFormSchema = z
     email: formFieldsSchemas.required_email,
     password: formFieldsSchemas.string.optional(),
 
-    firstName: formFieldsSchemas.string,
-    lastName: formFieldsSchemas.string,
+    first_name: formFieldsSchemas.string,
+    last_name: formFieldsSchemas.string,
 
     address: AddressSchema.optional(),
-    flatNo: formFieldsSchemas.string.optional(),
+    flat_no: formFieldsSchemas.string.optional(),
+
+    description: formFieldsSchemas.string.optional(),
 
     active: formFieldsSchemas.boolean.optional(),
     deleted: formFieldsSchemas.boolean.optional(),

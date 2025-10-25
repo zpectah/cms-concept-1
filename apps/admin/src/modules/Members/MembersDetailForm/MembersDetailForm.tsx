@@ -45,11 +45,11 @@ const MembersDetailForm = () => {
           label={t('form:label.password')}
           isRequired={detailId === newItemKey}
         />
-        <InputField name={registeredFormFields.firstName} label={t('form:label.firstName')} />
-        <InputField name={registeredFormFields.lastName} label={t('form:label.lastName')} />
+        <InputField name={registeredFormFields.first_name} label={t('form:label.firstName')} />
+        <InputField name={registeredFormFields.last_name} label={t('form:label.lastName')} />
         <AddressField fieldPrefix={registeredFormFields.address} />
         <InputField
-          name={registeredFormFields.flatNo}
+          name={registeredFormFields.flat_no}
           label={t('form:label.flatNo')}
           fieldProps={{ sx: { width: { xs: '100%', md: '33%' } } }}
         />

@@ -19,16 +19,16 @@ const UsersList = () => {
       searchKeys={[
         registeredFormFields.name,
         registeredFormFields.email,
-        registeredFormFields.firstName,
-        registeredFormFields.lastName,
+        registeredFormFields.first_name,
+        registeredFormFields.last_name,
         registeredFormFields.type,
       ]}
       orderKeys={[
         registeredFormFields.id,
         registeredFormFields.name,
         registeredFormFields.email,
-        registeredFormFields.firstName,
-        registeredFormFields.lastName,
+        registeredFormFields.first_name,
+        registeredFormFields.last_name,
         registeredFormFields.type,
         registeredFormFields.active,
       ]}

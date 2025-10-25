@@ -13,10 +13,10 @@ export const UsersDetailFormSchema = z
     email: formFieldsSchemas.required_email,
     password: formFieldsSchemas.string.optional(),
 
-    firstName: formFieldsSchemas.string,
-    lastName: formFieldsSchemas.string,
+    first_name: formFieldsSchemas.string,
+    last_name: formFieldsSchemas.string,
 
-    accessLevel: formFieldsSchemas.number,
+    access_rights: formFieldsSchemas.number,
 
     active: formFieldsSchemas.boolean.optional(),
     deleted: formFieldsSchemas.boolean.optional(),

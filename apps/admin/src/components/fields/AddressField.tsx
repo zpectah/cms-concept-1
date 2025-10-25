@@ -18,7 +18,7 @@ const AddressField = ({ fieldPrefix, disableCard }: AddressFieldProps) => {
         <InputField name={`${fieldPrefix}.${registeredFormFields.street}`} label={t('form:label.street')} />
       </Grid>
       <Grid size={4}>
-        <InputField name={`${fieldPrefix}.${registeredFormFields.streetNo}`} label={t('form:label.streetNo')} />
+        <InputField name={`${fieldPrefix}.${registeredFormFields.street_no}`} label={t('form:label.streetNo')} />
       </Grid>
       <Grid size={9}>
         <InputField name={`${fieldPrefix}.${registeredFormFields.district}`} label={t('form:label.district')} />

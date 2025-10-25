@@ -10,12 +10,12 @@ export const getMembersDetailFormDefaultValues = (): IMembersDetailForm => {
     email: '',
     password: '',
 
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
 
     address: addressFormDefaults,
 
-    flatNo: '',
+    flat_no: '',
 
     type: membersTypeDefault,
     active: true,
@@ -27,7 +27,7 @@ export const getMembersDetailFormMapper = (data: MembersDetail): IMembersDetailF
   return {
     ...data,
 
-    firstName: data.firstName ?? '',
-    lastName: data.lastName ?? '',
+    first_name: data.first_name ?? '',
+    last_name: data.last_name ?? '',
   };
 };

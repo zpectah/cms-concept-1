@@ -8,11 +8,11 @@ class Model {
 
   public function __construct() {}
 
-  public function getNow(): string {
+  static function getNow(): string {
     return date('c'); // ISO 8601 format
   }
 
-  public function getColumnsAndValuesForQuery($fields): array {
+  static function getColumnsAndValuesForQuery($fields): array {
     $placeholders = array_map(function($field) { return ':' . $field; }, $fields);
 
     return [
@@ -21,7 +21,7 @@ class Model {
     ];
   }
 
-  public function getQueryParts($data, $fields): array {
+  static function getQueryParts($data, $fields): array {
     $setParts = [];
 
     foreach ($fields as $field) {
@@ -37,11 +37,11 @@ class Model {
     return $setParts;
   }
 
-  public function getUpdatePlaceholders($data): string {
+  static function getUpdatePlaceholders($data): string {
     return implode(', ', array_fill(0, count($data), '?'));
   }
 
-  public function connection(): PDO {
+  protected function connection(): PDO {
     // TODO
     $host = '127.0.0.1';
     $db   = 'cms_concept_1';

@@ -3,8 +3,8 @@ import { formFieldsSchemas } from '../../../schema';
 
 export const ProfileAccountFormSchema = z.object({
   id: formFieldsSchemas.number,
-  firstName: formFieldsSchemas.string.optional(),
-  lastName: formFieldsSchemas.string.optional(),
+  first_name: formFieldsSchemas.string.optional(),
+  last_name: formFieldsSchemas.string.optional(),
   email: formFieldsSchemas.required_email,
   password: formFieldsSchemas.string.optional(),
   passwordConfirm: formFieldsSchemas.string.optional(),
