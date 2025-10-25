@@ -13,7 +13,7 @@ import { useTagsQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
 import { TagsDetailFormSchema } from './schema';
 import { ITagsDetailForm } from './types';
-import { getTagsDetailFormDefaultValues, getTagsDetailFormMapper } from './helpers';
+import { getTagsDetailFormDefaultValues, getTagsDetailFormMapper, getTagsDetailFormMapperToMaster } from './helpers';
 import { registeredFormFields } from '../../../enums';
 
 export const useTagsDetailForm = () => {
@@ -99,9 +99,7 @@ export const useTagsDetailForm = () => {
       return;
     }
 
-    const master = Object.assign({
-      ...data,
-    });
+    const master = getTagsDetailFormMapperToMaster(data);
 
     if (data.id === 0) {
       createHandler(master);

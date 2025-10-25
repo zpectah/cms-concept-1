@@ -17,22 +17,22 @@ export const useTagsQuery = ({ id }: { id?: string }) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const tagsCreateMutation = useMutation<unknown, unknown, TagsDetail>({
+  const tagsCreateMutation = useMutation<{ id: number }, unknown, TagsDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
     mutationFn: (data) => axios.post(`${API_URL.tags}/create`, data).then((response) => response.data),
   });
 
-  const tagsPatchMutation = useMutation<unknown, unknown, TagsDetail>({
+  const tagsPatchMutation = useMutation<{ rows: number }, unknown, TagsDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
     mutationFn: (data) => axios.patch(`${API_URL.tags}/patch`, data).then((response) => response.data),
   });
 
-  const tagsToggleMutation = useMutation<unknown, unknown, number[]>({
+  const tagsToggleMutation = useMutation<{ rows: number }, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
     mutationFn: (data) => axios.patch(`${API_URL.tags}/toggle`, data).then((response) => response.data),
   });
 
-  const tagsDeleteMutation = useMutation<unknown, unknown, number[]>({
+  const tagsDeleteMutation = useMutation<{ rows: number }, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
     mutationFn: (data) => axios.patch(`${API_URL.tags}/delete`, data).then((response) => response.data),
   });
