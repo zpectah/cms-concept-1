@@ -17,27 +17,27 @@ export const useMessagesQuery = ({ id }: { id?: string }) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const messagesCreateMutation = useMutation<unknown, unknown, MessagesDetail>({
+  const messagesCreateMutation = useMutation<{ id: number }, unknown, MessagesDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
     mutationFn: (data) => axios.post(`${API_URL.messages}/create`, data).then((response) => response.data),
   });
 
-  const messagesPatchMutation = useMutation<unknown, unknown, MessagesDetail>({
+  const messagesPatchMutation = useMutation<{ rows: number }, unknown, MessagesDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
     mutationFn: (data) => axios.patch(`${API_URL.messages}/patch`, data).then((response) => response.data),
   });
 
-  const messagesToggleMutation = useMutation<unknown, unknown, number[]>({
+  const messagesToggleMutation = useMutation<{ rows: number }, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
     mutationFn: (data) => axios.patch(`${API_URL.messages}/toggle`, data).then((response) => response.data),
   });
 
-  const messagesDeleteMutation = useMutation<unknown, unknown, number[]>({
+  const messagesDeleteMutation = useMutation<{ rows: number }, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
     mutationFn: (data) => axios.patch(`${API_URL.messages}/delete`, data).then((response) => response.data),
   });
 
-  const messagesReadMutation = useMutation<unknown, unknown, number[]>({
+  const messagesReadMutation = useMutation<{ rows: number }, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-read`],
     mutationFn: (data) => axios.patch(`${API_URL.messages}/read`, data).then((response) => response.data),
   });

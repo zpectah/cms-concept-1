@@ -51,7 +51,13 @@ class Tags extends Model {
       ];
     }
 
-    $sql = "INSERT INTO `tags` (`type`, `color`, `name`, `active`, `deleted`) VALUES (:type, :color, :name, :active, :deleted)";
+    $fields = ['type', 'color', 'name', 'active', 'deleted'];
+
+    $params = self::getColumnsAndValuesForQuery($fields);
+    $columns = $params['columns'];
+    $values = $params['values'];
+
+    $sql = "INSERT INTO `tags` ($columns) VALUES ($values)";
 
     $stmt = $conn -> prepare($sql);
 
@@ -87,22 +93,9 @@ class Tags extends Model {
       ];
     }
 
-    $setParts = [];
-    $allowedFields = ['type', 'color', 'name', 'active', 'deleted'];
+    $fields = ['type', 'color', 'name', 'active', 'deleted'];
 
-    foreach ($allowedFields as $field) {
-      if (isset($data[$field])) {
-        $setParts[] = "`$field` = :$field";
-      }
-    }
-
-    if (empty($setParts)) {
-      // TODO: error code
-      return [
-        'error' => true,
-        'message' => 'No data to update'
-      ];
-    }
+    $setParts = self::getQueryParts($data, $fields);
 
     $sql = "UPDATE `tags` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
 
@@ -134,7 +127,7 @@ class Tags extends Model {
       ];
     }
 
-    $placeholders = implode(', ', array_fill(0, count($data), '?'));
+    $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `tags` SET `active` = NOT `active` WHERE `id` IN ({$placeholders})";
 
@@ -158,7 +151,7 @@ class Tags extends Model {
       ];
     }
 
-    $placeholders = implode(', ', array_fill(0, count($data), '?'));
+    $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `tags` SET `deleted` = 1 WHERE `id` IN ({$placeholders})";
 

@@ -1,10 +1,10 @@
-import { messagesTypeDefault, MessagesDetail } from '@common';
+import { messagesTypeDefault, getRandomString, MessagesDetail } from '@common';
 import { IMessagesDetailForm } from './types';
 
 export const getMessagesDetailFormDefaultValues = (): IMessagesDetailForm => {
   return {
     id: 0,
-    name: '',
+    name: getRandomString(),
     sender: '',
     subject: '',
     content: '',
@@ -20,4 +20,10 @@ export const getMessagesDetailFormMapper = (data: MessagesDetail): IMessagesDeta
 
     content: data.content ?? '',
   };
+};
+
+export const getMessagesDetailFormMapperToMaster = (data: IMessagesDetailForm) => {
+  return Object.assign({
+    ...data,
+  });
 };

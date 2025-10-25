@@ -12,6 +12,35 @@ class Model {
     return date('c'); // ISO 8601 format
   }
 
+  public function getColumnsAndValuesForQuery($fields): array {
+    $placeholders = array_map(function($field) { return ':' . $field; }, $fields);
+
+    return [
+      'columns' => '`' . implode('`, `', $fields) . '`',
+      'values' => implode(', ', $placeholders),
+    ];
+  }
+
+  public function getQueryParts($data, $fields): array {
+    $setParts = [];
+
+    foreach ($fields as $field) {
+      if (isset($data[$field])) {
+        $setParts[] = "`$field` = :$field";
+      }
+    }
+
+    if (empty($setParts)) {
+      die();
+    }
+
+    return $setParts;
+  }
+
+  public function getUpdatePlaceholders($data): string {
+    return implode(', ', array_fill(0, count($data), '?'));
+  }
+
   public function connection(): PDO {
     // TODO
     $host = '127.0.0.1';

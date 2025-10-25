@@ -2,82 +2,190 @@
 
 namespace model;
 
+use PDO;
+
 class Messages extends Model {
 
   public function getList(): array {
-    $messages = [];
+    $conn = self::connection();
 
-    for ($i = 1; $i <= 10; $i++) {
-      $messages[] = [
-        'id' => $i,
-        'name' => "message-$i",
-        'type' => 'default',
-        'sender' => 'sender.012' . $i . '@sender.com',
-        'read' => false,
-        'active' => true,
-        'deleted' => false,
-        'created' => $this -> getNow(),
-        'updated' => $this -> getNow(),
-      ];
-    }
+    $deleted_status = 0;
 
-    return [
-      ...$messages,
-    ];
+    $stmt = $conn -> prepare("SELECT * FROM `messages` WHERE `deleted` = :status");
+
+    $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
+
+    $stmt -> execute();
+
+    return $stmt -> fetchAll(PDO::FETCH_ASSOC);
   }
 
   public function getDetail($id): array {
-    $isEven = $id % 2;
+    $conn = self::connection();
 
-    return [
-      'id' => $id,
-      'name' => 'message-' . $id,
-      'type' => 'default',
-      'sender' => 'sender.012' . $id . '@sender.com',
-      'subject' => 'Fusce tristique pellentesque dapibus - ' . $id,
-      'content' => 'Lorem bibendum curabitur sollicitudin molestie mi tincidunt ultrices placerat sem vehicula placerat eget commodo blandit',
-      'read' => false,
-      'active' => true,
-      'deleted' => false,
-      'created' => $this -> getNow(),
-      'updated' => $this -> getNow(),
-    ];
+    if (!$id) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No ID provided'
+      ];
+    }
+
+    $stmt = $conn -> prepare("SELECT * FROM `messages` WHERE `id` = :id LIMIT 1");
+
+    $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
+
+    $stmt -> execute();
+
+    return $stmt -> fetch(PDO::FETCH_ASSOC);
   }
 
   public function create($data): array {
-    // TODO: create new item in table
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No data provided'
+      ];
+    }
+
+    $fields = ['type', 'name', 'sender', 'subject', 'content', 'read', 'active', 'deleted'];
+
+    $params = self::getColumnsAndValuesForQuery($fields);
+    $columns = $params['columns'];
+    $values = $params['values'];
+
+    $sql = "INSERT INTO `messages` ($columns) VALUES ($values)";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> bindParam(':type', $data['type']);
+    $stmt -> bindParam(':name', $data['name']);
+    $stmt -> bindParam(':sender', $data['sender']);
+    $stmt -> bindParam(':subject', $data['subject']);
+    $stmt -> bindParam(':content', $data['content']);
+    $stmt -> bindParam(':read', $data['read'], PDO::PARAM_INT);
+    $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
+    $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
+
+    $stmt -> execute();
 
     return [
-      'toCreate' => $data,
+      'id' => $conn -> lastInsertId(),
     ];
   }
 
   public function patch($data): array {
-    // TODO: patch item in table
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No data provided'
+      ];
+    }
+
+    if (!isset($data['id'])) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'Missing ID for update'
+      ];
+    }
+
+    $fields = ['read', 'active', 'deleted'];
+
+    $setParts = self::getQueryParts($data, $fields);
+
+    $sql = "UPDATE `messages` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> bindParam(':read', $data['read'], PDO::PARAM_INT);
+    $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
+    $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
+
+    $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
+
+    $stmt -> execute();
 
     return [
-      'toPatch' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 
   public function toggle($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `messages` SET `active` = NOT `active` WHERE `id` IN ({$placeholders})";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> execute($data);
 
     return [
-      'toToggle' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 
   public function delete($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `messages` SET `deleted` = 1 WHERE `id` IN ({$placeholders})";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> execute($data);
 
     return [
-      'toDelete' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 
   public function read($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `messages` SET `read` = 1 WHERE `id` IN ({$placeholders})";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> execute($data);
 
     return [
-      'toRead' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 

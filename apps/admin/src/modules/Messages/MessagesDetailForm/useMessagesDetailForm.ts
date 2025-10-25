@@ -13,7 +13,11 @@ import { useMessagesQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
 import { MessagesDetailFormSchema } from './schema';
 import { IMessagesDetailForm } from './types';
-import { getMessagesDetailFormDefaultValues, getMessagesDetailFormMapper } from './helpers';
+import {
+  getMessagesDetailFormDefaultValues,
+  getMessagesDetailFormMapper,
+  getMessagesDetailFormMapperToMaster,
+} from './helpers';
 
 export const useMessagesDetailForm = () => {
   const { t } = useTranslation();
@@ -91,9 +95,7 @@ export const useMessagesDetailForm = () => {
       return;
     }
 
-    const master = Object.assign({
-      ...data,
-    });
+    const master = getMessagesDetailFormMapperToMaster(data);
 
     if (data.id === 0) {
       createHandler(master);
