@@ -93,7 +93,9 @@
       "deleteDetail": "Item was successfully deleted",
       "deleteRow": "Item was successfully deleted",
       "deleteSelected": "Selected items was successfully deleted",
-      "itemsCreated": "Items was created successfully",
+      "itemCreated": "Item was created successfully",
+      "itemsCreated": "Items was successfully created",
+      "fileCreated": "File was created successfully",
       "filesCreated": "Files was successfully created",
       "dataSaved": "Data was successfully saved"
     },

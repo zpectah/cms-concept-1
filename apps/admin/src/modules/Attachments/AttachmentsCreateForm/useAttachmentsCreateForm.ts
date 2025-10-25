@@ -36,7 +36,10 @@ export const useAttachmentsCreateForm = () => {
   const submitHandler: SubmitHandler<IAttachmentsCreateForm> = (data) => {
     const master = Object.assign({
       queue: data.queue,
-      options: data.options,
+      options: {
+        ...data.options,
+        path: '../../../dist/uploads/', // TODO
+      },
     });
 
     if (!attachments) return;
@@ -58,11 +61,13 @@ export const useAttachmentsCreateForm = () => {
 
     onFileCreate(master, {
       onSuccess: (res) => {
-        // TODO: response
-        console.log('onFileCreate res', res);
+        if (!res) return;
+
+        const createdResponseMessage =
+          res.length > 1 ? t('message.success.filesCreated') : t('message.success.fileCreated');
 
         setIsFileCreating(false);
-        addToast(t('message.success.filesCreated'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        addToast(createdResponseMessage, 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
 
         const updatedQueue = (master.queue as FileUploaderQueue).map(
           ({ content, ...keepAttrs }) => keepAttrs

@@ -18,7 +18,7 @@ export const useAttachmentsQuery = ({ id }: { id?: string }) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const attachmentsFileCreateMutation = useMutation<unknown, unknown, FileUploaderTransportQueue>({
+  const attachmentsFileCreateMutation = useMutation<number[], unknown, FileUploaderTransportQueue>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-file-create`],
     mutationFn: (data) =>
       axios

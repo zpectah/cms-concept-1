@@ -51,11 +51,25 @@ class Attachments extends Model {
   }
 
   public function fileCreate($data): array {
-    // TODO: create new file
+    $response = [];
+    $options = $data['options'] ?? [];
+    $queue = $data['queue'] ?? [];
+    $rootPath = $options['path'];
 
-    return [
-      'toCreateFiles' => $data,
-    ];
+    if (!$rootPath) return [];
+
+    foreach ($queue as $file) {
+      $filePath = $rootPath . $file['type'] . '/';
+      $fileName = $file['name'] . '.' . $file['extension'];
+      $finalFilePath = $filePath . $fileName;
+
+      if (!file_exists($rootPath)) mkdir($rootPath, 0777, true);
+      if (!file_exists($filePath)) mkdir($filePath, 0777, true);
+
+      $response[] = file_put_contents($finalFilePath, file_get_contents($file['content']));
+    }
+
+    return $response;
   }
 
   public function create($data): array {
