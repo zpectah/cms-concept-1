@@ -6,6 +6,12 @@ use PDO;
 
 class Articles extends Model {
 
+  static array $tableFields = ['type', 'name', 'categories', 'tags', 'attachments',
+    'event_address_street', 'event_address_street_no', 'event_address_district',
+    'event_address_city', 'event_address_country', 'event_address_zip', 'event_location',
+    'event_start', 'event_end', 'active', 'deleted'];
+  static array $tableLocaleFields = ['title', 'description', 'content'];
+
   private function dbToJsonDetailMapper($data, $localeData = false): array {
     $item = [
       ...$data,
@@ -67,6 +73,14 @@ class Articles extends Model {
     return $item;
   }
 
+  private function parseLocaleData($row): array {
+    return [
+      'title' => $row['title'] ?? '',
+      'description' => $row['description'] ?? '',
+      'content' => $row['content'] ?? '',
+    ];
+  }
+
 
   public function getList(): array {
     $conn = self::connection();
@@ -74,23 +88,21 @@ class Articles extends Model {
     $deleted_status = 0;
 
     $stmt = $conn -> prepare("SELECT id, name, type, categories, tags, attachments, active, deleted, created, updated FROM `articles` WHERE `deleted` = :status");
-
     $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
-
     $stmt -> execute();
 
-    $rawItems = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+    $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
     $items = [];
 
-    foreach ($rawItems as $item) {
+    foreach ($result as $item) {
       $items[] = self::dbToJsonDetailMapper($item);
     }
 
     return $items;
   }
 
-  public function getDetail($id): array {
+  public function getDetail($id, $locales): array {
     $conn = self::connection();
 
     if (!$id) {
@@ -102,43 +114,36 @@ class Articles extends Model {
     }
 
     $stmt = $conn -> prepare("SELECT * FROM `articles` WHERE `id` = :id LIMIT 1");
-
     $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
-
     $stmt -> execute();
 
-    $rawItem = $stmt -> fetch(PDO::FETCH_ASSOC);
+    $detail = $stmt -> fetch(PDO::FETCH_ASSOC);
 
-    if (!$rawItem) {
+    if (!$detail) {
       return [
         'error' => true,
         'message' => 'Article not found'
       ];
     }
 
-    $locales = ['en', 'cs']; // TODO
     $localeData = [];
 
     foreach ($locales as $locale) {
       $tableName = 'articles_' . $locale;
 
       $localeStmt = $conn -> prepare("SELECT title, description, content FROM `{$tableName}` WHERE `id` = :id LIMIT 1");
-
       $localeStmt -> bindParam(':id', $id, PDO::PARAM_INT);
       $localeStmt -> execute();
+
       $localeRow = $localeStmt -> fetch(PDO::FETCH_ASSOC);
 
-      $localeData[$locale] = $localeRow ?: [
-        'title' => '',
-        'description' => '',
-        'content' => '',
-      ];
+      $localeData[$locale] = self::parseLocaleData($localeRow);
     }
 
-    return self::dbToJsonDetailMapper($rawItem, $localeData);
+    return self::dbToJsonDetailMapper($detail, $localeData);
   }
 
-  public function create($data): array {
+  public function create($data, $locales): array {
     $conn = self::connection();
 
     if (empty($data)) {
@@ -150,10 +155,7 @@ class Articles extends Model {
     }
 
     $data = self::jsonToDbDetailMapper($data);
-
-    $fields = ['type', 'name', 'categories', 'tags', 'attachments', 'event_address_street', 'event_address_street_no', 'event_address_district', 'event_address_city', 'event_address_country', 'event_address_zip', 'event_location', 'event_start', 'event_end', 'active', 'deleted'];
-
-    $params = self::getColumnsAndValuesForQuery($fields);
+    $params = self::getColumnsAndValuesForQuery(self::$tableFields);
     $columns = $params['columns'];
     $values = $params['values'];
 
@@ -182,34 +184,26 @@ class Articles extends Model {
 
     $insertId = $conn -> lastInsertId();
 
-    $locales = ['en', 'cs']; // TODO
-
     if (isset($data['locale']) && is_array($data['locale'])) {
 
-      $localeFields = ['id', 'title', 'description', 'content'];
-
-      $localeParams = self::getColumnsAndValuesForQuery($localeFields);
+      $localeParams = self::getColumnsAndValuesForQuery([ ...self::$tableLocaleFields, 'id' ]);
       $localeColumns = $localeParams['columns'];
       $localeValues = $localeParams['values'];
 
       foreach ($locales as $locale) {
         if (isset($data['locale'][$locale])) {
-
-          $localeData = $data['locale'][$locale];
           $tableName = 'articles_' . $locale;
 
+          $localeData = self::parseLocaleData($data['locale'][$locale]);
+
           $sqlLocale = "INSERT INTO `{$tableName}` ({$localeColumns}) VALUES ({$localeValues})";
+
           $stmtLocale = $conn -> prepare($sqlLocale);
 
+          $stmtLocale -> bindParam(':title', $localeData['title']);
+          $stmtLocale -> bindParam(':description', $localeData['description']);
+          $stmtLocale -> bindParam(':content', $localeData['content']);
           $stmtLocale -> bindParam(':id', $insertId, PDO::PARAM_INT);
-
-          $title = $localeData['title'] ?? '';
-          $description = $localeData['description'] ?? '';
-          $content = $localeData['content'] ?? '';
-
-          $stmtLocale -> bindParam(':title', $title);
-          $stmtLocale -> bindParam(':description', $description);
-          $stmtLocale -> bindParam(':content', $content);
 
           $stmtLocale -> execute();
         }
@@ -222,7 +216,7 @@ class Articles extends Model {
     ];
   }
 
-  public function patch($data): array {
+  public function patch($data, $locales): array {
     $conn = self::connection();
 
     if (empty($data)) {
@@ -242,10 +236,7 @@ class Articles extends Model {
     }
 
     $data = self::jsonToDbDetailMapper($data);
-
-    $fields = ['type', 'name', 'categories', 'tags', 'attachments', 'event_address_street', 'event_address_street_no', 'event_address_district', 'event_address_city', 'event_address_country', 'event_address_zip', 'event_location', 'event_start', 'event_end', 'active', 'deleted'];
-
-    $setParts = self::getQueryParts($data, $fields);
+    $setParts = self::getQueryParts($data, self::$tableFields);
 
     $sql = "UPDATE `articles` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
 
@@ -276,31 +267,22 @@ class Articles extends Model {
 
     $id = $data['id'];
 
-    $locales = ['en', 'cs']; // TODO
-    $localeFields = ['title', 'description', 'content'];
-
     if (isset($data['locale']) && is_array($data['locale'])) {
 
       foreach ($locales as $locale) {
         if (isset($data['locale'][$locale])) {
-
-          $localeData = $data['locale'][$locale];
           $tableName = 'articles_' . $locale;
 
-          $localeSetParts = self::getQueryParts($localeData, $localeFields);
+          $localeData = self::parseLocaleData($data['locale'][$locale]);
+          $localeSetParts = self::getQueryParts($localeData, self::$tableLocaleFields);
 
           $sqlLocale = "UPDATE `{$tableName}` SET " . implode(', ', $localeSetParts) . " WHERE `id` = :id";
 
           $stmtLocale = $conn -> prepare($sqlLocale);
 
-          $title = $localeData['title'] ?? '';
-          $description = $localeData['description'] ?? '';
-          $content = $localeData['content'] ?? '';
-
-          $stmtLocale -> bindParam(':title', $title);
-          $stmtLocale -> bindParam(':description', $description);
-          $stmtLocale -> bindParam(':content', $content);
-
+          $stmtLocale -> bindParam(':title', $localeData['title']);
+          $stmtLocale -> bindParam(':description', $localeData['description']);
+          $stmtLocale -> bindParam(':content', $localeData['content']);
           $stmtLocale -> bindParam(':id', $id, PDO::PARAM_INT);
 
           $stmtLocale -> execute();
@@ -363,6 +345,12 @@ class Articles extends Model {
     return [
       'rows' => $stmt -> rowCount(),
     ];
+  }
+
+  public function deletePermanently($data): array {
+    /* TODO */
+
+    return [];
   }
 
 }

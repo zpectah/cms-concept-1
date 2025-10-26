@@ -34,5 +34,9 @@ export const getArticlesDetailFormMapper = (data: ArticlesDetail): IArticlesDeta
 
     event_start: data.event_start ? dayjs(data.event_start) : null,
     event_end: data.event_end ? dayjs(data.event_end) : null,
+    event_address: {
+      ...data.event_address,
+      zip: String(data.event_address?.zip ?? ''),
+    },
   };
 };

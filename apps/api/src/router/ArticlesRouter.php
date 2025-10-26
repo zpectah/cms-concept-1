@@ -7,6 +7,8 @@ class ArticlesRouter extends Router {
     $articles = new \model\Articles;
     $response = [];
 
+    $locales = ['en', 'cs']; // TODO
+
     switch ($env) {
 
       case self::env_private:
@@ -16,7 +18,7 @@ class ArticlesRouter extends Router {
             if (self::isIdValidParameter($url)) {
               $id = $url['b'];
 
-              $response = $articles -> getDetail($id);
+              $response = $articles -> getDetail($id, $locales);
             } else {
               $response = $articles -> getList();
             }
@@ -26,7 +28,7 @@ class ArticlesRouter extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $articles -> create($data);
+                $response = $articles -> create($data, $locales);
                 break;
 
             }
@@ -36,7 +38,7 @@ class ArticlesRouter extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $articles -> patch($data);
+                $response = $articles -> patch($data, $locales);
                 break;
 
               case 'toggle':

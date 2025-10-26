@@ -4,5 +4,5 @@ export const addressFormDefaults = {
   district: '',
   city: '',
   country: '',
-  zip: null,
+  zip: '',
 };

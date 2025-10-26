@@ -6,18 +6,42 @@ use PDO;
 
 class Messages extends Model {
 
+  private function dbToJsonDetailMapper($data): array {
+    return [
+      ...$data,
+      'read' => $data['read'] === 1,
+      'active' => $data['active'] === 1,
+      'deleted' => $data['deleted'] === 1,
+    ];
+  }
+
+  private function jsonToDbDetailMapper($data): array {
+    return [
+      ...$data,
+      'read' => $data['read'] ? 1 : 0,
+      'active' => $data['active'] ? 1 : 0,
+      'deleted' => $data['deleted'] ? 1 : 0,
+    ];
+  }
+
   public function getList(): array {
     $conn = self::connection();
 
     $deleted_status = 0;
 
     $stmt = $conn -> prepare("SELECT * FROM `messages` WHERE `deleted` = :status");
-
     $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
-
     $stmt -> execute();
 
-    return $stmt -> fetchAll(PDO::FETCH_ASSOC);
+    $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+    $items = [];
+
+    foreach ($result as $item) {
+      $items[] = self::dbToJsonDetailMapper($item);
+    }
+
+    return $items;
   }
 
   public function getDetail($id): array {
@@ -32,12 +56,12 @@ class Messages extends Model {
     }
 
     $stmt = $conn -> prepare("SELECT * FROM `messages` WHERE `id` = :id LIMIT 1");
-
     $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
-
     $stmt -> execute();
 
-    return $stmt -> fetch(PDO::FETCH_ASSOC);
+    $detail = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+    return self::dbToJsonDetailMapper($detail);
   }
 
   public function create($data): array {
@@ -53,6 +77,7 @@ class Messages extends Model {
 
     $fields = ['type', 'name', 'sender', 'subject', 'content', 'read', 'active', 'deleted'];
 
+    $data = self::jsonToDbDetailMapper($data);
     $params = self::getColumnsAndValuesForQuery($fields);
     $columns = $params['columns'];
     $values = $params['values'];
@@ -98,6 +123,7 @@ class Messages extends Model {
 
     $fields = ['read', 'active', 'deleted'];
 
+    $data = self::jsonToDbDetailMapper($data);
     $setParts = self::getQueryParts($data, $fields);
 
     $sql = "UPDATE `messages` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
@@ -187,6 +213,12 @@ class Messages extends Model {
     return [
       'rows' => $stmt -> rowCount(),
     ];
+  }
+
+  public function deletePermanently($data): array {
+    /* TODO */
+
+    return [];
   }
 
 }
