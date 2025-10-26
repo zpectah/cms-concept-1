@@ -2,81 +2,207 @@
 
 namespace model;
 
+use PDO;
+
 class Comments extends Model {
 
-  public function getList($contentType, $contentId): array {
-    $comments = [];
+  static array $tableFields = ['type', 'name', 'sender', 'subject', 'content', 'parent', 'content_type', 'content_id', 'active', 'deleted'];
 
-    for ($i = 1; $i <= 5; $i++) {
-      $comments[] = [
-        'id' => $i,
-        'name' => "comment-$i",
-        'type' => 'default',
-        'sender' => 'sender.012' . $i . '@sender.com',
-        'subject' => 'Fusce tristique pellentesque dapibus - ' . $i,
-        'content' => 'Lorem bibendum curabitur sollicitudin molestie mi tincidunt ultrices placerat sem vehicula placerat eget commodo blandit',
-        'content_type' => $contentType ?? 'unknown',
-        'content_id' => $contentId ?? 0,
-        'parent' => 0,
-        'active' => true,
-        'deleted' => false,
-        'created' => $this -> getNow(),
-        'updated' => $this -> getNow(),
+  private function dbToJsonDetailMapper($data): array {
+    $item = [
+      ...$data,
+      'active' => $data['active'] === 1,
+      'deleted' => $data['deleted'] === 1,
+    ];
+
+    return $item;
+  }
+
+  private function jsonToDbDetailMapper($data): array {
+    $item = [
+      ...$data,
+      'active' => $data['active'] ? 1 : 0,
+      'deleted' => $data['deleted'] ? 1 : 0,
+    ];
+
+    return $item;
+  }
+
+
+  public function getList($contentType, $contentId): array {
+    $conn = self::connection();
+
+    $deleted_status = 0;
+
+    $stmt = $conn -> prepare("SELECT * FROM `comments` WHERE `deleted` = :status AND `content_type` = :content_type AND `content_id` = :content_id");
+
+    $stmt -> bindParam(':content_type', $contentType);
+    $stmt -> bindParam(':content_id', $contentId, PDO::PARAM_INT);
+    $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
+
+    $stmt -> execute();
+
+    $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+    $items = [];
+
+    foreach ($result as $item) {
+      $items[] = self::dbToJsonDetailMapper($item);
+    }
+
+    return $items;
+  }
+
+  public function getDetail($id): array {
+    $conn = self::connection();
+
+    if (!$id) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No ID provided'
       ];
     }
 
-    return [
-      ...$comments,
-    ];
-  }
+    $stmt = $conn -> prepare("SELECT * FROM `comments` WHERE `id` = :id LIMIT 1");
+    $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
+    $stmt -> execute();
 
-  public function getDetail($id, $contentType, $contentId): array {
-    $isEven = $id % 2;
+    $detail = $stmt -> fetch(PDO::FETCH_ASSOC);
 
-    return [
-      'id' => $id,
-      'name' => 'comment-' . $id,
-      'type' => 'default',
-      'sender' => 'sender.012' . $id . '@sender.com',
-      'subject' => 'Fusce tristique pellentesque dapibus - ' . $id,
-      'content' => 'Lorem bibendum curabitur sollicitudin molestie mi tincidunt ultrices placerat sem vehicula placerat eget commodo blandit',
-      'content_type' => $contentType ?? 'unknown',
-      'content_id' => $contentId ?? 0,
-      'parent' => 0,
-      'active' => true,
-      'deleted' => false,
-      'created' => $this -> getNow(),
-      'updated' => $this -> getNow(),
-    ];
+    return self::dbToJsonDetailMapper($detail);
   }
 
   public function create($data): array {
-    // TODO: create new item in table
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No data provided'
+      ];
+    }
+
+    $data = self::jsonToDbDetailMapper($data);
+
+    $params = self::getColumnsAndValuesForQuery(self::$tableFields);
+    $columns = $params['columns'];
+    $values = $params['values'];
+
+    $sql = "INSERT INTO `comments` ($columns) VALUES ($values)";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> bindParam(':type', $data['type']);
+    $stmt -> bindParam(':name', $data['name']);
+    $stmt -> bindParam(':sender', $data['sender']);
+    $stmt -> bindParam(':subject', $data['subject']);
+    $stmt -> bindParam(':content', $data['content']);
+    $stmt -> bindParam(':parent', $data['parent'], PDO::PARAM_INT);
+    $stmt -> bindParam(':content_type', $data['content_type']);
+    $stmt -> bindParam(':content_id', $data['content_id'], PDO::PARAM_INT);
+    $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
+    $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
+
+    $stmt -> execute();
 
     return [
-      'toCreate' => $data,
+      'id' => $conn -> lastInsertId(),
     ];
   }
 
   public function patch($data): array {
-    // TODO: patch item in table
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No data provided'
+      ];
+    }
+
+    if (!isset($data['id'])) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'Missing ID for update'
+      ];
+    }
+
+    $data = self::jsonToDbDetailMapper($data);
+    $setParts = self::getQueryParts($data, self::$tableFields);
+
+    $sql = "UPDATE `comments` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> bindParam(':type', $data['type']);
+    $stmt -> bindParam(':name', $data['name']);
+    $stmt -> bindParam(':sender', $data['sender']);
+    $stmt -> bindParam(':subject', $data['subject']);
+    $stmt -> bindParam(':content', $data['content']);
+    $stmt -> bindParam(':parent', $data['parent'], PDO::PARAM_INT);
+    $stmt -> bindParam(':content_type', $data['content_type']);
+    $stmt -> bindParam(':content_id', $data['content_id'], PDO::PARAM_INT);
+    $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
+    $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
+
+    $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
+
+    $stmt -> execute();
 
     return [
-      'toPatch' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 
   public function toggle($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `comments` SET `active` = NOT `active` WHERE `id` IN ({$placeholders})";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> execute($data);
 
     return [
-      'toToggle' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 
   public function delete($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `comments` SET `deleted` = 1 WHERE `id` IN ({$placeholders})";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> execute($data);
 
     return [
-      'toDelete' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 

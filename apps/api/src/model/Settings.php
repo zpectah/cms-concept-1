@@ -65,19 +65,16 @@ class Settings extends Model {
       if (isset($data['project']['name'])) $settings['project_name'] = $data['project']['name'];
       if (isset($data['project']['description'])) $settings['project_description'] = $data['project']['description'];
     }
-
     if (isset($data['locales'])) {
       if (isset($data['locales']['default'])) $settings['locales_default'] = $data['locales']['default'];
       if (isset($data['locales']['active'])) $settings['locales_active'] = $data['locales']['active'] ? implode(',', $data['locales']['active']) : '';
       if (isset($data['locales']['installed'])) $settings['locales_installed'] = $data['locales']['installed'] ? implode(',', $data['locales']['installed']) : '';
     }
-
     if (isset($data['company'])) {
       if (isset($data['company']['name'])) $settings['company_name'] = $data['company']['name'];
       if (isset($data['company']['description'])) $settings['company_description'] = $data['company']['description'];
       if (isset($data['company']['email'])) $settings['company_email'] = $data['company']['email'] ? implode(',', $data['company']['email']) : '';
       if (isset($data['company']['phone'])) $settings['company_phone'] = $data['company']['phone'] ? implode(',', $data['company']['phone']) : '';
-
       if (isset($data['company']['address'])) {
         if (isset($data['company']['address']['street'])) $settings['company_address_street'] = $data['company']['address']['street'];
         if (isset($data['company']['address']['street_no'])) $settings['company_address_street_no'] = $data['company']['address']['street_no'];
@@ -86,34 +83,28 @@ class Settings extends Model {
         if (isset($data['company']['address']['country'])) $settings['company_address_country'] = $data['company']['address']['country'];
         if (isset($data['company']['address']['zip'])) $settings['company_address_zip'] = $data['company']['address']['zip'];
       }
-
       if (isset($data['company']['location'])) $settings['company_location'] = $data['company']['location'] ? implode(',', $data['company']['location']) : '0,0';
       if (isset($data['company']['bank'])) $settings['company_bank'] = $data['company']['bank'];
       if (isset($data['company']['id'])) $settings['company_id'] = $data['company']['id'];
     }
-
     if (isset($data['meta'])) {
       if (isset($data['meta']['title'])) $settings['meta_title'] = $data['meta']['title'];
       if (isset($data['meta']['description'])) $settings['meta_description'] = $data['meta']['description'];
       if (isset($data['meta']['keywords'])) $settings['meta_keywords'] = $data['meta']['keywords'] ? implode(',', $data['meta']['keywords']) : '';
       if (isset($data['meta']['robots'])) $settings['meta_robots'] = $data['meta']['robots'];
     }
-
     if (isset($data['state'])) {
       if (isset($data['state']['debug'])) $settings['state_debug'] = $data['state']['debug'] ? 'true' : 'false';
       if (isset($data['state']['maintenance'])) $settings['state_maintenance'] = $data['state']['maintenance'] ? 'true' : 'false';
     }
-
     if (isset($data['messages'])) {
       if (isset($data['messages']['active'])) $settings['messages_active'] = $data['messages']['active'] ? 'true' : 'false';
       if (isset($data['messages']['recipients'])) $settings['messages_recipients'] = $data['messages']['recipients'] ? implode(',', $data['messages']['recipients']) : '';
     }
-
     if (isset($data['comments'])) {
       if (isset($data['comments']['active'])) $settings['comments_active'] = $data['comments']['active'] ? 'true' : 'false';
       if (isset($data['comments']['anonymous'])) $settings['comments_anonymous'] = $data['comments']['anonymous'] ? 'true' : 'false';
     }
-
     if (isset($data['members'])) {
       if (isset($data['members']['active'])) $settings['members_active'] = $data['members']['active'] ? 'true' : 'false';
     }

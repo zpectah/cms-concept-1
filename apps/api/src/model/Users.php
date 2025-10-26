@@ -2,84 +2,222 @@
 
 namespace model;
 
+use PDO;
+
 class Users extends Model {
 
+  static array $tableFields = ['type', 'name', 'email', 'first_name', 'last_name', 'access_rights', 'active', 'deleted'];
+
+  private function dbToJsonDetailMapper($data): array {
+    $item = [
+      ...$data,
+      'active' => $data['active'] === 1,
+      'deleted' => $data['deleted'] === 1,
+    ];
+
+    return $item;
+  }
+
+  private function jsonToDbDetailMapper($data): array {
+    $item = [
+      ...$data,
+      'active' => $data['active'] ? 1 : 0,
+      'deleted' => $data['deleted'] ? 1 : 0,
+    ];
+
+    return $item;
+  }
+
+
   public function getList(): array {
-    $users = [];
+    $conn = self::connection();
 
-    for ($i = 1; $i <= 25; $i++) {
-      $isEven = $i % 2;
-      $users[] = [
-        'id' => $i,
-        'name' => "user-name-$i",
-        'type' => 'default',
+    $deleted_status = 0;
 
-        'email' => 'email-' . $i . '@company.com',
-        // 'password' => 'Random string',
-        'firstName' => 'First name ' . $i,
-        'lastName' => 'Last name ' . $i,
+    $stmt = $conn -> prepare("SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `deleted` = :status");
+    $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
+    $stmt -> execute();
 
-        'active' => $isEven,
-        'deleted' => false,
-        'created' => $this -> getNow(),
-        'updated' => $this -> getNow(),
-      ];
+    $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+    $items = [];
+
+    foreach ($result as $item) {
+      $items[] = self::dbToJsonDetailMapper($item);
     }
 
-    return [
-      ...$users,
-    ];
+    return $items;
   }
 
   public function getDetail($id, $email): array {
-    $isEven = $id % 2;
+    $conn = self::connection();
 
-    return [
-      'id' => $id,
-      'name' => 'user-name-' . $id,
-      'type' => 'default',
+    if (!$id && !$email) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No ID or EMAIL provided'
+      ];
+    }
 
-      'email' => $email ?? 'email-' . $id . '@company.com',
-      // 'password' => 'Random string',
-      'firstName' => 'First name ' . $id,
-      'lastName' => 'Last name ' . $id,
+    if ($id) {
+      $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `id` = :id LIMIT 1";
+    } else if ($email) {
+      $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `email` = :email LIMIT 1";
+    }
 
-      'accessLevel' => 3,
+    $stmt = $conn -> prepare($sql);
 
-      'active' => true,
-      'deleted' => false,
-      'created' => $this -> getNow(),
-      'updated' => $this -> getNow(),
-    ];
+    if ($id) {
+      $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
+    } else if ($email) {
+      $stmt -> bindParam(':email', $email);
+    }
+
+    $stmt -> execute();
+
+    $detail = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+    return self::dbToJsonDetailMapper($detail);
   }
 
   public function create($data): array {
-    // TODO: create new item in table
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No data provided'
+      ];
+    }
+
+    $data = self::jsonToDbDetailMapper($data);
+
+    $params = self::getColumnsAndValuesForQuery([ ...self::$tableFields, 'password' ]);
+    $columns = $params['columns'];
+    $values = $params['values'];
+
+    $sql = "INSERT INTO `users` ($columns) VALUES ($values)";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> bindParam(':type', $data['type']);
+    $stmt -> bindParam(':name', $data['name']);
+    $stmt -> bindParam(':email', $data['email']);
+    $stmt -> bindParam(':password', $data['password']);
+    $stmt -> bindParam(':first_name', $data['first_name']);
+    $stmt -> bindParam(':last_name', $data['last_name']);
+    $stmt -> bindParam(':access_rights', $data['access_rights']);
+    $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
+    $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
+
+    $stmt -> execute();
 
     return [
-      'toCreate' => $data,
+      'id' => $conn -> lastInsertId(),
     ];
   }
 
   public function patch($data): array {
-    // TODO: patch item in table
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No data provided'
+      ];
+    }
+
+    if (!isset($data['id'])) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'Missing ID for update'
+      ];
+    }
+
+    if (isset($data['password'])) {
+      $fields = [ ...self::$tableFields, 'password' ];
+    } else {
+      $fields = self::$tableFields;
+    }
+
+    $data = self::jsonToDbDetailMapper($data);
+    $setParts = self::getQueryParts($data, $fields);
+
+    $sql = "UPDATE `users` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
+
+    $stmt = $conn -> prepare($sql);
+
+    if (isset($data['password'])) {
+      $stmt -> bindParam(':password', $data['password']);
+    }
+
+    $stmt -> bindParam(':type', $data['type']);
+    $stmt -> bindParam(':name', $data['name']);
+    $stmt -> bindParam(':email', $data['email']);
+    $stmt -> bindParam(':first_name', $data['first_name']);
+    $stmt -> bindParam(':last_name', $data['last_name']);
+    $stmt -> bindParam(':access_rights', $data['access_rights']);
+    $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
+    $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
+
+    $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
+
+    $stmt -> execute();
 
     return [
-      'toPatch' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 
   public function toggle($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `users` SET `active` = NOT `active` WHERE `id` IN ({$placeholders})";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> execute($data);
 
     return [
-      'toToggle' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 
   public function delete($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `users` SET `deleted` = 1 WHERE `id` IN ({$placeholders})";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> execute($data);
 
     return [
-      'toDelete' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 

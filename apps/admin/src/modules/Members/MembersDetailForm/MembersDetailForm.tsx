@@ -1,6 +1,6 @@
 import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { membersTypeDefault, newItemKey } from '@common';
+import { membersTypeDefault } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getConfig } from '../../../utils';
 import {
@@ -40,11 +40,7 @@ const MembersDetailForm = () => {
           fieldProps={{ defaultValue: membersTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
         <EmailField name={registeredFormFields.email} label={t('form:label.email')} />
-        <PasswordField
-          name={registeredFormFields.password}
-          label={t('form:label.password')}
-          isRequired={detailId === newItemKey}
-        />
+        <PasswordField name={registeredFormFields.password} label={t('form:label.password')} />
         <InputField name={registeredFormFields.first_name} label={t('form:label.firstName')} />
         <InputField name={registeredFormFields.last_name} label={t('form:label.lastName')} />
         <AddressField fieldPrefix={registeredFormFields.address} />

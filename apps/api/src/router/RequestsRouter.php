@@ -41,16 +41,18 @@ class RequestsRouter extends Router {
           case self::method_patch:
             switch ($url['a']) {
 
+              // TODO: ... not all fields will be modified
+
               case 'patch':
-                $response = $requests -> patch($data);
+                $response = $requests -> patch($data); // TODO: !!
                 break;
 
               case 'toggle':
-                $response = $requests -> toggle($data);
+                $response = $requests -> toggle($data); // TODO: !!
                 break;
 
               case 'delete':
-                $response = $requests -> delete($data);
+                $response = $requests -> delete($data);// TODO: !!
                 break;
 
             }

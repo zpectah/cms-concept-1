@@ -9,19 +9,23 @@ class Tags extends Model {
   static array $tableFields = ['type', 'color', 'name', 'active', 'deleted'];
 
   private function dbToJsonDetailMapper($data): array {
-    return [
+    $item = [
       ...$data,
       'active' => $data['active'] === 1,
       'deleted' => $data['deleted'] === 1,
     ];
+
+    return $item;
   }
 
   private function jsonToDbDetailMapper($data): array {
-    return [
+    $item = [
       ...$data,
       'active' => $data['active'] ? 1 : 0,
       'deleted' => $data['deleted'] ? 1 : 0,
     ];
+
+    return $item;
   }
 
 

@@ -2,93 +2,271 @@
 
 namespace model;
 
+use PDO;
+
 class Members extends Model {
 
-  public function getList(): array {
-    $members = [];
+  static array $tableFields = ['type', 'name', 'email', 'first_name', 'last_name',
+    'address_street', 'address_street_no', 'address_district', 'address_city', 'address_country', 'address_zip',
+    'flat_no', 'description', 'active', 'deleted'];
 
-    for ($i = 1; $i <= 25; $i++) {
-      $isEven = $i % 2;
-      $members[] = [
-        'id' => $i,
-        'name' => "member-name-$i",
-        'type' => 'default',
+  private function dbToJsonDetailMapper($data): array {
+    $item = [
+      ...$data,
+      'active' => $data['active'] === 1,
+      'deleted' => $data['deleted'] === 1,
+    ];
 
-        'email' => 'email-' . $i . '@company.com',
-        // 'password' => 'Random string',
-        'firstName' => 'First name ' . $i,
-        'lastName' => 'Last name ' . $i,
-
-        'active' => $isEven,
-        'deleted' => false,
-        'created' => $this -> getNow(),
-        'updated' => $this -> getNow(),
+    if (isset($data['address_street']) && isset($data['address_street_no'])) {
+      $item = [
+        ...$item,
+        'address' => [
+          'street' => $data['address_street'],
+          'street_no' => $data['address_street_no'],
+          'district' => $data['address_district'],
+          'city' => $data['address_city'],
+          'country' => $data['address_country'],
+          'zip' => $data['address_zip'],
+        ],
       ];
     }
 
-    return [
-      ...$members,
+    return $item;
+  }
+
+  private function jsonToDbDetailMapper($data): array {
+    $item = [
+      ...$data,
+      'address_street' => isset($data['address']['street']) ? $data['address']['street'] : '',
+      'address_street_no' => isset($data['address']['street_no']) ? $data['address']['street_no'] : '',
+      'address_district' => isset($data['address']['district']) ? $data['address']['district'] : '',
+      'address_city' => isset($data['address']['city']) ? $data['address']['city'] : '',
+      'address_country' => isset($data['address']['country']) ? $data['address']['country'] : '',
+      'address_zip' => isset($data['address']['zip']) ? $data['address']['zip'] : '',
+      'flat_no' => $data['flat_no'] ?? '',
+      'description' => $data['description'] ?? '',
+      'active' => $data['active'] ? 1 : 0,
+      'deleted' => $data['deleted'] ? 1 : 0,
     ];
+
+    unset($item['address']);
+
+    return $item;
+  }
+
+
+  public function getList(): array {
+    $conn = self::connection();
+
+    $deleted_status = 0;
+
+    $stmt = $conn -> prepare("SELECT id, type, name, email, first_name, last_name, active, deleted, created, updated FROM `members` WHERE `deleted` = :status");
+    $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
+    $stmt -> execute();
+
+    $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+    $items = [];
+
+    foreach ($result as $item) {
+      $items[] = self::dbToJsonDetailMapper($item);
+    }
+
+    return $items;
   }
 
   public function getDetail($id, $email): array {
-    $isEven = $id % 2;
+    $conn = self::connection();
 
-    return [
-      'id' => $id,
-      'name' => 'member-name-' . $id,
-      'type' => 'default',
+    if (!$id && !$email) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No ID or EMAIL provided'
+      ];
+    }
 
-      'email' => $email ?? 'email-' . $id . '@company.com',
-      // 'password' => 'Random string',
-      'firstName' => 'First name ' . $id,
-      'lastName' => 'Last name ' . $id,
+    if ($id) {
+      $sql = "SELECT id, type, name, email, first_name, last_name, address_street, address_street_no, address_district, address_city, address_country, address_zip, flat_no, description, active, deleted, created, updated FROM `members` WHERE `id` = :id LIMIT 1";
+    } else if ($email) {
+      $sql = "SELECT id, type, name, email, first_name, last_name, address_street, address_street_no, address_district, address_city, address_country, address_zip, flat_no, description, active, deleted, created, updated FROM `members` WHERE `email` = :email LIMIT 1";
+    }
 
-      'address' => [
-        'street' => 'Street',
-        'streetNo' => '125/15B',
-        'district' => 'District',
-        'city' => 'My City',
-        'country' => 'My Country',
-        'zip' => '555248',
-      ],
+    $stmt = $conn -> prepare($sql);
 
-      'flatNo' => '17d',
+    if ($id) {
+      $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
+    } else if ($email) {
+      $stmt -> bindParam(':email', $email);
+    }
 
-      'active' => true,
-      'deleted' => false,
-      'created' => $this -> getNow(),
-      'updated' => $this -> getNow(),
-    ];
+    $stmt -> execute();
+
+    $detail = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+    return self::dbToJsonDetailMapper($detail);
   }
 
   public function create($data): array {
-    // TODO: create new item in table
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No data provided'
+      ];
+    }
+
+    $data = self::jsonToDbDetailMapper($data);
+
+    if (isset($data['password'])) {
+      $fields = [ ...self::$tableFields, 'password' ];
+    } else {
+      $fields = self::$tableFields;
+    }
+
+    $params = self::getColumnsAndValuesForQuery($fields);
+    $columns = $params['columns'];
+    $values = $params['values'];
+
+    $sql = "INSERT INTO `members` ($columns) VALUES ($values)";
+
+    $stmt = $conn -> prepare($sql);
+
+    if (isset($data['password'])) {
+      $stmt -> bindParam(':password', $data['password']);
+    }
+
+    $stmt -> bindParam(':type', $data['type']);
+    $stmt -> bindParam(':name', $data['name']);
+    $stmt -> bindParam(':email', $data['email']);
+    $stmt -> bindParam(':first_name', $data['first_name']);
+    $stmt -> bindParam(':last_name', $data['last_name']);
+    $stmt -> bindParam(':address_street', $data['address_street']);
+    $stmt -> bindParam(':address_street_no', $data['address_street_no']);
+    $stmt -> bindParam(':address_district', $data['address_district']);
+    $stmt -> bindParam(':address_city', $data['address_city']);
+    $stmt -> bindParam(':address_country', $data['address_country']);
+    $stmt -> bindParam(':address_zip', $data['address_zip']);
+    $stmt -> bindParam(':flat_no', $data['flat_no']);
+    $stmt -> bindParam(':description', $data['description']);
+    $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
+    $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
+
+    $stmt -> execute();
 
     return [
-      'toCreate' => $data,
+      'id' => $conn -> lastInsertId(),
     ];
   }
 
   public function patch($data): array {
-    // TODO: patch item in table
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No data provided'
+      ];
+    }
+
+    if (!isset($data['id'])) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'Missing ID for update'
+      ];
+    }
+
+    if (isset($data['password'])) {
+      $fields = [ ...self::$tableFields, 'password' ];
+    } else {
+      $fields = self::$tableFields;
+    }
+
+    $data = self::jsonToDbDetailMapper($data);
+    $setParts = self::getQueryParts($data, $fields);
+
+    $sql = "UPDATE `members` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
+
+    $stmt = $conn -> prepare($sql);
+
+    if (isset($data['password'])) {
+      $stmt -> bindParam(':password', $data['password']);
+    }
+
+    $stmt -> bindParam(':type', $data['type']);
+    $stmt -> bindParam(':name', $data['name']);
+    $stmt -> bindParam(':email', $data['email']);
+    $stmt -> bindParam(':first_name', $data['first_name']);
+    $stmt -> bindParam(':last_name', $data['last_name']);
+    $stmt -> bindParam(':address_street', $data['address_street']);
+    $stmt -> bindParam(':address_street_no', $data['address_street_no']);
+    $stmt -> bindParam(':address_district', $data['address_district']);
+    $stmt -> bindParam(':address_city', $data['address_city']);
+    $stmt -> bindParam(':address_country', $data['address_country']);
+    $stmt -> bindParam(':address_zip', $data['address_zip']);
+    $stmt -> bindParam(':flat_no', $data['flat_no']);
+    $stmt -> bindParam(':description', $data['description']);
+    $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
+    $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
+
+    $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
+
+    $stmt -> execute();
 
     return [
-      'toPatch' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 
   public function toggle($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `members` SET `active` = NOT `active` WHERE `id` IN ({$placeholders})";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> execute($data);
 
     return [
-      'toToggle' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 
   public function delete($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `members` SET `deleted` = 1 WHERE `id` IN ({$placeholders})";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> execute($data);
 
     return [
-      'toDelete' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 

@@ -122,7 +122,7 @@ class Articles extends Model {
     if (!$detail) {
       return [
         'error' => true,
-        'message' => 'Article not found'
+        'message' => 'Detail not found'
       ];
     }
 

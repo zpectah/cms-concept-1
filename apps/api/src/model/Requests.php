@@ -2,67 +2,199 @@
 
 namespace model;
 
+use PDO;
+
 class Requests extends Model {
 
-  public function getList(): array {
-    $requests = [];
+  static array $tableFields = ['type', 'token', 'applicant', 'status'];
 
-    for ($i = 1; $i <= 10; $i++) {
-      $requests[] = [
-        'id' => $i,
-        'token' => "sd6f5g4s6d5f4g6s5d4fg-$i",
-        'type' => 'password-recovery',
-        'active' => true,
-        'created' => $this -> getNow(),
-        'updated' => $this -> getNow(),
-      ];
+  private function dbToJsonDetailMapper($data): array {
+    $item = [
+      ...$data,
+    ];
+
+    return $item;
+  }
+
+  private function jsonToDbDetailMapper($data): array {
+    $item = [
+      ...$data,
+    ];
+
+    return $item;
+  }
+
+
+  public function getList(): array {
+    $conn = self::connection();
+
+    $status = 1; // TODO
+
+    $stmt = $conn -> prepare("SELECT * FROM `requests` WHERE `status` >= :status");
+    $stmt -> bindParam(':status', $status, PDO::PARAM_INT);
+    $stmt -> execute();
+
+    $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+    $items = [];
+
+    foreach ($result as $item) {
+      $items[] = self::dbToJsonDetailMapper($item);
     }
 
-    return [
-      ...$requests,
-    ];
+    return $items;
   }
 
   public function getDetail($id, $token): array {
-    $isEven = $id % 2;
+    $conn = self::connection();
 
-    return [
-      'id' => $id,
-      'token' => $token ?? "sd6f5g4s6d5f4g6s5d4fg-$id",
-      'type' => 'password-recovery',
-      'active' => true,
-      'created' => $this -> getNow(),
-      'updated' => $this -> getNow(),
-    ];
+    if (!$id && !$token) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No ID or TOKEN provided'
+      ];
+    }
+
+    if ($id) {
+      $sql = "SELECT * FROM `requests` WHERE `id` = :id LIMIT 1";
+    } else if ($token) {
+      $sql = "SELECT * FROM `requests` WHERE `token` = :token LIMIT 1";
+    }
+
+    $stmt = $conn -> prepare($sql);
+
+    if ($id) {
+      $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
+    } else if ($token) {
+      $stmt -> bindParam(':token', $token);
+    }
+
+    $stmt -> execute();
+
+    $detail = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+    return self::dbToJsonDetailMapper($detail);
   }
 
   public function create($data): array {
-    // TODO: create new item in table
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No data provided'
+      ];
+    }
+
+    $data = self::jsonToDbDetailMapper($data);
+
+    $params = self::getColumnsAndValuesForQuery(self::$tableFields);
+    $columns = $params['columns'];
+    $values = $params['values'];
+
+    $sql = "INSERT INTO `requests` ($columns) VALUES ($values)";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> bindParam(':type', $data['type']);
+    $stmt -> bindParam(':token', $data['token']);
+    $stmt -> bindParam(':applicant', $data['applicant']);
+    $stmt -> bindParam(':status', $data['status'], PDO::PARAM_INT);
+
+    $stmt -> execute();
 
     return [
-      'toCreate' => $data,
+      'id' => $conn -> lastInsertId(),
     ];
   }
 
   public function patch($data): array {
-    // TODO: patch item in table
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No data provided'
+      ];
+    }
+
+    if (!isset($data['id'])) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'Missing ID for update'
+      ];
+    }
+
+    $data = self::jsonToDbDetailMapper($data);
+    $setParts = self::getQueryParts($data, self::$tableFields);
+
+    $sql = "UPDATE `requests` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> bindParam(':type', $data['type']);
+    $stmt -> bindParam(':token', $data['token']);
+    $stmt -> bindParam(':applicant', $data['applicant']);
+    $stmt -> bindParam(':status', $data['status'], PDO::PARAM_INT);
+
+    $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
+
+    $stmt -> execute();
 
     return [
-      'toPatch' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 
   public function toggle($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `tags` SET `status` = 2 WHERE `id` IN ({$placeholders})";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> execute($data);
 
     return [
-      'toToggle' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 
   public function delete($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `tags` SET `status` = 0 WHERE `id` IN ({$placeholders})";
+
+    $stmt = $conn -> prepare($sql);
+
+    $stmt -> execute($data);
 
     return [
-      'toDelete' => $data,
+      'rows' => $stmt -> rowCount(),
     ];
   }
 

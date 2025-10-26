@@ -17,7 +17,7 @@ class CommentsRouter extends Router {
               if (self::isIdValidParameter($url)) {
                 $id = $url['b'];
 
-                $response = $comments -> getDetail($id, null, null);
+                $response = $comments -> getDetail($id);
               } else {
                 $contentType = $url['a'];
                 $contentId = $url['b'];

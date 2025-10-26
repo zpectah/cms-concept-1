@@ -2,7 +2,28 @@
 
 namespace model;
 
+use PDO;
+
 class Attachments extends Model {
+
+  static array $tableFields = [];
+
+  private function dbToJsonDetailMapper($data): array {
+    $item = [
+      ...$data,
+    ];
+
+    return $item;
+  }
+
+  private function jsonToDbDetailMapper($data): array {
+    $item = [
+      ...$data,
+    ];
+
+    return $item;
+  }
+
 
   public function getList(): array {
     $attachments = [];
