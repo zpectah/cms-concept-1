@@ -7,5 +7,5 @@ export const AddressSchema = z.object({
   district: formFieldsSchemas.string.optional(),
   city: formFieldsSchemas.string.optional(),
   country: formFieldsSchemas.string.optional(),
-  zip: z.number().nullable().optional(),
+  zip: formFieldsSchemas.string.optional(),
 });

@@ -13,7 +13,6 @@ export interface ArticlesItem extends ItemBase {
   // Event
   event_address?: Address;
   event_location?: GpsLocation;
-
   event_start?: string;
   event_end?: string;
 }
