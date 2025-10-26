@@ -2,9 +2,9 @@
 
 namespace router;
 
-class Users extends Router {
+class PagesRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
-    $users = new \model\Users;
+    $pages = new \model\Pages;
     $response = [];
 
     switch ($env) {
@@ -13,18 +13,12 @@ class Users extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isTwoParameterValid($url)) {
-              if (self::isIdValidParameter($url)) {
-                $id = $url['b'];
+            if (self::isIdValidParameter($url)) {
+              $id = $url['b'];
 
-                $response = $users -> getDetail($id, null);
-              } else if (self::isEmailValidParameter($url)) {
-                $email = $url['b'];
-
-                $response = $users -> getDetail(null, $email);
-              }
+              $response = $pages -> getDetail($id);
             } else {
-              $response = $users -> getList();
+              $response = $pages -> getList();
             }
             break;
 
@@ -32,7 +26,7 @@ class Users extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $users -> create($data);
+                $response = $pages -> create($data);
                 break;
 
             }
@@ -42,15 +36,15 @@ class Users extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $users -> patch($data);
+                $response = $pages -> patch($data);
                 break;
 
               case 'toggle':
-                $response = $users -> toggle($data);
+                $response = $pages -> toggle($data);
                 break;
 
               case 'delete':
-                $response = $users -> delete($data);
+                $response = $pages -> delete($data);
                 break;
 
             }

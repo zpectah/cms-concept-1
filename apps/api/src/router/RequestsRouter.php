@@ -2,9 +2,9 @@
 
 namespace router;
 
-class Articles extends Router {
+class RequestsRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
-    $articles = new \model\Articles;
+    $requests = new \model\Requests;
     $response = [];
 
     switch ($env) {
@@ -13,12 +13,18 @@ class Articles extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
+            if (self::isTwoParameterValid($url)) {
+              if (self::isIdValidParameter($url)) {
+                $id = $url['b'];
 
-              $response = $articles -> getDetail($id);
+                $response = $requests -> getDetail($id, null);
+              } else if (self::isTokenValidParameter($url)) {
+                $token = $url['b'];
+
+                $response = $requests -> getDetail(null, $token);
+              }
             } else {
-              $response = $articles -> getList();
+              $response = $requests -> getList();
             }
             break;
 
@@ -26,7 +32,7 @@ class Articles extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $articles -> create($data);
+                $response = $requests -> create($data);
                 break;
 
             }
@@ -36,15 +42,15 @@ class Articles extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $articles -> patch($data);
+                $response = $requests -> patch($data);
                 break;
 
               case 'toggle':
-                $response = $articles -> toggle($data);
+                $response = $requests -> toggle($data);
                 break;
 
               case 'delete':
-                $response = $articles -> delete($data);
+                $response = $requests -> delete($data);
                 break;
 
             }

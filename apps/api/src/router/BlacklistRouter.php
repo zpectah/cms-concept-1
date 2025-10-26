@@ -2,9 +2,9 @@
 
 namespace router;
 
-class Pages extends Router {
+class BlacklistRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
-    $pages = new \model\Pages;
+    $blacklist = new \model\Blacklist;
     $response = [];
 
     switch ($env) {
@@ -16,9 +16,9 @@ class Pages extends Router {
             if (self::isIdValidParameter($url)) {
               $id = $url['b'];
 
-              $response = $pages -> getDetail($id);
+              $response = $blacklist -> getDetail($id);
             } else {
-              $response = $pages -> getList();
+              $response = $blacklist -> getList();
             }
             break;
 
@@ -26,7 +26,7 @@ class Pages extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $pages -> create($data);
+                $response = $blacklist -> create($data);
                 break;
 
             }
@@ -36,15 +36,15 @@ class Pages extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $pages -> patch($data);
+                $response = $blacklist -> patch($data);
                 break;
 
               case 'toggle':
-                $response = $pages -> toggle($data);
+                $response = $blacklist -> toggle($data);
                 break;
 
               case 'delete':
-                $response = $pages -> delete($data);
+                $response = $blacklist -> delete($data);
                 break;
 
             }

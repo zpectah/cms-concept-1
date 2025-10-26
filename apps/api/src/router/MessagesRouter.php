@@ -2,9 +2,9 @@
 
 namespace router;
 
-class Comments extends Router {
+class MessagesRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
-    $comments = new \model\Comments;
+    $messages = new \model\Messages;
     $response = [];
 
     switch ($env) {
@@ -13,17 +13,12 @@ class Comments extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isTwoParameterValid($url)) {
-              if (self::isIdValidParameter($url)) {
-                $id = $url['b'];
+            if (self::isIdValidParameter($url)) {
+              $id = $url['b'];
 
-                $response = $comments -> getDetail($id, null, null);
-              } else {
-                $contentType = $url['a'];
-                $contentId = $url['b'];
-
-                $response = $comments -> getList($contentType, $contentId);
-              }
+              $response = $messages -> getDetail($id);
+            } else {
+              $response = $messages -> getList();
             }
             break;
 
@@ -31,7 +26,7 @@ class Comments extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $comments -> create($data);
+                $response = $messages -> create($data);
                 break;
 
             }
@@ -41,15 +36,19 @@ class Comments extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $comments -> patch($data);
+                $response = $messages -> patch($data);
                 break;
 
               case 'toggle':
-                $response = $comments -> toggle($data);
+                $response = $messages -> toggle($data);
                 break;
 
               case 'delete':
-                $response = $comments -> delete($data);
+                $response = $messages -> delete($data);
+                break;
+
+              case 'read':
+                $response = $messages -> read($data);
                 break;
 
             }

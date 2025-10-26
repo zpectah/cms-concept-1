@@ -2,9 +2,9 @@
 
 namespace router;
 
-class Categories extends Router {
+class AttachmentsRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
-    $categories = new \model\Categories;
+    $attachments = new \model\Attachments;
     $response = [];
 
     switch ($env) {
@@ -16,17 +16,21 @@ class Categories extends Router {
             if (self::isIdValidParameter($url)) {
               $id = $url['b'];
 
-              $response = $categories -> getDetail($id);
+              $response = $attachments -> getDetail($id);
             } else {
-              $response = $categories -> getList();
+              $response = $attachments -> getList();
             }
             break;
 
           case self::method_post:
             switch ($url['a']) {
 
+              case 'file-create':
+                $response = $attachments -> fileCreate($data);
+                break;
+
               case 'create':
-                $response = $categories -> create($data);
+                $response = $attachments -> create($data);
                 break;
 
             }
@@ -36,15 +40,15 @@ class Categories extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $categories -> patch($data);
+                $response = $attachments -> patch($data);
                 break;
 
               case 'toggle':
-                $response = $categories -> toggle($data);
+                $response = $attachments -> toggle($data);
                 break;
 
               case 'delete':
-                $response = $categories -> delete($data);
+                $response = $attachments -> delete($data);
                 break;
 
             }

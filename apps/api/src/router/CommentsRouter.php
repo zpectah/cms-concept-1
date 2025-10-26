@@ -2,9 +2,9 @@
 
 namespace router;
 
-class Members extends Router {
+class CommentsRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
-    $members = new \model\Members;
+    $comments = new \model\Comments;
     $response = [];
 
     switch ($env) {
@@ -17,14 +17,13 @@ class Members extends Router {
               if (self::isIdValidParameter($url)) {
                 $id = $url['b'];
 
-                $response = $members -> getDetail($id, null);
-              } else if (self::isEmailValidParameter($url)) {
-                $email = $url['b'];
+                $response = $comments -> getDetail($id, null, null);
+              } else {
+                $contentType = $url['a'];
+                $contentId = $url['b'];
 
-                $response = $members -> getDetail(null, $email);
+                $response = $comments -> getList($contentType, $contentId);
               }
-            } else {
-              $response = $members -> getList();
             }
             break;
 
@@ -32,7 +31,7 @@ class Members extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $members -> create($data);
+                $response = $comments -> create($data);
                 break;
 
             }
@@ -42,15 +41,15 @@ class Members extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $members -> patch($data);
+                $response = $comments -> patch($data);
                 break;
 
               case 'toggle':
-                $response = $members -> toggle($data);
+                $response = $comments -> toggle($data);
                 break;
 
               case 'delete':
-                $response = $members -> delete($data);
+                $response = $comments -> delete($data);
                 break;
 
             }

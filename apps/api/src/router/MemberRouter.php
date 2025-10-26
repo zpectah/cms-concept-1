@@ -2,13 +2,18 @@
 
 namespace router;
 
-class User extends Router {
+class MemberRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
     $response = [];
 
     switch ($env) {
 
       case self::env_private:
+        http_response_code(400);
+        $response = [];
+        break;
+
+      case self::env_public:
         switch ($method) {
 
           case self::method_get:
@@ -33,11 +38,6 @@ class User extends Router {
             break;
 
         }
-        break;
-
-      case self::env_public:
-        http_response_code(400);
-        $response = [];
         break;
 
       default:

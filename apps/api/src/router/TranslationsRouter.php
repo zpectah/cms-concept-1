@@ -2,9 +2,9 @@
 
 namespace router;
 
-class Messages extends Router {
+class TranslationsRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
-    $messages = new \model\Messages;
+    $translations = new \model\Translations;
     $response = [];
 
     switch ($env) {
@@ -16,9 +16,9 @@ class Messages extends Router {
             if (self::isIdValidParameter($url)) {
               $id = $url['b'];
 
-              $response = $messages -> getDetail($id);
+              $response = $translations -> getDetail($id);
             } else {
-              $response = $messages -> getList();
+              $response = $translations -> getList();
             }
             break;
 
@@ -26,7 +26,7 @@ class Messages extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $messages -> create($data);
+                $response = $translations -> create($data);
                 break;
 
             }
@@ -36,19 +36,15 @@ class Messages extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $messages -> patch($data);
+                $response = $translations -> patch($data);
                 break;
 
               case 'toggle':
-                $response = $messages -> toggle($data);
+                $response = $translations -> toggle($data);
                 break;
 
               case 'delete':
-                $response = $messages -> delete($data);
-                break;
-
-              case 'read':
-                $response = $messages -> read($data);
+                $response = $translations -> delete($data);
                 break;
 
             }

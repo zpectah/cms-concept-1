@@ -2,7 +2,7 @@
 
 namespace router;
 
-class Tags extends Router {
+class TagsRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
     $tags = new \model\Tags;
     $response = [];

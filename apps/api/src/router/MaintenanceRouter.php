@@ -4,7 +4,7 @@ namespace router;
 
 use service\MaintenanceService;
 
-class Maintenance extends Router {
+class MaintenanceRouter extends Router {
 
   public function resolve($env, $method, $url, $data): array {
     $maintenanceService = new MaintenanceService;

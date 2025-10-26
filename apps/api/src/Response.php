@@ -42,97 +42,97 @@ class Response {
     switch ($model) {
 
       case 'settings':
-        $settings = new router\Settings;
+        $settings = new router\SettingsRouter;
 
         $response = $settings -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'articles':
-        $articles = new router\Articles;
+        $articles = new router\ArticlesRouter;
 
         $response = $articles -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'tags':
-        $tags = new router\Tags;
+        $tags = new router\TagsRouter;
 
         $response = $tags -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'categories':
-        $categories = new router\Categories;
+        $categories = new router\CategoriesRouter;
 
         $response = $categories -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'attachments':
-        $attachments = new router\Attachments;
+        $attachments = new router\AttachmentsRouter;
 
         $response = $attachments -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'pages':
-        $pages = new router\Pages;
+        $pages = new router\PagesRouter;
 
         $response = $pages -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'users':
-        $users = new router\Users;
+        $users = new router\UsersRouter;
 
         $response = $users -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'members':
-        $members = new router\Members;
+        $members = new router\MembersRouter;
 
         $response = $members -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'menu':
-        $menu = new router\Menu;
+        $menu = new router\MenuRouter;
 
         $response = $menu -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'menuitems':
-        $menuItems = new router\MenuItems;
+        $menuItems = new router\MenuItemsRouter;
 
         $response = $menuItems -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'messages':
-        $messages = new router\Messages;
+        $messages = new router\MessagesRouter;
 
         $response = $messages -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'translations':
-        $translations = new router\Translations;
+        $translations = new router\TranslationsRouter;
 
         $response = $translations -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'comments':
-        $comments = new router\Comments;
+        $comments = new router\CommentsRouter;
 
         $response = $comments -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'blacklist':
-        $blacklist = new router\Blacklist;
+        $blacklist = new router\BlacklistRouter;
 
         $response = $blacklist -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'requests':
-        $requests = new router\Requests;
+        $requests = new router\RequestsRouter;
 
         $response = $requests -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
       case 'maintenance':
-        $maintenance = new router\Maintenance;
+        $maintenance = new router\MaintenanceRouter;
 
         $response = $maintenance -> resolve($environment, $method, $parsed_url, $jsonData);
         break;

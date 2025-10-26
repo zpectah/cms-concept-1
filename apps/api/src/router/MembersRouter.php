@@ -2,9 +2,9 @@
 
 namespace router;
 
-class Menu extends Router {
+class MembersRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
-    $menu = new \model\Menu;
+    $members = new \model\Members;
     $response = [];
 
     switch ($env) {
@@ -13,12 +13,18 @@ class Menu extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
+            if (self::isTwoParameterValid($url)) {
+              if (self::isIdValidParameter($url)) {
+                $id = $url['b'];
 
-              $response = $menu -> getDetail($id);
+                $response = $members -> getDetail($id, null);
+              } else if (self::isEmailValidParameter($url)) {
+                $email = $url['b'];
+
+                $response = $members -> getDetail(null, $email);
+              }
             } else {
-              $response = $menu -> getList();
+              $response = $members -> getList();
             }
             break;
 
@@ -26,7 +32,7 @@ class Menu extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $menu -> create($data);
+                $response = $members -> create($data);
                 break;
 
             }
@@ -36,15 +42,15 @@ class Menu extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $menu -> patch($data);
+                $response = $members -> patch($data);
                 break;
 
               case 'toggle':
-                $response = $menu -> toggle($data);
+                $response = $members -> toggle($data);
                 break;
 
               case 'delete':
-                $response = $menu -> delete($data);
+                $response = $members -> delete($data);
                 break;
 
             }

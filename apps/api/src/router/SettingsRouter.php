@@ -2,7 +2,7 @@
 
 namespace router;
 
-class Settings extends Router {
+class SettingsRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
     $settings = new \model\Settings;
     $response = [];
