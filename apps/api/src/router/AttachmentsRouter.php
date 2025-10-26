@@ -16,7 +16,11 @@ class AttachmentsRouter extends Router {
             if (self::isIdValidParameter($url)) {
               $id = $url['b'];
 
-              $response = $attachments -> getDetail($id);
+              $response = $attachments -> getDetail($id, null);
+            } else if (self::isNameValidParameter($url)) {
+              $name = $url['b'];
+
+              $response = $attachments -> getDetail(null, $name);
             } else {
               $response = $attachments -> getList();
             }

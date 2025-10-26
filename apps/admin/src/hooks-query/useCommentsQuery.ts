@@ -25,22 +25,22 @@ export const useCommentsQuery = ({ id, contentType, contentId }: useCommentsQuer
     enabled: !!id && id !== newItemKey,
   });
 
-  const commentsCreateMutation = useMutation<unknown, unknown, CommentsDetail>({
+  const commentsCreateMutation = useMutation<{ id: number }, unknown, CommentsDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
     mutationFn: (data) => axios.post(`${API_URL.comments}/create`, data).then((response) => response.data),
   });
 
-  const commentsPatchMutation = useMutation<unknown, unknown, CommentsDetail>({
+  const commentsPatchMutation = useMutation<{ rows: number }, unknown, CommentsDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
     mutationFn: (data) => axios.patch(`${API_URL.comments}/patch`, data).then((response) => response.data),
   });
 
-  const commentsToggleMutation = useMutation<unknown, unknown, number[]>({
+  const commentsToggleMutation = useMutation<{ rows: number }, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
     mutationFn: (data) => axios.patch(`${API_URL.comments}/toggle`, data).then((response) => response.data),
   });
 
-  const commentsDeleteMutation = useMutation<unknown, unknown, number[]>({
+  const commentsDeleteMutation = useMutation<{ rows: number }, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
     mutationFn: (data) => axios.patch(`${API_URL.comments}/delete`, data).then((response) => response.data),
   });

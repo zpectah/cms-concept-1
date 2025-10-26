@@ -17,22 +17,22 @@ export const usePagesQuery = ({ id }: { id?: string }) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const pagesCreateMutation = useMutation<unknown, unknown, PagesDetail>({
+  const pagesCreateMutation = useMutation<{ id: number; locales: string[] }, unknown, PagesDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
     mutationFn: (data) => axios.post(`${API_URL.pages}/create`, data).then((response) => response.data),
   });
 
-  const pagesPatchMutation = useMutation<unknown, unknown, PagesDetail>({
+  const pagesPatchMutation = useMutation<{ rows: number; locales: string[] }, unknown, PagesDetail>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
     mutationFn: (data) => axios.patch(`${API_URL.pages}/patch`, data).then((response) => response.data),
   });
 
-  const pagesToggleMutation = useMutation<unknown, unknown, number[]>({
+  const pagesToggleMutation = useMutation<{ rows: number }, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
     mutationFn: (data) => axios.patch(`${API_URL.pages}/toggle`, data).then((response) => response.data),
   });
 
-  const pagesDeleteMutation = useMutation<unknown, unknown, number[]>({
+  const pagesDeleteMutation = useMutation<{ rows: number }, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
     mutationFn: (data) => axios.patch(`${API_URL.pages}/delete`, data).then((response) => response.data),
   });

@@ -21,6 +21,7 @@
 |:--------:|:---------------------------|:----------------------------------:|:-------------------:|
 |   GET    | `/attachments`             |                 ``                 |    `Attachments`    |
 |   GET    | `/attachments/id/$id`      |                 ``                 | `AttachmentsDetail` |
+|   GET    | `/attachments/name/$name`  |                 ``                 | `AttachmentsDetail` |
 |   POST   | `/attachments/file-create` |    `FileUploaderTransportQueue`    |        `{}`         |
 |   POST   | `/attachments/create`      | `FileUploaderTransportQueueItem[]` |        `{}`         |
 |  PATCH   | `/attachments/patch`       |        `AttachmentsDetail`         |        `{}`         |
@@ -28,6 +29,7 @@
 |  PATCH   | `/attachments/delete`      |             `number[]`             |        `{}`         |
 
 * $id = Item ID
+* $name = Item name
 
 ### Categories
 

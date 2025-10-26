@@ -17,22 +17,22 @@ export const useBlacklistQuery = ({ id }: { id?: string }) => {
     enabled: !!id && id !== newItemKey,
   });
 
-  const blacklistCreateMutation = useMutation<unknown, unknown, BlacklistItem>({
+  const blacklistCreateMutation = useMutation<{ id: number }, unknown, BlacklistItem>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-create`],
     mutationFn: (data) => axios.post(`${API_URL.blacklist}/create`, data).then((response) => response.data),
   });
 
-  const blacklistPatchMutation = useMutation<unknown, unknown, BlacklistItem>({
+  const blacklistPatchMutation = useMutation<{ rows: number }, unknown, BlacklistItem>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-patch`],
     mutationFn: (data) => axios.patch(`${API_URL.blacklist}/patch`, data).then((response) => response.data),
   });
 
-  const blacklistToggleMutation = useMutation<unknown, unknown, number[]>({
+  const blacklistToggleMutation = useMutation<{ rows: number }, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-toggle`],
     mutationFn: (data) => axios.patch(`${API_URL.blacklist}/toggle`, data).then((response) => response.data),
   });
 
-  const blacklistDeleteMutation = useMutation<unknown, unknown, number[]>({
+  const blacklistDeleteMutation = useMutation<{ rows: number }, unknown, number[]>({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-delete`],
     mutationFn: (data) => axios.patch(`${API_URL.blacklist}/delete`, data).then((response) => response.data),
   });

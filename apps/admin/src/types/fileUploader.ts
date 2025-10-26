@@ -1,7 +1,4 @@
 import { AttachmentsType } from '@common';
-import { fileUploaderStateKeys } from '../enums';
-
-export type FileUploaderState = keyof typeof fileUploaderStateKeys;
 
 export interface FileUploaderQueueItem {
   type: AttachmentsType;
@@ -9,7 +6,7 @@ export interface FileUploaderQueueItem {
   mime: string;
   size: number;
   name: string;
-  filename: string;
+  filename: string; // TODO: delete
   extension: string;
   uid: string;
 }

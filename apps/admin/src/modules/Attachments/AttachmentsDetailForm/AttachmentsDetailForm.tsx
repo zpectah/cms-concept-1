@@ -16,8 +16,6 @@ const AttachmentsDetailForm = () => {
   const { detailId, form, onSubmit } = useAttachmentsDetailForm();
   const { getElementByType } = useAttachmentTypeElement();
 
-  const sourcePrefix = 'http://localhost:8080/'; // TODO
-
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
   const name = useWatch({ name: registeredFormFields.name, control: form.control });
@@ -25,6 +23,8 @@ const AttachmentsDetailForm = () => {
   const fileName = useWatch({ name: registeredFormFields.file_name, control: form.control });
   const fileSize = useWatch({ name: registeredFormFields.file_size, control: form.control });
   const fileType = useWatch({ name: registeredFormFields.file_type, control: form.control });
+
+  const sourcePrefix = `http://localhost:8080/${type}/`; // TODO
 
   return (
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>

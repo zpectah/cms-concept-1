@@ -30,7 +30,7 @@ const AttachmentsViewItem = <T extends ItemBase>({
 
   const attachment = item as unknown as AttachmentsItem;
 
-  const sourcePrefix = 'http://localhost:8080/'; // TODO
+  const sourcePrefix = `http://localhost:8080/${attachment.type}/`; // TODO
 
   const renderContent = () =>
     getElementByType(attachment.type, {

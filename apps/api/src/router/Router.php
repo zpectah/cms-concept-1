@@ -20,6 +20,10 @@ class Router {
     return $url['a'] === 'id' && $url['b'] && is_numeric($url['b']);
   }
 
+  protected function isNameValidParameter($url): bool {
+    return $url['a'] === 'name' && $url['b'];
+  }
+
   protected function isEmailValidParameter($url): bool {
     return $url['a'] === 'email' && $url['b'] && filter_var($url['b'], FILTER_VALIDATE_EMAIL);
   }
