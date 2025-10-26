@@ -139,6 +139,13 @@ const GpsPicker = ({
     return () => mainMapRef?.current?.remove();
   }, [dialogOpen]);
 
+  useEffect(() => {
+    if (JSON.stringify(value) !== JSON.stringify(LOCATION_CENTER_INITIAL)) {
+      setTemporaryCenter(value);
+      setSelectedCenter(value);
+    }
+  }, [value]);
+
   const cleanMainMapHandler = () => {
     // Only way to reload (clean) map
     if (mainMapRef.current) {

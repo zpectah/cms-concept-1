@@ -24,6 +24,7 @@ class Messages extends Model {
     ];
   }
 
+
   public function getList(): array {
     $conn = self::connection();
 

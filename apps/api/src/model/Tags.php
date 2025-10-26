@@ -24,6 +24,7 @@ class Tags extends Model {
     ];
   }
 
+
   public function getList(): array {
     $conn = self::connection();
 

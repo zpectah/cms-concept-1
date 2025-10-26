@@ -8,7 +8,7 @@ import { useAppStore } from '../../../store';
 import { useSelectOptions } from '../../../helpers';
 import { ISettingsClientPanelForm } from './types';
 import { SettingsClientPanelFormSchema } from './schema';
-import { getDataToFormMapper } from './helpers';
+import { getDataToFormMapper, getSettingsClientFormMapper } from './helpers';
 
 export const useClientPanelForm = () => {
   const { t } = useTranslation(['common']);
@@ -26,14 +26,10 @@ export const useClientPanelForm = () => {
   const submitHandler: SubmitHandler<ISettingsClientPanelForm> = (data, event) => {
     if (!data) return;
 
-    const master = Object.assign({
-      ...data,
-    });
+    const master = getSettingsClientFormMapper(data);
 
     onPatch(master, {
       onSuccess: (res) => {
-        // TODO: results
-        console.log('res', res);
         addToast(t('message.success.dataSaved'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
       },
       onError: (err) => {

@@ -5,9 +5,11 @@ namespace router;
 class ArticlesRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
     $articles = new \model\Articles;
-    $response = [];
 
-    $locales = ['en', 'cs']; // TODO
+    $settings = new \model\Settings;
+    $localesActive = $settings -> getTable()['locales']['active'];
+
+    $response = [];
 
     switch ($env) {
 
@@ -18,7 +20,7 @@ class ArticlesRouter extends Router {
             if (self::isIdValidParameter($url)) {
               $id = $url['b'];
 
-              $response = $articles -> getDetail($id, $locales);
+              $response = $articles -> getDetail($id, $localesActive);
             } else {
               $response = $articles -> getList();
             }
@@ -28,7 +30,7 @@ class ArticlesRouter extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $articles -> create($data, $locales);
+                $response = $articles -> create($data, $localesActive);
                 break;
 
             }
@@ -38,7 +40,7 @@ class ArticlesRouter extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $articles -> patch($data, $locales);
+                $response = $articles -> patch($data, $localesActive);
                 break;
 
               case 'toggle':

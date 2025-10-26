@@ -7,7 +7,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { ISettingsGlobalPanelForm } from './types';
 import { SettingsGlobalPanelFormSchema } from './schema';
-import { getDataToFormMapper } from './helpers';
+import { getDataToFormMapper, getSettingsGlobalFormMapper } from './helpers';
 
 export const useGlobalPanelForm = () => {
   const { t } = useTranslation(['common']);
@@ -24,14 +24,10 @@ export const useGlobalPanelForm = () => {
   const submitHandler: SubmitHandler<ISettingsGlobalPanelForm> = (data, event) => {
     if (!data) return;
 
-    const master = Object.assign({
-      ...data,
-    });
+    const master = getSettingsGlobalFormMapper(data);
 
     onPatch(master, {
       onSuccess: (res) => {
-        // TODO: results
-        console.log('res', res);
         addToast(t('message.success.dataSaved'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
       },
       onError: (err) => {

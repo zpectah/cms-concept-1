@@ -5,6 +5,10 @@ namespace router;
 class TranslationsRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
     $translations = new \model\Translations;
+
+    $settings = new \model\Settings;
+    $localesActive = $settings -> getTable()['locales']['active'];
+
     $response = [];
 
     switch ($env) {
@@ -16,7 +20,7 @@ class TranslationsRouter extends Router {
             if (self::isIdValidParameter($url)) {
               $id = $url['b'];
 
-              $response = $translations -> getDetail($id);
+              $response = $translations -> getDetail($id, $localesActive);
             } else {
               $response = $translations -> getList();
             }
@@ -26,7 +30,7 @@ class TranslationsRouter extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $translations -> create($data);
+                $response = $translations -> create($data, $localesActive);
                 break;
 
             }
@@ -36,7 +40,7 @@ class TranslationsRouter extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $translations -> patch($data);
+                $response = $translations -> patch($data, $localesActive);
                 break;
 
               case 'toggle':

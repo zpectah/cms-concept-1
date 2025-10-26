@@ -27,3 +27,9 @@ export const getDataToFormMapper = (data?: SettingsClient): ISettingsClientPanel
     },
   };
 };
+
+export const getSettingsClientFormMapper = (data: ISettingsClientPanelForm) => {
+  return Object.assign({
+    ...data,
+  });
+};

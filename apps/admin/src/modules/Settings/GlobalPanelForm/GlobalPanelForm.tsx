@@ -56,11 +56,11 @@ const GlobalPanelForm = () => {
             fieldProps={{ placeholder: 'Zadejte telefon' }}
           />
           <InputField name={`${registeredFormFields.company}.${registeredFormFields.bank}`} label="Bankovní spojení" />
-          <AddressField fieldPrefix={`${registeredFormFields.company}.${registeredFormFields.address}`} disableCard />
           <GpsPickerField
             name={`${registeredFormFields.company}.${registeredFormFields.location}`}
             label={t('form:label.gpsLocation')}
           />
+          <AddressField fieldPrefix={`${registeredFormFields.company}.${registeredFormFields.address}`} disableCard />
         </Section>
         <Divider />
         <ActionBar>

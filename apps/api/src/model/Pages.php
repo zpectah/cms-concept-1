@@ -37,7 +37,7 @@ class Pages extends Model {
     ];
   }
 
-  public function getDetail($id): array {
+  public function getDetail($id, $locales): array {
     $isEven = $id % 2;
 
     return [
@@ -63,7 +63,7 @@ class Pages extends Model {
     ];
   }
 
-  public function create($data): array {
+  public function create($data, $locales): array {
     // TODO: create new item in table
 
     return [
@@ -71,7 +71,7 @@ class Pages extends Model {
     ];
   }
 
-  public function patch($data): array {
+  public function patch($data, $locales): array {
     // TODO: patch item in table
 
     return [
@@ -91,6 +91,12 @@ class Pages extends Model {
     return [
       'toDelete' => $data,
     ];
+  }
+
+  public function deletePermanently($data): array {
+    /* TODO */
+
+    return [];
   }
 
 }

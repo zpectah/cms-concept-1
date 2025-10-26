@@ -20,3 +20,16 @@ export const getDataToFormMapper = (data?: SettingsGlobal): ISettingsGlobalPanel
     },
   };
 };
+
+export const getSettingsGlobalFormMapper = (data: ISettingsGlobalPanelForm) => {
+  return Object.assign({
+    ...data,
+    company: {
+      ...data.company,
+      address: {
+        ...data.company.address,
+        zip: String(data.company.address?.zip ?? ''),
+      },
+    },
+  });
+};

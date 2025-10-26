@@ -5,6 +5,10 @@ namespace router;
 class MenuItemsRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
     $menuItems = new \model\MenuItems;
+
+    $settings = new \model\Settings;
+    $localesActive = $settings -> getTable()['locales']['active'];
+
     $response = [];
 
     switch ($env) {
@@ -17,7 +21,7 @@ class MenuItemsRouter extends Router {
               if (self::isIdValidParameter($url)) {
                 $id = $url['b'];
 
-                $response = $menuItems -> getDetail($id, null);
+                $response = $menuItems -> getDetail($id, $localesActive);
               } else if (self::isMenuIdValidParameter($url)) {
                 $menuId = $url['b'];
 
@@ -33,7 +37,7 @@ class MenuItemsRouter extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $menuItems -> create($data);
+                $response = $menuItems -> create($data, $localesActive);
                 break;
 
             }
@@ -43,7 +47,7 @@ class MenuItemsRouter extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $menuItems -> patch($data);
+                $response = $menuItems -> patch($data, $localesActive);
                 break;
 
               case 'toggle':

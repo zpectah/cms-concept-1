@@ -5,6 +5,10 @@ namespace router;
 class PagesRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
     $pages = new \model\Pages;
+
+    $settings = new \model\Settings;
+    $localesActive = $settings -> getTable()['locales']['active'];
+
     $response = [];
 
     switch ($env) {
@@ -16,7 +20,7 @@ class PagesRouter extends Router {
             if (self::isIdValidParameter($url)) {
               $id = $url['b'];
 
-              $response = $pages -> getDetail($id);
+              $response = $pages -> getDetail($id, $localesActive);
             } else {
               $response = $pages -> getList();
             }
@@ -26,7 +30,7 @@ class PagesRouter extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $pages -> create($data);
+                $response = $pages -> create($data, $localesActive);
                 break;
 
             }
@@ -36,7 +40,7 @@ class PagesRouter extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $pages -> patch($data);
+                $response = $pages -> patch($data, $localesActive);
                 break;
 
               case 'toggle':

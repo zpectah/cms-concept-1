@@ -5,6 +5,10 @@ namespace router;
 class CategoriesRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
     $categories = new \model\Categories;
+
+    $settings = new \model\Settings;
+    $localesActive = $settings -> getTable()['locales']['active'];
+
     $response = [];
 
     switch ($env) {
@@ -16,7 +20,7 @@ class CategoriesRouter extends Router {
             if (self::isIdValidParameter($url)) {
               $id = $url['b'];
 
-              $response = $categories -> getDetail($id);
+              $response = $categories -> getDetail($id, $localesActive);
             } else {
               $response = $categories -> getList();
             }
@@ -26,7 +30,7 @@ class CategoriesRouter extends Router {
             switch ($url['a']) {
 
               case 'create':
-                $response = $categories -> create($data);
+                $response = $categories -> create($data, $localesActive);
                 break;
 
             }
@@ -36,7 +40,7 @@ class CategoriesRouter extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = $categories -> patch($data);
+                $response = $categories -> patch($data, $localesActive);
                 break;
 
               case 'toggle':

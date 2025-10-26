@@ -57,6 +57,7 @@ const LocalesTable = ({
         <TableBody>
           {availableLocales.map((locale) => {
             const isInstalled = isLocaleInstalled(locale);
+            const isActive = isLocaleActive(locale);
 
             return (
               <TableRow key={locale} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
@@ -97,7 +98,7 @@ const LocalesTable = ({
                     checked={isLocaleDefault(locale)}
                     onClick={() => onLocaleDefault(locale)}
                     size="small"
-                    disabled={!isInstalled}
+                    disabled={!isInstalled || !isActive}
                   />
                 </TableCell>
               </TableRow>

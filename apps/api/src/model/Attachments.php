@@ -102,4 +102,10 @@ class Attachments extends Model {
     ];
   }
 
+  public function deletePermanently($data): array {
+    /* TODO */
+
+    return [];
+  }
+
 }

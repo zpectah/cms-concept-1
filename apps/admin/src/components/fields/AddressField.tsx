@@ -30,7 +30,11 @@ const AddressField = ({ fieldPrefix, disableCard }: AddressFieldProps) => {
         <InputField name={`${fieldPrefix}.${registeredFormFields.city}`} label={t('form:label.city')} />
       </Grid>
       <Grid size={6}>
-        <InputField name={`${fieldPrefix}.${registeredFormFields.country}`} label={t('form:label.country')} />
+        <InputField
+          name={`${fieldPrefix}.${registeredFormFields.country}`}
+          label={t('form:label.country')}
+          fieldProps={{ type: 'text', inputMode: 'text' }}
+        />
       </Grid>
     </Grid>
   );
