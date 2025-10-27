@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSettingsQuery } from '../../../hooks-query';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
+import { useViewLayoutContext } from '../../../components';
 
 export const useLanguagesPanel = () => {
   const [isInstalling, setIsInstalling] = useState<string | null>(null);
@@ -10,6 +11,7 @@ export const useLanguagesPanel = () => {
 
   const { t } = useTranslation(['common', 'modules']);
   const { addToast } = useAppStore();
+  const { openConfirmDialog } = useViewLayoutContext();
   const { settingsQuery, settingsLocaleInstallMutation, settingsLocaleDefaultMutation, settingsLocaleToggleMutation } =
     useSettingsQuery();
 
@@ -24,17 +26,13 @@ export const useLanguagesPanel = () => {
     console.warn(err);
   };
 
-  const localeInstallHandler = (locale: string) => {
-    if (!locale) return;
-
+  const localeInstallConfirmHandler = (locale: string) => {
     setIsInstalling(locale);
 
     onLocaleInstall(
       { locale },
       {
         onSuccess: (res) => {
-          // TODO: result
-          console.log('res', res);
           addToast(
             t('modules:settings.tabs.language.message.localeInstalled', { locale }),
             'success',
@@ -52,6 +50,16 @@ export const useLanguagesPanel = () => {
     );
   };
 
+  const localeInstallHandler = (locale: string) => {
+    if (!locale) return;
+
+    openConfirmDialog({
+      title: t('message.confirm.newLocaleInstall.title'),
+      content: t('message.confirm.newLocaleInstall.content'),
+      onConfirm: () => localeInstallConfirmHandler(locale),
+    });
+  };
+
   const localeToggleHandler = (locale: string) => {
     if (!locale) return;
 
@@ -61,8 +69,6 @@ export const useLanguagesPanel = () => {
       { locale },
       {
         onSuccess: (res) => {
-          // TODO: result
-          console.log('res', res);
           addToast(
             t('modules:settings.tabs.language.message.localeUpdated', { locale }),
             'success',
@@ -85,8 +91,6 @@ export const useLanguagesPanel = () => {
       { locale },
       {
         onSuccess: (res) => {
-          // TODO: result
-          console.log('res', res);
           addToast(
             t('modules:settings.tabs.language.message.localeDefault', { locale }),
             'success',

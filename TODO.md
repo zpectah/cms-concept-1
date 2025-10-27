@@ -7,7 +7,7 @@
 * [] U objektů (users, members) - nechat field name podle vyplněného jména a přijmení, jinak vygenerovat náhodný
 * [OK] Instalace jazyka - vytvoření tabulek ...
 * [] Sjednotit tlačítka v tabulce - jednotnou barvu, obrátit ten active stav
-* [] Heslo - users/members
+* [OK] Heslo - users/members
 * [] User account - login
 ```
 $plain_password_from_form = $_POST['password']; // Heslo z formuláře
@@ -24,5 +24,5 @@ if (password_verify($plain_password_from_form, $db_hash)) {
 * [] Menu items picker !!!
 * [] Comments manager !!!
 * [] Attachments picker - update/rozšíření
-* [] Settings - languages - při instalaci otevřít potvrzovací okno ...
+* [OK] Settings - languages - při instalaci otevřít potvrzovací okno ...
 * [] Settings - maintenance - pouštění scriptů

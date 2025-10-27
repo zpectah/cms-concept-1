@@ -83,6 +83,10 @@
       "deleteSelected": {
         "title": "Delete confirm",
         "content": "Are you sure you want to delete selected items?"
+      },
+      "newLocaleInstall": {
+        "title": "Install new language?",
+        "content": "During this step, new tables will be created in the database. Do you want to continue?"
       }
     },
     "success": {
