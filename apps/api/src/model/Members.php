@@ -117,6 +117,7 @@ class Members extends Model {
     }
 
     $data = self::jsonToDbDetailMapper($data);
+    if (isset($data['password'])) $password = password_hash($data['password'], PASSWORD_ARGON2ID);
 
     if (isset($data['password'])) {
       $fields = [ ...self::$tableFields, 'password' ];
@@ -130,7 +131,7 @@ class Members extends Model {
 
     $sql = "INSERT INTO `members` ($columns) VALUES ($values)";
     $stmt = $conn -> prepare($sql);
-    if (isset($data['password'])) $stmt -> bindParam(':password', $data['password']);
+    if (isset($data['password'])) $stmt -> bindParam(':password', $password);
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':email', $data['email']);
@@ -172,18 +173,20 @@ class Members extends Model {
       ];
     }
 
+    $data = self::jsonToDbDetailMapper($data);
+    if (isset($data['password'])) $password = password_hash($data['password'], PASSWORD_ARGON2ID);
+
     if (isset($data['password'])) {
       $fields = [ ...self::$tableFields, 'password' ];
     } else {
       $fields = self::$tableFields;
     }
 
-    $data = self::jsonToDbDetailMapper($data);
     $setParts = self::getQueryParts($data, $fields);
 
     $sql = "UPDATE `members` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
     $stmt = $conn -> prepare($sql);
-    if (isset($data['password'])) $stmt -> bindParam(':password', $data['password']);
+    if (isset($data['password'])) $stmt -> bindParam(':password', $password);
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':email', $data['email']);

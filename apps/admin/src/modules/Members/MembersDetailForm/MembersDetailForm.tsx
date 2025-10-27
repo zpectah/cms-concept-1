@@ -13,6 +13,7 @@ import {
   EmailField,
   PasswordField,
   AddressField,
+  TextareaField,
 } from '../../../components';
 import { useMembersDetailForm } from './useMembersDetailForm';
 
@@ -49,6 +50,7 @@ const MembersDetailForm = () => {
           label={t('form:label.flatNo')}
           fieldProps={{ sx: { width: { xs: '100%', md: '33%' } } }}
         />
+        <TextareaField name={registeredFormFields.description} label={t('form:label.description')} />
       </FormLayout>
     </ControlledForm>
   );

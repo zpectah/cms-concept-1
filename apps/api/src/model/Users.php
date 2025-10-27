@@ -91,6 +91,7 @@ class Users extends Model {
     }
 
     $data = self::jsonToDbDetailMapper($data);
+    $password = password_hash($data['password'], PASSWORD_ARGON2ID);
     $params = self::getColumnsAndValuesForQuery([ ...self::$tableFields, 'password' ]);
     $columns = $params['columns'];
     $values = $params['values'];
@@ -100,7 +101,7 @@ class Users extends Model {
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':email', $data['email']);
-    $stmt -> bindParam(':password', $data['password']);
+    $stmt -> bindParam(':password', $password);
     $stmt -> bindParam(':first_name', $data['first_name']);
     $stmt -> bindParam(':last_name', $data['last_name']);
     $stmt -> bindParam(':access_rights', $data['access_rights']);
@@ -140,10 +141,11 @@ class Users extends Model {
 
     $data = self::jsonToDbDetailMapper($data);
     $setParts = self::getQueryParts($data, $fields);
+    if (isset($data['password'])) $password = password_hash($data['password'], PASSWORD_ARGON2ID);
 
     $sql = "UPDATE `users` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
     $stmt = $conn -> prepare($sql);
-    if (isset($data['password'])) $stmt -> bindParam(':password', $data['password']);
+    if (isset($data['password'])) $stmt -> bindParam(':password', $password);
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':email', $data['email']);

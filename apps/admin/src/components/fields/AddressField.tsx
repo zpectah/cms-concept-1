@@ -43,7 +43,7 @@ const AddressField = ({ fieldPrefix, disableCard }: AddressFieldProps) => {
     return renderFields();
   }
 
-  return <Card>{renderFields()}</Card>;
+  return <Card sx={{ marginY: 1.5 }}>{renderFields()}</Card>;
 };
 
 export default AddressField;
