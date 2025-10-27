@@ -9,6 +9,7 @@ export const getMessagesDetailFormDefaultValues = (): IMessagesDetailForm => {
     subject: '',
     content: '',
     type: messagesTypeDefault,
+    read: false,
     active: true,
     deleted: false,
   };
@@ -17,7 +18,6 @@ export const getMessagesDetailFormDefaultValues = (): IMessagesDetailForm => {
 export const getMessagesDetailFormMapper = (data: MessagesDetail): IMessagesDetailForm => {
   return {
     ...data,
-
     content: data.content ?? '',
   };
 };

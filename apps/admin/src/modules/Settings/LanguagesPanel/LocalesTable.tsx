@@ -14,6 +14,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
+import { SettingsLocales } from '@common';
 import { getConfig } from '../../../utils';
 
 interface LocalesTableProps {
@@ -25,6 +26,7 @@ interface LocalesTableProps {
   isLocaleInstalled: (locale: string) => boolean | undefined;
   isLocaleActive: (locale: string) => boolean | undefined;
   isLocaleDefault: (locale: string) => boolean | undefined;
+  locales?: SettingsLocales;
 }
 
 const LocalesTable = ({
@@ -36,12 +38,13 @@ const LocalesTable = ({
   isLocaleInstalled,
   isLocaleActive,
   isLocaleDefault,
+  locales,
 }: LocalesTableProps) => {
   const { t } = useTranslation(['common', 'modules']);
 
-  const { locales } = getConfig();
+  const { locales: cfgLocales } = getConfig();
 
-  const availableLocales = Object.keys(locales);
+  const availableLocales = Object.keys(cfgLocales);
 
   return (
     <TableContainer component={Paper} variant="outlined">
@@ -58,13 +61,14 @@ const LocalesTable = ({
           {availableLocales.map((locale) => {
             const isInstalled = isLocaleInstalled(locale);
             const isActive = isLocaleActive(locale);
+            const isSingleRow = locales?.installed.length === 1;
 
             return (
               <TableRow key={locale} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   <Stack direction="row" gap={1.5} alignItems="center">
                     <Typography variant="button">
-                      {(locales as Record<string, { label: string }>)[locale].label}
+                      {(cfgLocales as Record<string, { label: string }>)[locale].label}
                     </Typography>
                     <Typography variant="caption">{locale}</Typography>
                     {(isUpdating === locale || isInstalling === locale) && <CircularProgress size={15} />}
@@ -90,7 +94,7 @@ const LocalesTable = ({
                     checked={isLocaleActive(locale)}
                     onClick={() => onLocaleToggle(locale)}
                     size="small"
-                    disabled={!isInstalled}
+                    disabled={!isInstalled || isSingleRow}
                   />
                 </TableCell>
                 <TableCell>
@@ -98,7 +102,7 @@ const LocalesTable = ({
                     checked={isLocaleDefault(locale)}
                     onClick={() => onLocaleDefault(locale)}
                     size="small"
-                    disabled={!isInstalled || !isActive}
+                    disabled={!isInstalled || !isActive || isSingleRow}
                   />
                 </TableCell>
               </TableRow>

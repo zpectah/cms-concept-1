@@ -32,10 +32,11 @@ class Menu extends Model {
   public function getList(): array {
     $conn = self::connection();
 
-    $deleted_status = 0;
+    $deleted = 0;
 
-    $stmt = $conn -> prepare("SELECT * FROM `menu` WHERE `deleted` = :status");
-    $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
+    $sql = "SELECT * FROM `menu` WHERE `deleted` = :status";
+    $stmt = $conn -> prepare($sql);
+    $stmt -> bindParam(':status', $deleted, PDO::PARAM_INT);
     $stmt -> execute();
 
     $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
@@ -60,7 +61,8 @@ class Menu extends Model {
       ];
     }
 
-    $stmt = $conn -> prepare("SELECT * FROM `menu` WHERE `id` = :id LIMIT 1");
+    $sql = "SELECT * FROM `menu` WHERE `id` = :id LIMIT 1";
+    $stmt = $conn -> prepare($sql);
     $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
     $stmt -> execute();
 
@@ -81,20 +83,16 @@ class Menu extends Model {
     }
 
     $data = self::jsonToDbDetailMapper($data);
-
     $params = self::getColumnsAndValuesForQuery(self::$tableFields);
     $columns = $params['columns'];
     $values = $params['values'];
 
     $sql = "INSERT INTO `menu` ($columns) VALUES ($values)";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [
@@ -125,16 +123,12 @@ class Menu extends Model {
     $setParts = self::getQueryParts($data, self::$tableFields);
 
     $sql = "UPDATE `menu` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
-
     $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [
@@ -156,9 +150,7 @@ class Menu extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `menu` SET `active` = NOT `active` WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [
@@ -180,9 +172,7 @@ class Menu extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `menu` SET `deleted` = 1 WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [

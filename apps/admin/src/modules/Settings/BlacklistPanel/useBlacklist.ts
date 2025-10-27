@@ -3,15 +3,20 @@ import { useTranslation } from 'react-i18next';
 import { Blacklist } from '@common';
 import { useViewLayoutContext } from '../../../components';
 import { useBlacklistQuery } from '../../../hooks-query';
+import { useAppStore } from '../../../store';
+import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 
 export const useBlacklist = () => {
   const [query, setQuery] = useState('');
 
   const { t } = useTranslation(['common']);
   const { openConfirmDialog } = useViewLayoutContext();
-  const { blacklistQuery } = useBlacklistQuery({});
+  const { addToast } = useAppStore();
+  const { blacklistQuery, blacklistToggleMutation, blacklistDeleteMutation } = useBlacklistQuery({});
 
-  const { data: blacklistItems } = blacklistQuery;
+  const { data: blacklistItems, refetch } = blacklistQuery;
+  const { mutate: onToggle } = blacklistToggleMutation;
+  const { mutate: onDelete } = blacklistDeleteMutation;
 
   const results = useMemo(() => {
     let match: Blacklist = [];
@@ -30,12 +35,22 @@ export const useBlacklist = () => {
       match = [...blacklistItems];
     }
 
-    return match;
+    return match.reverse();
   }, [query, blacklistItems]);
 
+  const onError = (err: unknown) => {
+    addToast(t('message.error.common'), 'error');
+    console.warn(err);
+  };
+
   const rowDeleteConfirmHandler = (id: number) => {
-    // TODO
-    console.log('on delete ... confirmed', id);
+    onDelete([id], {
+      onSuccess: (res) => {
+        addToast(t('message.success.deleteDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        refetch();
+      },
+      onError,
+    });
   };
 
   const rowDeleteHandler = (id: number) => {
@@ -47,8 +62,13 @@ export const useBlacklist = () => {
   };
 
   const rowToggleHandler = (id: number) => {
-    // TODO
-    console.log('on toggle', id);
+    onToggle([id], {
+      onSuccess: (res) => {
+        addToast(t('message.success.updateDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+        refetch();
+      },
+      onError,
+    });
   };
 
   return {

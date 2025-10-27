@@ -6,7 +6,7 @@ use PDO;
 
 class Blacklist extends Model {
 
-  static array $tableFields = ['type', 'name', 'ipaddress', 'email', 'active', 'deleted'];
+  static array $tableFields = ['type', 'ipaddress', 'email', 'active', 'deleted'];
 
   private function dbToJsonDetailMapper($data): array {
     $item = [
@@ -21,8 +21,8 @@ class Blacklist extends Model {
   private function jsonToDbDetailMapper($data): array {
     $item = [
       ...$data,
-      'active' => $data['active'] ? 1 : 0,
-      'deleted' => $data['deleted'] ? 1 : 0,
+      'active' => isset($data['active']) ? $data['active'] ? 1 : 0 : 1,
+      'deleted' => isset($data['deleted']) ? $data['deleted'] ? 1 : 0 : 0,
     ];
 
     return $item;
@@ -32,10 +32,11 @@ class Blacklist extends Model {
   public function getList(): array {
     $conn = self::connection();
 
-    $deleted_status = 0;
+    $deleted = 0;
 
-    $stmt = $conn -> prepare("SELECT * FROM `blacklist` WHERE `deleted` = :status");
-    $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
+    $sql = "SELECT * FROM `blacklist` WHERE `deleted` = :status";
+    $stmt = $conn -> prepare($sql);
+    $stmt -> bindParam(':status', $deleted, PDO::PARAM_INT);
     $stmt -> execute();
 
     $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
@@ -60,7 +61,8 @@ class Blacklist extends Model {
       ];
     }
 
-    $stmt = $conn -> prepare("SELECT * FROM `blacklist` WHERE `id` = :id LIMIT 1");
+    $sql = "SELECT * FROM `blacklist` WHERE `id` = :id LIMIT 1";
+    $stmt = $conn -> prepare($sql);
     $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
     $stmt -> execute();
 
@@ -81,22 +83,17 @@ class Blacklist extends Model {
     }
 
     $data = self::jsonToDbDetailMapper($data);
-
     $params = self::getColumnsAndValuesForQuery(self::$tableFields);
     $columns = $params['columns'];
     $values = $params['values'];
 
     $sql = "INSERT INTO `blacklist` ($columns) VALUES ($values)";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':type', $data['type']);
-    $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':ipaddress', $data['ipaddress']);
     $stmt -> bindParam(':email', $data['email']);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [
@@ -127,18 +124,13 @@ class Blacklist extends Model {
     $setParts = self::getQueryParts($data, self::$tableFields);
 
     $sql = "UPDATE `blacklist` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':type', $data['type']);
-    $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':ipaddress', $data['ipaddress']);
     $stmt -> bindParam(':email', $data['email']);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
-
     $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [
@@ -160,9 +152,7 @@ class Blacklist extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `blacklist` SET `active` = NOT `active` WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [
@@ -184,9 +174,7 @@ class Blacklist extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `blacklist` SET `deleted` = 1 WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [

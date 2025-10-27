@@ -160,7 +160,6 @@ class Settings extends Model {
     $data = self::jsonToDbDetailMapper($data);
 
     $sql = "UPDATE `settings` SET value = :value WHERE name = :name";
-
     $stmt = $conn -> prepare($sql);
 
     $rows = 0;

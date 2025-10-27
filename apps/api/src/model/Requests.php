@@ -61,15 +61,12 @@ class Requests extends Model {
     } else if ($token) {
       $sql = "SELECT * FROM `requests` WHERE `token` = :token LIMIT 1";
     }
-
     $stmt = $conn -> prepare($sql);
-
     if ($id) {
       $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
     } else if ($token) {
       $stmt -> bindParam(':token', $token);
     }
-
     $stmt -> execute();
 
     $detail = $stmt -> fetch(PDO::FETCH_ASSOC);
@@ -89,20 +86,16 @@ class Requests extends Model {
     }
 
     $data = self::jsonToDbDetailMapper($data);
-
     $params = self::getColumnsAndValuesForQuery(self::$tableFields);
     $columns = $params['columns'];
     $values = $params['values'];
 
     $sql = "INSERT INTO `requests` ($columns) VALUES ($values)";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':token', $data['token']);
     $stmt -> bindParam(':applicant', $data['applicant']);
     $stmt -> bindParam(':status', $data['status'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [
@@ -133,16 +126,12 @@ class Requests extends Model {
     $setParts = self::getQueryParts($data, self::$tableFields);
 
     $sql = "UPDATE `requests` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':token', $data['token']);
     $stmt -> bindParam(':applicant', $data['applicant']);
     $stmt -> bindParam(':status', $data['status'], PDO::PARAM_INT);
-
     $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [

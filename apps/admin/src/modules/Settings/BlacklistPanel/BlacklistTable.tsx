@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ClearIcon from '@mui/icons-material/Clear';
-import { IconButtonPlus, Search } from '../../../components';
+import { IconButtonPlus, Search, ValueDate } from '../../../components';
 import { muiCommonColorVariantKeys } from '../../../enums';
 import { useBlacklist } from './useBlacklist';
 
@@ -48,7 +48,9 @@ const BlacklistTable = () => {
                   {row.email}
                 </TableCell>
                 <TableCell component="th">{row.ipaddress}</TableCell>
-                <TableCell>{row.created}</TableCell>
+                <TableCell>
+                  <ValueDate value={row.created} />
+                </TableCell>
                 <TableCell align="right">
                   <Stack direction="row" gap={1} sx={{ display: 'inline-flex' }}>
                     <IconButtonPlus
@@ -65,7 +67,7 @@ const BlacklistTable = () => {
                       onClick={() => onRowToggle(row.id)}
                       tooltip={t('button.disable')}
                     >
-                      {row.active ? <VisibilityOffIcon fontSize="inherit" /> : <VisibilityIcon fontSize="inherit" />}
+                      {row.active ? <VisibilityIcon fontSize="inherit" /> : <VisibilityOffIcon fontSize="inherit" />}
                     </IconButtonPlus>
                   </Stack>
                 </TableCell>

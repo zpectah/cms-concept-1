@@ -48,10 +48,11 @@ class Attachments extends Model {
   public function getList(): array {
     $conn = self::connection();
 
-    $deleted_status = 0;
+    $deleted = 0;
 
-    $stmt = $conn -> prepare("SELECT * FROM `attachments` WHERE `deleted` = :status");
-    $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
+    $sql = "SELECT * FROM `attachments` WHERE `deleted` = :status";
+    $stmt = $conn -> prepare($sql);
+    $stmt -> bindParam(':status', $deleted, PDO::PARAM_INT);
     $stmt -> execute();
 
     $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
@@ -81,15 +82,12 @@ class Attachments extends Model {
     } else if ($name) {
       $sql = "SELECT * FROM `attachments` WHERE `name` = :name LIMIT 1";
     }
-
     $stmt = $conn -> prepare($sql);
-
     if ($id) {
       $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
     } else if ($name) {
       $stmt -> bindParam(':name', $name);
     }
-
     $stmt -> execute();
 
     $detail = $stmt -> fetch(PDO::FETCH_ASSOC);
@@ -131,15 +129,12 @@ class Attachments extends Model {
     }
 
     $item = self::jsonToDbDetailMapper($item);
-
     $params = self::getColumnsAndValuesForQuery(self::$tableFields);
     $columns = $params['columns'];
     $values = $params['values'];
 
     $sql = "INSERT INTO `attachments` ($columns) VALUES ($values)";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':type', $item['type']);
     $stmt -> bindParam(':name', $item['name']);
     $stmt -> bindParam(':file_name', $item['file_name']);
@@ -148,7 +143,6 @@ class Attachments extends Model {
     $stmt -> bindParam(':file_size', $item['file_size'], PDO::PARAM_INT);
     $stmt -> bindParam(':active', $item['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $item['deleted'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [
@@ -193,14 +187,10 @@ class Attachments extends Model {
     $setParts = self::getQueryParts($data, ['active', 'deleted']);
 
     $sql = "UPDATE `attachments` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
-
     $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [
@@ -222,9 +212,7 @@ class Attachments extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `attachments` SET `active` = NOT `active` WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [
@@ -246,9 +234,7 @@ class Attachments extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `attachments` SET `deleted` = 1 WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [

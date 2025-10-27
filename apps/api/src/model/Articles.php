@@ -85,10 +85,11 @@ class Articles extends Model {
   public function getList(): array {
     $conn = self::connection();
 
-    $deleted_status = 0;
+    $deleted = 0;
 
-    $stmt = $conn -> prepare("SELECT id, name, type, categories, tags, attachments, active, deleted, created, updated FROM `articles` WHERE `deleted` = :status");
-    $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
+    $sql = "SELECT id, name, type, categories, tags, attachments, active, deleted, created, updated FROM `articles` WHERE `deleted` = :status";
+    $stmt = $conn -> prepare($sql);
+    $stmt -> bindParam(':status', $deleted, PDO::PARAM_INT);
     $stmt -> execute();
 
     $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
@@ -113,7 +114,8 @@ class Articles extends Model {
       ];
     }
 
-    $stmt = $conn -> prepare("SELECT * FROM `articles` WHERE `id` = :id LIMIT 1");
+    $sql = "SELECT * FROM `articles` WHERE `id` = :id LIMIT 1";
+    $stmt = $conn -> prepare($sql);
     $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
     $stmt -> execute();
 
@@ -131,7 +133,8 @@ class Articles extends Model {
     foreach ($locales as $locale) {
       $tableName = 'articles_' . $locale;
 
-      $localeStmt = $conn -> prepare("SELECT title, description, content FROM `{$tableName}` WHERE `id` = :id LIMIT 1");
+      $localeSql = "SELECT title, description, content FROM `{$tableName}` WHERE `id` = :id LIMIT 1";
+      $localeStmt = $conn -> prepare($localeSql);
       $localeStmt -> bindParam(':id', $id, PDO::PARAM_INT);
       $localeStmt -> execute();
 
@@ -160,9 +163,7 @@ class Articles extends Model {
     $values = $params['values'];
 
     $sql = "INSERT INTO `articles` ($columns) VALUES ($values)";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':categories', $data['categories']);
@@ -179,7 +180,6 @@ class Articles extends Model {
     $stmt -> bindParam(':event_end', $data['event_end']);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     $insertId = $conn -> lastInsertId();
@@ -196,16 +196,13 @@ class Articles extends Model {
 
           $localeData = self::parseLocaleData($data['locale'][$locale]);
 
-          $sqlLocale = "INSERT INTO `{$tableName}` ({$localeColumns}) VALUES ({$localeValues})";
-
-          $stmtLocale = $conn -> prepare($sqlLocale);
-
-          $stmtLocale -> bindParam(':title', $localeData['title']);
-          $stmtLocale -> bindParam(':description', $localeData['description']);
-          $stmtLocale -> bindParam(':content', $localeData['content']);
-          $stmtLocale -> bindParam(':id', $insertId, PDO::PARAM_INT);
-
-          $stmtLocale -> execute();
+          $localeSql = "INSERT INTO `{$tableName}` ({$localeColumns}) VALUES ({$localeValues})";
+          $localeStmt = $conn -> prepare($localeSql);
+          $localeStmt -> bindParam(':title', $localeData['title']);
+          $localeStmt -> bindParam(':description', $localeData['description']);
+          $localeStmt -> bindParam(':content', $localeData['content']);
+          $localeStmt -> bindParam(':id', $insertId, PDO::PARAM_INT);
+          $localeStmt -> execute();
         }
       }
     }
@@ -239,9 +236,7 @@ class Articles extends Model {
     $setParts = self::getQueryParts($data, self::$tableFields);
 
     $sql = "UPDATE `articles` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':categories', $data['categories']);
@@ -258,9 +253,7 @@ class Articles extends Model {
     $stmt -> bindParam(':event_end', $data['event_end']);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
-
     $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     $rows = $stmt -> rowCount();
@@ -276,18 +269,15 @@ class Articles extends Model {
           $localeData = self::parseLocaleData($data['locale'][$locale]);
           $localeSetParts = self::getQueryParts($localeData, self::$tableLocaleFields);
 
-          $sqlLocale = "UPDATE `{$tableName}` SET " . implode(', ', $localeSetParts) . " WHERE `id` = :id";
+          $localeSql = "UPDATE `{$tableName}` SET " . implode(', ', $localeSetParts) . " WHERE `id` = :id";
+          $localeStmt = $conn -> prepare($localeSql);
+          $localeStmt -> bindParam(':title', $localeData['title']);
+          $localeStmt -> bindParam(':description', $localeData['description']);
+          $localeStmt -> bindParam(':content', $localeData['content']);
+          $localeStmt -> bindParam(':id', $id, PDO::PARAM_INT);
+          $localeStmt -> execute();
 
-          $stmtLocale = $conn -> prepare($sqlLocale);
-
-          $stmtLocale -> bindParam(':title', $localeData['title']);
-          $stmtLocale -> bindParam(':description', $localeData['description']);
-          $stmtLocale -> bindParam(':content', $localeData['content']);
-          $stmtLocale -> bindParam(':id', $id, PDO::PARAM_INT);
-
-          $stmtLocale -> execute();
-
-          $rows = $rows + $stmtLocale -> rowCount();
+          $rows = $rows + $localeStmt -> rowCount();
         }
       }
     }
@@ -313,9 +303,7 @@ class Articles extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `articles` SET `active` = NOT `active` WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [
@@ -337,9 +325,7 @@ class Articles extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `articles` SET `deleted` = 1 WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [

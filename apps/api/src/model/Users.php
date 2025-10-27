@@ -32,10 +32,11 @@ class Users extends Model {
   public function getList(): array {
     $conn = self::connection();
 
-    $deleted_status = 0;
+    $deleted = 0;
 
-    $stmt = $conn -> prepare("SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `deleted` = :status");
-    $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
+    $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `deleted` = :status";
+    $stmt = $conn -> prepare($sql);
+    $stmt -> bindParam(':status', $deleted, PDO::PARAM_INT);
     $stmt -> execute();
 
     $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
@@ -65,15 +66,12 @@ class Users extends Model {
     } else if ($email) {
       $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `email` = :email LIMIT 1";
     }
-
     $stmt = $conn -> prepare($sql);
-
     if ($id) {
       $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
     } else if ($email) {
       $stmt -> bindParam(':email', $email);
     }
-
     $stmt -> execute();
 
     $detail = $stmt -> fetch(PDO::FETCH_ASSOC);
@@ -93,15 +91,12 @@ class Users extends Model {
     }
 
     $data = self::jsonToDbDetailMapper($data);
-
     $params = self::getColumnsAndValuesForQuery([ ...self::$tableFields, 'password' ]);
     $columns = $params['columns'];
     $values = $params['values'];
 
     $sql = "INSERT INTO `users` ($columns) VALUES ($values)";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':email', $data['email']);
@@ -111,7 +106,6 @@ class Users extends Model {
     $stmt -> bindParam(':access_rights', $data['access_rights']);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [
@@ -148,13 +142,8 @@ class Users extends Model {
     $setParts = self::getQueryParts($data, $fields);
 
     $sql = "UPDATE `users` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
-
     $stmt = $conn -> prepare($sql);
-
-    if (isset($data['password'])) {
-      $stmt -> bindParam(':password', $data['password']);
-    }
-
+    if (isset($data['password'])) $stmt -> bindParam(':password', $data['password']);
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':email', $data['email']);
@@ -163,9 +152,7 @@ class Users extends Model {
     $stmt -> bindParam(':access_rights', $data['access_rights']);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
-
     $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [
@@ -187,9 +174,7 @@ class Users extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `users` SET `active` = NOT `active` WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [
@@ -211,9 +196,7 @@ class Users extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `users` SET `deleted` = 1 WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [

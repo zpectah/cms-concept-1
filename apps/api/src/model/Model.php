@@ -7,10 +7,7 @@ use PDO;
 class Model {
 
   public function __construct() {}
-
-  static function getNow(): string {
-    return date('c'); // ISO 8601 format
-  }
+  
 
   static function getColumnsAndValuesForQuery($fields): array {
     $placeholders = array_map(function($field) { return ':' . $field; }, $fields);
@@ -40,6 +37,7 @@ class Model {
   static function getUpdatePlaceholders($data): string {
     return implode(', ', array_fill(0, count($data), '?'));
   }
+
 
   protected function connection(): PDO {
     // TODO

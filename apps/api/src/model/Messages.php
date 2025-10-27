@@ -28,10 +28,11 @@ class Messages extends Model {
   public function getList(): array {
     $conn = self::connection();
 
-    $deleted_status = 0;
+    $deleted = 0;
 
-    $stmt = $conn -> prepare("SELECT * FROM `messages` WHERE `deleted` = :status");
-    $stmt -> bindParam(':status', $deleted_status, PDO::PARAM_INT);
+    $sql = "SELECT * FROM `messages` WHERE `deleted` = :status";
+    $stmt = $conn -> prepare($sql);
+    $stmt -> bindParam(':status', $deleted, PDO::PARAM_INT);
     $stmt -> execute();
 
     $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
@@ -56,7 +57,8 @@ class Messages extends Model {
       ];
     }
 
-    $stmt = $conn -> prepare("SELECT * FROM `messages` WHERE `id` = :id LIMIT 1");
+    $sql = "SELECT * FROM `messages` WHERE `id` = :id LIMIT 1";
+    $stmt = $conn -> prepare($sql);
     $stmt -> bindParam(':id', $id, PDO::PARAM_INT);
     $stmt -> execute();
 
@@ -84,9 +86,7 @@ class Messages extends Model {
     $values = $params['values'];
 
     $sql = "INSERT INTO `messages` ($columns) VALUES ($values)";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':type', $data['type']);
     $stmt -> bindParam(':name', $data['name']);
     $stmt -> bindParam(':sender', $data['sender']);
@@ -95,7 +95,6 @@ class Messages extends Model {
     $stmt -> bindParam(':read', $data['read'], PDO::PARAM_INT);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [
@@ -128,15 +127,11 @@ class Messages extends Model {
     $setParts = self::getQueryParts($data, $fields);
 
     $sql = "UPDATE `messages` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> bindParam(':read', $data['read'], PDO::PARAM_INT);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
-
     $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
-
     $stmt -> execute();
 
     return [
@@ -158,9 +153,7 @@ class Messages extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `messages` SET `active` = NOT `active` WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [
@@ -182,9 +175,7 @@ class Messages extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `messages` SET `deleted` = 1 WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [
@@ -206,9 +197,7 @@ class Messages extends Model {
     $placeholders = self::getUpdatePlaceholders($data);
 
     $sql = "UPDATE `messages` SET `read` = 1 WHERE `id` IN ({$placeholders})";
-
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [
