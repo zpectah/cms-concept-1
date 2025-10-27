@@ -135,6 +135,63 @@ class Settings extends Model {
     return $stmt -> rowCount();
   }
 
+  private function createLocaleTables($locale, $source): array {
+    $conn = self::connection();
+    $results = [];
+
+    $tables = [
+      'articles',
+      'categories',
+      'menuitems',
+      'pages',
+      'translations'
+    ];
+
+    foreach ($tables as $table) {
+      $newTable = "{$table}_{$locale}";
+      $sourceTable = "{$table}_{$source}";
+
+      $stmt = $conn -> query("SHOW TABLES LIKE " . $conn -> quote($newTable));
+
+      if ($stmt -> fetch()) {
+        return [
+          'error' => true,
+          'message' => 'Table already exists',
+        ];
+      }
+
+      $stmt = $conn -> query("SHOW TABLES LIKE " . $conn -> quote($sourceTable));
+
+      if (!$stmt -> fetch()) {
+        return [
+          'error' => true,
+          'message' => 'Source table dont exists',
+        ];
+      }
+
+      $createStmt = $conn -> query("SHOW CREATE TABLE `{$sourceTable}`");
+      $row = $createStmt -> fetch();
+
+      if (!$row || !isset($row['Create Table'])) {
+        return [
+          'error' => true,
+          'message' => 'Cannot load source table',
+        ];
+      }
+
+      $createSql = $row['Create Table'];
+      $createSql = str_replace("`{$sourceTable}`", "`{$newTable}`", $createSql);
+
+      $conn -> exec($createSql);
+      $conn -> exec("INSERT INTO `{$newTable}` SELECT * FROM `{$sourceTable}`");
+
+      $results[] = $newTable;
+    }
+
+    return $results;
+  }
+
+
 
   public function getTable(): array {
     $conn = self::connection();
@@ -187,6 +244,7 @@ class Settings extends Model {
 
     $settings = self::getTable();
     $installed = $settings['locales']['installed'];
+    $default = $settings['locales']['default'];
     $localeToInstall = $data['locale'];
 
     if (in_array($localeToInstall, $installed)) {
@@ -200,15 +258,14 @@ class Settings extends Model {
     $newValue = [ ...$installed, $localeToInstall ];
     $newValue = implode(',', $newValue);
 
-    //
-    // TODO: create tables ... and count
-    //
+    $tables = self::createLocaleTables($localeToInstall, $default);
 
     $rows = self::patchRow('locales_installed', $newValue);
 
     return [
       'rows' => $rows,
       'locale' => $localeToInstall,
+      'tables' => $tables,
     ];
   }
 

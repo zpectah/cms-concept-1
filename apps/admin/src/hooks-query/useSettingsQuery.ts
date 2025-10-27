@@ -16,7 +16,11 @@ export const useSettingsQuery = () => {
     mutationFn: (data) => axios.patch(`${API_URL.settings}/patch`, data).then((response) => response.data),
   });
 
-  const settingsLocaleInstallMutation = useMutation<{ rows: number; locale: string }, unknown, { locale: string }>({
+  const settingsLocaleInstallMutation = useMutation<
+    { rows: number; locale: string; tables: string[] },
+    unknown,
+    { locale: string }
+  >({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-locale-install`],
     mutationFn: (data) => axios.patch(`${API_URL.settings}/locale-install`, data).then((response) => response.data),
   });
