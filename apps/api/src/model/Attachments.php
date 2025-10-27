@@ -24,6 +24,7 @@ class Attachments extends Model {
     if (isset($data['uid'])) {
       $item = [
         ...$item,
+        'type' => $data['type'],
         'name' => $data['uid'],
         'file_name' => $data['name'] . '.' . $data['extension'],
         'file_type' => $data['mime'],

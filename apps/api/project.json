@@ -5,7 +5,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "php -S localhost:8000 -t apps/api/src/"
+        "command": "php -S localhost:8000 -t apps/api/src/ -c apps/api/php.ini"
       }
     },
     "build": {

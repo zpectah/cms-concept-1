@@ -4,7 +4,7 @@ const PATH_ROOT = __DIR__ . '/';
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   header('Access-Control-Allow-Origin: *');
-  header('Access-Control-Allow-Methods: GET, DELETE, PUT, PATCH, UPDATE, OPTIONS');
+  header('Access-Control-Allow-Methods: GET, DELETE, PUT, PATCH, UPDATE, POST, OPTIONS');
   header('Access-Control-Allow-Headers: Content-Type, Content-Encoding');
   header('Access-Control-Max-Age: 1728000');
   header('Content-Length: 0');
@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, DELETE, PUT, PATCH, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Origin, Credentials, Content-Type, Content-Encoding');
 header("Access-Control-Allow-Credentials: true");
 header('Content-Type: application/json');
