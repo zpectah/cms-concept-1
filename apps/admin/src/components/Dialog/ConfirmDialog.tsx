@@ -29,18 +29,18 @@ const ConfirmDialog = ({
       onClose={onClose}
       title={title}
       contentText={content}
-      actions={
-        <ActionBar stackProps={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Button size="large" onClick={onClose} variant="outlined" color="inherit">
-            {t('button.cancel')}
-          </Button>
-          <Button size="large" onClick={confirmHandler} variant="contained" color="primary">
-            {t('button.confirm')}
-          </Button>
-        </ActionBar>
-      }
-      dialogProps={{ keepMounted: true }}
-    />
+      dialogProps={{ keepMounted: true, maxWidth: 'xs', fullWidth: true }}
+      contentProps={{ dividers: true, sx: { pt: 4, pb: 4, px: 2, textAlign: 'center' } }}
+    >
+      <ActionBar stackProps={{ width: '100%', justifyContent: 'center', alignItems: 'center', sx: { py: 2 } }}>
+        <Button size="large" onClick={onClose} variant="outlined" color="inherit">
+          {t('button.cancel')}
+        </Button>
+        <Button size="large" onClick={confirmHandler} variant="contained" color="success">
+          {t('button.confirm')}
+        </Button>
+      </ActionBar>
+    </DialogBase>
   );
 };
 

@@ -14,8 +14,9 @@ const AuthLayout = () => {
 
   useEffect(() => {
     if (!user?.active && !isLoading) {
-      navigate(`/${routes.login.path}?reason=no-session`);
+      navigate(`/${routes.login.path}?reason=expired-session`);
     } else {
+      // TODO: delete before deployment
       if (user?.user) console.log('session ok', user.user);
     }
   }, [user, isLoading]);

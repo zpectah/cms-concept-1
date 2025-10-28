@@ -1,19 +1,22 @@
+import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getConfig } from '../../../utils';
 import { useUserQuery } from '../../../hooks-query';
-import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
+import { TOAST_ERROR_TIMEOUT_DEFAULT } from '../../../constants';
 import { LoginFormSchema } from './schema';
 import { ILoginForm } from './types';
 import { LoginFormDefaults } from './constants';
 import { useAppStore } from '../../../store';
-import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 
 export const useLoginForm = () => {
   const {
     admin: { routes },
   } = getConfig();
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation(['common']);
   const { addToast } = useAppStore();
   const { userQuery, userCheckPasswordMutation, userLoginMutation } = useUserQuery();
@@ -25,6 +28,8 @@ export const useLoginForm = () => {
   const { data: user } = userQuery;
   const { mutate: onCheckPassword } = userCheckPasswordMutation;
   const { mutate: onLogin } = userLoginMutation;
+
+  const paramReason = searchParams.get('reason');
 
   const submitHandler: SubmitHandler<ILoginForm> = (data) => {
     const master = Object.assign({ ...data });
@@ -40,7 +45,6 @@ export const useLoginForm = () => {
             {
               onSuccess: ({ open, session }) => {
                 if (open) {
-                  addToast('Message: success', 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
                   setTimeout(() => (document.location = `/${routes.dashboard.path}?login=success`), 1500);
                 } else {
                   addToast(t('message.error.common'), 'error');
@@ -53,15 +57,40 @@ export const useLoginForm = () => {
             }
           );
         } else {
-          // TODO
-          console.warn('Password wont match');
+          addToast(t('message.error.incorrectPassword'), 'error', TOAST_ERROR_TIMEOUT_DEFAULT);
         }
       },
       onError: (err) => {
+        addToast(t('message.error.common'), 'error');
         console.warn(err);
       },
     });
   };
+
+  const afterLogoutHandler = () => {
+    // TODO: Fix - triggers twice
+    // addToast(t('message.success.logoutSuccess'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+    setSearchParams((state) => {
+      state.delete('reason');
+
+      return state;
+    });
+  };
+
+  const expiredSessionHandler = () => {
+    // TODO: Fix - triggers twice
+    // addToast(t('message.info.expiredSession'), 'info');
+    setSearchParams((state) => {
+      state.delete('reason');
+
+      return state;
+    });
+  };
+
+  useEffect(() => {
+    if (paramReason === 'user') afterLogoutHandler();
+    if (paramReason === 'expired-session') expiredSessionHandler();
+  }, []);
 
   return {
     form,

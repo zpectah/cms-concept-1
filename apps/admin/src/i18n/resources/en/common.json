@@ -109,7 +109,9 @@
       "dataSaved": "Data was successfully saved",
       "logoutSuccess": "You have been successfully logged out."
     },
-    "info": {},
+    "info": {
+      "expiredSession": "Your login has expired and you have been logged out."
+    },
     "warning": {},
     "error": {
       "common": "There was a problem during update",
@@ -117,7 +119,8 @@
       "maxFileSize": "Maximum file size exceeded",
       "unsupportedFileExt": "Unsupported file extension '{{value}}'",
       "unknownFileExt": "Unknown file extension '{{value}}'",
-      "logoutError": "There was a problem logging out, please try again."
+      "logoutError": "There was a problem logging out, please try again.",
+      "incorrectPassword": "Incorrect password"
     }
   }
 }

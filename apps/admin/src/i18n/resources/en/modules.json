@@ -54,7 +54,17 @@
     "pageTitle": "Demo examples"
   },
   "login": {
-    "pageTitle": "Login"
+    "pageTitle": "Login",
+    "button": {
+      "alreadyLoggedAs": "Already logged in as '{{email}}'",
+      "returnToDashboard": "Return to dashboard",
+      "submit": "Log in",
+      "lostPassword": "Lost password"
+    },
+    "label": {
+      "email": "Email",
+      "password": "Password"
+    }
   },
   "passwordRecovery": {
     "pageTitle": "Password recovery"

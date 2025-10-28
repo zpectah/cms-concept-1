@@ -5,8 +5,8 @@ type LinkButtonProps = ButtonProps & {
   to: string;
 };
 
-const LinkButton = ({ children, to, ...rest }: LinkButtonProps) => (
-  <Button variant="outlined" color="inherit" component={Link} to={to} {...rest}>
+const LinkButton = ({ children, to, variant, ...rest }: LinkButtonProps) => (
+  <Button variant={variant ? variant : 'outlined'} color="inherit" component={Link} to={to} {...rest}>
     {children}
   </Button>
 );
