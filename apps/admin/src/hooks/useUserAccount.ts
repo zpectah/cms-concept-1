@@ -1,13 +1,29 @@
+import { useUserQuery } from '../hooks-query';
+
 export const useUserAccount = () => {
-  // TODO
+  const { userQuery } = useUserQuery();
+
+  const { data } = userQuery;
+
+  const user = data?.user ?? {
+    id: 0,
+    email: '',
+    name: '',
+    first_name: '',
+    last_name: '',
+    access_rights: 0,
+  };
+
+  const actions = {
+    canApprove: true,
+    canSelfApprove: true,
+    canSeeSettings: true,
+    canSeeMaintenance: true,
+    // TODO
+  };
 
   return {
-    user: {
-      id: 1,
-      email: 'user@email.com',
-      name: 'fg54jhgf5h4j65gf',
-      first_name: '',
-      last_name: '',
-    },
+    user,
+    actions,
   };
 };

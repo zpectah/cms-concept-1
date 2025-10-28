@@ -11,18 +11,21 @@ const AccountForm = () => {
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
       <FormContent>
-        <div>Avatar image maybe?</div>
-        <EmailField name={registeredFormFields.email} label="Email" isRequired />
+        {/* TODO: avatar image */}
+        <EmailField name={registeredFormFields.email} label="Email" isRequired readOnly />
+        <InputField name={registeredFormFields.first_name} label="First name" />
+        <InputField name={registeredFormFields.last_name} label="Last name" />
+
+        <div style={{ height: '20px' }} />
+
         <PasswordField name={registeredFormFields.password} label="New password" />
         <PasswordField
           name={registeredFormFields.passwordConfirm}
           label="Password confirm"
           isHidden={!watchedPassword}
         />
-        <InputField name={registeredFormFields.first_name} label="First name" />
-        <InputField name={registeredFormFields.last_name} label="Last name" />
 
-        <ActionBar>
+        <ActionBar stackProps={{ sx: { mt: 2 } }}>
           <Button type="submit" variant="contained" color="primary">
             Update
           </Button>

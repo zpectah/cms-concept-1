@@ -5,14 +5,11 @@ export type UsersType = keyof typeof usersTypeKeys;
 
 export interface UsersItem extends ItemBase {
   type: UsersType;
-
   email: string;
   password?: string;
-
   first_name?: string;
   last_name?: string;
-
-  access_rights: number; // TODO
+  access_rights: number; // TODO: enum
 }
 
 export type Users = UsersItem[];

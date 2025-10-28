@@ -19,3 +19,4 @@
 * [] Při vytváření souborů při uploadu - pokud je obrázek, tak udělat zmenšený náhled a uložit ho s prefixem 'thumb.'
 * [OK] ***BUG*** - přesunout confirm dialog pod AppStore !!!
 * [OK] Při odhlašování - udělat tvrdý redirect na login page ...
+* [] Vytvořit pravidla pro 'actions' -> co uživatel může a co nemůže ... 'useUserAccount'

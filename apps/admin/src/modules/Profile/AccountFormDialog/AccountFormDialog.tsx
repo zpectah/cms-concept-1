@@ -1,4 +1,3 @@
-import { Stack, Button } from '@mui/material';
 import { useAppStore } from '../../../store';
 import { Drawer } from '../../../components';
 import { AccountForm } from '../AccountForm';
@@ -23,14 +22,7 @@ const AccountFormDialog = () => {
       }}
       header="Profile"
     >
-      <Stack direction="column" gap={2}>
-        <Stack direction="row">
-          <Button variant="outlined" color="secondary">
-            Log out
-          </Button>
-        </Stack>
-        <AccountForm />
-      </Stack>
+      <AccountForm />
     </Drawer>
   );
 };

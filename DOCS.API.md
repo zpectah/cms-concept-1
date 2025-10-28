@@ -180,6 +180,18 @@
 * $email = User email
 
 
+### User
+
+| Method | Model                  |                Request                |                          Response                           |
+|:------:|:-----------------------|:-------------------------------------:|:-----------------------------------------------------------:|
+|  GET   | `/user`                |                  ``                   |        `{ active: boolean; user: UsersDetail null }`        |
+| PATCH  | `/user/patch`          |             `UsersDetail`             |                     `{ rows: number }`                      |
+|  POST  | `/user/check-email`    |          `{ email: string }`          |                    `{ match: boolean }`                     |
+|  POST  | `/user/check-password` | `{ email: string; password: string }` |              `{ match: boolean; id: number }`               |
+|  POST  | `/user/login`          | `{ email: string; password: string }` | `{ open: boolean; session: { id: number; email: string } }` |
+|  POST  | `/user/logout`         |               `unknown`               |            `{ open: boolean; session: unknown }`            |
+
+
 ### Blacklist
 
 |  Method  | Model               |     Request     |      Response      |
@@ -227,6 +239,7 @@
 |:---------:|:--------------------------------------------|:---------:|:---------:|
 |   PATCH   | `/maintenance/analyze-model-items`          |   `{}`    | `{ ... }` |
 |   PATCH   | `/maintenance/permanent-delete-model-items` | `{ ... }` |   `{}`    |
+
 
 
 
