@@ -26,8 +26,8 @@ export const useMessagesDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { addToast } = useAppStore();
-  const { setTitle, openConfirmDialog } = useViewLayoutContext();
+  const { addToast, openConfirmDialog } = useAppStore();
+  const { setTitle } = useViewLayoutContext();
   const { messagesQuery, messagesDetailQuery, messagesPatchMutation, messagesCreateMutation } = useMessagesQuery({
     id,
   });

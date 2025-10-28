@@ -5,6 +5,7 @@ import { ToastsItem, ToastsItemSeverity, AnnouncementsItem, AnnouncementsItemSev
 import { toastsItemSeverityKeys } from '../enums';
 import { getConfig } from '../utils';
 import { CMS_LOCALES_KEY, CMS_THEME_MODE_KEY, FEEDBACK_COMMON_TIMEOUT_DEFAULT } from '../constants';
+import { ConfirmDialogBaseProps } from '../components';
 
 interface AppStore {
   locale: string;
@@ -22,6 +23,9 @@ interface AppStore {
   // Profile dialog
   profileDialogOpen: boolean;
   toggleProfileDialog: () => void;
+  // Confirm dialog
+  confirmDialog: ConfirmDialogBaseProps | null;
+  openConfirmDialog: (dialog: ConfirmDialogBaseProps | null) => void;
 }
 
 const useAppStore = create<AppStore>((set, getState) => {
@@ -34,6 +38,7 @@ const useAppStore = create<AppStore>((set, getState) => {
   const toasts: ToastsItem[] = [];
   const announcements: AnnouncementsItem[] = [];
   const profileDialogOpen = false;
+  const confirmDialog: ConfirmDialogBaseProps | null = null;
 
   const setLocalesHandler = (locale: string) => {
     set({ locale });
@@ -113,6 +118,10 @@ const useAppStore = create<AppStore>((set, getState) => {
     set({ profileDialogOpen: !getState().profileDialogOpen });
   };
 
+  const openConfirmDialogHandler = (confirmDialog: ConfirmDialogBaseProps | null) => {
+    set({ confirmDialog });
+  };
+
   return {
     // Locale
     locale,
@@ -128,9 +137,12 @@ const useAppStore = create<AppStore>((set, getState) => {
     announcements,
     addAnnouncement: addAnnouncementHandler,
     removeAnnouncement: removeAnnouncementHandler,
-
+    // Profile dialog
     profileDialogOpen,
     toggleProfileDialog: toggleProfileDialogHandler,
+    // Confirm dialog
+    confirmDialog,
+    openConfirmDialog: openConfirmDialogHandler,
   };
 });
 

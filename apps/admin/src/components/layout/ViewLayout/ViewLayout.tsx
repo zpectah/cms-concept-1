@@ -4,7 +4,6 @@ import { WithChildren } from '@common';
 import { Breadcrumbs } from '../../Breadcrumbs';
 import { ViewLayoutContextProvider } from './ViewLayout.context';
 import { viewLayoutTypeKeys } from './enums';
-import { ConfirmDialog, ConfirmDialogBaseProps } from '../../Dialog';
 
 type ViewLayoutType = keyof typeof viewLayoutTypeKeys;
 type ViewLayoutTitle = string | ReactNode | undefined;
@@ -41,14 +40,10 @@ const ViewLayout = ({
 }: ViewLayoutProps) => {
   const [layoutTitle, setLayoutTitle] = useState<ViewLayoutTitle>(title);
   const [layoutTitleAction, setLayoutTitleAction] = useState<ViewLayoutTitleAction>(titleAction);
-  const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogBaseProps | null>(null);
-
-  const closeConfirmDialogHandler = () => setConfirmDialog(null);
 
   const layoutContext = {
     setTitle: setLayoutTitle,
     setTitleAction: setLayoutTitleAction,
-    openConfirmDialog: setConfirmDialog,
   };
 
   return (
@@ -70,13 +65,6 @@ const ViewLayout = ({
           <MainContent as="div">{children}</MainContent>
         </Main>
       </Wrapper>
-      <ConfirmDialog
-        open={!!confirmDialog}
-        onClose={closeConfirmDialogHandler}
-        title={confirmDialog?.title}
-        content={confirmDialog?.content}
-        onConfirm={() => confirmDialog?.onConfirm()}
-      />
     </ViewLayoutContextProvider>
   );
 };

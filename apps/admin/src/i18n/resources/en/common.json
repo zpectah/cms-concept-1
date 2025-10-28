@@ -42,7 +42,8 @@
     "removeFromQueue": "Remove from queue",
     "cropImage": "Crop image",
     "saveAndExit": "Save and exit",
-    "newRecord": "New record"
+    "newRecord": "New record",
+    "logOut": "Log out"
   },
   "label": {
     "yesterday": "Yesterday",
@@ -72,6 +73,10 @@
   },
   "message": {
     "confirm": {
+      "logOut": {
+        "title": "Exit application",
+        "content": "Do you really want to log out of the application?"
+      },
       "deleteDetail": {
         "title": "Delete confirm",
         "content": "Item wil be deleted after save, are you sure?"
@@ -101,7 +106,8 @@
       "itemsCreated": "Items was successfully created",
       "fileCreated": "File was created successfully",
       "filesCreated": "Files was successfully created",
-      "dataSaved": "Data was successfully saved"
+      "dataSaved": "Data was successfully saved",
+      "logoutSuccess": "You have been successfully logged out."
     },
     "info": {},
     "warning": {},
@@ -110,7 +116,8 @@
       "formErrors": "Form contains some errors",
       "maxFileSize": "Maximum file size exceeded",
       "unsupportedFileExt": "Unsupported file extension '{{value}}'",
-      "unknownFileExt": "Unknown file extension '{{value}}'"
+      "unknownFileExt": "Unknown file extension '{{value}}'",
+      "logoutError": "There was a problem logging out, please try again."
     }
   }
 }

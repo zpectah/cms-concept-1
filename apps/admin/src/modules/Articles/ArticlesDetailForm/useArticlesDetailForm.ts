@@ -11,10 +11,10 @@ import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useArticlesQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
+import { registeredFormFields } from '../../../enums';
 import { ArticlesDetailFormSchema } from './schema';
 import { IArticlesDetailForm } from './types';
 import { getArticlesDetailFormDefaultValues, getArticlesDetailFormMapper } from './helpers';
-import { registeredFormFields } from '../../../enums';
 
 export const useArticlesDetailForm = () => {
   const { t } = useTranslation();
@@ -23,8 +23,8 @@ export const useArticlesDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { addToast } = useAppStore();
-  const { setTitle, openConfirmDialog } = useViewLayoutContext();
+  const { addToast, openConfirmDialog } = useAppStore();
+  const { setTitle } = useViewLayoutContext();
   const { articlesQuery, articlesDetailQuery, articlesPatchMutation, articlesCreateMutation } = useArticlesQuery({
     id,
   });

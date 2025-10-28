@@ -43,6 +43,4 @@ require_once PATH_ROOT . 'model/Users.php';
 
 require_once PATH_ROOT . 'service/EmailService.php';
 require_once PATH_ROOT . 'service/MaintenanceService.php';
-require_once PATH_ROOT . 'service/MemberService.php';
 require_once PATH_ROOT . 'service/SessionService.php';
-require_once PATH_ROOT . 'service/UserService.php';

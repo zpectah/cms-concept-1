@@ -3,6 +3,7 @@ import { UI_HEADER_HEIGHT } from '../../constants';
 import { CmsLogo } from '../CmsLogo';
 import { UserMenu } from '../UserMenu';
 import { MainMenu } from '../MainMenu';
+import LogoutButton from './LogoutButton';
 
 const Wrapper = styled('header')(({ theme }) => ({
   width: '100%',
@@ -52,6 +53,7 @@ const Header = () => (
         <TertiaryBlock></TertiaryBlock>
         <SecondaryBlock>
           <Stack direction="row" gap={1.5}>
+            <LogoutButton />
             <UserMenu />
           </Stack>
         </SecondaryBlock>

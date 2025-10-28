@@ -8,17 +8,7 @@
 * [OK] Instalace jazyka - vytvoření tabulek ...
 * [] Sjednotit tlačítka v tabulce - jednotnou barvu, obrátit ten active stav
 * [OK] Heslo - users/members
-* [] User account - login
-```
-$plain_password_from_form = $_POST['password']; // Heslo z formuláře
-$db_hash = $user_record['password']; // Haš z databáze
-
-if (password_verify($plain_password_from_form, $db_hash)) {
-    // Hesla se shodují, uživatel je přihlášen.
-} else {
-    // Hesla se neshodují, chyba.
-}
-```
+* [OK] User account - login
 * [] User account - lost password
 * [] User account - správa
 * [] Menu items picker !!!
@@ -26,3 +16,6 @@ if (password_verify($plain_password_from_form, $db_hash)) {
 * [] Attachments picker - update/rozšíření
 * [OK] Settings - languages - při instalaci otevřít potvrzovací okno ...
 * [] Settings - maintenance - pouštění scriptů
+* [] Při vytváření souborů při uploadu - pokud je obrázek, tak udělat zmenšený náhled a uložit ho s prefixem 'thumb.'
+* [OK] ***BUG*** - přesunout confirm dialog pod AppStore !!!
+* [] Při odhlašování - udělat tvrdý redirect na login page ...

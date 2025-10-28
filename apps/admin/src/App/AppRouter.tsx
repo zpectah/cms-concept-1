@@ -3,7 +3,7 @@ import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom'
 import { newItemKey } from '@common';
 import { getConfig } from '../utils';
 import { ToastList, AnnouncementsList, AccountFormDialog } from '../modules';
-import { AuthLayout, AppLayout } from '../components';
+import { AuthLayout, AppLayout, AppConfirmDialog } from '../components';
 import {
   ArticlesView,
   AttachmentsView,
@@ -61,7 +61,14 @@ const AppRouter = () => {
 
   const router = createBrowserRouter([
     {
-      element: <AppLayout variant="minimal" toastsSlot={<ToastList />} announcementsSlot={<AnnouncementsList />} />,
+      element: (
+        <AppLayout
+          variant="minimal"
+          toastsSlot={<ToastList />}
+          announcementsSlot={<AnnouncementsList />}
+          dialogSlot={<AppConfirmDialog />}
+        />
+      ),
       errorElement: <ErrorBoundary />,
       children: [
         {
@@ -105,6 +112,7 @@ const AppRouter = () => {
               toastsSlot={<ToastList />}
               announcementsSlot={<AnnouncementsList />}
               drawerSlot={<AccountFormDialog />}
+              dialogSlot={<AppConfirmDialog />}
             />
           ),
           children: [

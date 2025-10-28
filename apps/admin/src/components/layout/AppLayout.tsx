@@ -16,6 +16,7 @@ interface AppLayoutProps {
   toastsSlot?: ReactNode;
   announcementsSlot?: ReactNode;
   drawerSlot?: ReactNode;
+  dialogSlot?: ReactNode;
 }
 
 const Wrapper = styled('main')({
@@ -42,6 +43,7 @@ const AppLayout = ({
   toastsSlot,
   announcementsSlot,
   drawerSlot,
+  dialogSlot,
 }: AppLayoutProps) => {
   const wrapperProps = {
     id: 'cms-layout',
@@ -64,6 +66,7 @@ const AppLayout = ({
               </Wrapper>
             </LayoutBase>
             {toastsSlot}
+            {dialogSlot}
           </>
         );
 
@@ -85,6 +88,7 @@ const AppLayout = ({
             </LayoutBase>
             {toastsSlot}
             {drawerSlot}
+            {dialogSlot}
           </>
         );
     }

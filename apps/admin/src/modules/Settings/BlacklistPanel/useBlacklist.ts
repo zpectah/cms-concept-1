@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Blacklist } from '@common';
-import { useViewLayoutContext } from '../../../components';
 import { useBlacklistQuery } from '../../../hooks-query';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
@@ -10,8 +9,7 @@ export const useBlacklist = () => {
   const [query, setQuery] = useState('');
 
   const { t } = useTranslation(['common']);
-  const { openConfirmDialog } = useViewLayoutContext();
-  const { addToast } = useAppStore();
+  const { addToast, openConfirmDialog } = useAppStore();
   const { blacklistQuery, blacklistToggleMutation, blacklistDeleteMutation } = useBlacklistQuery({});
 
   const { data: blacklistItems, refetch } = blacklistQuery;

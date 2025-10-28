@@ -11,10 +11,10 @@ import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useTranslationsQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
+import { registeredFormFields } from '../../../enums';
 import { TranslationsDetailFormSchema } from './schema';
 import { ITranslationsDetailForm } from './types';
 import { getTranslationsDetailFormDefaultValues, getTranslationsDetailFormMapper } from './helpers';
-import { registeredFormFields } from '../../../enums';
 
 export const useTranslationsDetailForm = () => {
   const { t } = useTranslation();
@@ -23,8 +23,8 @@ export const useTranslationsDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { addToast } = useAppStore();
-  const { setTitle, openConfirmDialog } = useViewLayoutContext();
+  const { addToast, openConfirmDialog } = useAppStore();
+  const { setTitle } = useViewLayoutContext();
   const { translationsQuery, translationsDetailQuery, translationsPatchMutation, translationsCreateMutation } =
     useTranslationsQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();

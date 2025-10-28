@@ -11,10 +11,10 @@ import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMenuQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
+import { registeredFormFields } from '../../../enums';
 import { MenuDetailFormSchema } from './schema';
 import { IMenuDetailForm } from './types';
 import { getMenuDetailFormDefaultValues, getMenuDetailFormMapper } from './helpers';
-import { registeredFormFields } from '../../../enums';
 
 export const useMenuDetailForm = () => {
   const { t } = useTranslation();
@@ -23,8 +23,8 @@ export const useMenuDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { addToast } = useAppStore();
-  const { setTitle, openConfirmDialog } = useViewLayoutContext();
+  const { addToast, openConfirmDialog } = useAppStore();
+  const { setTitle } = useViewLayoutContext();
   const { menuQuery, menuDetailQuery, menuPatchMutation, menuCreateMutation } = useMenuQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.menu);

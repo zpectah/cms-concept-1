@@ -50,7 +50,7 @@ class Users extends Model {
     return $items;
   }
 
-  public function getDetail($id, $email): array {
+  public function getDetail($id, $email, $withPassword = false): array {
     $conn = self::connection();
 
     if (!$id && !$email) {
@@ -62,9 +62,17 @@ class Users extends Model {
     }
 
     if ($id) {
-      $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `id` = :id LIMIT 1";
+      if ($withPassword) {
+        $sql = "SELECT id, type, name, password, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `id` = :id LIMIT 1";
+      } else {
+        $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `id` = :id LIMIT 1";
+      }
     } else if ($email) {
-      $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `email` = :email LIMIT 1";
+      if ($withPassword) {
+        $sql = "SELECT id, type, name, password, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `email` = :email LIMIT 1";
+      } else {
+        $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `email` = :email LIMIT 1";
+      }
     }
     $stmt = $conn -> prepare($sql);
     if ($id) {
@@ -203,6 +211,29 @@ class Users extends Model {
 
     return [
       'rows' => $stmt -> rowCount(),
+    ];
+  }
+
+  public function checkEmail($data): array {
+    $email = $data['email'];
+    $user = self::getDetail(null, $email);
+
+    return [
+      'match' => !!$user,
+    ];
+  }
+
+  public function checkPassword($data): array {
+    $email = $data['email'];
+    $password = $data['password'];
+
+    $user = self::getDetail(null, $email, true);
+    $hash = $user['password'];
+    $id = $user['id'] ?? 0;
+
+    return [
+      'match' => password_verify($password, $hash),
+      'id' => $id,
     ];
   }
 

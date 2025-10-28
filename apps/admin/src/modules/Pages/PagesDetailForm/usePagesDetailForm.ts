@@ -11,10 +11,10 @@ import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { usePagesQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
+import { registeredFormFields } from '../../../enums';
 import { PagesDetailFormSchema } from './schema';
 import { IPagesDetailForm } from './types';
 import { getPagesDetailFormDefaultValues, getPagesDetailFormMapper } from './helpers';
-import { registeredFormFields } from '../../../enums';
 
 export const usePagesDetailForm = () => {
   const { t } = useTranslation();
@@ -23,8 +23,8 @@ export const usePagesDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { addToast } = useAppStore();
-  const { setTitle, openConfirmDialog } = useViewLayoutContext();
+  const { addToast, openConfirmDialog } = useAppStore();
+  const { setTitle } = useViewLayoutContext();
   const { pagesQuery, pagesDetailQuery, pagesPatchMutation, pagesCreateMutation } = usePagesQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.pages);

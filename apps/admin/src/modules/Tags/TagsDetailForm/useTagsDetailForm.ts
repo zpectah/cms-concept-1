@@ -11,10 +11,10 @@ import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useTagsQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
+import { registeredFormFields } from '../../../enums';
 import { TagsDetailFormSchema } from './schema';
 import { ITagsDetailForm } from './types';
 import { getTagsDetailFormDefaultValues, getTagsDetailFormMapper, getTagsDetailFormMapperToMaster } from './helpers';
-import { registeredFormFields } from '../../../enums';
 
 export const useTagsDetailForm = () => {
   const { t } = useTranslation();
@@ -23,8 +23,8 @@ export const useTagsDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { addToast } = useAppStore();
-  const { setTitle, openConfirmDialog } = useViewLayoutContext();
+  const { addToast, openConfirmDialog } = useAppStore();
+  const { setTitle } = useViewLayoutContext();
   const { tagsQuery, tagsDetailQuery, tagsPatchMutation, tagsCreateMutation } = useTagsQuery({ id });
   const { getTypeFieldOptions, getTranslatedOptionsFromList } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.tags);

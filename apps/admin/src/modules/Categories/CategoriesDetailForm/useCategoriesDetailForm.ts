@@ -11,10 +11,10 @@ import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useCategoriesQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
+import { registeredFormFields } from '../../../enums';
 import { CategoriesDetailFormSchema } from './schema';
 import { ICategoriesDetailForm } from './types';
 import { getCategoriesDetailFormDefaultValues, getCategoriesDetailFormMapper } from './helpers';
-import { registeredFormFields } from '../../../enums';
 
 export const useCategoriesDetailForm = () => {
   const { t } = useTranslation();
@@ -23,8 +23,8 @@ export const useCategoriesDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { addToast } = useAppStore();
-  const { setTitle, openConfirmDialog } = useViewLayoutContext();
+  const { addToast, openConfirmDialog } = useAppStore();
+  const { setTitle } = useViewLayoutContext();
   const { categoriesQuery, categoriesDetailQuery, categoriesPatchMutation, categoriesCreateMutation } =
     useCategoriesQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();

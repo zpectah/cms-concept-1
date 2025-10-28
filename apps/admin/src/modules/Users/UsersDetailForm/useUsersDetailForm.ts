@@ -11,10 +11,10 @@ import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useUsersQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
+import { registeredFormFields } from '../../../enums';
 import { UsersDetailFormSchema } from './schema';
 import { IUsersDetailForm } from './types';
 import { getUsersDetailFormDefaultValues, getUsersDetailFormMapper } from './helpers';
-import { registeredFormFields } from '../../../enums';
 
 export const useUsersDetailForm = () => {
   const { t } = useTranslation();
@@ -23,8 +23,8 @@ export const useUsersDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { addToast } = useAppStore();
-  const { setTitle, openConfirmDialog } = useViewLayoutContext();
+  const { addToast, openConfirmDialog } = useAppStore();
+  const { setTitle } = useViewLayoutContext();
   const { usersQuery, usersDetailQuery, usersPatchMutation, usersCreateMutation } = useUsersQuery({ id });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.users);

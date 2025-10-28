@@ -1,11 +1,24 @@
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { getConfig } from '../../utils';
+import { useUserQuery } from '../../hooks-query';
 
 const AuthLayout = () => {
-  // TODO
+  const {
+    admin: { routes },
+  } = getConfig();
+  const navigate = useNavigate();
+  const { userQuery } = useUserQuery();
+
+  const { data: user, isLoading } = userQuery;
+
   useEffect(() => {
-    console.info('Check authorization here');
-  }, []);
+    if (!user?.active && !isLoading) {
+      navigate(`/${routes.login.path}?reason=no-session`);
+    } else {
+      if (user?.user) console.log('session ok', user.user);
+    }
+  }, [user, isLoading]);
 
   return <Outlet />;
 };

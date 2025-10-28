@@ -137,6 +137,18 @@ class Response {
         $response = $maintenance -> resolve($environment, $method, $parsed_url, $jsonData);
         break;
 
+      case 'user':
+        $user = new router\UserRouter;
+
+        $response = $user -> resolve($environment, $method, $parsed_url, $jsonData);
+        break;
+
+      case 'member':
+        $member = new router\MemberRouter;
+
+        $response = $member -> resolve($environment, $method, $parsed_url, $jsonData);
+        break;
+
       default:
         $response = [];
         break;

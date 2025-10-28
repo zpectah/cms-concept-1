@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ItemBase } from '@common';
-import { useViewLayoutContext } from '../layout';
+import { useAppStore } from '../../store';
 import { Content } from '../Content';
 import { ListItemsProps } from './types';
 import { listItemsViewKeys } from './enums';
@@ -66,7 +66,7 @@ const ListItems = <T extends ItemBase>({
     tags,
     initialView,
   });
-  const { openConfirmDialog } = useViewLayoutContext();
+  const { openConfirmDialog } = useAppStore();
   const navigate = useNavigate();
 
   const {

@@ -16,6 +16,7 @@ export const API_URL = {
   settings: `${API_URL_BASE}private/settings`,
   tags: `${API_URL_BASE}private/tags`,
   translations: `${API_URL_BASE}private/translations`,
+  user: `${API_URL_BASE}private/user`,
   users: `${API_URL_BASE}private/users`,
 };
 
@@ -35,5 +36,6 @@ export const API_KEYS = {
   settings: 'settings',
   tags: 'tags',
   translations: 'translations',
+  user: 'user',
   users: 'users',
 };

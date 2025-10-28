@@ -3,15 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { useSettingsQuery } from '../../../hooks-query';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
-import { useViewLayoutContext } from '../../../components';
 
 export const useLanguagesPanel = () => {
   const [isInstalling, setIsInstalling] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
 
   const { t } = useTranslation(['common', 'modules']);
-  const { addToast } = useAppStore();
-  const { openConfirmDialog } = useViewLayoutContext();
+  const { addToast, openConfirmDialog } = useAppStore();
   const { settingsQuery, settingsLocaleInstallMutation, settingsLocaleDefaultMutation, settingsLocaleToggleMutation } =
     useSettingsQuery();
 

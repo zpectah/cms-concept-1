@@ -16,7 +16,7 @@ const LoginForm = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { form, onSubmit } = useLoginForm();
+  const { form, onSubmit, user } = useLoginForm();
 
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
@@ -32,6 +32,7 @@ const LoginForm = () => {
             Lost password?
           </LinkButton>
         </Stack>
+        <div>{JSON.stringify(user, null, 2)}</div>
       </Content>
     </ControlledForm>
   );
