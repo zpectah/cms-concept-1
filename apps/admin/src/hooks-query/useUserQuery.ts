@@ -75,7 +75,7 @@ export const useUserQuery = () => {
   });
 
   const userPasswordRecoveryRequestCheckMutation = useMutation<
-    { id: number | undefined; email: string | null },
+    { id?: number; email: string | null },
     unknown,
     { token: string }
   >({

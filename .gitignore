@@ -5,6 +5,9 @@ dist
 tmp
 out-tsc
 
+# API vendors, needs to rebuild again
+apps/api/src/vendor
+
 # dependencies
 node_modules
 

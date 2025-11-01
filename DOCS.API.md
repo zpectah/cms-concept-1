@@ -182,14 +182,17 @@
 
 ### User
 
-| Method | Model                  |                Request                |                          Response                           |
-|:------:|:-----------------------|:-------------------------------------:|:-----------------------------------------------------------:|
-|  GET   | `/user`                |                  ``                   |        `{ active: boolean; user: UsersDetail null }`        |
-| PATCH  | `/user/patch`          |             `UsersDetail`             |                     `{ rows: number }`                      |
-|  POST  | `/user/check-email`    |          `{ email: string }`          |                    `{ match: boolean }`                     |
-|  POST  | `/user/check-password` | `{ email: string; password: string }` |              `{ match: boolean; id: number }`               |
-|  POST  | `/user/login`          | `{ email: string; password: string }` | `{ open: boolean; session: { id: number; email: string } }` |
-|  POST  | `/user/logout`         |               `unknown`               |            `{ open: boolean; session: unknown }`            |
+| Method | Model                                   |                       Request                        |                                             Response                                             |
+|:------:|:----------------------------------------|:----------------------------------------------------:|:------------------------------------------------------------------------------------------------:|
+|  GET   | `/user`                                 |                          ``                          |                         `{ active: boolean; user: UsersDetail / null }`                          |
+| PATCH  | `/user/patch`                           |                    `UsersDetail`                     |                                        `{ rows: number }`                                        |
+|  POST  | `/user/check-email`                     |                 `{ email: string }`                  |                                       `{ match: boolean }`                                       |
+|  POST  | `/user/check-password`                  |        `{ email: string; password: string }`         |                                 `{ match: boolean; id: number }`                                 |
+|  POST  | `/user/login`                           |        `{ email: string; password: string }`         |                   `{ open: boolean; session: { id: number; email: string } }`                    |
+|  POST  | `/user/logout`                          |                      `unknown`                       |                              `{ open: boolean; session: unknown }`                               |
+|  POST  | `/user/password-recovery-request`       |   `{ email: string; type: string; path: string }`    | `{ tokenCreated: boolean; requestCreated: boolean; emailCreated: boolean; emailSend: boolean }`  |
+|  POST  | `/user/password-recovery-request-check` |                 `{ token: string }`                  |                             `{ id?: number; email: string / null }`                              |
+|  POST  | `/user/password-recovery-token`         | `{ token: string; email: string; password: string }` | `{ requestActive: boolean; userActive: boolean; userUpdated: boolean; requestUpdated: boolean }` |
 
 
 ### Blacklist

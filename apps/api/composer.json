@@ -1,0 +1,13 @@
+{
+  "name": "cms-concept-1/api",
+  "description": "API service for CMS",
+  "type": "project",
+  "require": {
+    "php": ">=8.0",
+    "phpmailer/phpmailer": "^7.0"
+  },
+  "config": {
+    "vendor-dir": "src/vendor"
+  },
+  "license": "MIT"
+}

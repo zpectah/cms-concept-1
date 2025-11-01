@@ -27,6 +27,29 @@ class UserRouter extends Router {
     return $response;
   }
 
+  private function patch($data): array {
+    $users = new \model\Users;
+    $sessionService = new \service\SessionService;
+
+    $response = [];
+
+    $session = $sessionService -> getActiveSession('user');
+
+    if ($session['active']) {
+      $email = $session['session']['email'];
+
+      if ($email === $data['email']) {
+        $response = $users -> patch($data);
+      } else {
+        // TODO
+      }
+    } else {
+      // TODO
+    }
+
+    return $response;
+  }
+
   private function passwordRecoveryRequestHandler($data): array {
     $users = new \model\Users;
     $requests = new \model\Requests;
@@ -54,7 +77,8 @@ class UserRouter extends Router {
       $requestCreated = $requests -> create($request);
 
       $emailBody = $emailService -> createPasswordRecoveryEmail([ 'token' => $token, 'path' => $data['path'], ]);
-      $emailSend = $emailService -> sendHtmlEmail($email, 'Password recovery', $emailBody, 'noreply@domain.com');
+      // $emailSend = $emailService -> sendHtmlEmail($email, 'Password recovery', $emailBody, 'noreply@domain.com');
+      $emailSend = $emailService -> createEmail($email, 'Password recovery', $emailBody, 'noreply@domain.com');
 
       $response['tokenCreated'] = !!$token;
       $response['requestCreated'] = !!$requestCreated['id'];
@@ -175,21 +199,7 @@ class UserRouter extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $session = $sessionService -> getActiveSession('user');
-
-                if ($session['active']) {
-                  $email = $session['session']['email'];
-
-                  if ($email === $data['email']) {
-                    $response = $users -> patch($data);
-                  } else {
-                    // TODO
-                    $response = [];
-                  }
-                } else {
-                  // TODO
-                  $response = [];
-                }
+                $response = self::patch($data);
                 break;
 
             }
