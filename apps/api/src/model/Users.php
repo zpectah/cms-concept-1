@@ -237,6 +237,31 @@ class Users extends Model {
     ];
   }
 
+  public function changePassword($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $email = $data['email'];
+    $password = password_hash($data['password'], PASSWORD_ARGON2ID);
+
+    $sql = "UPDATE `users` SET `password` = :password WHERE `email` = :email";
+    $stmt = $conn -> prepare($sql);
+    $stmt -> bindParam(':password', $password);
+    $stmt -> bindParam(':email', $email);
+    $stmt -> execute();
+
+    return [
+      'rows' => $stmt -> rowCount(),
+    ];
+  }
+
   public function deletePermanently($data): array {
     /* TODO */
 

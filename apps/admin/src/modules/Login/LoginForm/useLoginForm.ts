@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -5,11 +6,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { getConfig } from '../../../utils';
 import { useUserQuery } from '../../../hooks-query';
 import { TOAST_ERROR_TIMEOUT_DEFAULT } from '../../../constants';
+import { useAppStore } from '../../../store';
 import { LoginFormSchema } from './schema';
 import { ILoginForm } from './types';
 import { LoginFormDefaults } from './constants';
-import { useAppStore } from '../../../store';
-import { useEffect } from 'react';
 
 export const useLoginForm = () => {
   const {

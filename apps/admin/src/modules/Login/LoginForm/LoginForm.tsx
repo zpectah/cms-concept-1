@@ -41,7 +41,9 @@ const LoginForm = () => {
             <SecondaryButton type="reset">{t('button.reset')}</SecondaryButton>
           </Stack>
           <Stack direction="row" gap={2} alignItems="center" justifyContent="center">
-            <LinkButton to={`/${routes.passwordRecovery.path}`}>{t('modules:login.button.lostPassword')}</LinkButton>
+            <LinkButton to={`/${routes.passwordRecovery.path}`} variant="text">
+              {t('modules:login.button.lostPassword')}
+            </LinkButton>
           </Stack>
         </Content>
       )}

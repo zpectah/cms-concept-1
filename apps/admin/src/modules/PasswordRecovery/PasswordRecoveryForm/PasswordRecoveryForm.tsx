@@ -1,16 +1,25 @@
+import { useTranslation } from 'react-i18next';
 import { Stack } from '@mui/material';
-import { Content } from '../../../components';
+import { ControlledForm, FormContent, EmailField, SubmitButton, SecondaryButton } from '../../../components';
+import { registeredFormFields } from '../../../enums';
+import { usePasswordRecoveryForm } from './usePasswordRecoveryForm';
 
 const PasswordRecoveryForm = () => {
+  const { t } = useTranslation(['common', 'modules']);
+  const { form, onSubmit } = usePasswordRecoveryForm();
+
   return (
-    <form>
-      <Content>
+    <ControlledForm form={form} formProps={{ onSubmit }}>
+      <FormContent>
         <Stack>
-          ...PasswordRecoveryForm...
-          <div>...</div>
+          <EmailField name={registeredFormFields.email} label={t('modules:login.label.email')} isRequired />
         </Stack>
-      </Content>
-    </form>
+        <Stack direction="row" gap={2} alignItems="center" justifyContent="center">
+          <SubmitButton>Send request</SubmitButton>
+          <SecondaryButton type="reset">{t('button.reset')}</SecondaryButton>
+        </Stack>
+      </FormContent>
+    </ControlledForm>
   );
 };
 

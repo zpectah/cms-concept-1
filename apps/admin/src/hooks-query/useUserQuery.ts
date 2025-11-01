@@ -43,7 +43,7 @@ export const useUserQuery = () => {
   const userLoginMutation = useMutation<
     { open: boolean; session: { id: number; email: string } },
     unknown,
-    { email: string; password: string }
+    { email: string; id: number }
   >({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-login`],
     mutationFn: (data) =>
@@ -64,6 +64,35 @@ export const useUserQuery = () => {
         .then((response) => response.data),
   });
 
+  const userPasswordRecoveryRequestMutation = useMutation<
+    { tokenCreated: boolean; requestCreated: boolean; emailCreated: boolean; emailSend: boolean },
+    unknown,
+    { email: string; type: string; path: string }
+  >({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-password-recovery-request`],
+    mutationFn: (data) =>
+      axios.post(`${API_URL.user}/password-recovery-request`, data).then((response) => response.data),
+  });
+
+  const userPasswordRecoveryRequestCheckMutation = useMutation<
+    { id: number | undefined; email: string | null },
+    unknown,
+    { token: string }
+  >({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-password-recovery-request-check`],
+    mutationFn: (data) =>
+      axios.post(`${API_URL.user}/password-recovery-request-check`, data).then((response) => response.data),
+  });
+
+  const userPasswordRecoveryTokenMutation = useMutation<
+    { requestActive: boolean; userActive: boolean; userUpdated: boolean; requestUpdated: boolean },
+    unknown,
+    { token: string; email: string; password: string }
+  >({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-password-recovery-token`],
+    mutationFn: (data) => axios.post(`${API_URL.user}/password-recovery-token`, data).then((response) => response.data),
+  });
+
   return {
     userQuery,
     userPatchMutation,
@@ -71,5 +100,9 @@ export const useUserQuery = () => {
     userCheckPasswordMutation,
     userLoginMutation,
     userLogoutMutation,
+
+    userPasswordRecoveryRequestMutation,
+    userPasswordRecoveryRequestCheckMutation,
+    userPasswordRecoveryTokenMutation,
   };
 };

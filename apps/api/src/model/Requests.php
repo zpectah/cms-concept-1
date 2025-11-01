@@ -28,9 +28,9 @@ class Requests extends Model {
   public function getList(): array {
     $conn = self::connection();
 
-    $status = 1; // TODO
+    $status = 1;
 
-    $stmt = $conn -> prepare("SELECT * FROM `requests` WHERE `status` >= :status");
+    $stmt = $conn -> prepare("SELECT * FROM `requests` WHERE `status` = :status");
     $stmt -> bindParam(':status', $status, PDO::PARAM_INT);
     $stmt -> execute();
 
@@ -45,7 +45,7 @@ class Requests extends Model {
     return $items;
   }
 
-  public function getDetail($id, $token): array {
+  public function getDetail($id, $token): array | null {
     $conn = self::connection();
 
     if (!$id && !$token) {
@@ -56,10 +56,12 @@ class Requests extends Model {
       ];
     }
 
+    $status = 1;
+
     if ($id) {
-      $sql = "SELECT * FROM `requests` WHERE `id` = :id LIMIT 1";
+      $sql = "SELECT * FROM `requests` WHERE `id` = :id AND `status` = :status LIMIT 1";
     } else if ($token) {
-      $sql = "SELECT * FROM `requests` WHERE `token` = :token LIMIT 1";
+      $sql = "SELECT * FROM `requests` WHERE `token` = :token AND `status` = :status LIMIT 1";
     }
     $stmt = $conn -> prepare($sql);
     if ($id) {
@@ -67,9 +69,12 @@ class Requests extends Model {
     } else if ($token) {
       $stmt -> bindParam(':token', $token);
     }
+    $stmt -> bindParam(':status', $status, PDO::PARAM_INT);
     $stmt -> execute();
 
     $detail = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+    if (!$detail) return null;
 
     return self::dbToJsonDetailMapper($detail);
   }
@@ -152,10 +157,8 @@ class Requests extends Model {
 
     $placeholders = self::getUpdatePlaceholders($data);
 
-    $sql = "UPDATE `tags` SET `status` = 2 WHERE `id` IN ({$placeholders})";
-
+    $sql = "UPDATE `requests` SET `status` = 2 WHERE `id` IN ({$placeholders})";
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [
@@ -176,10 +179,8 @@ class Requests extends Model {
 
     $placeholders = self::getUpdatePlaceholders($data);
 
-    $sql = "UPDATE `tags` SET `status` = 0 WHERE `id` IN ({$placeholders})";
-
+    $sql = "UPDATE `requests` SET `status` = 0 WHERE `id` IN ({$placeholders})";
     $stmt = $conn -> prepare($sql);
-
     $stmt -> execute($data);
 
     return [

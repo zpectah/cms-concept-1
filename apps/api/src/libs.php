@@ -1,6 +1,7 @@
 <?php
 
 require_once PATH_ROOT . 'utils/array.php';
+require_once PATH_ROOT . 'utils/string.php';
 
 require_once PATH_ROOT . 'Response.php';
 
