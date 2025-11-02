@@ -11,7 +11,7 @@ export const useAppInit = (callback?: () => void) => {
     callback?.();
   };
 
-  // We want to trigger only one time
+  // We want to trigger only once
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(initHandler, []);
 };

@@ -1,5 +1,5 @@
 import { useAppStore } from '../../../store';
-import { Drawer } from '../../../components';
+import { Drawer, ThemeToggle, LocaleToggle } from '../../../components';
 import { AccountForm } from '../AccountForm';
 
 const AccountFormDialog = () => {
@@ -22,6 +22,9 @@ const AccountFormDialog = () => {
       }}
       header="Profile"
     >
+      <ThemeToggle />
+      <LocaleToggle />
+
       <AccountForm />
     </Drawer>
   );

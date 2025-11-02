@@ -8,8 +8,10 @@ import { CMS_LOCALES_KEY, CMS_THEME_MODE_KEY, FEEDBACK_COMMON_TIMEOUT_DEFAULT } 
 import { ConfirmDialogBaseProps } from '../components';
 
 interface AppStore {
+  // Locale
   locale: string;
   setLocale: (locale: string) => void;
+  // Theme mode
   mode: PaletteMode | string;
   setMode: (mode: PaletteMode) => void;
   // Toasts

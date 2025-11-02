@@ -88,6 +88,7 @@ const AppRouter = () => {
           element: <PasswordRecoveryView />,
           children: [
             {
+              // TODO: check - not used
               path: ':token',
               element: <PasswordRecoveryView />,
             },

@@ -5,7 +5,7 @@ import { useSettingsQuery } from '../hooks-query';
 export const useFormDetailControl = () => {
   const { admin } = getConfig();
 
-  const [locales, setLocales] = useState<string[]>(admin.locale.locales);
+  const [locales, setLocales] = useState<string[]>([]);
   const [locale, setLocale] = useState<string>(admin.locale.default);
 
   const { settingsQuery } = useSettingsQuery();

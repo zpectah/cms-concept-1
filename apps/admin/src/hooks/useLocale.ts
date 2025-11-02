@@ -9,16 +9,20 @@ export const useLocale = () => {
   const { i18n } = useTranslation();
   const { locale, setLocale } = useAppStore();
 
+  const localeChange = (loc: string) => {
+    setLocale(loc);
+    i18n.changeLanguage(loc);
+  };
+
   const initHandler = () => {
     const current = window.localStorage.getItem(CMS_LOCALES_KEY) ?? admin.locale.default;
 
-    setLocale(current);
-    i18n.changeLanguage(current);
+    localeChange(current);
   };
 
   return {
     locale,
-    setLocales: setLocale,
+    onChange: localeChange,
     onInit: initHandler,
   };
 };
