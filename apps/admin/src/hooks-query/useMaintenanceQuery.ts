@@ -12,7 +12,11 @@ export const useMaintenanceQuery = () => {
       axios.patch(`${API_URL.maintenance}/analyze-model-items`, data).then((response) => response.data),
   });
 
-  const deletePermanentModelItemsMutation = useMutation<unknown, unknown, MaintenanceAnalyzeResults>({
+  const deletePermanentModelItemsMutation = useMutation<
+    unknown,
+    unknown,
+    { results: MaintenanceAnalyzeResults; options: { uploadsPath: string } }
+  >({
     mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-permanent-delete-model-items`],
     mutationFn: (data) =>
       axios.patch(`${API_URL.maintenance}/permanent-delete-model-items`, data).then((response) => response.data),

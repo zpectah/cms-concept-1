@@ -2,12 +2,14 @@
 
 namespace router;
 
-use service\MaintenanceService;
-
 class MaintenanceRouter extends Router {
 
   public function resolve($env, $method, $url, $data): array {
-    $maintenanceService = new MaintenanceService;
+    $maintenanceService = new \service\MaintenanceService;
+    $settings = new \model\Settings;
+
+    $localesInstalled = $settings -> getTable()['locales']['installed'];
+
     $response = [];
 
     switch ($env) {
@@ -23,7 +25,7 @@ class MaintenanceRouter extends Router {
                 break;
 
               case 'permanent-delete-model-items':
-                $response = $maintenanceService -> deletePermanentlyModelItems($data);
+                $response = $maintenanceService -> deletePermanentlyModelItems($data, $localesInstalled);
                 break;
 
             }

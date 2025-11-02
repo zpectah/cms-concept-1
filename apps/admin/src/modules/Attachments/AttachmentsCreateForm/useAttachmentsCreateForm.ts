@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppStore } from '../../../store';
 import { FEEDBACK_COMMON_TIMEOUT_DEFAULT, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext, useFileUploader } from '../../../components';
-import { useAttachmentsHelpers } from '../../../helpers';
+import { getEnvironmentVariables, useAttachmentsHelpers } from '../../../helpers';
 import { FileUploaderQueue, FileUploaderTransportQueueItem } from '../../../types';
 import { useAttachmentsQuery } from '../../../hooks-query';
 import { registeredFormFields } from '../../../enums';
@@ -28,6 +28,7 @@ export const useAttachmentsCreateForm = () => {
     resolver: zodResolver(AttachmentsCreateFormSchema),
   });
   const queueFieldArray = useFieldArray({ control: form.control, name: registeredFormFields.queue });
+  const { uploadsPath } = getEnvironmentVariables();
 
   const { data: attachments } = attachmentsQuery;
   const { mutate: onFileCreate } = attachmentsFileCreateMutation;
@@ -38,7 +39,7 @@ export const useAttachmentsCreateForm = () => {
       queue: data.queue,
       options: {
         ...data.options,
-        path: '../../../dist/uploads/', // TODO
+        path: uploadsPath,
       },
     });
 

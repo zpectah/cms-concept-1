@@ -205,10 +205,47 @@ class Messages extends Model {
     ];
   }
 
-  public function deletePermanently($data): array {
-    /* TODO */
+  public function analyzeToDelete(): array {
+    $conn = self::connection();
 
-    return [];
+    $deleted = 1;
+
+    $sql = "SELECT id FROM `messages` WHERE `deleted` = :status";
+    $stmt = $conn -> prepare($sql);
+    $stmt -> bindParam(':status', $deleted, PDO::PARAM_INT);
+    $stmt -> execute();
+
+    $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+    $items = [];
+
+    foreach ($result as $item) {
+      $items[] = $item['id'];
+    }
+
+    return $items;
+  }
+
+  public function deletePermanently($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = str_repeat('?,', count($data) - 1) . '?';
+
+    $sql = "DELETE FROM `messages` WHERE id IN ($placeholders)";
+    $stmt = $conn -> prepare($sql);
+    $stmt -> execute($data);
+
+    return [
+      'rows' => $stmt -> rowCount(),
+    ];
   }
 
 }

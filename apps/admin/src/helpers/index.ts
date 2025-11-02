@@ -1,4 +1,5 @@
 export * from './model';
+export * from './getEnvironmentVariables';
 export * from './getFormatByLocale';
 export * from './getOptionValue';
 export * from './modelList';

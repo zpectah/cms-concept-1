@@ -242,10 +242,80 @@ class Attachments extends Model {
     ];
   }
 
-  public function deletePermanently($data): array {
-    /* TODO */
+  public function analyzeToDelete(): array {
+    $conn = self::connection();
 
-    return [];
+    $deleted = 1;
+
+    $sql = "SELECT id FROM `attachments` WHERE `deleted` = :status";
+    $stmt = $conn -> prepare($sql);
+    $stmt -> bindParam(':status', $deleted, PDO::PARAM_INT);
+    $stmt -> execute();
+
+    $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+
+    $items = [];
+
+    foreach ($result as $item) {
+      $items[] = $item['id'];
+    }
+
+    return $items;
+  }
+
+  public function deletePermanently($data, $uploadsPath): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    if (!isset($uploadsPath)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No uploads path provided'
+      ];
+    }
+
+    $placeholders = str_repeat('?,', count($data) - 1) . '?';
+
+    $selectSql = "SELECT `type`, `file_name` FROM `attachments` WHERE id IN ($placeholders)";
+    $selectStmt = $conn -> prepare($selectSql);
+    $selectStmt -> execute($data);
+
+    $filesToDelete = $selectStmt -> fetchAll(PDO::FETCH_ASSOC);
+
+    $deletedFilesCount = 0;
+    $errors = [];
+
+    foreach ($filesToDelete as $file) {
+      $filePath = rtrim($uploadsPath, '/') . '/' . $file['type'] . '/' . $file['file_name'];
+
+      if (file_exists($filePath)) {
+        if (unlink($filePath)) {
+          $deletedFilesCount++;
+        } else {
+          $errors[] = "Chyba při mazání souboru: " . $filePath;
+        }
+      } else {
+        $errors[] = "Soubor nebyl nalezen: " . $filePath;
+      }
+    }
+
+    $deleteSql = "DELETE FROM `attachments` WHERE id IN ($placeholders)";
+    $deleteStmt = $conn -> prepare($deleteSql);
+    $deleteStmt -> execute($data);
+
+    return [
+      'rows' => $deleteStmt -> rowCount(),
+      'files' => $deletedFilesCount,
+      'errors' => $errors,
+    ];
   }
 
 }

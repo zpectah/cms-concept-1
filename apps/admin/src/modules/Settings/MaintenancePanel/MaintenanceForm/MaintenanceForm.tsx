@@ -38,12 +38,32 @@ const MaintenanceForm = () => {
                   </Stack>
                 </Stack>
               )}
+              {analyzedResults.blacklist.length > 0 && (
+                <Stack direction="row" gap={2}>
+                  Categories:
+                  <Stack direction="row" gap={1}>
+                    {analyzedResults.blacklist.map((item) => (
+                      <Typography key={`blacklist_${item}`}>{item}</Typography>
+                    ))}
+                  </Stack>
+                </Stack>
+              )}
               {analyzedResults.categories.length > 0 && (
                 <Stack direction="row" gap={2}>
                   Categories:
                   <Stack direction="row" gap={1}>
                     {analyzedResults.categories.map((item) => (
                       <Typography key={`categories_${item}`}>{item}</Typography>
+                    ))}
+                  </Stack>
+                </Stack>
+              )}
+              {analyzedResults.comments.length > 0 && (
+                <Stack direction="row" gap={2}>
+                  Categories:
+                  <Stack direction="row" gap={1}>
+                    {analyzedResults.comments.map((item) => (
+                      <Typography key={`comments_${item}`}>{item}</Typography>
                     ))}
                   </Stack>
                 </Stack>
@@ -78,12 +98,32 @@ const MaintenanceForm = () => {
                   </Stack>
                 </Stack>
               )}
+              {analyzedResults.messages.length > 0 && (
+                <Stack direction="row" gap={2}>
+                  Menu items:
+                  <Stack direction="row" gap={1}>
+                    {analyzedResults.messages.map((item) => (
+                      <Typography key={`messages_${item}`}>{item}</Typography>
+                    ))}
+                  </Stack>
+                </Stack>
+              )}
               {analyzedResults.pages.length > 0 && (
                 <Stack direction="row" gap={2}>
                   Pages:
                   <Stack direction="row" gap={1}>
                     {analyzedResults.pages.map((item) => (
                       <Typography key={`pages_${item}`}>{item}</Typography>
+                    ))}
+                  </Stack>
+                </Stack>
+              )}
+              {analyzedResults.requests.length > 0 && (
+                <Stack direction="row" gap={2}>
+                  Pages:
+                  <Stack direction="row" gap={1}>
+                    {analyzedResults.requests.map((item) => (
+                      <Typography key={`requests_${item}`}>{item}</Typography>
                     ))}
                   </Stack>
                 </Stack>

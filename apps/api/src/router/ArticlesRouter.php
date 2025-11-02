@@ -5,7 +5,6 @@ namespace router;
 class ArticlesRouter extends Router {
   public function resolve($env, $method, $url, $data): array {
     $articles = new \model\Articles;
-
     $settings = new \model\Settings;
     $localesActive = $settings -> getTable()['locales']['active'];
 
