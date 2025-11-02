@@ -1,6 +1,6 @@
 # Api Docs
 
-## Private
+## Private '/private'
 
 ### Articles
 
@@ -238,15 +238,15 @@
 
 ### Maintenance
 
-|  Method   | Model                                       |  Request  | Response  |
-|:---------:|:--------------------------------------------|:---------:|:---------:|
-|   PATCH   | `/maintenance/analyze-model-items`          |   `{}`    | `{ ... }` |
-|   PATCH   | `/maintenance/permanent-delete-model-items` | `{ ... }` |   `{}`    |
+|  Method   | Model                                       |           Request           |          Response           |
+|:---------:|:--------------------------------------------|:---------------------------:|:---------------------------:|
+|   PATCH   | `/maintenance/analyze-model-items`          |            `{}`             | `MaintenanceAnalyzeResults` |
+|   PATCH   | `/maintenance/permanent-delete-model-items` | `MaintenanceAnalyzeResults` | `MaintenanceDeleteResults`  |
 
 
 
 
-## Public
+## Public '/public'
 
 ### Articles
 

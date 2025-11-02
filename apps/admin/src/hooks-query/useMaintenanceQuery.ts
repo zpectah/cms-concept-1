@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
 import { API_URL, API_KEYS } from '../constants';
-import { MaintenanceAnalyzeResults } from '../types';
+import { MaintenanceAnalyzeResults, MaintenanceDeleteResults } from '../types';
 
 const QUERY_KEY_BASE = API_KEYS.maintenance;
 
@@ -13,7 +13,7 @@ export const useMaintenanceQuery = () => {
   });
 
   const deletePermanentModelItemsMutation = useMutation<
-    unknown,
+    MaintenanceDeleteResults,
     unknown,
     { results: MaintenanceAnalyzeResults; options: { uploadsPath: string } }
   >({

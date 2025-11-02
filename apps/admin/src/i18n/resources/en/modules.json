@@ -146,7 +146,15 @@
       "maintenance": {
         "title": "Maintenance",
         "description": "Maintenance panel description",
-        "section": {}
+        "section": {
+          "button": {
+            "analyzeRows": "Analyze rows",
+            "deleteAnalyzedRows": "Permanently delete all analyzed rows"
+          }
+        },
+        "message": {
+          "successDeleted": "Data was successfully deleted"
+        }
       },
       "blacklist": {
         "title": "Blacklist",

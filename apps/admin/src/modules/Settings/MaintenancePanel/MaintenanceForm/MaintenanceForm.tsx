@@ -1,20 +1,21 @@
 import { Button, Divider, Stack, Typography } from '@mui/material';
-import { Section } from '../../../../components';
+import { Section, Textarea } from '../../../../components';
 import { useMaintenanceForm } from './useMaintenanceForm';
+import { useTranslation } from 'react-i18next';
 
 const MaintenanceForm = () => {
-  const { onAnalyze, onProceed, analyzedResults } = useMaintenanceForm();
+  const { t } = useTranslation(['common', 'modules']);
+  const { onAnalyze, onProceed, analyzedResults, deletedResults, rowsToDelete } = useMaintenanceForm();
 
   return (
-    <Section title="Údržba" cardContent>
+    <Section title={t('modules:settings.tabs.maintenance.title')} cardContent>
       <Stack direction="column" gap={2}>
         <Stack direction="row" gap={1}>
           <Button variant="contained" color="primary" onClick={onAnalyze}>
-            Analyzovat řádky
+            {t('modules:settings.tabs.maintenance.section.button.analyzeRows')}
           </Button>
         </Stack>
-
-        {!!analyzedResults && (
+        {!!analyzedResults && rowsToDelete > 0 && (
           <>
             <Divider />
             <Stack direction="column" gap={2}>
@@ -163,9 +164,11 @@ const MaintenanceForm = () => {
           </>
         )}
 
+        {!!deletedResults && <Textarea value={JSON.stringify(deletedResults, null, 2)} />}
+
         <Stack direction="row" gap={1}>
-          <Button variant="outlined" color="error" onClick={onProceed} disabled={!analyzedResults}>
-            Permanentně smazat všechny analyzované řádky
+          <Button variant="outlined" color="error" onClick={onProceed} disabled={rowsToDelete === 0}>
+            {t('modules:settings.tabs.maintenance.section.button.deleteAnalyzedRows')}
           </Button>
         </Stack>
       </Stack>

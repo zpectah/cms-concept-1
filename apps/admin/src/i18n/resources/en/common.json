@@ -92,6 +92,10 @@
       "newLocaleInstall": {
         "title": "Install new language?",
         "content": "During this step, new tables will be created in the database. Do you want to continue?"
+      },
+      "permanentDelete": {
+        "title": "Continue?",
+        "content": "Are you sure you want to permanently delete these items?"
       }
     },
     "success": {

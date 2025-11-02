@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useMaintenanceQuery } from '../../../../hooks-query';
-import { MaintenanceAnalyzeResults } from '../../../../types';
+import { MaintenanceAnalyzeResults, MaintenanceDeleteResults } from '../../../../types';
 import { useAppStore } from '../../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../../constants';
 import { getEnvironmentVariables } from '../../../../helpers';
 
 export const useMaintenanceForm = () => {
   const [analyzedResults, setAnalyzedResults] = useState<MaintenanceAnalyzeResults | null>(null);
+  const [deletedResults, setDeletedResults] = useState<MaintenanceDeleteResults | null>(null);
+  const [rowsToDelete, setRowsToDelete] = useState<number>(0);
 
   const { t } = useTranslation(['common', 'modules']);
   const { addToast, openConfirmDialog } = useAppStore();
@@ -23,11 +25,31 @@ export const useMaintenanceForm = () => {
   };
 
   const onAnalyze = () => {
+    setAnalyzedResults(null);
+    setRowsToDelete(0);
+
     onAnalyzeModel(
       {},
       {
         onSuccess: (res) => {
+          let count = 0;
+          count += res.articles.length;
+          count += res.attachments.length;
+          count += res.blacklist.length;
+          count += res.categories.length;
+          count += res.comments.length;
+          count += res.members.length;
+          count += res.menu.length;
+          count += res.menuItems.length;
+          count += res.messages.length;
+          count += res.pages.length;
+          count += res.requests.length;
+          count += res.tags.length;
+          count += res.translations.length;
+          count += res.users.length;
+
           setAnalyzedResults(res);
+          setRowsToDelete(count);
         },
         onError,
       }
@@ -36,6 +58,8 @@ export const useMaintenanceForm = () => {
 
   const onProceedConfirm = () => {
     if (!analyzedResults) return;
+
+    setDeletedResults(null);
 
     onProceedModel(
       {
@@ -46,10 +70,13 @@ export const useMaintenanceForm = () => {
       },
       {
         onSuccess: (res) => {
-          // TODO: results
-          console.log('res', res);
+          setDeletedResults(res);
           setAnalyzedResults(null);
-          addToast('Data byla úspěšně vymazána...', 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+          addToast(
+            t('modules:settings.tabs.maintenance.message.successDeleted'),
+            'success',
+            TOAST_SUCCESS_TIMEOUT_DEFAULT
+          );
         },
         onError,
       }
@@ -58,8 +85,8 @@ export const useMaintenanceForm = () => {
 
   const onProceed = () => {
     openConfirmDialog({
-      title: 'Pokračovat?', // TODO
-      content: 'Jste si jisti že chcete nenávratně smazat tyto položky?', // TODO
+      title: t('message.confirm.permanentDelete.title'),
+      content: t('message.confirm.permanentDelete.content'),
       onConfirm: onProceedConfirm,
     });
   };
@@ -68,5 +95,7 @@ export const useMaintenanceForm = () => {
     onAnalyze,
     onProceed,
     analyzedResults,
+    deletedResults,
+    rowsToDelete,
   };
 };
