@@ -2,38 +2,40 @@
 
 namespace service;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
 class EmailService {
 
   public function createEmail($to, $subject, $body, $from = null): bool {
-    $mailer = new \PHPMailer\PHPMailer\PHPMailer(true);
+    $mail = new PHPMailer(true);
 
-    $mailer -> CharSet = 'UTF-8';
-    $mailer -> isHTML(true);
+    $send = false;
 
-    if ($from) {
-      $mailer -> setFrom($from);
-    } else {
-      $mailer -> setFrom("noreply@domain.com"); // TODO
+    try {
+      $mail -> isSMTP();
+      $mail -> SMTPAuth = true;
+      $mail -> SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+      $mail -> Port = 587;
+      $mail -> Host = 'sandbox.smtp.mailtrap.io';
+      $mail -> Username = 'bd6724021417be';
+      $mail -> Password = '878cf6de82ad75';
+
+      $mail -> setFrom('noreply@your-domain.com', 'Your domain');
+      $mail -> addAddress($to);
+
+      $mail -> isHTML(true);
+      $mail -> Subject = $subject;
+      $mail -> Body = $body;
+      $mail -> AltBody = 'Dobrý den, toto je textová verze testovacího emailu.';
+
+      $send = $mail -> send();
+    } catch (Exception $e) {
+      $send = $mail -> ErrorInfo;
     }
 
-    $mailer -> isMail();
-
-    $mailer -> Subject = $subject;
-
-    $mailer -> addAddress($to);
-
-    $mailer -> Body = $body;
-
-    return $mailer -> send();
-  }
-
-  public function sendHtmlEmail($to, $subject, $body, $from = null): bool {
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-Type: multipart/mixed; charset=UTF-8; boundary=\"boundary-string\"\r\n";
-
-    if ($from) $headers .= "From: domain.com <{$from}>" . "\r\n";
-
-    return mail($to, $subject, $body, $headers);
+    return $send;
   }
 
   public function createPasswordRecoveryEmail($data): string {
