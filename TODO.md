@@ -22,5 +22,6 @@
 * [] Vytvořit pravidla pro 'actions' -> co uživatel může a co nemůže ... 'useUserAccount'
 * [OK] - Inicializovat Composer pro API
 * [OK] - Přidat knihovnu 'PHPMailer' -> jako vendors ...
+* [OK] - Přesunout 'composer.json' do rootu projektu ... spolu s lockem
 * [] - Nastavit pro lokální prostředí PHP SMTP server ... !!!
 * [] - Messages u PasswordRecovery ... dodělávky

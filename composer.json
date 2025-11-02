@@ -7,7 +7,7 @@
     "phpmailer/phpmailer": "^7.0"
   },
   "config": {
-    "vendor-dir": "src/vendor"
+    "vendor-dir": "apps/api/src/vendor"
   },
   "license": "MIT"
 }
