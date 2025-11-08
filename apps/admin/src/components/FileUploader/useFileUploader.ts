@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
 import { getClearFileName, getFileExtension, getRandomId } from '@common';
 import { FileUploaderQueue, FileUploaderQueueItem } from '../../types';
-import { useFileUploaderProps } from './types';
 import { getTypeFromExtension } from '../../utils';
+import { fileUploaderQueueItemContextKeys } from '../../enums';
+import { useFileUploaderProps } from './types';
 
 export const useFileUploader = ({
   initialQueue,
@@ -36,10 +37,10 @@ export const useFileUploader = ({
               mime: file.type,
               size: file.size,
               name: getClearFileName(file.name),
-              filename: file.name,
               extension,
               type: getTypeFromExtension(extension),
               uid: getRandomId(),
+              context: fileUploaderQueueItemContextKeys.attachments,
             });
 
             onLoad?.();

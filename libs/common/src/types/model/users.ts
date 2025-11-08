@@ -13,6 +13,7 @@ export interface UsersItem extends ItemBase {
   last_name?: string;
   access_rights: UsersAccessRights;
   avatar_image?: string;
+  avatar_hash?: string;
 }
 
 export type Users = UsersItem[];

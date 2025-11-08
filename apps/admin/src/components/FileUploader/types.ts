@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { BoxProps } from '@mui/material';
-import { FileUploaderQueue } from '../../types';
+import { FileUploaderQueue, FileUploaderQueueItem } from '../../types';
 
 interface FileUploaderBase {
   multiple?: boolean;
@@ -19,3 +19,17 @@ export interface FileUploaderProps extends FileUploaderBase {
 }
 
 export type useFileUploaderProps = FileUploaderBase & {};
+
+export interface AvatarUploaderProps {
+  name: string;
+  hash?: string;
+  current?: string;
+  onLoad?: () => void;
+  onLoadEnd?: (results: FileUploaderQueueItem | null) => void;
+  onError?: (error: DOMException | null) => void;
+  onFinish?: (result: FileUploaderQueueItem | null) => void;
+  onRemove?: () => void;
+  size?: string;
+}
+
+export type UseAvatarUploaderProps = Omit<AvatarUploaderProps, 'current' | 'name' | 'hash' | 'onRemove' | 'size'>;

@@ -100,11 +100,20 @@ class Attachments extends Model {
     $options = $data['options'] ?? [];
     $queue = $data['queue'] ?? [];
     $rootPath = $options['path'];
+    $pathContext = $options['context'];
 
     if (!$rootPath) return [];
 
     foreach ($queue as $file) {
-      $filePath = $rootPath . $file['type'] . '/';
+      if (
+        $pathContext === 'avatar-user' ||
+        $pathContext === 'avatar-member'
+      ) {
+        $filePath = $rootPath . $pathContext . '/';
+      } else {
+        $filePath = $rootPath . $file['type'] . '/';
+      }
+
       $fileName = $file['name'] . '.' . $file['extension'];
       $finalFilePath = $filePath . $fileName;
 

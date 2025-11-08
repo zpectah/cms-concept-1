@@ -63,4 +63,7 @@ export const registeredFormFields = {
   event_end: 'event_end',
   event_location: 'event_location',
   event_address: 'event_address',
+
+  avatar_image: 'avatar_image',
+  avatar_hash: 'avatar_hash',
 } as const;

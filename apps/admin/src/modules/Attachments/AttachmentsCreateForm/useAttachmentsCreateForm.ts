@@ -8,7 +8,7 @@ import { useViewLayoutContext, useFileUploader } from '../../../components';
 import { getEnvironmentVariables, useAttachmentsHelpers } from '../../../helpers';
 import { FileUploaderQueue, FileUploaderTransportQueueItem } from '../../../types';
 import { useAttachmentsQuery } from '../../../hooks-query';
-import { registeredFormFields } from '../../../enums';
+import { fileUploaderQueueItemContextKeys, registeredFormFields } from '../../../enums';
 import { IAttachmentsCreateForm } from './types';
 import { AttachmentsCreateFormSchema } from './schema';
 import { getAttachmentsCreateFormDefaultValues } from './helpers';
@@ -38,8 +38,8 @@ export const useAttachmentsCreateForm = () => {
     const master = Object.assign({
       queue: data.queue,
       options: {
-        ...data.options,
         path: uploadsPath,
+        context: fileUploaderQueueItemContextKeys.attachments,
       },
     });
 

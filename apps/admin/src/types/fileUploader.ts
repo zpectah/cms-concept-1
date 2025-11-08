@@ -1,4 +1,7 @@
-import { AttachmentsType } from '@common';
+import { AttachmentsType, EnumKeyValues } from '@common';
+import { fileUploaderQueueItemContextKeys } from '../enums';
+
+export type FileUploaderQueueItemContext = EnumKeyValues<typeof fileUploaderQueueItemContextKeys>;
 
 export interface FileUploaderQueueItem {
   type: AttachmentsType;
@@ -6,9 +9,9 @@ export interface FileUploaderQueueItem {
   mime: string;
   size: number;
   name: string;
-  filename: string; // TODO: delete
   extension: string;
   uid: string;
+  context: FileUploaderQueueItemContext;
 }
 
 export type FileUploaderQueue = FileUploaderQueueItem[];
@@ -21,5 +24,6 @@ export type FileUploaderTransportQueue = {
   queue: FileUploaderTransportQueueItem[];
   options: {
     path: string;
+    context: FileUploaderQueueItemContext;
   };
 };

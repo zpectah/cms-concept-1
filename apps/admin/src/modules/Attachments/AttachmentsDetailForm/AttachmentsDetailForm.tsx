@@ -4,7 +4,7 @@ import { Stack } from '@mui/material';
 import { formatBytes, AttachmentsType } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getConfig } from '../../../utils';
-import { getOptionValue, useAttachmentTypeElement } from '../../../helpers';
+import { getEnvironmentVariables, getOptionValue, useAttachmentTypeElement } from '../../../helpers';
 import { ControlledForm, FormDetailSidebar, FormDetailActions, FormLayout, Literal } from '../../../components';
 import { useAttachmentsDetailForm } from './useAttachmentsDetailForm';
 
@@ -15,6 +15,7 @@ const AttachmentsDetailForm = () => {
   const { t } = useTranslation(['common', 'form']);
   const { detailId, form, onSubmit } = useAttachmentsDetailForm();
   const { getElementByType } = useAttachmentTypeElement();
+  const { uploadsSource } = getEnvironmentVariables();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
@@ -24,7 +25,7 @@ const AttachmentsDetailForm = () => {
   const fileSize = useWatch({ name: registeredFormFields.file_size, control: form.control });
   const fileType = useWatch({ name: registeredFormFields.file_type, control: form.control });
 
-  const sourcePrefix = `http://localhost:8080/${type}/`; // TODO
+  const sourcePrefix = `${uploadsSource}${type}/`; // TODO
 
   return (
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>

@@ -35,7 +35,7 @@ const ImageCropper = ({ open, onClose, cropSource, onSave }: ImageCropperProps) 
 
     const coordinates = cropper.getCoordinates();
     const croppedImage = await cropBase64Image({
-      base64: cropSource.source,
+      base64: cropSource?.source,
       y: coordinates?.top ?? 0,
       x: coordinates?.left ?? 0,
       width: coordinates?.width ?? 0,
