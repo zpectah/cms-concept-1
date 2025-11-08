@@ -30,7 +30,7 @@ const TranslationsDetailForm = () => {
         actions={<FormDetailActions detailId={detailId} listPath={`/${routes.translations.path}`} />}
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
       >
-        <InputField name={registeredFormFields.name} label={t('form:label.name')} />
+        <InputField name={registeredFormFields.name} label={t('form:label.name')} isRequired />
         <SelectField
           name={registeredFormFields.type}
           label={t('form:label.type')}

@@ -31,6 +31,13 @@ class Members extends Model {
       ];
     }
 
+    unset($item['address_street']);
+    unset($item['address_street_no']);
+    unset($item['address_district']);
+    unset($item['address_city']);
+    unset($item['address_country']);
+    unset($item['address_zip']);
+
     return $item;
   }
 

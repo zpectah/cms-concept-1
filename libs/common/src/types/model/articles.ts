@@ -20,7 +20,7 @@ export interface ArticlesItem extends ItemBase {
 
 export type Articles = ArticlesItem[];
 
-interface ArticlesDetailLocale {
+export interface ArticlesDetailLocale {
   title: string;
   description?: string;
   content: string;

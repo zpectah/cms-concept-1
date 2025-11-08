@@ -1,4 +1,4 @@
-import { tagsColorDefault, tagsTypeDefault, TagsDetail } from '@common';
+import { tagsColorDefault, tagsTypeDefault, getFormattedString, TagsDetail } from '@common';
 import { ITagsDetailForm } from './types';
 
 export const getTagsDetailFormDefaultValues = (): ITagsDetailForm => {
@@ -23,5 +23,6 @@ export const getTagsDetailFormMapper = (data: TagsDetail): ITagsDetailForm => {
 export const getTagsDetailFormMapperToMaster = (data: ITagsDetailForm): ITagsDetailForm => {
   return Object.assign({
     ...data,
+    name: getFormattedString(data.name),
   });
 };

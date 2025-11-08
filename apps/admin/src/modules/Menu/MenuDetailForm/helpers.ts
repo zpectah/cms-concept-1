@@ -1,4 +1,4 @@
-import { menuTypeDefault, MenuDetail } from '@common';
+import { menuTypeDefault, getFormattedString, MenuDetail } from '@common';
 import { IMenuDetailForm } from './types';
 
 export const getMenuDetailFormDefaultValues = (): IMenuDetailForm => {
@@ -20,5 +20,6 @@ export const getMenuDetailFormMapper = (data: MenuDetail): IMenuDetailForm => {
 export const getMenuDetailFormMapperToMaster = (data: IMenuDetailForm): IMenuDetailForm => {
   return Object.assign({
     ...data,
+    name: getFormattedString(data.name),
   });
 };

@@ -1,4 +1,4 @@
-import { translationsTypeDefault, TranslationsDetail } from '@common';
+import { translationsTypeDefault, getFormattedString, TranslationsDetail, TranslationsDetailLocale } from '@common';
 import { getModelLocales } from '../../../utils';
 import { ITranslationsDetailForm } from './types';
 
@@ -7,7 +7,7 @@ export const getTranslationsDetailFormDefaultValues = (locales: string[]): ITran
     id: 0,
     name: '',
     type: translationsTypeDefault,
-    locale: getModelLocales<{ value: string }>(locales, {
+    locale: getModelLocales<TranslationsDetailLocale>(locales, {
       value: '',
     }),
     active: true,
@@ -24,5 +24,6 @@ export const getTranslationsDetailFormMapper = (data: TranslationsDetail): ITran
 export const getTranslationsDetailFormMapperToMaster = (data: ITranslationsDetailForm): ITranslationsDetailForm => {
   return Object.assign({
     ...data,
+    name: getFormattedString(data.name),
   });
 };

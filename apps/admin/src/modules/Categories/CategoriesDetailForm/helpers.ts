@@ -1,4 +1,4 @@
-import { categoriesTypeDefault, CategoriesDetail } from '@common';
+import { categoriesTypeDefault, getFormattedString, CategoriesDetail, CategoriesDetailLocale } from '@common';
 import { getModelLocales } from '../../../utils';
 import { ICategoriesDetailForm } from './types';
 
@@ -7,7 +7,7 @@ export const getCategoriesDetailFormDefaultValues = (locales: string[]): ICatego
     id: 0,
     name: '',
     type: categoriesTypeDefault,
-    locale: getModelLocales<{ title: string; description: string | undefined }>(locales, {
+    locale: getModelLocales<CategoriesDetailLocale>(locales, {
       title: '',
       description: '',
     }),
@@ -26,5 +26,6 @@ export const getCategoriesDetailFormMapper = (data: CategoriesDetail): ICategori
 export const getCategoriesDetailFormMapperToMaster = (data: ICategoriesDetailForm): ICategoriesDetailForm => {
   return Object.assign({
     ...data,
+    name: getFormattedString(data.name),
   });
 };

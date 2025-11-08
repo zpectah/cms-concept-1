@@ -10,7 +10,7 @@ export interface TranslationsItem extends ItemBase {
 
 export type Translations = TranslationsItem[];
 
-interface TranslationsDetailLocale {
+export interface TranslationsDetailLocale {
   value: string;
 }
 

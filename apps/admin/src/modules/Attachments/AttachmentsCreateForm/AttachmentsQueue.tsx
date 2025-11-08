@@ -57,6 +57,7 @@ const AttachmentsQueue = () => {
                       endAdornment: <span>.{file.extension}</span>,
                     }}
                     defaultValue={file.name}
+                    isRequired
                   />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 3 }}>

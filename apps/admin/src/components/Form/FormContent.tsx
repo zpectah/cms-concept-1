@@ -7,7 +7,7 @@ interface FormContentProps extends WithChildren {
 }
 
 const FormContent = ({ children, stackProps }: FormContentProps) => (
-  <Stack gap={UI_SPACING.form} {...stackProps}>
+  <Stack direction="column" gap={UI_SPACING.form} {...stackProps}>
     {children}
   </Stack>
 );

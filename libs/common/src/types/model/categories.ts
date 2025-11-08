@@ -11,7 +11,7 @@ export interface CategoriesItem extends ItemBase {
 
 export type Categories = CategoriesItem[];
 
-interface CategoriesDetailLocale {
+export interface CategoriesDetailLocale {
   title: string;
   description?: string;
 }

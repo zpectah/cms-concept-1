@@ -1,4 +1,4 @@
-import { membersTypeDefault, MembersDetail } from '@common';
+import { membersTypeDefault, getFormattedString, MembersDetail } from '@common';
 import { addressFormDefaults } from '../../../constants';
 import { IMembersDetailForm } from './types';
 
@@ -34,5 +34,6 @@ export const getMembersDetailFormMapper = (data: MembersDetail): IMembersDetailF
 export const getMembersDetailFormMapperToMaster = (data: IMembersDetailForm): IMembersDetailForm => {
   return Object.assign({
     ...data,
+    name: getFormattedString(data.name),
   });
 };

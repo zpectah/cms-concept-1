@@ -1,4 +1,4 @@
-import { pagesTypeDefault, PagesDetail } from '@common';
+import { pagesTypeDefault, getFormattedString, PagesDetail, PagesDetailLocale } from '@common';
 import { getModelLocales } from '../../../utils';
 import { IPagesDetailForm } from './types';
 
@@ -7,7 +7,7 @@ export const getPagesDetailFormDefaultValues = (locales: string[]): IPagesDetail
     id: 0,
     name: '',
     type: pagesTypeDefault,
-    locale: getModelLocales<{ title: string; description: string | undefined; content: string }>(locales, {
+    locale: getModelLocales<PagesDetailLocale>(locales, {
       title: '',
       description: '',
       content: '',
@@ -26,5 +26,6 @@ export const getPagesDetailFormMapper = (data: PagesDetail): IPagesDetailForm =>
 export const getPagesDetailFormMapperToMaster = (data: IPagesDetailForm): IPagesDetailForm => {
   return Object.assign({
     ...data,
+    name: getFormattedString(data.name),
   });
 };

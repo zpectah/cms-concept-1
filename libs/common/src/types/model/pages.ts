@@ -10,7 +10,7 @@ export interface PagesItem extends ItemBase {
 
 export type Pages = PagesItem[];
 
-interface PagesDetailLocale {
+export interface PagesDetailLocale {
   title: string;
   description?: string;
   content: string;

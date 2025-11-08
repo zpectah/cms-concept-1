@@ -1,4 +1,4 @@
-import { attachmentsTypeDefault, AttachmentsDetail } from '@common';
+import { attachmentsTypeDefault, getFormattedString, AttachmentsDetail } from '@common';
 import { IAttachmentsDetailForm } from './types';
 
 export const getAttachmentsDetailFormDefaultValues = (): IAttachmentsDetailForm => {
@@ -24,5 +24,7 @@ export const getAttachmentsDetailFormMapper = (data: AttachmentsDetail): IAttach
 export const getAttachmentsDetailFormMapperToMaster = (data: IAttachmentsDetailForm): IAttachmentsDetailForm => {
   return Object.assign({
     ...data,
+    name: getFormattedString(data.name),
+    file_name: getFormattedString(data.file_name ?? ''),
   });
 };

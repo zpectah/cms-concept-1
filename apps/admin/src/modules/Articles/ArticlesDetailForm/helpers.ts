@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { articlesTypeDefault, ArticlesDetail } from '@common';
+import { articlesTypeDefault, getFormattedString, ArticlesDetail, ArticlesDetailLocale } from '@common';
 import { getModelLocales } from '../../../utils';
 import { addressFormDefaults } from '../../../constants';
 import { IArticlesDetailForm } from './types';
@@ -9,7 +9,7 @@ export const getArticlesDetailFormDefaultValues = (locales: string[]): IArticles
     id: 0,
     name: '',
     type: articlesTypeDefault,
-    locale: getModelLocales<{ title: string; description: string | undefined; content: string }>(locales, {
+    locale: getModelLocales<ArticlesDetailLocale>(locales, {
       title: '',
       description: '',
       content: '',
@@ -44,5 +44,6 @@ export const getArticlesDetailFormMapper = (data: ArticlesDetail): IArticlesDeta
 export const getArticlesDetailFormMapperToMaster = (data: IArticlesDetailForm): IArticlesDetailForm => {
   return Object.assign({
     ...data,
+    name: getFormattedString(data.name),
   });
 };

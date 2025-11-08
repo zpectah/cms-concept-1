@@ -50,7 +50,7 @@ const ArticlesDetailForm = () => {
           isComments && <CommentsManager isEnabled={isComments} contentType={modelKeys.articles} contentId={detailId} />
         }
       >
-        <InputField name={registeredFormFields.name} label={t('form:label.name')} />
+        <InputField name={registeredFormFields.name} label={t('form:label.name')} isRequired />
         <SelectField
           name={registeredFormFields.type}
           label={t('form:label.type')}

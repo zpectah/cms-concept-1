@@ -31,7 +31,7 @@ const MenuDetailForm = () => {
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
         actionbar={<MenuItemsManager isEnabled menuId={detailId} />}
       >
-        <InputField name={registeredFormFields.name} label={t('form:label.name')} />
+        <InputField name={registeredFormFields.name} label={t('form:label.name')} isRequired />
         <SelectField
           name={registeredFormFields.type}
           label={t('form:label.type')}

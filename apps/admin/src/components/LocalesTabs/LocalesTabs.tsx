@@ -1,6 +1,8 @@
 import { ReactNode, useMemo } from 'react';
-import { Stack, Box, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Stack, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { UI_SPACING } from '../../constants';
 import { Card } from '../Card';
+import { FormContent } from '../Form';
 
 interface LocalesTabsProps {
   render: (locale: string) => ReactNode;
@@ -12,15 +14,17 @@ interface LocalesTabsProps {
 const LocalesTabs = ({ render, locales, locale, onLocaleChange }: LocalesTabsProps) => {
   const renderContent = useMemo(() => {
     return locales?.map((loc) => (
-      <Box
+      <Stack
         key={loc}
+        direction="column"
+        gap={UI_SPACING.form}
         sx={{
-          mt: 2,
-          display: locale === loc ? 'block' : 'none',
+          mt: 1,
+          display: locale === loc ? 'flex' : 'none',
         }}
       >
         {render(loc)}
-      </Box>
+      </Stack>
     ));
   }, [locale, locales, render]);
 
@@ -45,7 +49,7 @@ const LocalesTabs = ({ render, locales, locale, onLocaleChange }: LocalesTabsPro
           ))}
         </ToggleButtonGroup>
       </Stack>
-      {renderContent}
+      <FormContent>{renderContent}</FormContent>
     </Card>
   );
 };

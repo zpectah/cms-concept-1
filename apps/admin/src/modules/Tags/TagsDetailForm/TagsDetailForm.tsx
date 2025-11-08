@@ -30,7 +30,7 @@ const TagsDetailForm = () => {
         actions={<FormDetailActions detailId={detailId} listPath={`/${routes.tags.path}`} />}
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
       >
-        <InputField name={registeredFormFields.name} label={t('form:label.name')} />
+        <InputField name={registeredFormFields.name} label={t('form:label.name')} isRequired />
         <SelectField
           name={registeredFormFields.type}
           label={t('form:label.type')}
@@ -44,7 +44,7 @@ const TagsDetailForm = () => {
           fieldProps={{ defaultValue: tagsColorDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
 
-        <DebugFormModel name="TagsDetailForm" textareaProps={{ rows: 10 }} />
+        <DebugFormModel name="TagsDetailForm" />
       </FormLayout>
     </ControlledForm>
   );
