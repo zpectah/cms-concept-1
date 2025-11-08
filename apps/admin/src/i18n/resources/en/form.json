@@ -40,7 +40,8 @@
     "fileType": "File type",
     "fileMime": "File mime",
     "fileSize": "File size",
-    "ipaddress": "IP Address"
+    "ipaddress": "IP Address",
+    "accessRights": "Access rights"
   },
   "message": {
     "error": {

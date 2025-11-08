@@ -3,9 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { modelKeys, newItemKey, UsersDetail } from '@common';
+import { MenuItemProps } from '@mui/material';
+import { getFormattedString, modelKeys, newItemKey, usersAccessKeys, UsersDetail } from '@common';
 import { getConfig } from '../../../utils';
-import { useSelectOptions, useUsersHelpers } from '../../../helpers';
+import { getOptionValue, useSelectOptions, useUsersHelpers } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
@@ -14,7 +15,7 @@ import { useModelFavorites } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { UsersDetailFormSchema } from './schema';
 import { IUsersDetailForm } from './types';
-import { getUsersDetailFormDefaultValues, getUsersDetailFormMapper } from './helpers';
+import { getUsersDetailFormDefaultValues, getUsersDetailFormMapper, getUsersDetailFormMapperToMaster } from './helpers';
 
 export const useUsersDetailForm = () => {
   const { t } = useTranslation();
@@ -38,6 +39,9 @@ export const useUsersDetailForm = () => {
   const { data: detailData, ...detailQuery } = usersDetailQuery;
   const { mutate: onCreate } = usersCreateMutation;
   const { mutate: onPatch } = usersPatchMutation;
+
+  const firstNameValue = form.watch(registeredFormFields.first_name);
+  const lastNameValue = form.watch(registeredFormFields.last_name);
 
   const onError = (err: unknown) => {
     addToast(t('message.error.common'), 'error');
@@ -99,9 +103,7 @@ export const useUsersDetailForm = () => {
       return;
     }
 
-    const master = Object.assign({
-      ...data,
-    });
+    const master = getUsersDetailFormMapperToMaster(data);
 
     if (data.id === 0) {
       createHandler(master);
@@ -109,6 +111,27 @@ export const useUsersDetailForm = () => {
       patchHandler(master);
     }
   };
+
+  const getAccessRightsFieldOptions = () => {
+    const keys = Object.keys(usersAccessKeys);
+    const tmpItems: MenuItemProps[] = [];
+
+    keys.forEach((item) => {
+      const value = usersAccessKeys[item];
+      tmpItems.push({
+        value,
+        children: getOptionValue(String(item), 'accessRights'),
+      });
+    });
+
+    return tmpItems;
+  };
+
+  useEffect(() => {
+    if (id === newItemKey && (firstNameValue || lastNameValue)) {
+      form.setValue('name', getFormattedString(firstNameValue ?? '', lastNameValue ?? ''));
+    }
+  }, [id, firstNameValue, lastNameValue]);
 
   useEffect(() => {
     if (id) {
@@ -129,6 +152,7 @@ export const useUsersDetailForm = () => {
     form,
     fieldOptions: {
       type: getTypeFieldOptions(modelKeys.users),
+      accessRights: getAccessRightsFieldOptions(),
     },
     onSubmit: form.handleSubmit(submitHandler),
     detailData,

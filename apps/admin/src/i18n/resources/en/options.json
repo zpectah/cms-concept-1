@@ -14,6 +14,13 @@
     "archive": "Archive"
   },
 
+  "accessRights": {
+    "none": "None",
+    "redactor": "Redactor",
+    "chiefRedactor": "Chief Redactor",
+    "admin": "Admin"
+  },
+
   "robots": {
     "all": "All",
     "index": "Index",

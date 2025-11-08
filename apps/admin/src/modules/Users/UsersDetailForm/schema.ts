@@ -9,15 +9,13 @@ export const UsersDetailFormSchema = z
     id: formFieldsSchemas.number,
     type: z.enum(usersTypeKeysArray),
     name: formFieldsSchemas.required_string,
-
     email: formFieldsSchemas.required_email,
     password: formFieldsSchemas.string.optional(),
-
     first_name: formFieldsSchemas.string,
     last_name: formFieldsSchemas.string,
-
     access_rights: formFieldsSchemas.number,
-
+    avatar_image: formFieldsSchemas.string.optional(),
+    avatar_hash: formFieldsSchemas.string.optional(),
     active: formFieldsSchemas.boolean.optional(),
     deleted: formFieldsSchemas.boolean.optional(),
     created: formFieldsSchemas.string.optional(),

@@ -12,7 +12,6 @@ import {
   SelectField,
   EmailField,
   PasswordField,
-  NumberField,
 } from '../../../components';
 import { useUsersDetailForm } from './useUsersDetailForm';
 
@@ -32,29 +31,31 @@ const UsersDetailForm = () => {
         actions={<FormDetailActions detailId={detailId} listPath={`/${routes.users.path}`} />}
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
       >
-        <InputField name={registeredFormFields.name} label={t('form:label.name')} />
+        <EmailField name={registeredFormFields.email} label={t('form:label.email')} isRequired />
+        <PasswordField
+          name={registeredFormFields.password}
+          label={t('form:label.password')}
+          isRequired={detailId === newItemKey}
+        />
+        <InputField name={registeredFormFields.first_name} label={t('form:label.firstName')} />
+        <InputField name={registeredFormFields.last_name} label={t('form:label.lastName')} />
+        <InputField
+          name={registeredFormFields.name}
+          label={t('form:label.name')}
+          isRequired
+          readOnly={detailId !== newItemKey}
+        />
         <SelectField
           name={registeredFormFields.type}
           label={t('form:label.type')}
           items={fieldOptions.type}
           fieldProps={{ defaultValue: usersTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
-        <EmailField name={registeredFormFields.email} label={t('form:label.email')} />
-
-        {/* TODO - Jen pokud je nový */}
-        <PasswordField
-          name={registeredFormFields.password}
-          label={t('form:label.password')}
-          isRequired={detailId === newItemKey}
-        />
-
-        <InputField name={registeredFormFields.first_name} label={t('form:label.firstName')} />
-        <InputField name={registeredFormFields.last_name} label={t('form:label.lastName')} />
-
-        <NumberField
+        <SelectField
           name={registeredFormFields.access_rights}
           label={t('form:label.accessRights')}
-          fieldProps={{ sx: { width: { xs: '100%', md: '33%' } } }}
+          items={fieldOptions.accessRights}
+          fieldProps={{ defaultValue: usersTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
         />
       </FormLayout>
     </ControlledForm>

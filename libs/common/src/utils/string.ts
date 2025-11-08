@@ -5,7 +5,7 @@ const SPECIAL = '!#$%&()*+,-./:;<=>?@[]^_`{|}~' as const;
 
 export const getRandomString = (length = 12) => {
   let result = '';
-  const characters = `${UPPERCASE}${LOWERCASE}${NUMBER}${SPECIAL}`;
+  const characters = `${UPPERCASE}${LOWERCASE}${NUMBER}`;
   const charactersLength = characters.length;
   let counter = 0;
   while (counter < length) {
@@ -100,7 +100,7 @@ export const getRandomStringFromArraySet = (
   return generateLoremIpsum(options.paragraphs, options.sentences, options.words);
 };
 
-export const getRandomId = (length: number = 16) =>
+export const getRandomId = (length = 16) =>
   getRandomPassword({
     length,
     number: true,
@@ -108,3 +108,14 @@ export const getRandomId = (length: number = 16) =>
     uppercase: true,
     special: false,
   });
+
+export const getFormattedString = (...args: string[]): string => {
+  const combinedString = args.join('-');
+
+  let dashedString = combinedString.replace(/ /g, '-');
+
+  dashedString = dashedString.replace(/-+/g, '-');
+  dashedString = dashedString.replace(/^-|-$/g, '');
+
+  return dashedString.toLowerCase();
+};

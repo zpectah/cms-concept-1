@@ -1,7 +1,9 @@
-import { usersTypeKeys } from '../../enums';
+import { usersTypeKeys, usersAccessKeys } from '../../enums';
 import { ItemBase } from '../item';
+import { EnumKeyValues } from '../common';
 
-export type UsersType = keyof typeof usersTypeKeys;
+export type UsersType = EnumKeyValues<typeof usersTypeKeys>;
+export type UsersAccessRights = EnumKeyValues<typeof usersAccessKeys>;
 
 export interface UsersItem extends ItemBase {
   type: UsersType;
@@ -9,7 +11,8 @@ export interface UsersItem extends ItemBase {
   password?: string;
   first_name?: string;
   last_name?: string;
-  access_rights: number; // TODO: enum
+  access_rights: UsersAccessRights;
+  avatar_image?: string;
 }
 
 export type Users = UsersItem[];

@@ -6,7 +6,7 @@ use PDO;
 
 class Users extends Model {
 
-  static array $tableFields = ['type', 'name', 'email', 'first_name', 'last_name', 'access_rights', 'active', 'deleted'];
+  static array $tableFields = ['type', 'name', 'email', 'first_name', 'last_name', 'access_rights', 'avatar_image', 'avatar_hash', 'active', 'deleted'];
 
   private function dbToJsonDetailMapper($data): array {
     $item = [
@@ -34,7 +34,7 @@ class Users extends Model {
 
     $deleted = 0;
 
-    $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `deleted` = :status";
+    $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, avatar_image, avatar_hash, active, deleted, created, updated FROM `users` WHERE `deleted` = :status";
     $stmt = $conn -> prepare($sql);
     $stmt -> bindParam(':status', $deleted, PDO::PARAM_INT);
     $stmt -> execute();
@@ -63,15 +63,15 @@ class Users extends Model {
 
     if ($id) {
       if ($withPassword) {
-        $sql = "SELECT id, type, name, password, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `id` = :id LIMIT 1";
+        $sql = "SELECT id, type, name, password, email, first_name, last_name, access_rights, avatar_image, avatar_hash, active, deleted, created, updated FROM `users` WHERE `id` = :id LIMIT 1";
       } else {
-        $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `id` = :id LIMIT 1";
+        $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, avatar_image, avatar_hash, active, deleted, created, updated FROM `users` WHERE `id` = :id LIMIT 1";
       }
     } else if ($email) {
       if ($withPassword) {
-        $sql = "SELECT id, type, name, password, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `email` = :email LIMIT 1";
+        $sql = "SELECT id, type, name, password, email, first_name, last_name, access_rights, avatar_image, avatar_hash, active, deleted, created, updated FROM `users` WHERE `email` = :email LIMIT 1";
       } else {
-        $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, active, deleted, created, updated FROM `users` WHERE `email` = :email LIMIT 1";
+        $sql = "SELECT id, type, name, email, first_name, last_name, access_rights, avatar_image, avatar_hash, active, deleted, created, updated FROM `users` WHERE `email` = :email LIMIT 1";
       }
     }
     $stmt = $conn -> prepare($sql);
@@ -113,6 +113,8 @@ class Users extends Model {
     $stmt -> bindParam(':first_name', $data['first_name']);
     $stmt -> bindParam(':last_name', $data['last_name']);
     $stmt -> bindParam(':access_rights', $data['access_rights']);
+    $stmt -> bindParam(':avatar_image', $data['avatar_image']);
+    $stmt -> bindParam(':avatar_hash', $data['avatar_hash']);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
     $stmt -> execute();
@@ -160,6 +162,8 @@ class Users extends Model {
     $stmt -> bindParam(':first_name', $data['first_name']);
     $stmt -> bindParam(':last_name', $data['last_name']);
     $stmt -> bindParam(':access_rights', $data['access_rights']);
+    $stmt -> bindParam(':avatar_image', $data['avatar_image']);
+    $stmt -> bindParam(':avatar_hash', $data['avatar_hash']);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
     $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);
