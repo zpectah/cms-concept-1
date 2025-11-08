@@ -1,7 +1,8 @@
 import { pagesTypeKeys } from '../../enums';
 import { ItemBase, ItemLocaleBase } from '../item';
+import { EnumKeyValues } from '../common';
 
-export type PagesType = keyof typeof pagesTypeKeys;
+export type PagesType = EnumKeyValues<typeof pagesTypeKeys>;
 
 export interface PagesItem extends ItemBase {
   type: PagesType;

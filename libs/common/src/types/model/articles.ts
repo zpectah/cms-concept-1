@@ -1,8 +1,9 @@
 import { articlesTypeKeys } from '../../enums';
 import { ItemBase, ItemLocaleBase } from '../item';
 import { Address, GpsLocation } from '../form';
+import { EnumKeyValues } from '../common';
 
-export type ArticlesType = keyof typeof articlesTypeKeys;
+export type ArticlesType = EnumKeyValues<typeof articlesTypeKeys>;
 
 export interface ArticlesItem extends ItemBase {
   type: ArticlesType;

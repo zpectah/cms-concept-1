@@ -1,8 +1,9 @@
 import { membersTypeKeys } from '../../enums';
 import { ItemBase } from '../item';
 import { Address } from '../form';
+import { EnumKeyValues } from '../common';
 
-export type MembersType = keyof typeof membersTypeKeys;
+export type MembersType = EnumKeyValues<typeof membersTypeKeys>;
 
 export interface MembersItem extends ItemBase {
   type: MembersType;

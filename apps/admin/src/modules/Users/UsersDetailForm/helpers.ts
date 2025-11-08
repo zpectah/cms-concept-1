@@ -19,22 +19,18 @@ export const getUsersDetailFormDefaultValues = (): IUsersDetailForm => {
 };
 
 export const getUsersDetailFormMapper = (data: UsersDetail): IUsersDetailForm => {
-  return Object.assign({
+  return {
     ...data,
 
     first_name: data.first_name ?? '',
     last_name: data.last_name ?? '',
-  });
+  };
 };
 
-export const getUsersDetailFormMapperToMaster = (data: IUsersDetailForm) => {
+export const getUsersDetailFormMapperToMaster = (data: IUsersDetailForm): IUsersDetailForm => {
   return Object.assign({
     ...data,
     name: getFormattedString(data.name),
-
     avatar_hash: getRandomString(8),
-
-    first_name: data.first_name ?? '',
-    last_name: data.last_name ?? '',
   });
 };

@@ -22,3 +22,9 @@ export const getPagesDetailFormMapper = (data: PagesDetail): IPagesDetailForm =>
     ...data,
   };
 };
+
+export const getPagesDetailFormMapperToMaster = (data: IPagesDetailForm): IPagesDetailForm => {
+  return Object.assign({
+    ...data,
+  });
+};

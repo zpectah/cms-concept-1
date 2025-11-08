@@ -16,3 +16,9 @@ export const getMenuDetailFormMapper = (data: MenuDetail): IMenuDetailForm => {
     ...data,
   };
 };
+
+export const getMenuDetailFormMapperToMaster = (data: IMenuDetailForm): IMenuDetailForm => {
+  return Object.assign({
+    ...data,
+  });
+};

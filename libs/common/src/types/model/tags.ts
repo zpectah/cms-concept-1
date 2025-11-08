@@ -1,8 +1,9 @@
 import { tagsColorKeys, tagsTypeKeys } from '../../enums';
 import { ItemBase } from '../item';
+import { EnumKeyValues } from '../common';
 
-export type TagsType = keyof typeof tagsTypeKeys;
-export type TagsColor = keyof typeof tagsColorKeys;
+export type TagsType = EnumKeyValues<typeof tagsTypeKeys>;
+export type TagsColor = EnumKeyValues<typeof tagsColorKeys>;
 
 export interface TagsItem extends ItemBase {
   type: TagsType;

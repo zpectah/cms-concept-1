@@ -22,3 +22,9 @@ export const getCategoriesDetailFormMapper = (data: CategoriesDetail): ICategori
     ...data,
   };
 };
+
+export const getCategoriesDetailFormMapperToMaster = (data: ICategoriesDetailForm): ICategoriesDetailForm => {
+  return Object.assign({
+    ...data,
+  });
+};

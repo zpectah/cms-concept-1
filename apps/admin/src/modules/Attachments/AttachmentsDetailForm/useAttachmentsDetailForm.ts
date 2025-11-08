@@ -13,7 +13,11 @@ import { useAttachmentsQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
 import { AttachmentsDetailFormSchema } from './schema';
 import { IAttachmentsDetailForm } from './types';
-import { getAttachmentsDetailFormDefaultValues, getAttachmentsDetailFormMapper } from './helpers';
+import {
+  getAttachmentsDetailFormDefaultValues,
+  getAttachmentsDetailFormMapper,
+  getAttachmentsDetailFormMapperToMaster,
+} from './helpers';
 
 export const useAttachmentsDetailForm = () => {
   const { t } = useTranslation();
@@ -74,9 +78,7 @@ export const useAttachmentsDetailForm = () => {
       return;
     }
 
-    const master = Object.assign({
-      ...data,
-    });
+    const master = getAttachmentsDetailFormMapperToMaster(data);
 
     patchHandler(master);
   };

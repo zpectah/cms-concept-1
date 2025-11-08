@@ -1,7 +1,8 @@
 import { attachmentsTypeKeys } from '../../enums';
 import { ItemBase } from '../item';
+import { EnumKeyValues } from '../common';
 
-export type AttachmentsType = keyof typeof attachmentsTypeKeys;
+export type AttachmentsType = EnumKeyValues<typeof attachmentsTypeKeys>;
 
 export interface AttachmentsItem extends ItemBase {
   type: AttachmentsType;

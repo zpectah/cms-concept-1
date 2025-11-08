@@ -14,7 +14,7 @@ import { useModelFavorites } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { PagesDetailFormSchema } from './schema';
 import { IPagesDetailForm } from './types';
-import { getPagesDetailFormDefaultValues, getPagesDetailFormMapper } from './helpers';
+import { getPagesDetailFormDefaultValues, getPagesDetailFormMapper, getPagesDetailFormMapperToMaster } from './helpers';
 
 export const usePagesDetailForm = () => {
   const { t } = useTranslation();
@@ -100,9 +100,7 @@ export const usePagesDetailForm = () => {
       return;
     }
 
-    const master = Object.assign({
-      ...data,
-    });
+    const master = getPagesDetailFormMapperToMaster(data);
 
     if (data.id === 0) {
       createHandler(master);

@@ -20,10 +20,8 @@ export const getTagsDetailFormMapper = (data: TagsDetail): ITagsDetailForm => {
   };
 };
 
-export const getTagsDetailFormMapperToMaster = (data: ITagsDetailForm) => {
+export const getTagsDetailFormMapperToMaster = (data: ITagsDetailForm): ITagsDetailForm => {
   return Object.assign({
     ...data,
-    active: data.active ? 1 : 0,
-    deleted: data.deleted ? 1 : 0,
   });
 };

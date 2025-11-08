@@ -1,7 +1,8 @@
 import { translationsTypeKeys } from '../../enums';
 import { ItemBase, ItemLocaleBase } from '../item';
+import { EnumKeyValues } from '../common';
 
-export type TranslationsType = keyof typeof translationsTypeKeys;
+export type TranslationsType = EnumKeyValues<typeof translationsTypeKeys>;
 
 export interface TranslationsItem extends ItemBase {
   type: TranslationsType;

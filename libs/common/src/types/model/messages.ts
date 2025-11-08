@@ -1,7 +1,8 @@
 import { messagesTypeKeys } from '../../enums';
 import { ItemBase } from '../item';
+import { EnumKeyValues } from '../common';
 
-export type MessagesType = keyof typeof messagesTypeKeys;
+export type MessagesType = EnumKeyValues<typeof messagesTypeKeys>;
 
 export interface MessagesItem extends ItemBase {
   type: MessagesType;

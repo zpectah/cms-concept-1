@@ -30,3 +30,9 @@ export const getMembersDetailFormMapper = (data: MembersDetail): IMembersDetailF
     flat_no: String(data.flat_no ?? ''),
   };
 };
+
+export const getMembersDetailFormMapperToMaster = (data: IMembersDetailForm): IMembersDetailForm => {
+  return Object.assign({
+    ...data,
+  });
+};

@@ -103,6 +103,14 @@ export const useUsersDetailForm = () => {
       return;
     }
 
+    if (!isAttributeUnique(users ?? [], registeredFormFields.name, data as UsersDetail)) {
+      form.setError(registeredFormFields.name, {
+        message: t('form:message.error.duplicityName'),
+      });
+
+      return;
+    }
+
     const master = getUsersDetailFormMapperToMaster(data);
 
     if (data.id === 0) {

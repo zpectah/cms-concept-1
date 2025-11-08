@@ -20,3 +20,9 @@ export const getTranslationsDetailFormMapper = (data: TranslationsDetail): ITran
     ...data,
   };
 };
+
+export const getTranslationsDetailFormMapperToMaster = (data: ITranslationsDetailForm): ITranslationsDetailForm => {
+  return Object.assign({
+    ...data,
+  });
+};

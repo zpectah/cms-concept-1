@@ -1,6 +1,7 @@
 import { blacklistTypeKeys } from '../../enums';
+import { EnumKeyValues } from '../common';
 
-export type BlacklistType = keyof typeof blacklistTypeKeys;
+export type BlacklistType = EnumKeyValues<typeof blacklistTypeKeys>;
 
 export interface BlacklistItem {
   id: number;

@@ -40,3 +40,9 @@ export const getArticlesDetailFormMapper = (data: ArticlesDetail): IArticlesDeta
     },
   };
 };
+
+export const getArticlesDetailFormMapperToMaster = (data: IArticlesDetailForm): IArticlesDetailForm => {
+  return Object.assign({
+    ...data,
+  });
+};

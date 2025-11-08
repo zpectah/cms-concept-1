@@ -1,7 +1,8 @@
 import { menuTypeKeys } from '../../enums';
 import { ItemBase } from '../item';
+import { EnumKeyValues } from '../common';
 
-export type MenuType = keyof typeof menuTypeKeys;
+export type MenuType = EnumKeyValues<typeof menuTypeKeys>;
 
 export interface MenuItem extends ItemBase {
   type: MenuType;

@@ -14,7 +14,11 @@ import { useModelFavorites } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { TranslationsDetailFormSchema } from './schema';
 import { ITranslationsDetailForm } from './types';
-import { getTranslationsDetailFormDefaultValues, getTranslationsDetailFormMapper } from './helpers';
+import {
+  getTranslationsDetailFormDefaultValues,
+  getTranslationsDetailFormMapper,
+  getTranslationsDetailFormMapperToMaster,
+} from './helpers';
 
 export const useTranslationsDetailForm = () => {
   const { t } = useTranslation();
@@ -101,9 +105,7 @@ export const useTranslationsDetailForm = () => {
       return;
     }
 
-    const master = Object.assign({
-      ...data,
-    });
+    const master = getTranslationsDetailFormMapperToMaster(data);
 
     if (data.id === 0) {
       createHandler(master);

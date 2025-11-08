@@ -1,7 +1,8 @@
 import { commentsTypeKeys } from '../../enums';
 import { ItemBase } from '../item';
+import { EnumKeyValues } from '../common';
 
-export type CommentsType = keyof typeof commentsTypeKeys;
+export type CommentsType = EnumKeyValues<typeof commentsTypeKeys>;
 
 export interface CommentsItem extends ItemBase {
   type: CommentsType;

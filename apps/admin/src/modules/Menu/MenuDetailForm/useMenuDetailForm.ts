@@ -14,7 +14,7 @@ import { useModelFavorites } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { MenuDetailFormSchema } from './schema';
 import { IMenuDetailForm } from './types';
-import { getMenuDetailFormDefaultValues, getMenuDetailFormMapper } from './helpers';
+import { getMenuDetailFormDefaultValues, getMenuDetailFormMapper, getMenuDetailFormMapperToMaster } from './helpers';
 
 export const useMenuDetailForm = () => {
   const { t } = useTranslation();
@@ -99,9 +99,7 @@ export const useMenuDetailForm = () => {
       return;
     }
 
-    const master = Object.assign({
-      ...data,
-    });
+    const master = getMenuDetailFormMapperToMaster(data);
 
     if (data.id === 0) {
       createHandler(master);

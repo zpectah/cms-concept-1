@@ -20,3 +20,9 @@ export const getAttachmentsDetailFormMapper = (data: AttachmentsDetail): IAttach
     ...data,
   };
 };
+
+export const getAttachmentsDetailFormMapperToMaster = (data: IAttachmentsDetailForm): IAttachmentsDetailForm => {
+  return Object.assign({
+    ...data,
+  });
+};
