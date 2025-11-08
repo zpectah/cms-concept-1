@@ -1,13 +1,22 @@
 import { useEffect } from 'react';
+import mapboxgl from 'mapbox-gl';
 import { useLocale, useTheme } from '../hooks';
+import { getConfig } from '../utils';
 
 export const useAppInit = (callback?: () => void) => {
+  const {
+    apps: { mapbox },
+  } = getConfig();
+
   const { onInit: onLocaleInit } = useLocale();
   const { onInit: onThemeInit } = useTheme();
 
   const initHandler = () => {
+    mapboxgl.accessToken = mapbox.token;
+
     onLocaleInit();
     onThemeInit();
+
     callback?.();
   };
 

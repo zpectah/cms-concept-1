@@ -1,177 +1,51 @@
-import { Button, Divider, Stack, Typography } from '@mui/material';
-import { Section, Textarea } from '../../../../components';
+import { Button, Stack, Table, TableContainer, TableBody, TableRow, TableCell, Typography } from '@mui/material';
+import { Section } from '../../../../components';
 import { useMaintenanceForm } from './useMaintenanceForm';
 import { useTranslation } from 'react-i18next';
 
 const MaintenanceForm = () => {
   const { t } = useTranslation(['common', 'modules']);
-  const { onAnalyze, onProceed, analyzedResults, deletedResults, rowsToDelete } = useMaintenanceForm();
+  const { onAnalyze, onProceed, analyzedResults, deletedResults, rowsToDelete, deletedRows } = useMaintenanceForm();
 
   return (
     <Section title={t('modules:settings.tabs.maintenance.title')} cardContent>
-      <Stack direction="column" gap={2}>
-        <Stack direction="row" gap={1}>
-          <Button variant="contained" color="primary" onClick={onAnalyze}>
-            {t('modules:settings.tabs.maintenance.section.button.analyzeRows')}
-          </Button>
-        </Stack>
-        {!!analyzedResults && rowsToDelete > 0 && (
-          <>
-            <Divider />
-            <Stack direction="column" gap={2}>
-              {analyzedResults.articles.length > 0 && (
-                <Stack direction="row" gap={2} alignItems="center">
-                  Articles:
-                  <Stack direction="row" gap={0.5}>
-                    {analyzedResults.articles.map((item) => (
-                      <Typography key={`article_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
+      <TableContainer>
+        <Table sx={{ width: '100%' }}>
+          <TableBody>
+            <TableRow>
+              <TableCell>
+                <Typography variant="button">
+                  {t('modules:settings.tabs.maintenance.section.label.permanentDeletion')}
+                </Typography>
+              </TableCell>
+              <TableCell width="auto">
+                {analyzedResults &&
+                  (rowsToDelete > 0
+                    ? rowsToDelete
+                    : t('modules:settings.tabs.maintenance.section.label.noItemsToDelete'))}
+                {deletedResults &&
+                  t('modules:settings.tabs.maintenance.section.label.itemsDeleted', { count: deletedRows })}
+              </TableCell>
+              <TableCell align="right" width="350px">
+                <Stack direction="row" alignItems="center" justifyContent="end" gap={1}>
+                  <Button variant="contained" color="primary" onClick={onAnalyze} size="small">
+                    {t('modules:settings.tabs.maintenance.section.button.analyzeRows')}
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={onProceed}
+                    disabled={rowsToDelete === 0}
+                    size="small"
+                  >
+                    {t('modules:settings.tabs.maintenance.section.button.deleteAnalyzedRows')}
+                  </Button>
                 </Stack>
-              )}
-              {analyzedResults.attachments.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Attachments:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.attachments.map((item) => (
-                      <Typography key={`attachments_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.blacklist.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Categories:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.blacklist.map((item) => (
-                      <Typography key={`blacklist_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.categories.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Categories:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.categories.map((item) => (
-                      <Typography key={`categories_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.comments.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Categories:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.comments.map((item) => (
-                      <Typography key={`comments_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.members.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Members:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.members.map((item) => (
-                      <Typography key={`members_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.menu.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Menu:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.menu.map((item) => (
-                      <Typography key={`menu_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.menuItems.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Menu items:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.menuItems.map((item) => (
-                      <Typography key={`menuItems_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.messages.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Menu items:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.messages.map((item) => (
-                      <Typography key={`messages_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.pages.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Pages:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.pages.map((item) => (
-                      <Typography key={`pages_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.requests.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Pages:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.requests.map((item) => (
-                      <Typography key={`requests_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.tags.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Tags:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.tags.map((item) => (
-                      <Typography key={`tags_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.translations.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Translations:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.translations.map((item) => (
-                      <Typography key={`translations_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-              {analyzedResults.users.length > 0 && (
-                <Stack direction="row" gap={2}>
-                  Users:
-                  <Stack direction="row" gap={1}>
-                    {analyzedResults.users.map((item) => (
-                      <Typography key={`users_${item}`}>{item}</Typography>
-                    ))}
-                  </Stack>
-                </Stack>
-              )}
-            </Stack>
-            <Divider />
-          </>
-        )}
-
-        {!!deletedResults && <Textarea value={JSON.stringify(deletedResults, null, 2)} />}
-
-        <Stack direction="row" gap={1}>
-          <Button variant="outlined" color="error" onClick={onProceed} disabled={rowsToDelete === 0}>
-            {t('modules:settings.tabs.maintenance.section.button.deleteAnalyzedRows')}
-          </Button>
-        </Stack>
-      </Stack>
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Section>
   );
 };

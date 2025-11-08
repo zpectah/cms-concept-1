@@ -6,10 +6,9 @@ import AddLocationIcon from '@mui/icons-material/AddLocation';
 import ClearIcon from '@mui/icons-material/Clear';
 import { GpsLocation } from '@common';
 import { LOCATION_CENTER_DEFAULT, LOCATION_CENTER_INITIAL, LOCATION_ZOOM_DEFAULT } from '../../constants';
-import { getConfig } from '../../utils';
-import { GpsPickerProps } from './types';
 import { DialogBase } from '../Dialog';
 import { Input } from '../input';
+import { GpsPickerProps } from './types';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -48,12 +47,7 @@ const GpsPicker = ({
   disableThumbMap,
   thumbZoom = THUMB_ZOOM_DEFAULT,
 }: GpsPickerProps) => {
-  const {
-    apps: { mapbox },
-  } = getConfig();
   const { t } = useTranslation();
-
-  mapboxgl.accessToken = mapbox.token;
 
   const mainMapRef = useRef<Map | null>(null);
   const mainMapContainerRef = useRef<HTMLDivElement | null>(null);
@@ -108,6 +102,8 @@ const GpsPicker = ({
       container: mainMapContainerRef.current,
       center: initialCenter,
       zoom,
+      attributionControl: false,
+      trackResize: true,
     });
 
     mainMapRef.current.on('load', (event) => {
@@ -154,6 +150,8 @@ const GpsPicker = ({
         container: mainMapContainerRef.current as HTMLElement,
         center: initialCenter,
         zoom,
+        attributionControl: false,
+        trackResize: true,
       });
     }
   };

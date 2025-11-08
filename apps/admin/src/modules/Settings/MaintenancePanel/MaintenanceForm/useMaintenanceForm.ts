@@ -10,6 +10,7 @@ export const useMaintenanceForm = () => {
   const [analyzedResults, setAnalyzedResults] = useState<MaintenanceAnalyzeResults | null>(null);
   const [deletedResults, setDeletedResults] = useState<MaintenanceDeleteResults | null>(null);
   const [rowsToDelete, setRowsToDelete] = useState<number>(0);
+  const [deletedRows, setDeletedRows] = useState<number>(0);
 
   const { t } = useTranslation(['common', 'modules']);
   const { addToast, openConfirmDialog } = useAppStore();
@@ -70,6 +71,23 @@ export const useMaintenanceForm = () => {
       },
       {
         onSuccess: (res) => {
+          let count = 0;
+          count += res.articles.rows;
+          count += res.attachments.rows;
+          count += res.blacklist.rows;
+          count += res.categories.rows;
+          count += res.comments.rows;
+          count += res.members.rows;
+          count += res.menu.rows;
+          count += res.menuItems.rows;
+          count += res.messages.rows;
+          count += res.pages.rows;
+          count += res.requests.rows;
+          count += res.tags.rows;
+          count += res.translations.rows;
+          count += res.users.rows;
+
+          setDeletedRows(count);
           setDeletedResults(res);
           setAnalyzedResults(null);
           addToast(
@@ -97,5 +115,6 @@ export const useMaintenanceForm = () => {
     analyzedResults,
     deletedResults,
     rowsToDelete,
+    deletedRows,
   };
 };
