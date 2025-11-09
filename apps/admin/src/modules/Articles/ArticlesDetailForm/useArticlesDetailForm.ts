@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import { modelKeys, newItemKey, ArticlesDetail } from '@common';
 import { getConfig } from '../../../utils';
 import { useFormDetailControl, useSelectOptions, useArticlesHelpers } from '../../../helpers';
 import { useAppStore } from '../../../store';
-import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
+import { CLONE_PATH_ATTRIBUTE_NAME, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useArticlesQuery } from '../../../hooks-query';
 import { useModelFavorites } from '../../../hooks';
@@ -18,19 +18,32 @@ import {
   getArticlesDetailFormDefaultValues,
   getArticlesDetailFormMapper,
   getArticlesDetailFormMapperToMaster,
+  getCloneArticlesDetailFormMapper,
 } from './helpers';
 
 export const useArticlesDetailForm = () => {
-  const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
-  const { articlesQuery, articlesDetailQuery, articlesPatchMutation, articlesCreateMutation } = useArticlesQuery({
+
+  const cloneId = searchParams.get(CLONE_PATH_ATTRIBUTE_NAME);
+
+  const {
+    articlesQuery,
+    articlesDetailQuery,
+    articlesCloneDetailQuery,
+    articlesPatchMutation,
+    articlesCreateMutation,
+  } = useArticlesQuery({
     id,
+    cloneId,
   });
   const { getTypeFieldOptions } = useSelectOptions();
   const { removeItemFromFavorites } = useModelFavorites(modelKeys.articles);
@@ -43,6 +56,7 @@ export const useArticlesDetailForm = () => {
 
   const { data: articles, refetch } = articlesQuery;
   const { data: detailData, ...detailQuery } = articlesDetailQuery;
+  const { data: cloneDetailData } = articlesCloneDetailQuery;
   const { mutate: onCreate } = articlesCreateMutation;
   const { mutate: onPatch } = articlesPatchMutation;
 
@@ -118,8 +132,15 @@ export const useArticlesDetailForm = () => {
   useEffect(() => {
     if (id) {
       if (id === newItemKey) {
-        setTitle(t('button.new.articles'));
-        form.reset(getArticlesDetailFormDefaultValues(locales));
+        if (cloneId && cloneDetailData) {
+          const cloneDetail = getCloneArticlesDetailFormMapper(cloneDetailData);
+
+          setTitle(cloneDetail.name);
+          form.reset(cloneDetail);
+        } else {
+          setTitle(t('button.new.articles'));
+          form.reset(getArticlesDetailFormDefaultValues(locales));
+        }
       } else if (detailData) {
         if (form.formState.isDirty) return;
 
@@ -128,7 +149,7 @@ export const useArticlesDetailForm = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, detailData, form, locales]);
+  }, [id, cloneId, detailData, cloneDetailData, form, locales]);
 
   return {
     form,

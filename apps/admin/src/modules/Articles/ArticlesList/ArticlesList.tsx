@@ -1,5 +1,6 @@
 import { modelKeys, ArticlesItem } from '@common';
-import { ListItems, ValueArray, ValueDate, ValueType } from '../../../components';
+import CopyAllIcon from '@mui/icons-material/CopyAll';
+import { ListItems, ValueArray, ValueDate, ValueType, IconButtonPlus } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 import { useArticlesList } from './useArticlesList';
@@ -8,7 +9,7 @@ const ArticlesList = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { articles, categories, tags, isLoading, onDeleteSelected, onDisableSelected } = useArticlesList();
+  const { articles, categories, tags, isLoading, onDeleteSelected, onDisableSelected, onClone } = useArticlesList();
 
   return (
     <ListItems<ArticlesItem>
@@ -52,6 +53,11 @@ const ArticlesList = () => {
       onRowDisable={(id) => onDisableSelected([id])}
       categories={categories}
       tags={tags}
+      renderRowActions={(row) => (
+        <IconButtonPlus tooltip="Klonovat" onClick={() => onClone(row.id)} size="small">
+          <CopyAllIcon fontSize="small" />
+        </IconButtonPlus>
+      )}
     />
   );
 };

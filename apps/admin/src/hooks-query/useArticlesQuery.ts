@@ -5,7 +5,7 @@ import { API_URL, API_KEYS } from '../constants';
 
 const QUERY_KEY_BASE = API_KEYS.articles;
 
-export const useArticlesQuery = ({ id }: { id?: string }) => {
+export const useArticlesQuery = ({ id, cloneId }: { id?: string; cloneId?: string | null }) => {
   const articlesQuery = useQuery<unknown, unknown, Articles>({
     queryKey: [QUERY_KEY_BASE],
     queryFn: () => axios.get(API_URL.articles).then((response) => response.data),
@@ -15,6 +15,12 @@ export const useArticlesQuery = ({ id }: { id?: string }) => {
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
     queryFn: () => axios.get(`${API_URL.articles}/id/${id}`).then((response) => response.data),
     enabled: !!id && id !== newItemKey,
+  });
+
+  const articlesCloneDetailQuery = useQuery<unknown, unknown, ArticlesDetail>({
+    queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${cloneId}`],
+    queryFn: () => axios.get(`${API_URL.articles}/id/${cloneId}`).then((response) => response.data),
+    enabled: !!cloneId && id === newItemKey,
   });
 
   const articlesCreateMutation = useMutation<{ id: number; locales: string[] }, unknown, ArticlesDetail>({
@@ -40,6 +46,7 @@ export const useArticlesQuery = ({ id }: { id?: string }) => {
   return {
     articlesQuery,
     articlesDetailQuery,
+    articlesCloneDetailQuery,
     articlesCreateMutation,
     articlesPatchMutation,
     articlesToggleMutation,

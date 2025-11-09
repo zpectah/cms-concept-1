@@ -41,6 +41,16 @@ export const getArticlesDetailFormMapper = (data: ArticlesDetail): IArticlesDeta
   };
 };
 
+export const getCloneArticlesDetailFormMapper = (data: ArticlesDetail): IArticlesDetailForm => {
+  const localData = getArticlesDetailFormMapper(data);
+
+  return {
+    ...localData,
+    id: 0,
+    name: `clone-${localData.name}`,
+  };
+};
+
 export const getArticlesDetailFormMapperToMaster = (data: IArticlesDetailForm): IArticlesDetailForm => {
   return Object.assign({
     ...data,

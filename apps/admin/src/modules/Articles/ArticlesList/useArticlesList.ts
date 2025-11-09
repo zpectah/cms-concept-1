@@ -1,12 +1,18 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { modelKeys } from '@common';
+import { useNavigate } from 'react-router-dom';
+import { modelKeys, newItemKey } from '@common';
 import { useAppStore, useModelListStore } from '../../../store';
-import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
+import { CLONE_PATH_ATTRIBUTE_NAME, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useArticlesQuery, useCategoriesQuery, useTagsQuery } from '../../../hooks-query';
+import { getConfig } from '../../../utils';
 
 export const useArticlesList = () => {
+  const {
+    admin: { routes },
+  } = getConfig();
+
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
   const { addToast } = useAppStore();
@@ -18,6 +24,8 @@ export const useArticlesList = () => {
   const { data: items, isLoading, refetch } = articlesQuery;
   const { data: categories } = categoriesQuery;
   const { data: tags } = tagsQuery;
+
+  const navigate = useNavigate();
 
   const onError = (err: unknown) => {
     addToast(t('message.error.common'), 'error');
@@ -62,6 +70,9 @@ export const useArticlesList = () => {
     });
   };
 
+  const cloneItemHandler = (id: number) =>
+    navigate(`/${routes.articles.path}/${newItemKey}?${CLONE_PATH_ATTRIBUTE_NAME}=${id}`);
+
   useEffect(() => {
     setTitle(t('modules:articles.listTitle'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,5 +85,6 @@ export const useArticlesList = () => {
     tags,
     onDeleteSelected: deleteSelectedHandler,
     onDisableSelected: disableSelectedHandler,
+    onClone: cloneItemHandler,
   };
 };

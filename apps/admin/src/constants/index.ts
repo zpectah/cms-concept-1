@@ -7,3 +7,4 @@ export * from './localStorage';
 export * from './location';
 export * from './options';
 export * from './ui';
+export * from './url';
