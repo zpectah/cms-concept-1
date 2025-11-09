@@ -1,4 +1,5 @@
-import { Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Button, Grid, Stack } from '@mui/material';
 import { registeredFormFields } from '../../../enums';
 import {
   ControlledForm,
@@ -8,11 +9,14 @@ import {
   FormContent,
   ActionBar,
   AvatarUploader,
+  Literal,
+  HiddenCard,
 } from '../../../components';
 import { useAccountForm } from './useAccountForm';
 
 const AccountForm = () => {
-  const { userData, form, onSubmit, setAvatar } = useAccountForm();
+  const { t } = useTranslation(['common', 'form']);
+  const { userData, form, onSubmit, setAvatar, locked, setLocked } = useAccountForm();
 
   const watchedPassword = form.watch(registeredFormFields.password);
   const avatarImage = form.watch(registeredFormFields.avatar_image);
@@ -20,36 +24,58 @@ const AccountForm = () => {
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
       <FormContent>
-        <AvatarUploader
-          name={userData?.user?.name ?? ''}
-          current={avatarImage}
-          hash={userData?.user?.avatar_hash}
-          onFinish={(res) => {
-            if (res) setAvatar(res);
-          }}
-          onRemove={() => {
-            form.setValue(registeredFormFields.avatar_image, '');
-          }}
-        />
+        <Grid container>
+          <Grid size={4}>
+            <AvatarUploader
+              name={userData?.user?.name ?? ''}
+              current={avatarImage}
+              hash={userData?.user?.avatar_hash}
+              onFinish={(res) => {
+                if (res) setAvatar(res);
+              }}
+              onRemove={() => {
+                form.setValue(registeredFormFields.avatar_image, '');
+              }}
+              onLoadEnd={() => {
+                setLocked(false);
+              }}
+            />
+          </Grid>
+          <Grid size={8}>
+            <Stack direction="column" alignItems="start" justifyContent="center" gap={1} sx={{ height: '100%' }}>
+              <Literal label={t('form:label.email')} value={userData?.user?.email} />
+              <Literal
+                label={t('form:label.fullName')}
+                value={`${userData?.user?.first_name} ${userData?.user?.last_name}`}
+              />
 
-        <EmailField name={registeredFormFields.email} label="Email" isRequired readOnly />
-        <InputField name={registeredFormFields.first_name} label="First name" />
-        <InputField name={registeredFormFields.last_name} label="Last name" />
-
-        <div style={{ height: '20px' }} />
-
-        <PasswordField name={registeredFormFields.password} label="New password" />
-        <PasswordField
-          name={registeredFormFields.passwordConfirm}
-          label="Password confirm"
-          isHidden={!watchedPassword}
-        />
-
-        <ActionBar stackProps={{ sx: { mt: 2 } }}>
-          <Button type="submit" variant="contained" color="primary">
-            Update
-          </Button>
-        </ActionBar>
+              <Button size="small" variant="outlined" color="inherit" onClick={() => setLocked(!locked)}>
+                {t('button.edit')}
+              </Button>
+            </Stack>
+          </Grid>
+        </Grid>
+        <HiddenCard visible={!locked}>
+          <FormContent>
+            <EmailField name={registeredFormFields.email} label={t('form:label.email')} isRequired readOnly isHidden />
+            <InputField name={registeredFormFields.first_name} label={t('form:label.firstName')} />
+            <InputField name={registeredFormFields.last_name} label={t('form:label.lastName')} />
+            <PasswordField name={registeredFormFields.password} label={t('form:label.newPassword')} />
+            <PasswordField
+              name={registeredFormFields.passwordConfirm}
+              label={t('form:label.confirmPassword')}
+              isHidden={!watchedPassword}
+            />
+          </FormContent>
+          <ActionBar stackProps={{ sx: { mt: 3 } }}>
+            <Button type="submit" variant="contained" color="primary">
+              {t('button.update')}
+            </Button>
+            <Button variant="outlined" color="inherit" onClick={() => setLocked(true)}>
+              {t('button.cancel')}
+            </Button>
+          </ActionBar>
+        </HiddenCard>
       </FormContent>
     </ControlledForm>
   );

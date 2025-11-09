@@ -24,6 +24,8 @@ export const getDataToFormMapper = (data: UsersItem): IProfileAccountForm => {
 };
 
 export const getDataToFormMasterMapper = (data: IProfileAccountForm) => {
+  delete data.passwordConfirm;
+
   return Object.assign({
     ...data,
     avatar_hash: getRandomString(8),

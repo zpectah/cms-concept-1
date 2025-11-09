@@ -42,7 +42,13 @@
     "fileSize": "File size",
     "ipaddress": "IP Address",
     "accessRights": "Access rights",
-    "value": "Value"
+    "value": "Value",
+    "eventLocation": "Event location",
+    "eventStart": "Event start",
+    "eventEnd": "Event end",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "fullName": "Full name"
   },
   "message": {
     "error": {
@@ -57,7 +63,8 @@
       "invalidNumber": "Invalid number",
       "invalidBoolean": "Invalid boolean",
       "invalidDate": "Invalid date",
-      "invalidArray": "Invalid format"
+      "invalidArray": "Invalid format",
+      "passwordNotMatch": "Passwords do not match"
     }
   }
 }

@@ -12,5 +12,3 @@ export const ProfileAccountFormSchema = z.object({
   avatar_image: formFieldsSchemas.string.optional(),
   avatar_hash: formFieldsSchemas.string.optional(),
 });
-
-// TODO: handle for situation when new password is set ...

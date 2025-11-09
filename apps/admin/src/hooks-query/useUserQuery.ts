@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { UsersDetail } from '@common';
 import { API_KEYS, API_URL } from '../constants';
-import { FileUploaderTransportQueue } from '../types';
 
 const QUERY_KEY_BASE = API_KEYS.user;
 
@@ -94,19 +93,6 @@ export const useUserQuery = () => {
     mutationFn: (data) => axios.post(`${API_URL.user}/password-recovery-token`, data).then((response) => response.data),
   });
 
-  // TODO: use rather attachments method ...
-  const userAvatarCreateMutation = useMutation<number[], unknown, FileUploaderTransportQueue>({
-    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-avatar-create`],
-    mutationFn: (data) =>
-      axios
-        .post(`${API_URL.attachments}/file-create`, data, {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        })
-        .then((response) => response.data),
-  });
-
   return {
     userQuery,
     userPatchMutation,
@@ -114,11 +100,8 @@ export const useUserQuery = () => {
     userCheckPasswordMutation,
     userLoginMutation,
     userLogoutMutation,
-
     userPasswordRecoveryRequestMutation,
     userPasswordRecoveryRequestCheckMutation,
     userPasswordRecoveryTokenMutation,
-
-    userAvatarCreateMutation,
   };
 };

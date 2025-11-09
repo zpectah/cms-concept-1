@@ -1,5 +1,6 @@
-import { modelKeys, ArticlesItem } from '@common';
+import { useTranslation } from 'react-i18next';
 import CopyAllIcon from '@mui/icons-material/CopyAll';
+import { modelKeys, ArticlesItem } from '@common';
 import { ListItems, ValueArray, ValueDate, ValueType, IconButtonPlus } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
@@ -9,6 +10,8 @@ const ArticlesList = () => {
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation(['common']);
   const { articles, categories, tags, isLoading, onDeleteSelected, onDisableSelected, onClone } = useArticlesList();
 
   return (
@@ -54,7 +57,7 @@ const ArticlesList = () => {
       categories={categories}
       tags={tags}
       renderRowActions={(row) => (
-        <IconButtonPlus tooltip="Klonovat" onClick={() => onClone(row.id)} size="small">
+        <IconButtonPlus tooltip={t('button.clone')} onClick={() => onClone(row.id)} size="small">
           <CopyAllIcon fontSize="small" />
         </IconButtonPlus>
       )}

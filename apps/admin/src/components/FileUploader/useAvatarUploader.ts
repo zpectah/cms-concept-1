@@ -1,13 +1,20 @@
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FileUploaderQueueItem } from '../../types';
 import { getClearFileName, getFileExtension, getRandomId } from '@common';
 import { getTypeFromExtension } from '../../utils';
+import { useAppStore } from '../../store';
 import { fileUploaderQueueItemContextKeys } from '../../enums';
 import { UseAvatarUploaderProps } from './types';
 
 export const useAvatarUploader = ({ onLoad, onLoadEnd, onError, onFinish }: UseAvatarUploaderProps) => {
   const [result, setResult] = useState<FileUploaderQueueItem | null>(null);
-  const inputElement = useRef<HTMLInputElement | null>(null);
+  const inputElementRef = useRef<HTMLInputElement | null>(null);
+
+  const { t } = useTranslation(['common']);
+  const { addToast } = useAppStore();
+
+  const timestamp = Date.now();
 
   const fileHandler = (files: FileList | null) => {
     if (!files || files.length === 0) return;
@@ -52,20 +59,21 @@ export const useAvatarUploader = ({ onLoad, onLoadEnd, onError, onFinish }: UseA
         setResult(fileResult);
         onFinish?.(fileResult);
       })
-      .catch((error) => {
-        // TODO
-        console.error('Nahrávání souboru se nezdařilo:', error);
+      .catch((err) => {
+        console.warn(err);
+        addToast(t('message.error.fileUpload'), 'error');
         setResult(null);
       })
       .finally(() => {
-        inputElement.current && (inputElement.current.value = '');
+        inputElementRef.current && (inputElementRef.current.value = '');
       });
   };
 
   return {
-    inputElement,
+    inputElementRef,
     result,
     setResult,
     onInputChange: fileHandler,
+    timestamp,
   };
 };

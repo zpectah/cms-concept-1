@@ -43,7 +43,10 @@
     "cropImage": "Crop image",
     "saveAndExit": "Save and exit",
     "newRecord": "New record",
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "clone": "Clone",
+    "change": "Change",
+    "edit": "Edit"
   },
   "label": {
     "yesterday": "Yesterday",
@@ -100,7 +103,7 @@
     },
     "success": {
       "createDetail": "Item was successfully created",
-      "updateDetail": "Item was successfully update",
+      "updateDetail": "Item was successfully updated",
       "updateRow": "Item was successfully update",
       "updateSelected": "Selected items was successfully updated",
       "deleteDetail": "Item was successfully deleted",
@@ -111,10 +114,12 @@
       "fileCreated": "File was created successfully",
       "filesCreated": "Files was successfully created",
       "dataSaved": "Data was successfully saved",
-      "logoutSuccess": "You have been successfully logged out."
+      "logoutSuccess": "You have been successfully logged out.",
+      "updateData": "Data was successfully updated"
     },
     "info": {
-      "expiredSession": "Your login has expired and you have been logged out."
+      "expiredSession": "Your login has expired and you have been logged out.",
+      "nothingUpdated": "No changes were saved"
     },
     "warning": {},
     "error": {
@@ -124,7 +129,8 @@
       "unsupportedFileExt": "Unsupported file extension '{{value}}'",
       "unknownFileExt": "Unknown file extension '{{value}}'",
       "logoutError": "There was a problem logging out, please try again.",
-      "incorrectPassword": "Incorrect password"
+      "incorrectPassword": "Incorrect password",
+      "fileUpload": "There is problem with upload, try again"
     }
   }
 }

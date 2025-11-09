@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Box, Button } from '@mui/material';
 import { fileUploaderQueueItemContextKeys } from '../../enums';
 import { getEnvironmentVariables } from '../../helpers';
@@ -19,13 +20,29 @@ const AvatarUploader = ({
 }: AvatarUploaderProps) => {
   const [open, setOpen] = useState(false);
 
+  const { t } = useTranslation(['common']);
   const { uploadsSource } = getEnvironmentVariables();
-  const { result, inputElement, onInputChange, setResult } = useAvatarUploader({
+  const { result, inputElementRef, onInputChange, setResult, timestamp } = useAvatarUploader({
     onLoad,
     onLoadEnd,
     onError,
     onFinish,
   });
+
+  const isCurrent = current !== '';
+
+  const inputElement = (
+    <input
+      type="file"
+      onChange={(e) => {
+        onInputChange(e.target.files);
+        setOpen(true);
+      }}
+      ref={inputElementRef}
+      hidden
+      accept={'image/*'}
+    />
+  );
 
   return (
     <>
@@ -34,7 +51,7 @@ const AvatarUploader = ({
         sx={({ palette, shape, spacing }) => ({
           width: size,
           height: size,
-          border: `2px dashed ${palette.divider}`,
+          border: isCurrent ? `1px solid ${palette.text.secondary}` : `2px dashed ${palette.divider}`,
           borderRadius: size,
           display: 'flex',
           alignItems: 'center',
@@ -52,14 +69,13 @@ const AvatarUploader = ({
           },
         })}
       >
-        {current !== '' ? (
+        {isCurrent ? (
           <>
             <img
-              src={`${uploadsSource}${fileUploaderQueueItemContextKeys['avatar-user']}/${current}?${hash ?? 'hash'}`}
+              src={`${uploadsSource}${fileUploaderQueueItemContextKeys['avatar-user']}/${current}?${hash ?? timestamp}`}
               alt={name}
               loading="lazy"
             />
-
             <Button
               variant="contained"
               color="secondary"
@@ -67,19 +83,9 @@ const AvatarUploader = ({
               size="small"
               sx={{ opacity: 0, '.avatar-container:hover &': { opacity: 1 } }}
             >
-              {'Změnit'}
-              <input
-                type="file"
-                onChange={(e) => {
-                  onInputChange(e.target.files);
-                  setOpen(true);
-                }}
-                ref={inputElement}
-                hidden
-                accept={'image/*'}
-              />
+              {t('button.change')}
+              {inputElement}
             </Button>
-
             <Button
               variant="contained"
               color="error"
@@ -87,7 +93,7 @@ const AvatarUploader = ({
               sx={{ opacity: 0, '.avatar-container:hover &': { opacity: 1 } }}
               onClick={onRemove}
             >
-              Smazat
+              {t('button.delete')}
             </Button>
           </>
         ) : (
@@ -95,38 +101,18 @@ const AvatarUploader = ({
             {result?.content ? (
               <>
                 <img src={result.content} alt={name} loading="lazy" />
-
                 <Button variant="contained" color="secondary" component="label" size="small">
-                  {'Změnit'}
-                  <input
-                    type="file"
-                    onChange={(e) => {
-                      onInputChange(e.target.files);
-                      setOpen(true);
-                    }}
-                    ref={inputElement}
-                    hidden
-                    accept={'image/*'}
-                  />
+                  {t('button.change')}
+                  {inputElement}
                 </Button>
-
                 <Button variant="contained" color="error" size="small" onClick={() => setResult(null)}>
-                  Smazat
+                  {t('button.delete')}
                 </Button>
               </>
             ) : (
               <Button variant="contained" color="secondary" component="label" size="small">
-                {'Vyberte soubor'}
-                <input
-                  type="file"
-                  onChange={(e) => {
-                    onInputChange(e.target.files);
-                    setOpen(true);
-                  }}
-                  ref={inputElement}
-                  hidden
-                  accept={'image/*'}
-                />
+                {t('button.select')}
+                {inputElement}
               </Button>
             )}
           </>
