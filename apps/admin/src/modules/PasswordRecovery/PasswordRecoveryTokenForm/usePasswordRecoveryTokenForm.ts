@@ -32,6 +32,8 @@ export const usePasswordRecoveryTokenForm = () => {
   const { mutate: onRequestToken } = userPasswordRecoveryTokenMutation;
 
   const submitHandler: SubmitHandler<IPasswordRecoveryTokenForm> = (data) => {
+    if (tokenError) return;
+
     if (data.password !== data.passwordConfirm) {
       form.setError('passwordConfirm', { message: 'Passwords do not match' }); // TODO
 

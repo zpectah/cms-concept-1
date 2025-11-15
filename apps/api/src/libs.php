@@ -2,7 +2,10 @@
 
 require PATH_ROOT . 'vendor/autoload.php';
 
+require_once PATH_ROOT . 'config/constants.php';
+
 require_once PATH_ROOT . 'utils/array.php';
+require_once PATH_ROOT . 'utils/crypt.php';
 require_once PATH_ROOT . 'utils/string.php';
 
 require_once PATH_ROOT . 'Response.php';

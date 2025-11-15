@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Stack, Typography } from '@mui/material';
+import { Stack, Alert } from '@mui/material';
 import { ControlledForm, FormContent, PasswordField, SecondaryButton, SubmitButton } from '../../../components';
 import { registeredFormFields } from '../../../enums';
 import { usePasswordRecoveryTokenForm } from './usePasswordRecoveryTokenForm';
@@ -10,18 +10,26 @@ const PasswordRecoveryTokenForm = () => {
 
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
-      <FormContent>
+      <FormContent stackProps={{ sx: { width: { xs: '100%', md: '500px' } } }}>
         <Stack direction="column" gap={2}>
-          <PasswordField name={registeredFormFields.password} label={t('modules:login.label.password')} isRequired />
           <PasswordField
-            name={registeredFormFields.passwordConfirm}
-            label={t('modules:login.label.passwordConfirm')}
+            name={registeredFormFields.password}
+            label={t('modules:passwordRecovery.label.password')}
             isRequired
           />
-          {tokenError && <Typography>Provided token is not valid</Typography>}
+          <PasswordField
+            name={registeredFormFields.passwordConfirm}
+            label={t('modules:passwordRecovery.label.passwordConfirm')}
+            isRequired
+          />
+          {tokenError && (
+            <Alert icon={false} severity="error">
+              {t('modules:passwordRecovery.message.tokenIsNotValid')}
+            </Alert>
+          )}
         </Stack>
         <Stack direction="row" gap={2} alignItems="center" justifyContent="center">
-          <SubmitButton>Change password</SubmitButton>
+          <SubmitButton>{t('modules:passwordRecovery.button.changePassword')}</SubmitButton>
           <SecondaryButton type="reset">{t('button.reset')}</SecondaryButton>
         </Stack>
       </FormContent>

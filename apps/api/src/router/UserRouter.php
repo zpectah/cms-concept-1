@@ -40,11 +40,7 @@ class UserRouter extends Router {
 
       if ($email === $data['email']) {
         $response = $users -> patch($data);
-      } else {
-        // TODO
       }
-    } else {
-      // TODO
     }
 
     return $response;
@@ -54,6 +50,7 @@ class UserRouter extends Router {
     $users = new \model\Users;
     $requests = new \model\Requests;
     $emailService = new \service\EmailService;
+    $settings = new \model\Settings;
 
     $response = [
       'tokenCreated' => false,
@@ -64,6 +61,7 @@ class UserRouter extends Router {
 
     $email = $data['email'];
     $user = $users -> getDetail(null, $email);
+    $settingsTable = $settings -> getTable();
 
     if (isset($user['id'])) {
       $token = getRandomString(24);
@@ -76,9 +74,18 @@ class UserRouter extends Router {
       ];
       $requestCreated = $requests -> create($request);
 
+      $password = decrypt_string($settingsTable['email']['smtp']['password'], EMAIL_SMTP_CRYPT_KEY);
+      $emailCredentials = [
+        'smtp_port' => $settingsTable['email']['smtp']['port'],
+        'smtp_host' => $settingsTable['email']['smtp']['host'],
+        'smtp_username' => $settingsTable['email']['smtp']['username'],
+        'smtp_password' => $password,
+        'from' => $settingsTable['email']['smtp']['username'],
+        'domain' => $settingsTable['project']['name'],
+      ];
+
       $emailBody = $emailService -> createPasswordRecoveryEmail([ 'token' => $token, 'path' => $data['path'], ]);
-      // $emailSend = $emailService -> sendHtmlEmail($email, 'Password recovery', $emailBody, 'noreply@domain.com');
-      $emailSend = $emailService -> createEmail($email, 'Password recovery', $emailBody, 'noreply@domain.com');
+      $emailSend = $emailService -> createEmail($email, 'Password recovery', $emailBody, $emailCredentials);
 
       $response['tokenCreated'] = !!$token;
       $response['requestCreated'] = !!$requestCreated['id'];

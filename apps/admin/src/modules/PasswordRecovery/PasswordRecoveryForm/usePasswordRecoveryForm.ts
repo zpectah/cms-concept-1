@@ -3,11 +3,12 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useUserQuery } from '../../../hooks-query';
 import { useAppStore } from '../../../store';
+import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { PasswordRecoveryFormSchema } from './schema';
 import { IPasswordRecoveryForm } from './types';
 
 export const usePasswordRecoveryForm = () => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation(['common', 'modules']);
   const { addToast } = useAppStore();
   const { userPasswordRecoveryRequestMutation } = useUserQuery();
   const form = useForm<IPasswordRecoveryForm>({
@@ -27,7 +28,8 @@ export const usePasswordRecoveryForm = () => {
     onRequest(master, {
       onSuccess: (res) => {
         if (res.emailCreated && res.emailSend && res.requestCreated && res.tokenCreated) {
-          addToast('Request was successfully created. Check your email schránku', 'success');
+          addToast(t('modules:passwordRecovery.message.requestSend'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+          form.reset({ email: '' });
         } else {
           addToast(t('message.error.common'), 'error');
         }

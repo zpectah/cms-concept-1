@@ -55,6 +55,14 @@ class Settings extends Model {
       'members' => [
         'active' => $data['members_active'] === 'true',
       ],
+      'email' => [
+        'smtp' => [
+          'port' => $data['email_smtp_port'],
+          'host' => $data['email_smtp_host'],
+          'username' => $data['email_smtp_username'],
+          'password' => $data['email_smtp_password'],
+        ],
+      ],
     ];
   }
 
@@ -107,6 +115,16 @@ class Settings extends Model {
     }
     if (isset($data['members'])) {
       if (isset($data['members']['active'])) $settings['members_active'] = $data['members']['active'] ? 'true' : 'false';
+    }
+    if (isset($data['email'])) {
+      if (isset($data['email']['smtp'])) {
+        if (isset($data['email']['smtp']['port'])) $settings['email_smtp_port'] = $data['email']['smtp']['port'];
+        if (isset($data['email']['smtp']['host'])) $settings['email_smtp_host'] = $data['email']['smtp']['host'];
+        if (isset($data['email']['smtp']['username'])) $settings['email_smtp_username'] = $data['email']['smtp']['username'];
+        if (isset($data['email']['smtp']['password']) && $data['email']['smtp']['password'] !== '') {
+          $settings['email_smtp_password'] = encrypt_string($data['email']['smtp']['password'], EMAIL_SMTP_CRYPT_KEY);
+        }
+      }
     }
 
     return $settings;

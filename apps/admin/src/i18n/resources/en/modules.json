@@ -67,7 +67,21 @@
     }
   },
   "passwordRecovery": {
-    "pageTitle": "Password recovery"
+    "pageTitle": "Password recovery",
+    "message": {
+      "emailInboxTokenInfo": "We will now send you a link with the generated key to your inbox.",
+      "requestSend": "Request was successfully created. Check your email inbox",
+      "tokenIsNotValid": "Provided token is not valid"
+    },
+    "label": {
+      "email": "Email",
+      "password": "Password",
+      "passwordConfirm": "Password confirm"
+    },
+    "button": {
+      "sendRequest": "Send request",
+      "changePassword": "Change password"
+    }
   },
   "profile": {
     "pageTitle": "Profile",

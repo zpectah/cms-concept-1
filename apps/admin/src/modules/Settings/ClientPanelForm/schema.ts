@@ -23,4 +23,12 @@ export const SettingsClientPanelFormSchema = z.object({
   members: z.object({
     active: formFieldsSchemas.boolean,
   }),
+  email: z.object({
+    smtp: z.object({
+      port: formFieldsSchemas.number,
+      host: formFieldsSchemas.string,
+      username: formFieldsSchemas.string,
+      password: formFieldsSchemas.string.optional(),
+    }),
+  }),
 });

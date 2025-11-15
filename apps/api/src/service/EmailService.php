@@ -4,31 +4,48 @@ namespace service;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP;
 
 class EmailService {
 
-  public function createEmail($to, $subject, $body, $from = null): bool {
+  public function createEmail($to, $subject, $body, $credentials, $altBody = null): bool {
     $mail = new PHPMailer(true);
 
     $send = false;
+
+    $smtp_port = $credentials['smtp_port'];
+    $smtp_host = $credentials['smtp_host'];
+    $smtp_username = $credentials['smtp_username'];
+    $smtp_password = $credentials['smtp_password'];
+
+    $from_email = $credentials['from'];
+    $from_domain = $credentials['domain'];
+
+    if (
+      !isset($smtp_port) &&
+      !isset($smtp_host) &&
+      !isset($smtp_username) &&
+      !isset($smtp_password) &&
+      $smtp_password
+    ) return false;
 
     try {
       $mail -> isSMTP();
       $mail -> SMTPAuth = true;
       $mail -> SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-      $mail -> Port = 587;
-      $mail -> Host = 'sandbox.smtp.mailtrap.io';
-      $mail -> Username = 'bd6724021417be';
-      $mail -> Password = '878cf6de82ad75';
 
-      $mail -> setFrom('noreply@your-domain.com', 'Your domain');
+      $mail -> Port = $smtp_port;
+      $mail -> Host = $smtp_host;
+      $mail -> Username = $smtp_username;
+      $mail -> Password = $smtp_password;
+
+      $mail -> setFrom($from_email, $from_domain);
       $mail -> addAddress($to);
 
       $mail -> isHTML(true);
       $mail -> Subject = $subject;
       $mail -> Body = $body;
-      $mail -> AltBody = 'Dobrý den, toto je textová verze testovacího emailu.';
+
+      if (isset($altBody)) $mail -> AltBody = $altBody;
 
       $send = $mail -> send();
     } catch (Exception $e) {

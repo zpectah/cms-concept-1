@@ -62,4 +62,8 @@ export const registeredFormFields = {
   updated: 'updated',
   value: 'value',
   zip: 'zip',
+  smtp: 'smtp',
+  port: 'port',
+  host: 'host',
+  username: 'username',
 } as const;

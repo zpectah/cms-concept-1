@@ -33,7 +33,7 @@ const LoginForm = () => {
           </div>
         </Content>
       ) : (
-        <Content stackProps={{ sx: { width: { xs: '100%', md: '500px' } } }}>
+        <Content stackProps={{ sx: { width: { xs: '100%', md: '500px' } }, gap: 2 }}>
           <EmailField name={registeredFormFields.email} label={t('modules:login.label.email')} isRequired />
           <PasswordField name={registeredFormFields.password} label={t('modules:login.label.password')} isRequired />
           <Stack direction="row" gap={2} alignItems="center" justifyContent="center">

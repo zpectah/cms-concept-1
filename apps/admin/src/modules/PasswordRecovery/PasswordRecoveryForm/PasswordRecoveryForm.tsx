@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Stack } from '@mui/material';
+import { Stack, Alert } from '@mui/material';
 import { ControlledForm, FormContent, EmailField, SubmitButton, SecondaryButton } from '../../../components';
 import { registeredFormFields } from '../../../enums';
 import { usePasswordRecoveryForm } from './usePasswordRecoveryForm';
@@ -10,12 +10,15 @@ const PasswordRecoveryForm = () => {
 
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
-      <FormContent>
+      <FormContent stackProps={{ sx: { width: { xs: '100%', md: '500px' } } }}>
+        <Alert icon={false} severity="info">
+          {t('modules:passwordRecovery.message.emailInboxTokenInfo')}
+        </Alert>
         <Stack>
           <EmailField name={registeredFormFields.email} label={t('modules:login.label.email')} isRequired />
         </Stack>
         <Stack direction="row" gap={2} alignItems="center" justifyContent="center">
-          <SubmitButton>Send request</SubmitButton>
+          <SubmitButton>{t('modules:passwordRecovery.button.sendRequest')}</SubmitButton>
           <SecondaryButton type="reset">{t('button.reset')}</SecondaryButton>
         </Stack>
       </FormContent>

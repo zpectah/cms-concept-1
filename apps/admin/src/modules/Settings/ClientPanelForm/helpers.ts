@@ -25,6 +25,15 @@ export const getDataToFormMapper = (data?: SettingsClient): ISettingsClientPanel
     members: {
       active: data?.members.active ?? true,
     },
+    email: {
+      smtp: {
+        ...data?.email.smtp,
+        port: data?.email.smtp.port ?? 587,
+        host: data?.email.smtp.host ?? '',
+        username: data?.email.smtp.username ?? '',
+        password: '',
+      },
+    },
   };
 };
 

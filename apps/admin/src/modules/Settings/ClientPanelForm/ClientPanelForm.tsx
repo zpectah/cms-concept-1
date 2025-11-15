@@ -1,4 +1,4 @@
-import { Button, Divider } from '@mui/material';
+import { Button, Divider, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { registeredFormFields } from '../../../enums';
 import {
@@ -58,6 +58,36 @@ const ClientPanelForm = () => {
             fieldProps={{ label: 'Mód údržby' }}
           />
         </Section>
+
+        <Section title="Email" cardContent contentSpacing="form">
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 8, md: 10 }}>
+              <InputField
+                name={`${registeredFormFields.email}.${registeredFormFields.smtp}.${registeredFormFields.host}`}
+                label="Host"
+                isRequired
+              />
+            </Grid>
+            <Grid size={{ xs: 4, md: 2 }}>
+              <InputField
+                name={`${registeredFormFields.email}.${registeredFormFields.smtp}.${registeredFormFields.port}`}
+                label="Port"
+                isRequired
+              />
+            </Grid>
+          </Grid>
+
+          <InputField
+            name={`${registeredFormFields.email}.${registeredFormFields.smtp}.${registeredFormFields.username}`}
+            label="Username"
+            isRequired
+          />
+          <InputField
+            name={`${registeredFormFields.email}.${registeredFormFields.smtp}.${registeredFormFields.password}`}
+            label="Password"
+          />
+        </Section>
+
         <Section title="Zprávy" cardContent contentSpacing="form">
           <SwitchField
             name={`${registeredFormFields.messages}.${registeredFormFields.active}`}

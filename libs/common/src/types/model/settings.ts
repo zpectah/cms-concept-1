@@ -48,6 +48,17 @@ export interface SettingsMembers {
   active: boolean;
 }
 
+export interface SettingsEmailSmtp {
+  port: number;
+  host: string;
+  username: string;
+  password?: string;
+}
+
+export interface SettingsEmail {
+  smtp: SettingsEmailSmtp;
+}
+
 export type SettingsGlobal = {
   project: SettingsProject;
   company: SettingsCompany;
@@ -59,6 +70,7 @@ export type SettingsClient = {
   messages: SettingsMessages;
   comments: SettingsComments;
   members: SettingsMembers;
+  email: SettingsEmail;
 };
 
 export interface Settings extends SettingsGlobal, SettingsClient {
