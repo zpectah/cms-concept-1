@@ -97,10 +97,6 @@ const ClientPanelForm = () => {
             name={`${registeredFormFields.comments}.${registeredFormFields.active}`}
             fieldProps={{ label: t('modules:settings.tabs.client.section.comments.label.active') }}
           />
-          <SwitchField
-            name={`${registeredFormFields.comments}.${registeredFormFields.anonymous}`}
-            fieldProps={{ label: t('modules:settings.tabs.client.section.comments.label.anonymous') }}
-          />
         </Section>
 
         <Section title={t('modules:settings.tabs.client.section.members.title')} cardContent contentSpacing="form">

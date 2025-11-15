@@ -5,7 +5,6 @@ import {
   ControlledForm,
   InputField,
   PasswordField,
-  EmailField,
   FormContent,
   ActionBar,
   AvatarUploader,
@@ -69,13 +68,7 @@ const AccountForm = () => {
                 </>
               ) : (
                 <>
-                  <EmailField
-                    name={registeredFormFields.email}
-                    label={t('form:label.email')}
-                    isRequired
-                    readOnly
-                    isHidden
-                  />
+                  <Literal label={t('form:label.email')} value={userData?.user?.email} />
                   <InputField name={registeredFormFields.first_name} label={t('form:label.firstName')} />
                   <InputField name={registeredFormFields.last_name} label={t('form:label.lastName')} />
                   <PasswordField name={registeredFormFields.password} label={t('form:label.newPassword')} />

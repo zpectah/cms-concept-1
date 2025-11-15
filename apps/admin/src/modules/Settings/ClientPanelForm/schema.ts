@@ -17,7 +17,6 @@ export const SettingsClientPanelFormSchema = z.object({
   }),
   comments: z.object({
     active: formFieldsSchemas.boolean,
-    anonymous: formFieldsSchemas.boolean,
   }),
   members: z.object({
     active: formFieldsSchemas.boolean,

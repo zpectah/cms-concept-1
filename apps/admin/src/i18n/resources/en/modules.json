@@ -167,8 +167,7 @@
           "comments": {
             "title": "Comments",
             "label": {
-              "active": "Comments are active",
-              "anonymous": "Even unlogged users can add comments"
+              "active": "Comments are active"
             }
           },
           "members": {

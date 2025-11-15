@@ -1,10 +1,12 @@
-import { styled, Box } from '@mui/material';
+import { styled, Box, Typography } from '@mui/material';
 import { getEnvironmentVariables } from '../../helpers';
 
 const ImageContainer = styled(Box)(() => ({
   display: 'inline-flex',
   position: 'relative',
   overflow: 'hidden',
+  alignItems: 'center',
+  justifyContent: 'center',
 }));
 
 const ImageElement = styled('img')(() => ({
@@ -38,7 +40,13 @@ const Image = ({ src, alt, type, size }: ImageProps) => {
         borderRadius: type === 'local-avatar' ? '100%' : 'initial',
       })}
     >
-      <ImageElement src={fullPath} alt={alt} />
+      {src ? (
+        <ImageElement src={fullPath} alt={alt} />
+      ) : (
+        <Typography variant="caption" color="textDisabled">
+          No image selected
+        </Typography>
+      )}
     </ImageContainer>
   );
 };

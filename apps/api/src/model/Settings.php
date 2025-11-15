@@ -49,7 +49,6 @@ class Settings extends Model {
       ],
       'comments' => [
         'active' => $data['comments_active'] === 'true',
-        'anonymous' => $data['comments_anonymous'] === 'true',
       ],
       'members' => [
         'active' => $data['members_active'] === 'true',
@@ -109,7 +108,6 @@ class Settings extends Model {
     }
     if (isset($data['comments'])) {
       if (isset($data['comments']['active'])) $settings['comments_active'] = $data['comments']['active'] ? 'true' : 'false';
-      if (isset($data['comments']['anonymous'])) $settings['comments_anonymous'] = $data['comments']['anonymous'] ? 'true' : 'false';
     }
     if (isset($data['members'])) {
       if (isset($data['members']['active'])) $settings['members_active'] = $data['members']['active'] ? 'true' : 'false';

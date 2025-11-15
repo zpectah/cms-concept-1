@@ -19,7 +19,6 @@ export const getDataToFormMapper = (data?: SettingsClient): ISettingsClientPanel
     },
     comments: {
       active: data?.comments.active ?? true,
-      anonymous: data?.comments.anonymous ?? true,
     },
     members: {
       active: data?.members.active ?? true,
