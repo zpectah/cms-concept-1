@@ -7,6 +7,7 @@ import { sectionSpacingKeys } from './enums';
 const Section = ({
   children,
   title,
+  subtitle,
   cardContent,
   cardProps,
   contentSpacing = sectionSpacingKeys.default,
@@ -32,9 +33,16 @@ const Section = ({
 
   return (
     <Stack component="section" gap={UI_SPACING.content} {...stackProps}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        {title && <Typography variant="h3">{title}</Typography>}
-        {titleSlot && titleSlot}
+      <Stack direction="column" gap={1}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          {title && <Typography variant="h3">{title}</Typography>}
+          {titleSlot && titleSlot}
+        </Stack>
+        {subtitle && (
+          <Typography variant="caption" color="textSecondary">
+            {subtitle}
+          </Typography>
+        )}
       </Stack>
       {cardContent ? <Card {...cardProps}>{renderContent()}</Card> : renderContent()}
     </Stack>

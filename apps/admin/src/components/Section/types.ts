@@ -8,6 +8,7 @@ export type SectionContentSpacing = keyof typeof sectionSpacingKeys;
 
 export interface SectionProps extends WithChildren {
   title?: ReactNode;
+  subtitle?: string;
   cardContent?: boolean;
   cardProps?: Partial<CardProps>;
   formSpacing?: boolean;

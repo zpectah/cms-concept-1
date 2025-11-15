@@ -108,10 +108,28 @@
         "description": "Global panel description",
         "section": {
           "project": {
-            "title": "Project"
+            "title": "Project",
+            "subtitle": "Basic internal information about the project",
+            "label": {
+              "name": "Project name",
+              "description": "Internal project description"
+            }
           },
           "company": {
-            "title": "Company"
+            "title": "Company",
+            "subtitle": "Basic information about the company. Some information will be displayed in the application.",
+            "label": {
+              "name": "Company name",
+              "description": "Company description",
+              "id": "Company identification",
+              "email": "Company emails",
+              "phone": "Company phones",
+              "bank": "Bank account"
+            },
+            "placeholder": {
+              "email": "Add new email",
+              "phone": "Add new phone"
+            }
           }
         }
       },
@@ -120,19 +138,58 @@
         "description": "Client panel description",
         "section": {
           "meta": {
-            "title": "Meta"
+            "title": "Meta",
+            "subtitle": "Basic meta information used to run the application",
+            "label": {
+              "title": "Application public title",
+              "description": "Application public description",
+              "robots": "Meta robots",
+              "keywords": "Keywords"
+            },
+            "placeholder": {
+              "keywords": "Add new keyword"
+            }
           },
-          "states": {
-            "title": "States"
-          },
-          "messages": {
-            "title": "Messages"
+          "email": {
+            "title": "Email",
+            "subtitle": "Setting up an external email service for secure email distribution",
+            "label": {
+              "host": "Host",
+              "port": "Port",
+              "username": "Username",
+              "password": "Password"
+            },
+            "helper": {
+              "username": "This email will be used as the sender of messages",
+              "password": "The password is stored in encrypted form"
+            }
           },
           "comments": {
-            "title": "Comments"
+            "title": "Comments",
+            "label": {
+              "active": "Comments are active",
+              "anonymous": "Even unlogged users can add comments"
+            }
           },
           "members": {
-            "title": "Members"
+            "title": "Members",
+            "label": {
+              "active": "Members are active"
+            }
+          },
+          "messages": {
+            "title": "Messages",
+            "label": {
+              "active": "Messages are active"
+            }
+          },
+          "states": {
+            "title": "Application states",
+            "subtitle": "During power-on states, there may be outages or some services may not be available.",
+            "label": {
+              "debugMode": "Debug mode",
+              "maintenanceMode": "Maintenance mode"
+            }
           }
         }
       },
@@ -161,6 +218,8 @@
         "title": "Maintenance",
         "description": "Maintenance panel description",
         "section": {
+          "title": "Maintenance",
+          "subtitle": "If you feel like you have too many deleted items in your database and it is affecting the application's performance",
           "label": {
             "permanentDeletion": "Permanently delete deleted items",
             "noItemsToDelete": "No items to delete",
@@ -180,6 +239,7 @@
         "description": "Blacklist panel description",
         "section": {
           "title": "Access blocking",
+          "subtitle": "Here you can restrict access for a specific IP address or email address",
           "table": {
             "placeholder": {
               "search": "Type to search",

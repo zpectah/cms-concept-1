@@ -12,7 +12,6 @@ import {
   PhonePickerField,
   AddressField,
   ActionBar,
-  DebugFormModel,
   GpsPickerField,
 } from '../../../components';
 import { useGlobalPanelForm } from './useGlobalPanelForm';
@@ -21,56 +20,72 @@ const GlobalPanelForm = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { form, onSubmit } = useGlobalPanelForm();
 
-  // TODO
-
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
       <Content>
-        <Section title={t('modules:settings.tabs.global.section.project.title')} cardContent contentSpacing="form">
+        <Section
+          title={t('modules:settings.tabs.global.section.project.title')}
+          subtitle={t('modules:settings.tabs.global.section.project.subtitle')}
+          cardContent
+          contentSpacing="form"
+        >
           <InputField
             name={`${registeredFormFields.project}.${registeredFormFields.name}`}
-            label="Název projektu"
+            label={t('modules:settings.tabs.global.section.project.label.name')}
             isRequired
           />
           <TextareaField
             name={`${registeredFormFields.project}.${registeredFormFields.description}`}
-            label="Popis projektu"
+            label={t('modules:settings.tabs.global.section.project.label.description')}
           />
         </Section>
-        <Divider />
-        <Section title={t('modules:settings.tabs.global.section.company.title')} cardContent contentSpacing="form">
-          <InputField name={`${registeredFormFields.company}.${registeredFormFields.name}`} label="Název společnosti" />
+        <Section
+          title={t('modules:settings.tabs.global.section.company.title')}
+          subtitle={t('modules:settings.tabs.global.section.company.subtitle')}
+          cardContent
+          contentSpacing="form"
+        >
+          <InputField
+            name={`${registeredFormFields.company}.${registeredFormFields.name}`}
+            label={t('modules:settings.tabs.global.section.company.label.name')}
+          />
           <TextareaField
             name={`${registeredFormFields.company}.${registeredFormFields.description}`}
-            label="Popis společnosti"
+            label={t('modules:settings.tabs.global.section.company.label.description')}
           />
-          <InputField name={`${registeredFormFields.company}.${registeredFormFields.id}`} label="ID společnosti" />
+          <InputField
+            name={`${registeredFormFields.company}.${registeredFormFields.id}`}
+            label={t('modules:settings.tabs.global.section.company.label.id')}
+          />
           <EmailPickerField
             name={`${registeredFormFields.company}.${registeredFormFields.email}`}
-            label="E-mail společnosti"
-            fieldProps={{ placeholder: 'Zadejte e-mail' }}
+            label={t('modules:settings.tabs.global.section.company.label.email')}
+            fieldProps={{ placeholder: t('modules:settings.tabs.global.section.company.placeholder.email') }}
           />
           <PhonePickerField
             name={`${registeredFormFields.company}.${registeredFormFields.phone}`}
-            label="Telefon společnosti"
-            fieldProps={{ placeholder: 'Zadejte telefon' }}
+            label={t('modules:settings.tabs.global.section.company.label.phone')}
+            fieldProps={{ placeholder: t('modules:settings.tabs.global.section.company.placeholder.phone') }}
           />
-          <InputField name={`${registeredFormFields.company}.${registeredFormFields.bank}`} label="Bankovní spojení" />
+          <InputField
+            name={`${registeredFormFields.company}.${registeredFormFields.bank}`}
+            label={t('modules:settings.tabs.global.section.company.label.bank')}
+          />
           <GpsPickerField
             name={`${registeredFormFields.company}.${registeredFormFields.location}`}
             label={t('form:label.gpsLocation')}
           />
           <AddressField fieldPrefix={`${registeredFormFields.company}.${registeredFormFields.address}`} disableCard />
         </Section>
+
         <Divider />
+
         <ActionBar>
           <SubmitButton>{t('button.saveChanges')}</SubmitButton>
           <Button type="reset" variant="outlined" color="inherit">
             {t('button.reset')}
           </Button>
         </ActionBar>
-
-        <DebugFormModel name="ClientPanelForm" />
       </Content>
     </ControlledForm>
   );

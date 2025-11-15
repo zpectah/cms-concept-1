@@ -46,7 +46,6 @@ class Settings extends Model {
       ],
       'messages' => [
         'active' => $data['messages_active'] === 'true',
-        'recipients' => $data['messages_recipients'] ? explode(',', $data['messages_recipients']) : [],
       ],
       'comments' => [
         'active' => $data['comments_active'] === 'true',
@@ -107,7 +106,6 @@ class Settings extends Model {
     }
     if (isset($data['messages'])) {
       if (isset($data['messages']['active'])) $settings['messages_active'] = $data['messages']['active'] ? 'true' : 'false';
-      if (isset($data['messages']['recipients'])) $settings['messages_recipients'] = $data['messages']['recipients'] ? implode(',', $data['messages']['recipients']) : '';
     }
     if (isset($data['comments'])) {
       if (isset($data['comments']['active'])) $settings['comments_active'] = $data['comments']['active'] ? 'true' : 'false';

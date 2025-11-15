@@ -72,6 +72,9 @@ const PanelNavigation = () => {
       slotProps={{
         indicator: { style: { transition: 'none' } },
       }}
+      sx={({ palette }) => ({
+        borderBottom: `1px solid ${palette.divider}`,
+      })}
     >
       {tabItems.map(({ name, label, hidden }, index) => !hidden && <Tab key={name} label={label} />)}
     </Tabs>

@@ -16,7 +16,6 @@ export const getDataToFormMapper = (data?: SettingsClient): ISettingsClientPanel
     },
     messages: {
       active: data?.messages.active ?? true,
-      recipients: data?.messages.recipients ?? [],
     },
     comments: {
       active: data?.comments.active ?? true,

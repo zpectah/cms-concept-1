@@ -14,7 +14,6 @@ export const SettingsClientPanelFormSchema = z.object({
   }),
   messages: z.object({
     active: formFieldsSchemas.boolean,
-    recipients: formFieldsSchemas.stringArray.optional(),
   }),
   comments: z.object({
     active: formFieldsSchemas.boolean,

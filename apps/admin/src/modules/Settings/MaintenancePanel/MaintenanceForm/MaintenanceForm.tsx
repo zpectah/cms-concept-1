@@ -8,7 +8,11 @@ const MaintenanceForm = () => {
   const { onAnalyze, onProceed, analyzedResults, deletedResults, rowsToDelete, deletedRows } = useMaintenanceForm();
 
   return (
-    <Section title={t('modules:settings.tabs.maintenance.title')} cardContent>
+    <Section
+      title={t('modules:settings.tabs.maintenance.section.title')}
+      subtitle={t('modules:settings.tabs.maintenance.section.subtitle')}
+      cardContent
+    >
       <TableContainer>
         <Table sx={{ width: '100%' }}>
           <TableBody>

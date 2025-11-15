@@ -11,9 +11,8 @@ import {
   SelectField,
   SwitchField,
   StringPickerField,
-  EmailPickerField,
   ActionBar,
-  DebugFormModel,
+  PasswordField,
 } from '../../../components';
 import { useClientPanelForm } from './useClientPanelForm';
 
@@ -21,109 +20,127 @@ const ClientPanelForm = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { form, onSubmit, fieldOptions } = useClientPanelForm();
 
-  // TODO
-
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>
       <Content>
-        <Section title={t('modules:settings.tabs.client.section.meta.title')} cardContent contentSpacing="form">
+        <Section
+          title={t('modules:settings.tabs.client.section.meta.title')}
+          subtitle={t('modules:settings.tabs.client.section.meta.subtitle')}
+          cardContent
+          contentSpacing="form"
+        >
           <InputField
             name={`${registeredFormFields.meta}.${registeredFormFields.title}`}
-            label="Titulek aplikace"
+            label={t('modules:settings.tabs.client.section.meta.label.title')}
             isRequired
           />
           <TextareaField
             name={`${registeredFormFields.meta}.${registeredFormFields.description}`}
-            label="Popis aplikace"
+            label={t('modules:settings.tabs.client.section.meta.label.description')}
           />
           <SelectField
             name={`${registeredFormFields.meta}.${registeredFormFields.robots}`}
-            label="Meta roboti"
+            label={t('modules:settings.tabs.client.section.meta.label.robots')}
             items={fieldOptions.metaRobots}
             fieldProps={{ sx: { width: { xs: '100%', md: '33%' } } }}
           />
           <StringPickerField
             name={`${registeredFormFields.meta}.${registeredFormFields.keywords}`}
-            label="Klíčová slova"
-            fieldProps={{ placeholder: 'Zadejte klíčové slovo' }}
-          />
-        </Section>
-        <Section title="Stavy" cardContent contentSpacing="form">
-          <SwitchField
-            name={`${registeredFormFields.state}.${registeredFormFields.debug}`}
-            fieldProps={{ label: 'Mód ladění' }}
-          />
-          <SwitchField
-            name={`${registeredFormFields.state}.${registeredFormFields.maintenance}`}
-            fieldProps={{ label: 'Mód údržby' }}
+            label={t('modules:settings.tabs.client.section.meta.label.keywords')}
+            fieldProps={{ placeholder: t('modules:settings.tabs.client.section.meta.placeholder.keywords') }}
           />
         </Section>
 
-        <Section title="Email" cardContent contentSpacing="form">
+        <Section
+          title={t('modules:settings.tabs.client.section.email.title')}
+          subtitle={t('modules:settings.tabs.client.section.email.subtitle')}
+          cardContent
+          contentSpacing="form"
+        >
           <Grid container spacing={2}>
             <Grid size={{ xs: 8, md: 10 }}>
               <InputField
                 name={`${registeredFormFields.email}.${registeredFormFields.smtp}.${registeredFormFields.host}`}
-                label="Host"
+                label={t('modules:settings.tabs.client.section.email.label.host')}
                 isRequired
               />
             </Grid>
             <Grid size={{ xs: 4, md: 2 }}>
               <InputField
                 name={`${registeredFormFields.email}.${registeredFormFields.smtp}.${registeredFormFields.port}`}
-                label="Port"
+                label={t('modules:settings.tabs.client.section.email.label.port')}
                 isRequired
               />
             </Grid>
           </Grid>
-
-          <InputField
-            name={`${registeredFormFields.email}.${registeredFormFields.smtp}.${registeredFormFields.username}`}
-            label="Username"
-            isRequired
-          />
-          <InputField
-            name={`${registeredFormFields.email}.${registeredFormFields.smtp}.${registeredFormFields.password}`}
-            label="Password"
-          />
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <InputField
+                name={`${registeredFormFields.email}.${registeredFormFields.smtp}.${registeredFormFields.username}`}
+                label={t('modules:settings.tabs.client.section.email.label.username')}
+                helperMessages={[t('modules:settings.tabs.client.section.email.helper.username')]}
+                isRequired
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <PasswordField
+                name={`${registeredFormFields.email}.${registeredFormFields.smtp}.${registeredFormFields.password}`}
+                label={t('modules:settings.tabs.client.section.email.label.password')}
+                helperMessages={[t('modules:settings.tabs.client.section.email.helper.password')]}
+              />
+            </Grid>
+          </Grid>
         </Section>
 
-        <Section title="Zprávy" cardContent contentSpacing="form">
-          <SwitchField
-            name={`${registeredFormFields.messages}.${registeredFormFields.active}`}
-            fieldProps={{ label: 'Zprávy aktivní' }}
-          />
-          <EmailPickerField
-            name={`${registeredFormFields.messages}.${registeredFormFields.recipients}`}
-            label="Příjemci zpráv"
-            fieldProps={{ placeholder: 'Zadejte e-mail' }}
-          />
-        </Section>
-        <Section title="Komentáře" cardContent contentSpacing="form">
+        <Section title={t('modules:settings.tabs.client.section.comments.title')} cardContent contentSpacing="form">
           <SwitchField
             name={`${registeredFormFields.comments}.${registeredFormFields.active}`}
-            fieldProps={{ label: 'Komentáře aktivní' }}
+            fieldProps={{ label: t('modules:settings.tabs.client.section.comments.label.active') }}
           />
           <SwitchField
             name={`${registeredFormFields.comments}.${registeredFormFields.anonymous}`}
-            fieldProps={{ label: 'Komentovat mohou i anonymní uživatelé' }}
+            fieldProps={{ label: t('modules:settings.tabs.client.section.comments.label.anonymous') }}
           />
         </Section>
-        <Section title="Members" cardContent contentSpacing="form">
+
+        <Section title={t('modules:settings.tabs.client.section.members.title')} cardContent contentSpacing="form">
           <SwitchField
             name={`${registeredFormFields.members}.${registeredFormFields.active}`}
-            fieldProps={{ label: 'Members aktivní' }}
+            fieldProps={{ label: t('modules:settings.tabs.client.section.members.label.active') }}
           />
         </Section>
+
+        <Section title={t('modules:settings.tabs.client.section.messages.title')} cardContent contentSpacing="form">
+          <SwitchField
+            name={`${registeredFormFields.messages}.${registeredFormFields.active}`}
+            fieldProps={{ label: t('modules:settings.tabs.client.section.messages.label.active') }}
+          />
+        </Section>
+
+        <Section
+          title={t('modules:settings.tabs.client.section.states.title')}
+          subtitle={t('modules:settings.tabs.client.section.states.subtitle')}
+          cardContent
+          contentSpacing="form"
+        >
+          <SwitchField
+            name={`${registeredFormFields.state}.${registeredFormFields.debug}`}
+            fieldProps={{ label: t('modules:settings.tabs.client.section.states.label.debugMode') }}
+          />
+          <SwitchField
+            name={`${registeredFormFields.state}.${registeredFormFields.maintenance}`}
+            fieldProps={{ label: t('modules:settings.tabs.client.section.states.label.maintenanceMode') }}
+          />
+        </Section>
+
         <Divider />
+
         <ActionBar>
           <SubmitButton>{t('button.saveChanges')}</SubmitButton>
           <Button type="reset" variant="outlined" color="inherit">
             {t('button.reset')}
           </Button>
         </ActionBar>
-
-        <DebugFormModel name="ClientPanelForm" />
       </Content>
     </ControlledForm>
   );
