@@ -2,9 +2,30 @@
 
 namespace router;
 
+use model\Messages;
+
 class MessagesRouter extends Router {
+
+  private function getHandler($url): array {
+    $messages = new Messages;
+
+    $response = [];
+
+    if (self::isIdValidParameter($url)) {
+      $id = $url['b'];
+
+      $response = $messages -> getDetail($id);
+    } else {
+      $response = $messages -> getList();
+    }
+
+    return $response;
+  }
+
+
   public function resolve($env, $method, $url, $data): array {
-    $messages = new \model\Messages;
+    $messages = new Messages;
+
     $response = [];
 
     switch ($env) {
@@ -13,13 +34,7 @@ class MessagesRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
-
-              $response = $messages -> getDetail($id);
-            } else {
-              $response = $messages -> getList();
-            }
+            $response = self::getHandler($url);
             break;
 
           case self::method_post:

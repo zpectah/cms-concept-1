@@ -2,11 +2,32 @@
 
 namespace router;
 
-class PagesRouter extends Router {
-  public function resolve($env, $method, $url, $data): array {
-    $pages = new \model\Pages;
+use model\Pages;
+use model\Settings;
 
-    $settings = new \model\Settings;
+class PagesRouter extends Router {
+
+  private function getHandler($url, $localesActive): array {
+    $pages = new Pages;
+
+    $response = [];
+
+    if (self::isIdValidParameter($url)) {
+      $id = $url['b'];
+
+      $response = $pages -> getDetail($id, $localesActive);
+    } else {
+      $response = $pages -> getList();
+    }
+
+    return $response;
+  }
+
+
+  public function resolve($env, $method, $url, $data): array {
+    $pages = new Pages;
+    $settings = new Settings;
+
     $localesActive = $settings -> getTable()['locales']['active'];
 
     $response = [];
@@ -17,13 +38,7 @@ class PagesRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
-
-              $response = $pages -> getDetail($id, $localesActive);
-            } else {
-              $response = $pages -> getList();
-            }
+            $response = self::getHandler($url, $localesActive);
             break;
 
           case self::method_post:

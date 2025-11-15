@@ -2,11 +2,17 @@
 
 namespace router;
 
+use model\Requests;
+use model\Settings;
+use model\Users;
+use service\EmailService;
+use service\SessionService;
+
 class UserRouter extends Router {
 
-  private function get(): array {
-    $users = new \model\Users;
-    $sessionService = new \service\SessionService;
+  private function getHandler(): array {
+    $users = new Users;
+    $sessionService = new SessionService;
 
     $session = $sessionService -> getActiveSession('user');
 
@@ -27,9 +33,9 @@ class UserRouter extends Router {
     return $response;
   }
 
-  private function patch($data): array {
-    $users = new \model\Users;
-    $sessionService = new \service\SessionService;
+  private function patchHandler($data): array {
+    $users = new Users;
+    $sessionService = new SessionService;
 
     $response = [];
 
@@ -47,10 +53,10 @@ class UserRouter extends Router {
   }
 
   private function passwordRecoveryRequestHandler($data): array {
-    $users = new \model\Users;
-    $requests = new \model\Requests;
-    $emailService = new \service\EmailService;
-    $settings = new \model\Settings;
+    $users = new Users;
+    $requests = new Requests;
+    $emailService = new EmailService;
+    $settings = new Settings;
 
     $response = [
       'tokenCreated' => false,
@@ -97,7 +103,7 @@ class UserRouter extends Router {
   }
 
   private function passwordRecoveryRequestCheckHandler($data): array {
-    $requests = new \model\Requests;
+    $requests = new Requests;
 
     $token = $data['token'];
     $request = $requests -> getDetail(null, $token);
@@ -115,8 +121,8 @@ class UserRouter extends Router {
   }
 
   private function passwordRecoveryPasswordHandler($data): array {
-    $users = new \model\Users;
-    $requests = new \model\Requests;
+    $users = new Users;
+    $requests = new Requests;
 
     $response = [
       'requestActive' => false,
@@ -154,8 +160,8 @@ class UserRouter extends Router {
 
 
   public function resolve($env, $method, $url, $data): array {
-    $users = new \model\Users;
-    $sessionService = new \service\SessionService;
+    $users = new Users;
+    $sessionService = new SessionService;
 
     $response = [];
 
@@ -165,7 +171,7 @@ class UserRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            $response = self::get();
+            $response = self::getHandler();
             break;
 
           case self::method_post:
@@ -206,7 +212,7 @@ class UserRouter extends Router {
             switch ($url['a']) {
 
               case 'patch':
-                $response = self::patch($data);
+                $response = self::patchHandler($data);
                 break;
 
             }

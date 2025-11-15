@@ -2,9 +2,30 @@
 
 namespace router;
 
+use model\Menu;
+
 class MenuRouter extends Router {
+
+  private function getHandler($url): array {
+    $menu = new Menu;
+
+    $response = [];
+
+    if (self::isIdValidParameter($url)) {
+      $id = $url['b'];
+
+      $response = $menu -> getDetail($id);
+    } else {
+      $response = $menu -> getList();
+    }
+
+    return $response;
+  }
+
+
   public function resolve($env, $method, $url, $data): array {
-    $menu = new \model\Menu;
+    $menu = new Menu;
+
     $response = [];
 
     switch ($env) {
@@ -13,13 +34,7 @@ class MenuRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
-
-              $response = $menu -> getDetail($id);
-            } else {
-              $response = $menu -> getList();
-            }
+            $response = self::getHandler($url);
             break;
 
           case self::method_post:

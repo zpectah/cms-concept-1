@@ -2,11 +2,38 @@
 
 namespace router;
 
-class MenuItemsRouter extends Router {
-  public function resolve($env, $method, $url, $data): array {
-    $menuItems = new \model\MenuItems;
+use model\MenuItems;
+use model\Settings;
 
-    $settings = new \model\Settings;
+class MenuItemsRouter extends Router {
+
+  private function getHandler($url, $localesActive): array {
+    $menuItems = new MenuItems;
+
+    $response = [];
+
+    if (self::isTwoParameterValid($url)) {
+      if (self::isIdValidParameter($url)) {
+        $id = $url['b'];
+
+        $response = $menuItems -> getDetail($id, $localesActive);
+      } else if (self::isMenuIdValidParameter($url)) {
+        $menuId = $url['b'];
+
+        $response = $menuItems -> getList($menuId);
+      } else {
+        $response = $menuItems -> getList(null);
+      }
+    }
+
+    return $response;
+  }
+
+
+  public function resolve($env, $method, $url, $data): array {
+    $menuItems = new MenuItems;
+    $settings = new Settings;
+
     $localesActive = $settings -> getTable()['locales']['active'];
 
     $response = [];
@@ -17,20 +44,7 @@ class MenuItemsRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isTwoParameterValid($url)) {
-              if (self::isIdValidParameter($url)) {
-                $id = $url['b'];
-
-                $response = $menuItems -> getDetail($id, $localesActive);
-              } else if (self::isMenuIdValidParameter($url)) {
-                $menuId = $url['b'];
-
-                $response = $menuItems -> getList($menuId);
-              } else {
-                $response = $menuItems -> getList(null);
-              }
-            }
-
+            $response = self::getHandler($url, $localesActive);
             break;
 
           case self::method_post:

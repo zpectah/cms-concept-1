@@ -2,9 +2,30 @@
 
 namespace router;
 
+use model\Blacklist;
+
 class BlacklistRouter extends Router {
+
+  private function getHandler($url): array {
+    $blacklist = new Blacklist;
+
+    $response = [];
+
+    if (self::isIdValidParameter($url)) {
+      $id = $url['b'];
+
+      $response = $blacklist -> getDetail($id);
+    } else {
+      $response = $blacklist -> getList();
+    }
+
+    return $response;
+  }
+
+
   public function resolve($env, $method, $url, $data): array {
-    $blacklist = new \model\Blacklist;
+    $blacklist = new Blacklist;
+
     $response = [];
 
     switch ($env) {
@@ -13,13 +34,7 @@ class BlacklistRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
-
-              $response = $blacklist -> getDetail($id);
-            } else {
-              $response = $blacklist -> getList();
-            }
+            $response = self::getHandler($url);
             break;
 
           case self::method_post:

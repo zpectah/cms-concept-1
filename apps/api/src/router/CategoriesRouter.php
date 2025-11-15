@@ -2,11 +2,32 @@
 
 namespace router;
 
-class CategoriesRouter extends Router {
-  public function resolve($env, $method, $url, $data): array {
-    $categories = new \model\Categories;
+use model\Categories;
+use model\Settings;
 
-    $settings = new \model\Settings;
+class CategoriesRouter extends Router {
+
+  private function getHandler($url, $localesActive): array {
+    $categories = new Categories;
+
+    $response = [];
+
+    if (self::isIdValidParameter($url)) {
+      $id = $url['b'];
+
+      $response = $categories -> getDetail($id, $localesActive);
+    } else {
+      $response = $categories -> getList();
+    }
+
+    return $response;
+  }
+
+
+  public function resolve($env, $method, $url, $data): array {
+    $categories = new Categories;
+    $settings = new Settings;
+
     $localesActive = $settings -> getTable()['locales']['active'];
 
     $response = [];
@@ -17,13 +38,7 @@ class CategoriesRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
-
-              $response = $categories -> getDetail($id, $localesActive);
-            } else {
-              $response = $categories -> getList();
-            }
+            $response = self::getHandler($url, $localesActive);
             break;
 
           case self::method_post:

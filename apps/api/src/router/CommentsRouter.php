@@ -2,9 +2,35 @@
 
 namespace router;
 
+use model\Comments;
+
 class CommentsRouter extends Router {
+
+  private function getHandler($url): array {
+    $comments = new Comments;
+
+    $response = [];
+
+    if (self::isTwoParameterValid($url)) {
+      if (self::isIdValidParameter($url)) {
+        $id = $url['b'];
+
+        $response = $comments -> getDetail($id);
+      } else {
+        $contentType = $url['a'];
+        $contentId = $url['b'];
+
+        $response = $comments -> getList($contentType, $contentId);
+      }
+    }
+
+    return $response;
+  }
+
+
   public function resolve($env, $method, $url, $data): array {
-    $comments = new \model\Comments;
+    $comments = new Comments;
+
     $response = [];
 
     switch ($env) {
@@ -13,18 +39,7 @@ class CommentsRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isTwoParameterValid($url)) {
-              if (self::isIdValidParameter($url)) {
-                $id = $url['b'];
-
-                $response = $comments -> getDetail($id);
-              } else {
-                $contentType = $url['a'];
-                $contentId = $url['b'];
-
-                $response = $comments -> getList($contentType, $contentId);
-              }
-            }
+            $response = self::getHandler($url);
             break;
 
           case self::method_post:

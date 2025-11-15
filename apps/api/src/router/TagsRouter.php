@@ -2,9 +2,30 @@
 
 namespace router;
 
+use model\Tags;
+
 class TagsRouter extends Router {
+
+  private function getHandler($url): array {
+    $tags = new Tags;
+
+    $response = [];
+
+    if (self::isIdValidParameter($url)) {
+      $id = $url['b'];
+
+      $response = $tags -> getDetail($id);
+    } else {
+      $response = $tags -> getList();
+    }
+
+    return $response;
+  }
+
+
   public function resolve($env, $method, $url, $data): array {
-    $tags = new \model\Tags;
+    $tags = new Tags;
+
     $response = [];
 
     switch ($env) {
@@ -13,13 +34,7 @@ class TagsRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
-
-              $response = $tags -> getDetail($id);
-            } else {
-              $response = $tags -> getList();
-            }
+            $response = self::getHandler($url);
             break;
 
           case self::method_post:

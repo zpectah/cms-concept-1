@@ -2,9 +2,36 @@
 
 namespace router;
 
+use model\Members;
+
 class MembersRouter extends Router {
+
+  private function getHandler($url): array {
+    $members = new Members;
+
+    $response = [];
+
+    if (self::isTwoParameterValid($url)) {
+      if (self::isIdValidParameter($url)) {
+        $id = $url['b'];
+
+        $response = $members -> getDetail($id, null);
+      } else if (self::isEmailValidParameter($url)) {
+        $email = $url['b'];
+
+        $response = $members -> getDetail(null, $email);
+      }
+    } else {
+      $response = $members -> getList();
+    }
+
+    return $response;
+  }
+
+
   public function resolve($env, $method, $url, $data): array {
-    $members = new \model\Members;
+    $members = new Members;
+
     $response = [];
 
     switch ($env) {
@@ -13,19 +40,7 @@ class MembersRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isTwoParameterValid($url)) {
-              if (self::isIdValidParameter($url)) {
-                $id = $url['b'];
-
-                $response = $members -> getDetail($id, null);
-              } else if (self::isEmailValidParameter($url)) {
-                $email = $url['b'];
-
-                $response = $members -> getDetail(null, $email);
-              }
-            } else {
-              $response = $members -> getList();
-            }
+            $response = self::getHandler($url);
             break;
 
           case self::method_post:

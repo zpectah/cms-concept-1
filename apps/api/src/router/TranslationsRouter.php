@@ -2,11 +2,32 @@
 
 namespace router;
 
-class TranslationsRouter extends Router {
-  public function resolve($env, $method, $url, $data): array {
-    $translations = new \model\Translations;
+use model\Translations;
+use model\Settings;
 
-    $settings = new \model\Settings;
+class TranslationsRouter extends Router {
+
+  private function getHandler($url, $localesActive): array {
+    $translations = new Translations;
+
+    $response = [];
+
+    if (self::isIdValidParameter($url)) {
+      $id = $url['b'];
+
+      $response = $translations -> getDetail($id, $localesActive);
+    } else {
+      $response = $translations -> getList();
+    }
+
+    return $response;
+  }
+
+
+  public function resolve($env, $method, $url, $data): array {
+    $translations = new Translations;
+    $settings = new Settings;
+
     $localesActive = $settings -> getTable()['locales']['active'];
 
     $response = [];
@@ -17,13 +38,7 @@ class TranslationsRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
-
-              $response = $translations -> getDetail($id, $localesActive);
-            } else {
-              $response = $translations -> getList();
-            }
+            $response = self::getHandler($url, $localesActive);
             break;
 
           case self::method_post:

@@ -2,10 +2,32 @@
 
 namespace router;
 
+use model\Articles;
+use model\Settings;
+
 class ArticlesRouter extends Router {
+
+  private function getHandler($url, $localesActive): array {
+    $articles = new Articles;
+
+    $response = [];
+
+    if (self::isIdValidParameter($url)) {
+      $id = $url['b'];
+
+      $response = $articles -> getDetail($id, $localesActive);
+    } else {
+      $response = $articles -> getList();
+    }
+
+    return $response;
+  }
+
+
   public function resolve($env, $method, $url, $data): array {
-    $articles = new \model\Articles;
-    $settings = new \model\Settings;
+    $articles = new Articles;
+    $settings = new Settings;
+
     $localesActive = $settings -> getTable()['locales']['active'];
 
     $response = [];
@@ -16,13 +38,7 @@ class ArticlesRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
-
-              $response = $articles -> getDetail($id, $localesActive);
-            } else {
-              $response = $articles -> getList();
-            }
+            $response = self::getHandler($url, $localesActive);
             break;
 
           case self::method_post:

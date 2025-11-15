@@ -2,9 +2,36 @@
 
 namespace router;
 
+use model\Requests;
+
 class RequestsRouter extends Router {
+
+  private function getHandler($url): array {
+    $requests = new Requests;
+
+    $response = [];
+
+    if (self::isTwoParameterValid($url)) {
+      if (self::isIdValidParameter($url)) {
+        $id = $url['b'];
+
+        $response = $requests -> getDetail($id, null);
+      } else if (self::isTokenValidParameter($url)) {
+        $token = $url['b'];
+
+        $response = $requests -> getDetail(null, $token);
+      }
+    } else {
+      $response = $requests -> getList();
+    }
+
+    return $response;
+  }
+
+
   public function resolve($env, $method, $url, $data): array {
-    $requests = new \model\Requests;
+    $requests = new Requests;
+
     $response = [];
 
     switch ($env) {
@@ -13,19 +40,7 @@ class RequestsRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isTwoParameterValid($url)) {
-              if (self::isIdValidParameter($url)) {
-                $id = $url['b'];
-
-                $response = $requests -> getDetail($id, null);
-              } else if (self::isTokenValidParameter($url)) {
-                $token = $url['b'];
-
-                $response = $requests -> getDetail(null, $token);
-              }
-            } else {
-              $response = $requests -> getList();
-            }
+            $response = self::getHandler($url);
             break;
 
           case self::method_post:

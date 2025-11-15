@@ -2,9 +2,34 @@
 
 namespace router;
 
+use model\Attachments;
+
 class AttachmentsRouter extends Router {
+
+  private function getHandler($url): array {
+    $attachments = new Attachments;
+
+    $response = [];
+
+    if (self::isIdValidParameter($url)) {
+      $id = $url['b'];
+
+      $response = $attachments -> getDetail($id, null);
+    } else if (self::isNameValidParameter($url)) {
+      $name = $url['b'];
+
+      $response = $attachments -> getDetail(null, $name);
+    } else {
+      $response = $attachments -> getList();
+    }
+
+    return $response;
+  }
+
+
   public function resolve($env, $method, $url, $data): array {
-    $attachments = new \model\Attachments;
+    $attachments = new Attachments;
+
     $response = [];
 
     switch ($env) {
@@ -13,17 +38,7 @@ class AttachmentsRouter extends Router {
         switch ($method) {
 
           case self::method_get:
-            if (self::isIdValidParameter($url)) {
-              $id = $url['b'];
-
-              $response = $attachments -> getDetail($id, null);
-            } else if (self::isNameValidParameter($url)) {
-              $name = $url['b'];
-
-              $response = $attachments -> getDetail(null, $name);
-            } else {
-              $response = $attachments -> getList();
-            }
+            $response = self::getHandler($url);
             break;
 
           case self::method_post:
