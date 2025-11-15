@@ -22,6 +22,7 @@ const AccountFormDialog = () => {
       }}
       header="Profile"
     >
+      {/* TODO */}
       <ThemeToggle />
       <LocaleToggle />
 

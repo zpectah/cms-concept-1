@@ -90,6 +90,7 @@ export const useAccountForm = () => {
         onSuccess: (res) => {
           if (res.rows === 1) {
             addToast(t('message.success.updateData'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);
+            refetch();
           } else {
             addToast(t('message.info.nothingUpdated'), 'success', FEEDBACK_COMMON_TIMEOUT_DEFAULT);
           }

@@ -16,7 +16,7 @@ const AvatarUploader = ({
   name,
   hash,
   onRemove,
-  size = '175px',
+  size = '150px',
 }: AvatarUploaderProps) => {
   const [open, setOpen] = useState(false);
 
