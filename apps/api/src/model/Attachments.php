@@ -44,6 +44,80 @@ class Attachments extends Model {
     return $item;
   }
 
+  private function createImageThumbnail(string $sourceImageData, string $destinationImagePath, int $maxDimension = 250): bool {
+    $imageInfo = @getimagesizefromstring($sourceImageData);
+
+    if ($imageInfo === false) {
+      return false;
+    }
+
+    $sourceWidth = $imageInfo[0];
+    $sourceHeight = $imageInfo[1];
+    $mime = $imageInfo['mime'];
+
+    $sourceImage = @imagecreatefromstring($sourceImageData);
+
+    if ($sourceImage === false) {
+      return false;
+    }
+
+    if ($sourceWidth <= $maxDimension && $sourceHeight <= $maxDimension) {
+      $newWidth = $sourceWidth;
+      $newHeight = $sourceHeight;
+    } else {
+      if ($sourceWidth > $sourceHeight) {
+        $ratio = $maxDimension / $sourceWidth;
+      } else {
+        $ratio = $maxDimension / $sourceHeight;
+      }
+      $newWidth = (int)round($sourceWidth * $ratio);
+      $newHeight = (int)round($sourceHeight * $ratio);
+    }
+
+    $newImage = imagecreatetruecolor($newWidth, $newHeight);
+
+    // Keep transparency for PNG and GIF
+    if ($mime === 'image/png' || $mime === 'image/gif') {
+      imagealphablending($newImage, false);
+      imagesavealpha($newImage, true);
+      $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
+      imagefill($newImage, 0, 0, $transparent);
+    }
+
+    imagecopyresampled(
+      $newImage,
+      $sourceImage,
+      0, 0, 0, 0,
+      $newWidth,
+      $newHeight,
+      $sourceWidth,
+      $sourceHeight
+    );
+
+    switch ($mime) {
+      case 'image/jpeg':
+        $success = @imagejpeg($newImage, $destinationImagePath, 90);
+        break;
+
+      case 'image/png':
+        $success = @imagepng($newImage, $destinationImagePath, 9);
+        break;
+
+      case 'image/gif':
+        $success = @imagegif($newImage, $destinationImagePath);
+        break;
+
+      default:
+        $success = false;
+        break;
+    }
+
+    imagedestroy($sourceImage);
+    imagedestroy($newImage);
+
+    return $success;
+  }
+
 
   public function getList(): array {
     $conn = self::connection();
@@ -120,7 +194,17 @@ class Attachments extends Model {
       if (!file_exists($rootPath)) mkdir($rootPath, 0777, true);
       if (!file_exists($filePath)) mkdir($filePath, 0777, true);
 
-      $response[] = file_put_contents($finalFilePath, file_get_contents($file['content']));
+      $response[$file['name']] = file_put_contents($finalFilePath, file_get_contents($file['content']));
+
+      if ($file['type'] === 'image') {
+        $thumbRootPath = $filePath . 'thumbnail/';
+        $thumbFilePath = $thumbRootPath . $fileName;
+
+        if (!file_exists($thumbRootPath)) mkdir($thumbRootPath, 0777, true);
+
+        $response['thumbnail'][$file['name']] = self::createImageThumbnail(file_get_contents($file['content']), $thumbFilePath);
+      }
+
     }
 
     return $response;

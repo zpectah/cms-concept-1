@@ -11,7 +11,7 @@ import { AttachmentsViewItemProps } from '../types';
 import { listItemsViewKeys } from '../enums';
 import { IconButtonPlus } from '../../Button';
 import { FavoritesStar } from '../../favorites';
-import { useAttachmentTypeElement } from '../../../helpers';
+import { getEnvironmentVariables, useAttachmentTypeElement } from '../../../helpers';
 
 const AttachmentsViewItem = <T extends ItemBase>({
   item,
@@ -27,10 +27,11 @@ const AttachmentsViewItem = <T extends ItemBase>({
 }: AttachmentsViewItemProps<T>) => {
   const { t } = useTranslation();
   const { getElementByType } = useAttachmentTypeElement();
+  const { uploadsSource } = getEnvironmentVariables();
 
   const attachment = item as unknown as AttachmentsItem;
 
-  const sourcePrefix = `http://localhost:8080/${attachment.type}/`; // TODO
+  const sourcePrefix = `${uploadsSource}${attachment.type}/thumbnail/`; // TODO
 
   const renderContent = () =>
     getElementByType(attachment.type, {
