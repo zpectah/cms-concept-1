@@ -6,5 +6,5 @@ export interface SettingsPanelTabs {
   name: SettingsPanels;
   path: string;
   label: string;
-  hidden: boolean;
+  visible: boolean;
 }

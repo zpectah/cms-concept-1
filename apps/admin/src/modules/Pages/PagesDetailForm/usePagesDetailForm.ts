@@ -10,19 +10,21 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { usePagesQuery } from '../../../hooks-query';
-import { useModelFavorites } from '../../../hooks';
+import { useModelFavorites, useUserActions } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { PagesDetailFormSchema } from './schema';
 import { IPagesDetailForm } from './types';
 import { getPagesDetailFormDefaultValues, getPagesDetailFormMapper, getPagesDetailFormMapperToMaster } from './helpers';
 
 export const usePagesDetailForm = () => {
-  const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { pages: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
   const { pagesQuery, pagesDetailQuery, pagesPatchMutation, pagesCreateMutation } = usePagesQuery({ id });
@@ -45,7 +47,9 @@ export const usePagesDetailForm = () => {
     console.warn(err);
   };
 
-  const createHandler = (master: IPagesDetailForm) =>
+  const createHandler = (master: IPagesDetailForm) => {
+    if (!modelActions.create) return;
+
     onCreate(master as PagesDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -56,8 +60,11 @@ export const usePagesDetailForm = () => {
       },
       onError,
     });
+  };
 
-  const patchHandler = (master: IPagesDetailForm) =>
+  const patchHandler = (master: IPagesDetailForm) => {
+    if (!modelActions.modify) return;
+
     onPatch(master as PagesDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -68,6 +75,7 @@ export const usePagesDetailForm = () => {
       },
       onError,
     });
+  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -83,6 +91,8 @@ export const usePagesDetailForm = () => {
     if (!data) return;
 
     if (data.deleted === true) {
+      if (!modelActions.delete) return;
+
       openConfirmDialog({
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),

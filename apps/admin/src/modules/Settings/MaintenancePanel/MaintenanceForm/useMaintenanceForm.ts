@@ -5,6 +5,7 @@ import { MaintenanceAnalyzeResults, MaintenanceDeleteResults } from '../../../..
 import { useAppStore } from '../../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../../constants';
 import { getEnvironmentVariables } from '../../../../helpers';
+import { useUserActions } from '../../../../hooks';
 
 export const useMaintenanceForm = () => {
   const [analyzedResults, setAnalyzedResults] = useState<MaintenanceAnalyzeResults | null>(null);
@@ -13,6 +14,7 @@ export const useMaintenanceForm = () => {
   const [deletedRows, setDeletedRows] = useState<number>(0);
 
   const { t } = useTranslation(['common', 'modules']);
+  const { settings } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { analyzeModelItemsMutation, deletePermanentModelItemsMutation } = useMaintenanceQuery();
   const { uploadsPath } = getEnvironmentVariables();
@@ -26,6 +28,8 @@ export const useMaintenanceForm = () => {
   };
 
   const onAnalyze = () => {
+    if (!settings.maintenance.modify) return;
+
     setAnalyzedResults(null);
     setRowsToDelete(0);
 
@@ -58,6 +62,7 @@ export const useMaintenanceForm = () => {
   };
 
   const onProceedConfirm = () => {
+    if (!settings.maintenance.modify) return;
     if (!analyzedResults) return;
 
     setDeletedResults(null);

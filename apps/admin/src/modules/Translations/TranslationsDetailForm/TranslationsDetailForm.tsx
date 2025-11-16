@@ -12,13 +12,16 @@ import {
   LocalesTabs,
   SelectField,
 } from '../../../components';
+import { useUserActions } from '../../../hooks';
 import { useTranslationsDetailForm } from './useTranslationsDetailForm';
 
 const TranslationsDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
+
   const { t } = useTranslation(['common', 'form']);
+  const { translations: modelActions } = useUserActions();
   const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = useTranslationsDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
@@ -27,7 +30,13 @@ const TranslationsDetailForm = () => {
   return (
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
-        actions={<FormDetailActions detailId={detailId} listPath={`/${routes.translations.path}`} />}
+        actions={
+          <FormDetailActions
+            detailId={detailId}
+            listPath={`/${routes.translations.path}`}
+            modelActions={modelActions}
+          />
+        }
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
       >
         <InputField name={registeredFormFields.name} label={t('form:label.name')} isRequired />

@@ -16,10 +16,11 @@
 * [] Attachments picker - update/rozšíření
 * [OK] Settings - languages - při instalaci otevřít potvrzovací okno ...
 * [OK] Settings - maintenance - pouštění scriptů
-* [] Při vytváření souborů při uploadu - pokud je obrázek, tak udělat zmenšený náhled a uložit ho s prefixem 'thumb.'
+* [OK] Při vytváření souborů při uploadu - pokud je obrázek, tak udělat zmenšený náhled a uložit ho s prefixem 'thumb.'
 * [OK] ***BUG*** - přesunout confirm dialog pod AppStore !!!
 * [OK] Při odhlašování - udělat tvrdý redirect na login page ...
-* [] Vytvořit pravidla pro 'actions' -> co uživatel může a co nemůže ... 'useUserAccount'
+* [OK] Vytvořit pravidla pro 'actions' -> co uživatel může a co nemůže ... 'useUserActions'
+* [] - Pro views, které mají pravidla pro zobrazení 'useUserActions' - nahradit 'return null' za nějakou formu error stránky
 * [OK] - Inicializovat Composer pro API
 * [OK] - Přidat knihovnu 'PHPMailer' -> jako vendors ...
 * [OK] - Přesunout 'composer.json' do rootu projektu ... spolu s lockem
@@ -28,3 +29,4 @@
 * [] - Dohezčit message u password recovery + jen textová zpráva se zobrazeným tokenem. Posílat text zprávy přeloženou - i18n
 * [OK] Klonování 'Articles' - vytvoření nové položky s existujícími daty
 * [OK] - Přidat údaje pro email smtp službu do tabulky s nastavení, heslo zašifrovat a uložit. Při použití hesla odšifrovat
+

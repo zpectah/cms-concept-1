@@ -2,12 +2,15 @@ import { modelKeys, AttachmentsItem } from '@common';
 import { ListItems, ValueType, ValueDate, listItemsViewKeys } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
+import { useUserActions } from '../../../hooks';
 import { useAttachmentsList } from './useAttachmentsList';
 
 const AttachmentsList = () => {
   const {
     admin: { routes },
   } = getConfig();
+
+  const { attachments: modelActions } = useUserActions();
   const { attachments, isLoading, onDeleteSelected, onDisableSelected } = useAttachmentsList();
 
   return (
@@ -43,6 +46,7 @@ const AttachmentsList = () => {
       onDisableSelected={onDisableSelected}
       onRowDelete={(id) => onDeleteSelected([id])}
       onRowDisable={(id) => onDisableSelected([id])}
+      modelActions={modelActions}
     />
   );
 };

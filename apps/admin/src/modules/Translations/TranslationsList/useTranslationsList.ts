@@ -5,10 +5,12 @@ import { useAppStore, useModelListStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useTranslationsQuery } from '../../../hooks-query';
+import { useUserActions } from '../../../hooks';
 
 export const useTranslationsList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
+  const { translations: modelActions } = useUserActions();
   const { addToast } = useAppStore();
   const { setSelected } = useModelListStore();
   const { translationsQuery, translationsDeleteMutation, translationsToggleMutation } = useTranslationsQuery({});
@@ -21,6 +23,7 @@ export const useTranslationsList = () => {
   };
 
   const deleteSelectedHandler = (ids: number[]) => {
+    if (!modelActions.delete) return;
     if (!ids || ids.length === 0) return;
 
     translationsDeleteMutation.mutate(ids, {
@@ -40,6 +43,7 @@ export const useTranslationsList = () => {
   };
 
   const disableSelectedHandler = (ids: number[]) => {
+    if (!modelActions.modify) return;
     if (!ids || ids.length === 0) return;
 
     translationsToggleMutation.mutate(ids, {

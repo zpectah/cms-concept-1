@@ -3,12 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { newItemKey } from '@common';
 import { getConfig } from '../utils';
 import { ViewLayout, LinkButton } from '../components';
+import { useUserActions } from '../hooks';
 
 const AttachmentsView = () => {
   const {
     admin: { routes },
   } = getConfig();
   const { t } = useTranslation();
+  const { attachments } = useUserActions();
+
+  if (!attachments.view) return;
 
   return (
     <ViewLayout

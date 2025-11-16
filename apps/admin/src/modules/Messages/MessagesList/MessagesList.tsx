@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Button } from '@mui/material';
 import MarkAsUnreadIcon from '@mui/icons-material/MarkAsUnread';
 import MarkunreadIcon from '@mui/icons-material/Markunread';
@@ -5,12 +6,16 @@ import { modelKeys, MessagesItem } from '@common';
 import { ListItems, ValueType, ValueDate, IconButtonPlus } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
+import { useUserActions } from '../../../hooks';
 import { useMessagesList } from './useMessagesList';
 
 const MessagesList = () => {
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation(['common']);
+  const { messages: modelActions } = useUserActions();
   const { messages, isLoading, onDeleteSelected, onDisableSelected, onMarkSelected } = useMessagesList();
 
   return (
@@ -57,10 +62,15 @@ const MessagesList = () => {
         </Button>
       )}
       renderRowActions={(row) => (
-        <IconButtonPlus tooltip="Mark as read" onClick={() => onMarkSelected([row.id])}>
+        <IconButtonPlus
+          tooltip={t('button.markRead')}
+          onClick={() => onMarkSelected([row.id])}
+          disabled={!modelActions.modify}
+        >
           {row.read ? <MarkAsUnreadIcon fontSize="small" /> : <MarkunreadIcon fontSize="small" />}
         </IconButtonPlus>
       )}
+      modelActions={modelActions}
     />
   );
 };

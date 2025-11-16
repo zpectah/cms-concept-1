@@ -27,6 +27,15 @@ interface ListItemsInitialProps {
   pathPrefix: string;
 }
 
+export interface ListItemsModelActions {
+  view: boolean;
+  create: boolean;
+  modify: boolean;
+  delete: boolean;
+  approve?: boolean;
+  selfApprove?: boolean;
+}
+
 export interface ListItemsProps<T extends ItemBase> extends ListItemsBase<T>, ListItemsInitialProps {
   columns: ListItemsTableColumn<T>[];
   disableViewToggle?: boolean;
@@ -36,6 +45,7 @@ export interface ListItemsProps<T extends ItemBase> extends ListItemsBase<T>, Li
   model: Model;
   orderKeys: (keyof T)[];
   searchKeys: (keyof T)[];
+  modelActions: ListItemsModelActions;
 
   /**
    * Custom render actions in controls for selected items
@@ -113,6 +123,7 @@ interface ViewBaseProps<T extends ItemBase> extends ListItemsInitialProps {
   rows: T[];
   selected: ListItemsSelected;
   renderRowActions?: (row: T) => ReactNode;
+  modelActions: ListItemsModelActions;
 }
 
 export interface TableViewProps<T extends ItemBase> extends ViewBaseProps<T> {
@@ -137,6 +148,7 @@ export interface AttachmentsViewItemProps<T extends ItemBase> {
   isLoading: boolean;
   disableFavorites: boolean;
   pathPrefix: string;
+  modelActions: ListItemsModelActions;
 }
 
 export interface ListItemsFilter {
@@ -193,7 +205,7 @@ export interface ListItemsControlsProps<T extends ItemBase> {
   tags: Tags;
   types: string[];
   view: ListItemsView;
-
+  modelActions: ListItemsModelActions;
   renderSelectedActions?: (selected: ListItemsSelected) => ReactNode;
 }
 

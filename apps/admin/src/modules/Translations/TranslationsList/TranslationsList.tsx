@@ -2,12 +2,15 @@ import { modelKeys, TranslationsItem } from '@common';
 import { ListItems, ValueType, ValueDate } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
+import { useUserActions } from '../../../hooks';
 import { useTranslationsList } from './useTranslationsList';
 
 const TranslationsList = () => {
   const {
     admin: { routes },
   } = getConfig();
+
+  const { translations: modelActions } = useUserActions();
   const { translations, isLoading, onDeleteSelected, onDisableSelected } = useTranslationsList();
 
   return (
@@ -42,6 +45,7 @@ const TranslationsList = () => {
       onDisableSelected={onDisableSelected}
       onRowDelete={(id) => onDeleteSelected([id])}
       onRowDisable={(id) => onDisableSelected([id])}
+      modelActions={modelActions}
       disableFavorites
     />
   );

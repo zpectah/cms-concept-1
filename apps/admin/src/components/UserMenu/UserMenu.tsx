@@ -1,9 +1,13 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppStore } from '../../store';
 import { IconButtonPlus } from '../Button';
+import { useUserActions } from '../../hooks';
 
 const UserMenu = () => {
+  const { profile } = useUserActions();
   const { profileDialogOpen, toggleProfileDialog } = useAppStore();
+
+  if (!profile.view) return;
 
   return (
     <IconButtonPlus

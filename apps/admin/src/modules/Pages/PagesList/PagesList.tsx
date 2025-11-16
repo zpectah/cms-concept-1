@@ -2,12 +2,15 @@ import { modelKeys, PagesItem } from '@common';
 import { ListItems, ValueType, ValueDate } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
+import { useUserActions } from '../../../hooks';
 import { usePagesList } from './usePagesList';
 
 const PagesList = () => {
   const {
     admin: { routes },
   } = getConfig();
+
+  const { pages: modelActions } = useUserActions();
   const { pages, isLoading, onDeleteSelected, onDisableSelected } = usePagesList();
 
   return (
@@ -42,6 +45,7 @@ const PagesList = () => {
       onDisableSelected={onDisableSelected}
       onRowDelete={(id) => onDeleteSelected([id])}
       onRowDisable={(id) => onDisableSelected([id])}
+      modelActions={modelActions}
     />
   );
 };

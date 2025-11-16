@@ -5,12 +5,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useSettingsQuery } from '../../../hooks-query';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
+import { useUserActions } from '../../../hooks';
 import { ISettingsGlobalPanelForm } from './types';
 import { SettingsGlobalPanelFormSchema } from './schema';
 import { getDataToFormMapper, getSettingsGlobalFormMapper } from './helpers';
 
 export const useGlobalPanelForm = () => {
   const { t } = useTranslation(['common']);
+  const { settings } = useUserActions();
   const { addToast } = useAppStore();
   const { settingsQuery, settingsPatchMutation } = useSettingsQuery();
   const form = useForm<ISettingsGlobalPanelForm>({
@@ -22,6 +24,7 @@ export const useGlobalPanelForm = () => {
   const { mutate: onPatch } = settingsPatchMutation;
 
   const submitHandler: SubmitHandler<ISettingsGlobalPanelForm> = (data, event) => {
+    if (!settings.global.modify) return;
     if (!data) return;
 
     const master = getSettingsGlobalFormMapper(data);

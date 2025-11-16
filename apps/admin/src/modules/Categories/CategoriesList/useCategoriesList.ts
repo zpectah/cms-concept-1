@@ -5,10 +5,12 @@ import { useAppStore, useModelListStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useCategoriesQuery } from '../../../hooks-query';
+import { useUserActions } from '../../../hooks';
 
 export const useCategoriesList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
+  const { categories: modelActions } = useUserActions();
   const { addToast } = useAppStore();
   const { setSelected } = useModelListStore();
   const { categoriesQuery, categoriesDeleteMutation, categoriesToggleMutation } = useCategoriesQuery({});
@@ -21,6 +23,7 @@ export const useCategoriesList = () => {
   };
 
   const deleteSelectedHandler = (ids: number[]) => {
+    if (!modelActions.delete) return;
     if (!ids || ids.length === 0) return;
 
     categoriesDeleteMutation.mutate(ids, {
@@ -40,6 +43,7 @@ export const useCategoriesList = () => {
   };
 
   const disableSelectedHandler = (ids: number[]) => {
+    if (!modelActions.modify) return;
     if (!ids || ids.length === 0) return;
 
     categoriesToggleMutation.mutate(ids, {

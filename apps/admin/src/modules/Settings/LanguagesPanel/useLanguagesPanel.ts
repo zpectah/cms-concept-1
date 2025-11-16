@@ -3,12 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useSettingsQuery } from '../../../hooks-query';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
+import { useUserActions } from '../../../hooks';
 
 export const useLanguagesPanel = () => {
   const [isInstalling, setIsInstalling] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
 
   const { t } = useTranslation(['common', 'modules']);
+  const { settings } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { settingsQuery, settingsLocaleInstallMutation, settingsLocaleDefaultMutation, settingsLocaleToggleMutation } =
     useSettingsQuery();
@@ -25,6 +27,8 @@ export const useLanguagesPanel = () => {
   };
 
   const localeInstallConfirmHandler = (locale: string) => {
+    if (!settings.languages.modify) return;
+
     setIsInstalling(locale);
 
     onLocaleInstall(
@@ -49,6 +53,7 @@ export const useLanguagesPanel = () => {
   };
 
   const localeInstallHandler = (locale: string) => {
+    if (!settings.languages.modify) return;
     if (!locale) return;
 
     openConfirmDialog({
@@ -59,6 +64,7 @@ export const useLanguagesPanel = () => {
   };
 
   const localeToggleHandler = (locale: string) => {
+    if (!settings.languages.modify) return;
     if (!locale) return;
 
     setIsUpdating(locale);
@@ -81,6 +87,7 @@ export const useLanguagesPanel = () => {
   };
 
   const localeDefaultHandler = (locale: string) => {
+    if (!settings.languages.modify) return;
     if (!locale) return;
 
     setIsUpdating(locale);

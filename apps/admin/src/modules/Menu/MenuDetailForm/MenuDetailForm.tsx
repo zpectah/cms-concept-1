@@ -1,5 +1,6 @@
 import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { menuTypeDefault } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getConfig } from '../../../utils';
 import {
@@ -10,15 +11,17 @@ import {
   InputField,
   SelectField,
 } from '../../../components';
-import { useMenuDetailForm } from './useMenuDetailForm';
 import { MenuItemsManager } from '../../MenuItems';
-import { menuTypeDefault } from '@common';
+import { useUserActions } from '../../../hooks';
+import { useMenuDetailForm } from './useMenuDetailForm';
 
 const MenuDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
+
   const { t } = useTranslation(['common', 'form']);
+  const { menu: modelActions } = useUserActions();
   const { detailId, form, onSubmit, fieldOptions } = useMenuDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
@@ -27,7 +30,9 @@ const MenuDetailForm = () => {
   return (
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
-        actions={<FormDetailActions detailId={detailId} listPath={`/${routes.menu.path}`} />}
+        actions={
+          <FormDetailActions detailId={detailId} listPath={`/${routes.menu.path}`} modelActions={modelActions} />
+        }
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
         actionbar={<MenuItemsManager isEnabled menuId={detailId} />}
       >

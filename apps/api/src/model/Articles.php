@@ -9,7 +9,7 @@ class Articles extends Model {
   static array $tableFields = ['type', 'name', 'categories', 'tags', 'attachments',
     'event_address_street', 'event_address_street_no', 'event_address_district',
     'event_address_city', 'event_address_country', 'event_address_zip', 'event_location',
-    'event_start', 'event_end', 'active', 'deleted'];
+    'event_start', 'event_end', 'approved', 'active', 'deleted'];
   static array $tableLocaleFields = ['title', 'description', 'content'];
 
   private function dbToJsonDetailMapper($data, $localeData = false): array {
@@ -18,6 +18,7 @@ class Articles extends Model {
       'categories' => $data['categories'] ? explode(',', $data['categories']) : [],
       'tags' => $data['tags'] ? explode(',', $data['tags']) : [],
       'attachments' => $data['attachments'] ? explode(',', $data['attachments']) : [],
+      'approved' => $data['approved'] === 1,
       'active' => $data['active'] === 1,
       'deleted' => $data['deleted'] === 1,
     ];
@@ -55,6 +56,7 @@ class Articles extends Model {
       'categories' => implode(',', $data['categories']),
       'tags' => implode(',', $data['tags']),
       'attachments' => implode(',', $data['attachments']),
+      'approved' => $data['approved'] ? 1 : 0,
       'active' => $data['active'] ? 1 : 0,
       'deleted' => $data['deleted'] ? 1 : 0,
       'event_address_street' => $data['event_address']['street'] ?? '',
@@ -87,7 +89,7 @@ class Articles extends Model {
 
     $deleted = 0;
 
-    $sql = "SELECT id, name, type, categories, tags, attachments, active, deleted, created, updated FROM `articles` WHERE `deleted` = :status";
+    $sql = "SELECT id, name, type, categories, tags, attachments, approved, active, deleted, created, updated FROM `articles` WHERE `deleted` = :status";
     $stmt = $conn -> prepare($sql);
     $stmt -> bindParam(':status', $deleted, PDO::PARAM_INT);
     $stmt -> execute();
@@ -178,6 +180,7 @@ class Articles extends Model {
     $stmt -> bindParam(':event_location', $data['event_location']);
     $stmt -> bindParam(':event_start', $data['event_start']);
     $stmt -> bindParam(':event_end', $data['event_end']);
+    $stmt -> bindParam(':approved', $data['approved'], PDO::PARAM_INT);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
     $stmt -> execute();
@@ -251,6 +254,7 @@ class Articles extends Model {
     $stmt -> bindParam(':event_location', $data['event_location']);
     $stmt -> bindParam(':event_start', $data['event_start']);
     $stmt -> bindParam(':event_end', $data['event_end']);
+    $stmt -> bindParam(':approved', $data['approved'], PDO::PARAM_INT);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
     $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);

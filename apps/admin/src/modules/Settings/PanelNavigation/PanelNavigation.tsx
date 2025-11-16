@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Tabs, Tab } from '@mui/material';
 import { getConfig } from '../../../utils';
+import { useUserActions } from '../../../hooks';
 import { settingsPanelsKeys } from '../enums';
 import { SettingsPanelTabs } from '../types';
 
@@ -10,6 +11,7 @@ const PanelNavigation = () => {
   const [panelIndex, setPanelIndex] = useState(0);
 
   const { t } = useTranslation(['modules']);
+  const { settings } = useUserActions();
   const { pathname } = useLocation();
   const {
     admin: { routes },
@@ -21,31 +23,31 @@ const PanelNavigation = () => {
       name: settingsPanelsKeys.global,
       path: `/${routes.settings.path}/${routes.settings.panels.global}`,
       label: t('modules:settings.tabs.global.title'),
-      hidden: false,
+      visible: settings.view && settings.global.view,
     },
     {
       name: settingsPanelsKeys.client,
       path: `/${routes.settings.path}/${routes.settings.panels.client}`,
       label: t('modules:settings.tabs.client.title'),
-      hidden: false,
+      visible: settings.view && settings.client.view,
     },
     {
       name: settingsPanelsKeys.languages,
       path: `/${routes.settings.path}/${routes.settings.panels.languages}`,
       label: t('modules:settings.tabs.language.title'),
-      hidden: false,
+      visible: settings.view && settings.languages.view,
     },
     {
       name: settingsPanelsKeys.blacklist,
       path: `/${routes.settings.path}/${routes.settings.panels.blacklist}`,
       label: t('modules:settings.tabs.blacklist.title'),
-      hidden: false,
+      visible: settings.view && settings.blacklist.view,
     },
     {
       name: settingsPanelsKeys.maintenance,
       path: `/${routes.settings.path}/${routes.settings.panels.maintenance}`,
       label: t('modules:settings.tabs.maintenance.title'),
-      hidden: false,
+      visible: settings.view && settings.maintenance.view,
     },
   ];
 
@@ -76,7 +78,7 @@ const PanelNavigation = () => {
         borderBottom: `1px solid ${palette.divider}`,
       })}
     >
-      {tabItems.map(({ name, label, hidden }, index) => !hidden && <Tab key={name} label={label} />)}
+      {tabItems.map(({ name, label, visible }, index) => visible && <Tab key={name} label={label} />)}
     </Tabs>
   );
 };

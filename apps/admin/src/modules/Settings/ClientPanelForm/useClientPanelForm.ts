@@ -6,12 +6,14 @@ import { META_ROBOTS_OPTIONS, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../con
 import { useSettingsQuery } from '../../../hooks-query';
 import { useAppStore } from '../../../store';
 import { useSelectOptions } from '../../../helpers';
+import { useUserActions } from '../../../hooks';
 import { ISettingsClientPanelForm } from './types';
 import { SettingsClientPanelFormSchema } from './schema';
 import { getDataToFormMapper, getSettingsClientFormMapper } from './helpers';
 
 export const useClientPanelForm = () => {
   const { t } = useTranslation(['common']);
+  const { settings } = useUserActions();
   const { addToast } = useAppStore();
   const { settingsQuery, settingsPatchMutation } = useSettingsQuery();
   const { getTranslatedOptionsFromList } = useSelectOptions();
@@ -24,6 +26,7 @@ export const useClientPanelForm = () => {
   const { mutate: onPatch } = settingsPatchMutation;
 
   const submitHandler: SubmitHandler<ISettingsClientPanelForm> = (data, event) => {
+    if (!settings.client.modify) return;
     if (!data) return;
 
     const master = getSettingsClientFormMapper(data);

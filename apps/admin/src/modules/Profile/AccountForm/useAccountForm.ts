@@ -8,6 +8,7 @@ import { fileUploaderQueueItemContextKeys, registeredFormFields } from '../../..
 import { useUserQuery, useAttachmentsQuery } from '../../../hooks-query';
 import { FEEDBACK_COMMON_TIMEOUT_DEFAULT, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useAppStore } from '../../../store';
+import { useUserActions } from '../../../hooks';
 import { getAccountFormDefaultValues, getDataToFormMapper, getDataToFormMasterMapper } from './helpers';
 import { ProfileAccountFormSchema } from './schema';
 import { IProfileAccountForm } from './types';
@@ -18,6 +19,7 @@ export const useAccountForm = () => {
 
   const { t } = useTranslation(['common']);
   const { addToast } = useAppStore();
+  const { profile } = useUserActions();
   const { userQuery, userPatchMutation } = useUserQuery();
   const { attachmentsFileCreateMutation } = useAttachmentsQuery({});
   const form = useForm<IProfileAccountForm>({
@@ -36,6 +38,7 @@ export const useAccountForm = () => {
   };
 
   const submitHandler: SubmitHandler<IProfileAccountForm> = (data, event) => {
+    if (!profile.modify) return;
     if (!data) return;
 
     if (data.password) {

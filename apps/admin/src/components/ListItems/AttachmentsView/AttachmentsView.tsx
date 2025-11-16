@@ -15,6 +15,7 @@ const AttachmentsView = <T extends ItemBase>({
   isLoading,
   disableFavorites,
   renderRowActions,
+  modelActions,
 }: AttachmentsViewProps<T>) => {
   return (
     <Box>
@@ -35,6 +36,7 @@ const AttachmentsView = <T extends ItemBase>({
                 isLoading={isLoading ?? false}
                 disableFavorites={disableFavorites ?? false}
                 pathPrefix={pathPrefix}
+                modelActions={modelActions}
               />
             </Grid>
           );

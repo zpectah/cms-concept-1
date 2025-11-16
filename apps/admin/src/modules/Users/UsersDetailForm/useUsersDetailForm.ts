@@ -4,26 +4,35 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { MenuItemProps } from '@mui/material';
-import { getFormattedString, modelKeys, newItemKey, usersAccessKeys, UsersDetail } from '@common';
+import {
+  getFormattedString,
+  modelKeys,
+  newItemKey,
+  usersAccessKeys,
+  UsersAccessRightsKeys,
+  UsersDetail,
+} from '@common';
 import { getConfig } from '../../../utils';
 import { getOptionValue, useSelectOptions, useUsersHelpers } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useUsersQuery } from '../../../hooks-query';
-import { useModelFavorites } from '../../../hooks';
+import { useModelFavorites, useUserActions } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { UsersDetailFormSchema } from './schema';
 import { IUsersDetailForm } from './types';
 import { getUsersDetailFormDefaultValues, getUsersDetailFormMapper, getUsersDetailFormMapperToMaster } from './helpers';
 
 export const useUsersDetailForm = () => {
-  const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { users: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
   const { usersQuery, usersDetailQuery, usersPatchMutation, usersCreateMutation } = useUsersQuery({ id });
@@ -48,7 +57,9 @@ export const useUsersDetailForm = () => {
     console.warn(err);
   };
 
-  const createHandler = (master: IUsersDetailForm) =>
+  const createHandler = (master: IUsersDetailForm) => {
+    if (!modelActions.create) return;
+
     onCreate(master as UsersDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -59,8 +70,11 @@ export const useUsersDetailForm = () => {
       },
       onError,
     });
+  };
 
-  const patchHandler = (master: IUsersDetailForm) =>
+  const patchHandler = (master: IUsersDetailForm) => {
+    if (!modelActions.modify) return;
+
     onPatch(master as UsersDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -71,6 +85,7 @@ export const useUsersDetailForm = () => {
       },
       onError,
     });
+  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -86,6 +101,8 @@ export const useUsersDetailForm = () => {
     if (!data) return;
 
     if (data.deleted === true) {
+      if (!modelActions.delete) return;
+
       openConfirmDialog({
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),
@@ -121,7 +138,7 @@ export const useUsersDetailForm = () => {
   };
 
   const getAccessRightsFieldOptions = () => {
-    const keys = Object.keys(usersAccessKeys);
+    const keys = Object.keys(usersAccessKeys) as UsersAccessRightsKeys[];
     const tmpItems: MenuItemProps[] = [];
 
     keys.forEach((item) => {

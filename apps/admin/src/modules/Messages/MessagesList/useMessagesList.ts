@@ -5,10 +5,12 @@ import { useAppStore, useModelListStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMessagesQuery } from '../../../hooks-query';
+import { useUserActions } from '../../../hooks';
 
 export const useMessagesList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
+  const { messages: modelActions } = useUserActions();
   const { addToast } = useAppStore();
   const { setSelected } = useModelListStore();
   const { messagesQuery, messagesDeleteMutation, messagesToggleMutation, messagesReadMutation } = useMessagesQuery({});
@@ -21,6 +23,7 @@ export const useMessagesList = () => {
   };
 
   const deleteSelectedHandler = (ids: number[]) => {
+    if (!modelActions.delete) return;
     if (!ids || ids.length === 0) return;
 
     messagesDeleteMutation.mutate(ids, {
@@ -40,6 +43,7 @@ export const useMessagesList = () => {
   };
 
   const disableSelectedHandler = (ids: number[]) => {
+    if (!modelActions.modify) return;
     if (!ids || ids.length === 0) return;
 
     messagesToggleMutation.mutate(ids, {
@@ -59,6 +63,7 @@ export const useMessagesList = () => {
   };
 
   const markReadSelectedHandler = (ids: number[]) => {
+    if (!modelActions.modify) return;
     if (!ids || ids.length === 0) return;
 
     messagesReadMutation.mutate(ids, {

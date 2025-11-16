@@ -10,7 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMembersQuery } from '../../../hooks-query';
-import { useModelFavorites } from '../../../hooks';
+import { useModelFavorites, useUserActions } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { MembersDetailFormSchema } from './schema';
 import { IMembersDetailForm } from './types';
@@ -21,12 +21,14 @@ import {
 } from './helpers';
 
 export const useMembersDetailForm = () => {
-  const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { members: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
   const { membersQuery, membersDetailQuery, membersPatchMutation, membersCreateMutation } = useMembersQuery({ id });
@@ -48,7 +50,9 @@ export const useMembersDetailForm = () => {
     console.warn(err);
   };
 
-  const createHandler = (master: IMembersDetailForm) =>
+  const createHandler = (master: IMembersDetailForm) => {
+    if (!modelActions.create) return;
+
     onCreate(master as MembersDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -59,8 +63,11 @@ export const useMembersDetailForm = () => {
       },
       onError,
     });
+  };
 
-  const patchHandler = (master: IMembersDetailForm) =>
+  const patchHandler = (master: IMembersDetailForm) => {
+    if (!modelActions.modify) return;
+
     onPatch(master as MembersDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -71,6 +78,7 @@ export const useMembersDetailForm = () => {
       },
       onError,
     });
+  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -86,6 +94,8 @@ export const useMembersDetailForm = () => {
     if (!data) return;
 
     if (data.deleted === true) {
+      if (!modelActions.delete) return;
+
       openConfirmDialog({
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),

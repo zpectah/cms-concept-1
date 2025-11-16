@@ -10,7 +10,7 @@ import { useAppStore } from '../../../store';
 import { CLONE_PATH_ATTRIBUTE_NAME, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useArticlesQuery } from '../../../hooks-query';
-import { useModelFavorites } from '../../../hooks';
+import { useModelFavorites, useUserActions } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { ArticlesDetailFormSchema } from './schema';
 import { IArticlesDetailForm } from './types';
@@ -30,6 +30,7 @@ export const useArticlesDetailForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { articles: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
 
@@ -65,7 +66,9 @@ export const useArticlesDetailForm = () => {
     console.warn(err);
   };
 
-  const createHandler = (master: IArticlesDetailForm) =>
+  const createHandler = (master: IArticlesDetailForm) => {
+    if (!modelActions.create) return;
+
     onCreate(master as ArticlesDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -76,8 +79,11 @@ export const useArticlesDetailForm = () => {
       },
       onError,
     });
+  };
 
-  const patchHandler = (master: IArticlesDetailForm) =>
+  const patchHandler = (master: IArticlesDetailForm) => {
+    if (!modelActions.modify) return;
+
     onPatch(master as ArticlesDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -88,6 +94,7 @@ export const useArticlesDetailForm = () => {
       },
       onError,
     });
+  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -103,6 +110,8 @@ export const useArticlesDetailForm = () => {
     if (!data) return;
 
     if (data.deleted === true) {
+      if (!modelActions.delete) return;
+
       openConfirmDialog({
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),

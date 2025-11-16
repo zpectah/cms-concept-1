@@ -6,12 +6,14 @@ import { getBase64Size, formatBytes, AttachmentsType } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getOptionValue, useAttachmentTypeElement } from '../../../helpers';
 import { Card, InputField, Literal, FormContent, ImageCropper } from '../../../components';
+import { useUserActions } from '../../../hooks';
 import { IAttachmentsCreateForm } from './types';
 
 const AttachmentsQueue = () => {
   const [cropSource, setCropSource] = useState<{ source: string; index: number } | null>(null);
 
   const { t } = useTranslation(['common', 'form']);
+  const { attachments: modelActions } = useUserActions();
   const { control, watch } = useFormContext<IAttachmentsCreateForm>();
   const { remove, update } = useFieldArray({
     control,
@@ -32,6 +34,8 @@ const AttachmentsQueue = () => {
       size: getBase64Size(source),
     });
   };
+
+  if (!modelActions.view) return null;
 
   return (
     <>

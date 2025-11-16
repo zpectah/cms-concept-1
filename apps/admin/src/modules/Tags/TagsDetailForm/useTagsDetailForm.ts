@@ -10,19 +10,21 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useTagsQuery } from '../../../hooks-query';
-import { useModelFavorites } from '../../../hooks';
+import { useModelFavorites, useUserActions } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { TagsDetailFormSchema } from './schema';
 import { ITagsDetailForm } from './types';
 import { getTagsDetailFormDefaultValues, getTagsDetailFormMapper, getTagsDetailFormMapperToMaster } from './helpers';
 
 export const useTagsDetailForm = () => {
-  const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { tags: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
   const { tagsQuery, tagsDetailQuery, tagsPatchMutation, tagsCreateMutation } = useTagsQuery({ id });
@@ -44,7 +46,9 @@ export const useTagsDetailForm = () => {
     console.warn(err);
   };
 
-  const createHandler = (master: ITagsDetailForm) =>
+  const createHandler = (master: ITagsDetailForm) => {
+    if (!modelActions.create) return;
+
     onCreate(master as TagsDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -55,8 +59,11 @@ export const useTagsDetailForm = () => {
       },
       onError,
     });
+  };
 
-  const patchHandler = (master: ITagsDetailForm) =>
+  const patchHandler = (master: ITagsDetailForm) => {
+    if (!modelActions.modify) return;
+
     onPatch(master as TagsDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -67,6 +74,7 @@ export const useTagsDetailForm = () => {
       },
       onError,
     });
+  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -82,6 +90,8 @@ export const useTagsDetailForm = () => {
     if (!data) return;
 
     if (data.deleted === true) {
+      if (!modelActions.delete) return;
+
       openConfirmDialog({
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),

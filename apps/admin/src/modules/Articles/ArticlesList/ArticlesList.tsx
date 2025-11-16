@@ -4,6 +4,7 @@ import { modelKeys, ArticlesItem } from '@common';
 import { ListItems, ValueArray, ValueDate, ValueType, IconButtonPlus } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
+import { useUserActions } from '../../../hooks';
 import { useArticlesList } from './useArticlesList';
 
 const ArticlesList = () => {
@@ -12,6 +13,7 @@ const ArticlesList = () => {
   } = getConfig();
 
   const { t } = useTranslation(['common']);
+  const { articles: modelActions } = useUserActions();
   const { articles, categories, tags, isLoading, onDeleteSelected, onDisableSelected, onClone } = useArticlesList();
 
   return (
@@ -57,10 +59,16 @@ const ArticlesList = () => {
       categories={categories}
       tags={tags}
       renderRowActions={(row) => (
-        <IconButtonPlus tooltip={t('button.clone')} onClick={() => onClone(row.id)} size="small">
+        <IconButtonPlus
+          tooltip={t('button.clone')}
+          onClick={() => onClone(row.id)}
+          size="small"
+          disabled={!modelActions.create}
+        >
           <CopyAllIcon fontSize="small" />
         </IconButtonPlus>
       )}
+      modelActions={modelActions}
     />
   );
 };

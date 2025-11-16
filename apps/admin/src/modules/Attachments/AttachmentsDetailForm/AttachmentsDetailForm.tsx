@@ -6,13 +6,16 @@ import { registeredFormFields } from '../../../enums';
 import { getConfig } from '../../../utils';
 import { getEnvironmentVariables, getOptionValue, useAttachmentTypeElement } from '../../../helpers';
 import { ControlledForm, FormDetailSidebar, FormDetailActions, FormLayout, Literal } from '../../../components';
+import { useUserActions } from '../../../hooks';
 import { useAttachmentsDetailForm } from './useAttachmentsDetailForm';
 
 const AttachmentsDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
+
   const { t } = useTranslation(['common', 'form']);
+  const { attachments: modelActions } = useUserActions();
   const { detailId, form, onSubmit } = useAttachmentsDetailForm();
   const { getElementByType } = useAttachmentTypeElement();
   const { uploadsSource } = getEnvironmentVariables();
@@ -30,7 +33,9 @@ const AttachmentsDetailForm = () => {
   return (
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
-        actions={<FormDetailActions detailId={detailId} listPath={`/${routes.tags.path}`} />}
+        actions={
+          <FormDetailActions detailId={detailId} listPath={`/${routes.tags.path}`} modelActions={modelActions} />
+        }
         sidebar={
           <FormDetailSidebar
             detailId={detailId}

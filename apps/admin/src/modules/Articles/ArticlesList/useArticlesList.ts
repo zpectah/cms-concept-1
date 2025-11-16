@@ -7,6 +7,7 @@ import { CLONE_PATH_ATTRIBUTE_NAME, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../
 import { useViewLayoutContext } from '../../../components';
 import { useArticlesQuery, useCategoriesQuery, useTagsQuery } from '../../../hooks-query';
 import { getConfig } from '../../../utils';
+import { useUserActions } from '../../../hooks';
 
 export const useArticlesList = () => {
   const {
@@ -15,6 +16,7 @@ export const useArticlesList = () => {
 
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
+  const { articles: modelActions } = useUserActions();
   const { addToast } = useAppStore();
   const { setSelected } = useModelListStore();
   const { articlesQuery, articlesDeleteMutation, articlesToggleMutation } = useArticlesQuery({});
@@ -33,6 +35,7 @@ export const useArticlesList = () => {
   };
 
   const deleteSelectedHandler = (ids: number[]) => {
+    if (!modelActions.delete) return;
     if (!ids || ids.length === 0) return;
 
     articlesDeleteMutation.mutate(ids, {
@@ -52,6 +55,7 @@ export const useArticlesList = () => {
   };
 
   const disableSelectedHandler = (ids: number[]) => {
+    if (!modelActions.modify) return;
     if (!ids || ids.length === 0) return;
 
     articlesToggleMutation.mutate(ids, {

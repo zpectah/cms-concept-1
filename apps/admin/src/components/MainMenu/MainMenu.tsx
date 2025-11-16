@@ -45,8 +45,8 @@ const MainMenu = () => {
         }}
       >
         {items.map(
-          ({ hidden, ...item }) =>
-            !hidden && (
+          ({ visible, ...item }) =>
+            visible && (
               <MenuItem key={item.id} component={Link} to={item.path} onClick={closeHandler}>
                 {item.label}
               </MenuItem>

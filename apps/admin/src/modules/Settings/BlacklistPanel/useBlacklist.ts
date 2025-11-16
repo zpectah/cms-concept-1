@@ -4,11 +4,13 @@ import { Blacklist } from '@common';
 import { useBlacklistQuery } from '../../../hooks-query';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
+import { useUserActions } from '../../../hooks';
 
 export const useBlacklist = () => {
   const [query, setQuery] = useState('');
 
   const { t } = useTranslation(['common']);
+  const { settings } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { blacklistQuery, blacklistToggleMutation, blacklistDeleteMutation } = useBlacklistQuery({});
 
@@ -42,6 +44,8 @@ export const useBlacklist = () => {
   };
 
   const rowDeleteConfirmHandler = (id: number) => {
+    if (!settings.blacklist.modify) return;
+
     onDelete([id], {
       onSuccess: (res) => {
         addToast(t('message.success.deleteDetail'), 'success', TOAST_SUCCESS_TIMEOUT_DEFAULT);

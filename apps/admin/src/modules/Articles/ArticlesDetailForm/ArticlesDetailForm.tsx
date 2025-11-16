@@ -1,6 +1,6 @@
 import { useWatch } from 'react-hook-form';
-import { Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { Grid } from '@mui/material';
 import { articlesTypeDefault, modelKeys, newItemKey } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getTypedDate, getConfig } from '../../../utils';
@@ -21,6 +21,7 @@ import {
   GpsPickerField,
   FormContent,
 } from '../../../components';
+import { useUserActions } from '../../../hooks';
 import { TagsPickerField } from '../../Tags';
 import { CategoriesPickerField } from '../../Categories';
 import { AttachmentsPickerField } from '../../Attachments';
@@ -31,20 +32,24 @@ const ArticlesDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
-  const { t } = useTranslation(['common', 'form']);
-  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = useArticlesDetailForm();
 
-  const isComments = detailId !== newItemKey; // TODO
+  const { t } = useTranslation(['common', 'form']);
+  const { articles: modelActions } = useUserActions();
+  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = useArticlesDetailForm();
 
   const type = useWatch({ name: registeredFormFields.type, control: form.control });
   const startDate = useWatch({ name: registeredFormFields.event_start, control: form.control });
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
 
+  const isComments = detailId !== newItemKey;
+
   return (
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
-        actions={<FormDetailActions detailId={detailId} listPath={`/${routes.articles.path}`} />}
+        actions={
+          <FormDetailActions detailId={detailId} listPath={`/${routes.articles.path}`} modelActions={modelActions} />
+        }
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
         actionbar={
           isComments && <CommentsManager isEnabled={isComments} contentType={modelKeys.articles} contentId={detailId} />

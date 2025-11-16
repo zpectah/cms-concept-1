@@ -14,13 +14,16 @@ import {
   TextareaField,
   WysiwygField,
 } from '../../../components';
+import { useUserActions } from '../../../hooks';
 import { usePagesDetailForm } from './usePagesDetailForm';
 
 const PagesDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
+
   const { t } = useTranslation(['common', 'form']);
+  const { pages: modelActions } = useUserActions();
   const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = usePagesDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
@@ -29,7 +32,9 @@ const PagesDetailForm = () => {
   return (
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
-        actions={<FormDetailActions detailId={detailId} listPath={`/${routes.pages.path}`} />}
+        actions={
+          <FormDetailActions detailId={detailId} listPath={`/${routes.pages.path}`} modelActions={modelActions} />
+        }
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
       >
         <InputField name={registeredFormFields.name} label={t('form:label.name')} isRequired />

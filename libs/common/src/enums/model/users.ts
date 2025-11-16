@@ -2,7 +2,7 @@ export const usersTypeKeys = {
   default: 'default',
 } as const;
 
-export const usersAccessKeys: Record<string, number> = {
+export const usersAccessKeys: Record<'none' | 'redactor' | 'chiefRedactor' | 'admin', number> = {
   none: 0,
   redactor: 3,
   chiefRedactor: 5,

@@ -36,6 +36,7 @@ const ListItems = <T extends ItemBase>({
   disableFavorites,
   renderSelectedActions,
   renderRowActions,
+  modelActions,
 }: ListItemsProps<T>) => {
   const { t } = useTranslation();
   const {
@@ -133,6 +134,7 @@ const ListItems = <T extends ItemBase>({
             isLoading={isLoading}
             disableFavorites={disableFavorites}
             renderRowActions={renderRowActions}
+            modelActions={modelActions}
           />
         );
 
@@ -151,6 +153,7 @@ const ListItems = <T extends ItemBase>({
             isLoading={isLoading}
             disableFavorites={disableFavorites}
             renderRowActions={renderRowActions}
+            modelActions={modelActions}
           />
         );
 
@@ -173,6 +176,7 @@ const ListItems = <T extends ItemBase>({
             isLoading={isLoading}
             disableFavorites={disableFavorites}
             renderRowActions={renderRowActions}
+            modelActions={modelActions}
           />
         );
     }
@@ -211,6 +215,7 @@ const ListItems = <T extends ItemBase>({
         onFilterReset={onFilterReset}
         rowsOnPage={rows.length}
         renderSelectedActions={renderSelectedActions}
+        modelActions={modelActions}
       />
       {renderView()}
       <ListItemsPagination {...pagination} />

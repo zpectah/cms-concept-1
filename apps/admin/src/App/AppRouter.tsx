@@ -71,6 +71,7 @@ const AppRouter = () => {
       ),
       errorElement: <ErrorBoundary />,
       children: [
+        // 404 Not found
         {
           path: '*',
           element: <ErrorView code={404} />,
@@ -88,14 +89,13 @@ const AppRouter = () => {
           element: <PasswordRecoveryView />,
           children: [
             {
-              // TODO: check - not used
               path: ':token',
               element: <PasswordRecoveryView />,
             },
           ],
         },
 
-        // TODO: Redirect to login if not session found, otherwise redirect to dashboard
+        // Basic redirect
         {
           path: '/',
           element: <Navigate replace to={`/${routes.login.path}`} />,

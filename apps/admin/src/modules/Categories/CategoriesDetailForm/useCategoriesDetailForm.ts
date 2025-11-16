@@ -10,7 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useCategoriesQuery } from '../../../hooks-query';
-import { useModelFavorites } from '../../../hooks';
+import { useModelFavorites, useUserActions } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { CategoriesDetailFormSchema } from './schema';
 import { ICategoriesDetailForm } from './types';
@@ -21,12 +21,14 @@ import {
 } from './helpers';
 
 export const useCategoriesDetailForm = () => {
-  const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { categories: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
   const { categoriesQuery, categoriesDetailQuery, categoriesPatchMutation, categoriesCreateMutation } =
@@ -50,7 +52,9 @@ export const useCategoriesDetailForm = () => {
     console.warn(err);
   };
 
-  const createHandler = (master: ICategoriesDetailForm) =>
+  const createHandler = (master: ICategoriesDetailForm) => {
+    if (!modelActions.create) return;
+
     onCreate(master as CategoriesDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -61,8 +65,11 @@ export const useCategoriesDetailForm = () => {
       },
       onError,
     });
+  };
 
-  const patchHandler = (master: ICategoriesDetailForm) =>
+  const patchHandler = (master: ICategoriesDetailForm) => {
+    if (!modelActions.modify) return;
+
     onPatch(master as CategoriesDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -73,6 +80,7 @@ export const useCategoriesDetailForm = () => {
       },
       onError,
     });
+  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -88,6 +96,8 @@ export const useCategoriesDetailForm = () => {
     if (!data) return;
 
     if (data.deleted === true) {
+      if (!modelActions.delete) return;
+
       openConfirmDialog({
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),

@@ -14,11 +14,15 @@ import {
   ActionBar,
   PasswordField,
 } from '../../../components';
+import { useUserActions } from '../../../hooks';
 import { useClientPanelForm } from './useClientPanelForm';
 
 const ClientPanelForm = () => {
   const { t } = useTranslation(['common', 'modules']);
+  const { settings } = useUserActions();
   const { form, onSubmit, fieldOptions } = useClientPanelForm();
+
+  if (!settings.client.view) return;
 
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>

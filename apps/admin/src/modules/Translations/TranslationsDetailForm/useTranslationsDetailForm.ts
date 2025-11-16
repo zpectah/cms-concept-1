@@ -10,7 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useTranslationsQuery } from '../../../hooks-query';
-import { useModelFavorites } from '../../../hooks';
+import { useModelFavorites, useUserActions } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { TranslationsDetailFormSchema } from './schema';
 import { ITranslationsDetailForm } from './types';
@@ -21,12 +21,14 @@ import {
 } from './helpers';
 
 export const useTranslationsDetailForm = () => {
-  const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { translations: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
   const { translationsQuery, translationsDetailQuery, translationsPatchMutation, translationsCreateMutation } =
@@ -50,7 +52,9 @@ export const useTranslationsDetailForm = () => {
     console.warn(err);
   };
 
-  const createHandler = (master: ITranslationsDetailForm) =>
+  const createHandler = (master: ITranslationsDetailForm) => {
+    if (!modelActions.create) return;
+
     onCreate(master as TranslationsDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -61,8 +65,11 @@ export const useTranslationsDetailForm = () => {
       },
       onError,
     });
+  };
 
-  const patchHandler = (master: ITranslationsDetailForm) =>
+  const patchHandler = (master: ITranslationsDetailForm) => {
+    if (!modelActions.modify) return;
+
     onPatch(master as TranslationsDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -73,6 +80,7 @@ export const useTranslationsDetailForm = () => {
       },
       onError,
     });
+  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -88,6 +96,8 @@ export const useTranslationsDetailForm = () => {
     if (!data) return;
 
     if (data.deleted === true) {
+      if (!modelActions.delete) return;
+
       openConfirmDialog({
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),

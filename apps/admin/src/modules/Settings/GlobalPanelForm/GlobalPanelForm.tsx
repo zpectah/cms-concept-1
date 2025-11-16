@@ -14,11 +14,15 @@ import {
   ActionBar,
   GpsPickerField,
 } from '../../../components';
+import { useUserActions } from '../../../hooks';
 import { useGlobalPanelForm } from './useGlobalPanelForm';
 
 const GlobalPanelForm = () => {
   const { t } = useTranslation(['common', 'modules']);
+  const { settings } = useUserActions();
   const { form, onSubmit } = useGlobalPanelForm();
+
+  if (!settings.global.view) return;
 
   return (
     <ControlledForm form={form} formProps={{ onSubmit }}>

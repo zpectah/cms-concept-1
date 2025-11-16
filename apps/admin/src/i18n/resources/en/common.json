@@ -46,7 +46,8 @@
     "logOut": "Log out",
     "clone": "Clone",
     "change": "Change",
-    "edit": "Edit"
+    "edit": "Edit",
+    "markRead": "Mark as read"
   },
   "label": {
     "yesterday": "Yesterday",

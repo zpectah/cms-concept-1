@@ -10,7 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useAttachmentsQuery } from '../../../hooks-query';
-import { useModelFavorites } from '../../../hooks';
+import { useModelFavorites, useUserActions } from '../../../hooks';
 import { AttachmentsDetailFormSchema } from './schema';
 import { IAttachmentsDetailForm } from './types';
 import {
@@ -20,12 +20,14 @@ import {
 } from './helpers';
 
 export const useAttachmentsDetailForm = () => {
-  const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { attachments: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
   const { attachmentsQuery, attachmentsDetailQuery, attachmentsPatchMutation } = useAttachmentsQuery({ id });
@@ -56,6 +58,8 @@ export const useAttachmentsDetailForm = () => {
     });
 
   const deleteConfirmHandler = () => {
+    if (!modelActions.delete) return;
+
     const master = Object.assign({
       ...detailData,
       deleted: true,
@@ -66,6 +70,7 @@ export const useAttachmentsDetailForm = () => {
   };
 
   const submitHandler: SubmitHandler<IAttachmentsDetailForm> = (data) => {
+    if (!modelActions.modify) return;
     if (!data) return;
 
     if (data.deleted === true) {

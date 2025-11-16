@@ -10,19 +10,21 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMenuQuery } from '../../../hooks-query';
-import { useModelFavorites } from '../../../hooks';
+import { useModelFavorites, useUserActions } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { MenuDetailFormSchema } from './schema';
 import { IMenuDetailForm } from './types';
 import { getMenuDetailFormDefaultValues, getMenuDetailFormMapper, getMenuDetailFormMapperToMaster } from './helpers';
 
 export const useMenuDetailForm = () => {
-  const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { menu: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
   const { menuQuery, menuDetailQuery, menuPatchMutation, menuCreateMutation } = useMenuQuery({ id });
@@ -44,7 +46,9 @@ export const useMenuDetailForm = () => {
     console.warn(err);
   };
 
-  const createHandler = (master: IMenuDetailForm) =>
+  const createHandler = (master: IMenuDetailForm) => {
+    if (!modelActions.create) return;
+
     onCreate(master as MenuDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -55,8 +59,11 @@ export const useMenuDetailForm = () => {
       },
       onError,
     });
+  };
 
-  const patchHandler = (master: IMenuDetailForm) =>
+  const patchHandler = (master: IMenuDetailForm) => {
+    if (!modelActions.modify) return;
+
     onPatch(master as MenuDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -67,6 +74,7 @@ export const useMenuDetailForm = () => {
       },
       onError,
     });
+  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -82,6 +90,8 @@ export const useMenuDetailForm = () => {
     if (!data) return;
 
     if (data.deleted === true) {
+      if (!modelActions.delete) return;
+
       openConfirmDialog({
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),

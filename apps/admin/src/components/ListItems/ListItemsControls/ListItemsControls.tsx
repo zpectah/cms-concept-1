@@ -45,6 +45,7 @@ const ListItemsControls = <T extends ItemBase>({
   onFilterReset,
   rowsOnPage,
   renderSelectedActions,
+  modelActions,
 }: ListItemsControlsProps<T>) => {
   const { t } = useTranslation(['common', 'form', 'options', 'components']);
 
@@ -56,6 +57,7 @@ const ListItemsControls = <T extends ItemBase>({
       label: t('button.selectAll'),
       onClick: onSelectAll,
       hidden: selected.length === rawRows.length && rawRows.length >= 0,
+      active: true,
     },
     {
       name: 'deselectAll',
@@ -63,6 +65,7 @@ const ListItemsControls = <T extends ItemBase>({
       onClick: onDeselectedSelected,
       hidden: selected.length === 0 && rawRows.length >= 0,
       variant: 'contained',
+      active: true,
     },
     {
       name: 'deleteSelected',
@@ -71,6 +74,7 @@ const ListItemsControls = <T extends ItemBase>({
       disabled: selected.length === 0,
       color: muiCommonColorVariantKeys.error,
       variant: 'contained',
+      active: modelActions.delete,
     },
     {
       name: 'disableSelected',
@@ -79,8 +83,9 @@ const ListItemsControls = <T extends ItemBase>({
       disabled: selected.length === 0,
       color: muiCommonColorVariantKeys.warning,
       variant: 'contained',
+      active: modelActions.modify,
     },
-  ] as ({ label: string } & ButtonProps)[];
+  ] as ({ label: string; active: boolean } & ButtonProps)[];
 
   const renderTypes = () => (
     <Literal
@@ -200,7 +205,8 @@ const ListItemsControls = <T extends ItemBase>({
 
   const renderListOptionsMenu = () => (
     <Stack direction="row" gap={0.5}>
-      {selectOptionsItems.map(({ name, label, onClick, disabled, hidden, color, ...rest }) => {
+      {selectOptionsItems.map(({ name, label, onClick, disabled, hidden, color, active, ...rest }) => {
+        if (!active) return null;
         if (hidden) return null;
 
         return (

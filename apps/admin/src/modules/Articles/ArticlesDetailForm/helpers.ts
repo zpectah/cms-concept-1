@@ -17,6 +17,7 @@ export const getArticlesDetailFormDefaultValues = (locales: string[]): IArticles
     categories: [],
     tags: [],
     attachments: [],
+    approved: false,
     active: true,
     deleted: false,
 

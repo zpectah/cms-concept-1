@@ -5,10 +5,12 @@ import { useAppStore, useModelListStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useAttachmentsQuery } from '../../../hooks-query';
+import { useUserActions } from '../../../hooks';
 
 export const useAttachmentsList = () => {
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();
+  const { attachments: modelActions } = useUserActions();
   const { addToast } = useAppStore();
   const { setSelected } = useModelListStore();
   const { attachmentsQuery, attachmentsDeleteMutation, attachmentsToggleMutation } = useAttachmentsQuery({});
@@ -21,6 +23,7 @@ export const useAttachmentsList = () => {
   };
 
   const deleteSelectedHandler = (ids: number[]) => {
+    if (!modelActions.delete) return;
     if (!ids || ids.length === 0) return;
 
     attachmentsDeleteMutation.mutate(ids, {
@@ -40,6 +43,7 @@ export const useAttachmentsList = () => {
   };
 
   const disableSelectedHandler = (ids: number[]) => {
+    if (!modelActions.modify) return;
     if (!ids || ids.length === 0) return;
 
     attachmentsToggleMutation.mutate(ids, {

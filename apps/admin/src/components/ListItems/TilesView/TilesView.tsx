@@ -15,6 +15,7 @@ const TilesView = <T extends ItemBase>({
   isLoading,
   disableFavorites,
   renderRowActions,
+  modelActions,
 }: TilesViewProps<T>) => {
   return (
     <Box>

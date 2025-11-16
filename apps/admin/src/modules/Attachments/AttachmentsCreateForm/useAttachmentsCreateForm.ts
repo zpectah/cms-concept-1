@@ -9,6 +9,7 @@ import { getEnvironmentVariables, useAttachmentsHelpers } from '../../../helpers
 import { FileUploaderQueue, FileUploaderTransportQueueItem } from '../../../types';
 import { useAttachmentsQuery } from '../../../hooks-query';
 import { fileUploaderQueueItemContextKeys, registeredFormFields } from '../../../enums';
+import { useUserActions } from '../../../hooks';
 import { IAttachmentsCreateForm } from './types';
 import { AttachmentsCreateFormSchema } from './schema';
 import { getAttachmentsCreateFormDefaultValues } from './helpers';
@@ -19,6 +20,7 @@ export const useAttachmentsCreateForm = () => {
 
   const { t } = useTranslation(['common', 'form']);
   const { setTitle } = useViewLayoutContext();
+  const { attachments: modelActions } = useUserActions();
   const { addToast } = useAppStore();
   const { queue, inputElement, onInputChange, onQueueClear } = useFileUploader({});
   const { attachmentsQuery, attachmentsFileCreateMutation, attachmentsCreateMutation } = useAttachmentsQuery({});
@@ -35,6 +37,8 @@ export const useAttachmentsCreateForm = () => {
   const { mutate: onCreate } = attachmentsCreateMutation;
 
   const submitHandler: SubmitHandler<IAttachmentsCreateForm> = (data) => {
+    if (!modelActions.create) return;
+
     const master = Object.assign({
       queue: data.queue,
       options: {

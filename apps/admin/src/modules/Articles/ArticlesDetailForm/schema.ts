@@ -20,6 +20,7 @@ export const ArticlesDetailFormSchema = z
     type: z.enum(articlesTypeKeysArray),
     name: formFieldsSchemas.required_string,
     locale: LocaleSchema,
+    approved: formFieldsSchemas.boolean.optional(),
     active: formFieldsSchemas.boolean.optional(),
     deleted: formFieldsSchemas.boolean.optional(),
     created: formFieldsSchemas.string.optional(),

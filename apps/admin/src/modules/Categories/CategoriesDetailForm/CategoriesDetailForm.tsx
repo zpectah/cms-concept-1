@@ -13,6 +13,7 @@ import {
   SelectField,
   TextareaField,
 } from '../../../components';
+import { useUserActions } from '../../../hooks';
 import { CategoriesPickerField } from '../../Categories';
 import { useCategoriesDetailForm } from './useCategoriesDetailForm';
 
@@ -20,7 +21,9 @@ const CategoriesDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
+
   const { t } = useTranslation(['common', 'form']);
+  const { categories: modelActions } = useUserActions();
   const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = useCategoriesDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
@@ -29,7 +32,9 @@ const CategoriesDetailForm = () => {
   return (
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
-        actions={<FormDetailActions detailId={detailId} listPath={`/${routes.articles.path}`} />}
+        actions={
+          <FormDetailActions detailId={detailId} listPath={`/${routes.articles.path}`} modelActions={modelActions} />
+        }
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
       >
         <InputField name={registeredFormFields.name} label={t('form:label.name')} isRequired />

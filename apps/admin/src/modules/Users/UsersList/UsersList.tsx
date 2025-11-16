@@ -2,12 +2,15 @@ import { modelKeys, UsersItem } from '@common';
 import { ListItems, ValueType, ValueDate } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
+import { useUserActions } from '../../../hooks';
 import { useUsersList } from './useUsersList';
 
 const UsersList = () => {
   const {
     admin: { routes },
   } = getConfig();
+
+  const { users: modelActions } = useUserActions();
   const { users, isLoading, onDeleteSelected, onDisableSelected } = useUsersList();
 
   return (
@@ -51,6 +54,8 @@ const UsersList = () => {
       onDisableSelected={onDisableSelected}
       onRowDelete={(id) => onDeleteSelected([id])}
       onRowDisable={(id) => onDisableSelected([id])}
+      modelActions={modelActions}
+      disableFavorites
     />
   );
 };

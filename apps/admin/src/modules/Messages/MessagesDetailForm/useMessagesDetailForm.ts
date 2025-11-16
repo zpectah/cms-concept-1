@@ -10,7 +10,7 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useMessagesQuery } from '../../../hooks-query';
-import { useModelFavorites } from '../../../hooks';
+import { useModelFavorites, useUserActions } from '../../../hooks';
 import { MessagesDetailFormSchema } from './schema';
 import { IMessagesDetailForm } from './types';
 import {
@@ -20,12 +20,14 @@ import {
 } from './helpers';
 
 export const useMessagesDetailForm = () => {
-  const { t } = useTranslation();
-  const { id } = useParams();
-  const navigate = useNavigate();
   const {
     admin: { routes },
   } = getConfig();
+
+  const { t } = useTranslation();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { messages: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
   const { messagesQuery, messagesDetailQuery, messagesPatchMutation, messagesCreateMutation } = useMessagesQuery({
@@ -48,7 +50,9 @@ export const useMessagesDetailForm = () => {
     console.warn(err);
   };
 
-  const createHandler = (master: IMessagesDetailForm) =>
+  const createHandler = (master: IMessagesDetailForm) => {
+    if (!modelActions.create) return;
+
     onCreate(master as MessagesDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -59,8 +63,11 @@ export const useMessagesDetailForm = () => {
       },
       onError,
     });
+  };
 
-  const patchHandler = (master: IMessagesDetailForm) =>
+  const patchHandler = (master: IMessagesDetailForm) => {
+    if (!modelActions.modify) return;
+
     onPatch(master as MessagesDetail, {
       onSuccess: (res) => {
         // TODO: result
@@ -71,6 +78,7 @@ export const useMessagesDetailForm = () => {
       },
       onError,
     });
+  };
 
   const deleteConfirmHandler = () => {
     const master = Object.assign({
@@ -86,6 +94,8 @@ export const useMessagesDetailForm = () => {
     if (!data) return;
 
     if (data.deleted === true) {
+      if (!modelActions.delete) return;
+
       openConfirmDialog({
         title: t('message.confirm.deleteDetail.title'),
         content: t('message.confirm.deleteDetail.content'),

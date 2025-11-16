@@ -39,6 +39,7 @@ const TableView = <T extends ItemBase>({
   model,
   disableFavorites,
   renderRowActions,
+  modelActions,
 }: TableViewProps<T>) => {
   const { t } = useTranslation(['common', 'form']);
 
@@ -57,6 +58,7 @@ const TableView = <T extends ItemBase>({
         tooltip: t('button.delete'),
         children: <DeleteIcon {...iconProps} />,
         color: muiCommonColorVariantKeys.error,
+        disabled: !modelActions.delete,
         hidden: false,
       },
       {
@@ -65,6 +67,7 @@ const TableView = <T extends ItemBase>({
         tooltip: t('button.disable'),
         children: active ? <VisibilityOffIcon fontSize="inherit" /> : <VisibilityIcon fontSize="inherit" />,
         color: muiCommonColorVariantKeys.warning,
+        disabled: !modelActions.modify,
         hidden: false,
       },
       {
@@ -73,6 +76,7 @@ const TableView = <T extends ItemBase>({
         tooltip: t('button.detail'),
         children: <FileOpenIcon {...iconProps} />,
         color: muiCommonColorVariantKeys.primary,
+        disabled: !modelActions.view,
         hidden: false,
       },
     ] as (IconButtonPlusProps & { hidden: boolean })[];

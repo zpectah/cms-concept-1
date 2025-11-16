@@ -15,13 +15,16 @@ import {
   AddressField,
   TextareaField,
 } from '../../../components';
+import { useUserActions } from '../../../hooks';
 import { useMembersDetailForm } from './useMembersDetailForm';
 
 const MembersDetailForm = () => {
   const {
     admin: { routes },
   } = getConfig();
+
   const { t } = useTranslation(['common', 'form']);
+  const { members: modelActions } = useUserActions();
   const { detailId, form, onSubmit, fieldOptions } = useMembersDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
@@ -30,7 +33,9 @@ const MembersDetailForm = () => {
   return (
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
-        actions={<FormDetailActions detailId={detailId} listPath={`/${routes.members.path}`} />}
+        actions={
+          <FormDetailActions detailId={detailId} listPath={`/${routes.members.path}`} modelActions={modelActions} />
+        }
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
       >
         <InputField name={registeredFormFields.name} label={t('form:label.name')} isRequired />

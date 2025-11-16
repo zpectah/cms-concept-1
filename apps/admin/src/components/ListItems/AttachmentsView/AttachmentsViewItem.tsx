@@ -24,6 +24,7 @@ const AttachmentsViewItem = <T extends ItemBase>({
   isLoading,
   disableFavorites,
   pathPrefix,
+  modelActions,
 }: AttachmentsViewItemProps<T>) => {
   const { t } = useTranslation();
   const { getElementByType } = useAttachmentTypeElement();
@@ -107,13 +108,31 @@ const AttachmentsViewItem = <T extends ItemBase>({
           {renderRowActions?.(item)}
         </Stack>
         <Stack direction="row" gap={1}>
-          <IconButtonPlus tooltip={t('button.delete')} onClick={() => onDelete(item.id)} size="small" color="error">
+          <IconButtonPlus
+            tooltip={t('button.delete')}
+            onClick={() => onDelete(item.id)}
+            size="small"
+            color="error"
+            disabled={!modelActions.delete}
+          >
             <DeleteIcon fontSize="small" />
           </IconButtonPlus>
-          <IconButtonPlus tooltip={t('button.disable')} onClick={() => onDisable(item.id)} size="small" color="warning">
+          <IconButtonPlus
+            tooltip={t('button.disable')}
+            onClick={() => onDisable(item.id)}
+            size="small"
+            color="warning"
+            disabled={!modelActions.modify}
+          >
             {item.active ? <VisibilityIcon fontSize="small" /> : <VisibilityOffIcon fontSize="small" />}
           </IconButtonPlus>
-          <IconButtonPlus tooltip={t('button.detail')} onClick={() => onDetail(item.id)} size="small" color="primary">
+          <IconButtonPlus
+            tooltip={t('button.detail')}
+            onClick={() => onDetail(item.id)}
+            size="small"
+            color="primary"
+            disabled={!modelActions.view}
+          >
             <FileOpenIcon fontSize="small" />
           </IconButtonPlus>
         </Stack>

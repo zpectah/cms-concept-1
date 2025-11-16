@@ -2,12 +2,15 @@ import { modelKeys, TagsItem } from '@common';
 import { ListItems, ValueType, ValueDate, ValueColor } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
+import { useUserActions } from '../../../hooks';
 import { useTagsList } from './useTagsList';
 
 const TagsList = () => {
   const {
     admin: { routes },
   } = getConfig();
+
+  const { tags: modelActions } = useUserActions();
   const { tags, isLoading, onDeleteSelected, onDisableSelected } = useTagsList();
 
   return (
@@ -46,6 +49,7 @@ const TagsList = () => {
       onDisableSelected={onDisableSelected}
       onRowDelete={(id) => onDeleteSelected([id])}
       onRowDisable={(id) => onDisableSelected([id])}
+      modelActions={modelActions}
     />
   );
 };

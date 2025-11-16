@@ -5,6 +5,7 @@ const Dashboard = () => {
   const { setTitle } = useViewLayoutContext();
 
   useEffect(() => {
+    // TODO
     setTitle('Dashboard');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -13,6 +14,11 @@ const Dashboard = () => {
     <Content>
       ...Dashboard page view...
       <div>...</div>
+      <div>
+        <pre>
+          <code>...TODO...</code>
+        </pre>
+      </div>
     </Content>
   );
 };

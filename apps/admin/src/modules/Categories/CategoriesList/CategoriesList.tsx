@@ -3,12 +3,15 @@ import { modelKeys, CategoriesItem } from '@common';
 import { ListItems, ValueType, ValueDate, ValueArray } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
+import { useUserActions } from '../../../hooks';
 import { useCategoriesList } from './useCategoriesList';
 
 const CategoriesList = () => {
   const {
     admin: { routes },
   } = getConfig();
+
+  const { categories: modelActions } = useUserActions();
   const { categories, isLoading, onDeleteSelected, onDisableSelected } = useCategoriesList();
 
   return (
@@ -48,6 +51,7 @@ const CategoriesList = () => {
       onDisableSelected={onDisableSelected}
       onRowDelete={(id) => onDeleteSelected([id])}
       onRowDisable={(id) => onDisableSelected([id])}
+      modelActions={modelActions}
     />
   );
 };
