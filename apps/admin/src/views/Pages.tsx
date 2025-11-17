@@ -4,6 +4,7 @@ import { newItemKey } from '@common';
 import { getConfig } from '../utils';
 import { ViewLayout, LinkButton } from '../components';
 import { useUserActions } from '../hooks';
+import Error from './Error';
 
 const PagesView = () => {
   const {
@@ -12,14 +13,20 @@ const PagesView = () => {
   const { t } = useTranslation();
   const { pages } = useUserActions();
 
-  if (!pages.view) return;
+  if (!pages.view) return <Error code={403} disableFooter />;
 
   return (
     <ViewLayout
       id="pages-view"
       type="list"
       titleAction={
-        <LinkButton variant="contained" color="success" size="large" to={`/${routes.pages.path}/${newItemKey}`}>
+        <LinkButton
+          variant="contained"
+          color="success"
+          size="large"
+          to={`/${routes.pages.path}/${newItemKey}`}
+          disabled={!pages.create}
+        >
           {t('button.new.pages')}
         </LinkButton>
       }

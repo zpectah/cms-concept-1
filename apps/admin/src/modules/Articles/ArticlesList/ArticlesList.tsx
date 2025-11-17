@@ -1,11 +1,14 @@
 import { useTranslation } from 'react-i18next';
 import CopyAllIcon from '@mui/icons-material/CopyAll';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import { modelKeys, ArticlesItem } from '@common';
 import { ListItems, ValueArray, ValueDate, ValueType, IconButtonPlus } from '../../../components';
 import { getConfig } from '../../../utils';
 import { registeredFormFields } from '../../../enums';
 import { useUserActions } from '../../../hooks';
 import { useArticlesList } from './useArticlesList';
+import { Button } from '@mui/material';
 
 const ArticlesList = () => {
   const {
@@ -14,7 +17,8 @@ const ArticlesList = () => {
 
   const { t } = useTranslation(['common']);
   const { articles: modelActions } = useUserActions();
-  const { articles, categories, tags, isLoading, onDeleteSelected, onDisableSelected, onClone } = useArticlesList();
+  const { articles, categories, tags, isLoading, onDeleteSelected, onDisableSelected, onClone, onApproveSelected } =
+    useArticlesList();
 
   return (
     <ListItems<ArticlesItem>
@@ -59,14 +63,34 @@ const ArticlesList = () => {
       categories={categories}
       tags={tags}
       renderRowActions={(row) => (
-        <IconButtonPlus
-          tooltip={t('button.clone')}
-          onClick={() => onClone(row.id)}
+        <>
+          <IconButtonPlus
+            tooltip={t('button.clone')}
+            onClick={() => onClone(row.id)}
+            size="small"
+            disabled={!modelActions.create}
+          >
+            <CopyAllIcon fontSize="small" />
+          </IconButtonPlus>
+          <IconButtonPlus
+            tooltip={row.approved ? t('button.approved') : t('button.approve')}
+            onClick={() => onApproveSelected([row.id])}
+            size="small"
+            disabled={!modelActions.approve || row.approved}
+          >
+            {row.approved ? <VerifiedIcon fontSize="small" /> : <NewReleasesIcon fontSize="small" />}
+          </IconButtonPlus>
+        </>
+      )}
+      renderSelectedActions={(selected) => (
+        <Button
+          variant="contained"
           size="small"
-          disabled={!modelActions.create}
+          onClick={() => onApproveSelected(selected)}
+          disabled={selected.length === 0}
         >
-          <CopyAllIcon fontSize="small" />
-        </IconButtonPlus>
+          {t('button.approveSelected')}
+        </Button>
       )}
       modelActions={modelActions}
     />

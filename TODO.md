@@ -20,7 +20,7 @@
 * [OK] ***BUG*** - přesunout confirm dialog pod AppStore !!!
 * [OK] Při odhlašování - udělat tvrdý redirect na login page ...
 * [OK] Vytvořit pravidla pro 'actions' -> co uživatel může a co nemůže ... 'useUserActions'
-* [] - Pro views, které mají pravidla pro zobrazení 'useUserActions' - nahradit 'return null' za nějakou formu error stránky
+* [OK] - Pro views, které mají pravidla pro zobrazení 'useUserActions' - nahradit 'return null' za nějakou formu error stránky "403"
 * [OK] - Inicializovat Composer pro API
 * [OK] - Přidat knihovnu 'PHPMailer' -> jako vendors ...
 * [OK] - Přesunout 'composer.json' do rootu projektu ... spolu s lockem
@@ -29,4 +29,5 @@
 * [] - Dohezčit message u password recovery + jen textová zpráva se zobrazeným tokenem. Posílat text zprávy přeloženou - i18n
 * [OK] Klonování 'Articles' - vytvoření nové položky s existujícími daty
 * [OK] - Přidat údaje pro email smtp službu do tabulky s nastavení, heslo zašifrovat a uložit. Při použití hesla odšifrovat
+* [] - Upravit response výstup z analýzy a mazání permanentně ...
 

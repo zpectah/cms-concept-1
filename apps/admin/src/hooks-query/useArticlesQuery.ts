@@ -43,6 +43,11 @@ export const useArticlesQuery = ({ id, cloneId }: { id?: string; cloneId?: strin
     mutationFn: (data) => axios.patch(`${API_URL.articles}/delete`, data).then((response) => response.data),
   });
 
+  const articlesApproveMutation = useMutation<{ rows: number }, unknown, number[]>({
+    mutationKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-approve`],
+    mutationFn: (data) => axios.patch(`${API_URL.articles}/approve`, data).then((response) => response.data),
+  });
+
   return {
     articlesQuery,
     articlesDetailQuery,
@@ -51,5 +56,6 @@ export const useArticlesQuery = ({ id, cloneId }: { id?: string; cloneId?: strin
     articlesPatchMutation,
     articlesToggleMutation,
     articlesDeleteMutation,
+    articlesApproveMutation,
   };
 };

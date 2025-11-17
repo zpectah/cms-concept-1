@@ -129,7 +129,7 @@ export const useArticlesDetailForm = () => {
       return;
     }
 
-    const master = getArticlesDetailFormMapperToMaster(data);
+    const master = getArticlesDetailFormMapperToMaster(data, modelActions);
 
     if (data.id === 0) {
       createHandler(master);

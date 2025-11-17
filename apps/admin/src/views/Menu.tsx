@@ -4,6 +4,7 @@ import { newItemKey } from '@common';
 import { getConfig } from '../utils';
 import { ViewLayout, LinkButton } from '../components';
 import { useUserActions } from '../hooks';
+import Error from './Error';
 
 const MenuView = () => {
   const {
@@ -12,14 +13,20 @@ const MenuView = () => {
   const { t } = useTranslation();
   const { menu } = useUserActions();
 
-  if (!menu.view) return;
+  if (!menu.view) return <Error code={403} disableFooter />;
 
   return (
     <ViewLayout
       id="menu-view"
       type="list"
       titleAction={
-        <LinkButton variant="contained" color="success" size="large" to={`/${routes.menu.path}/${newItemKey}`}>
+        <LinkButton
+          variant="contained"
+          color="success"
+          size="large"
+          to={`/${routes.menu.path}/${newItemKey}`}
+          disabled={!menu.create}
+        >
           {t('button.new.menu')}
         </LinkButton>
       }

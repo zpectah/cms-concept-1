@@ -337,6 +337,28 @@ class Articles extends Model {
     ];
   }
 
+  public function approve($data): array {
+    $conn = self::connection();
+
+    if (empty($data)) {
+      // TODO: error code
+      return [
+        'error' => true,
+        'message' => 'No IDs provided'
+      ];
+    }
+
+    $placeholders = self::getUpdatePlaceholders($data);
+
+    $sql = "UPDATE `articles` SET `approved` = 1 WHERE `id` IN ({$placeholders})";
+    $stmt = $conn -> prepare($sql);
+    $stmt -> execute($data);
+
+    return [
+      'rows' => $stmt -> rowCount(),
+    ];
+  }
+
   public function analyzeToDelete(): array {
     $conn = self::connection();
 

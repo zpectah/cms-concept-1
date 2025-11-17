@@ -4,6 +4,7 @@ export const registeredFormFields = {
   address: 'address',
   anonymous: 'anonymous',
   attachments: 'attachments',
+  approved: 'approved',
   avatar_hash: 'avatar_hash',
   avatar_image: 'avatar_image',
   bank: 'bank',

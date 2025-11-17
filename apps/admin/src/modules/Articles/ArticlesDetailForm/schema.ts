@@ -32,7 +32,6 @@ export const ArticlesDetailFormSchema = z
     // Event
     event_start: formFieldsSchemas.date.nullable().optional(),
     event_end: formFieldsSchemas.date.nullable().optional(),
-
     event_address: AddressSchema.optional(),
     event_location: GpsLocationSchema.optional(),
   })

@@ -4,7 +4,7 @@ import { EnumKeyValues } from '../common';
 
 export type UsersType = EnumKeyValues<typeof usersTypeKeys>;
 export type UsersAccessRights = EnumKeyValues<typeof usersAccessKeys>;
-export type UsersAccessRightsKeys = 'none' | 'redactor' | 'chiefRedactor' | 'admin';
+export type UsersAccessRightsKeys = 'none' | 'redactor' | 'manager' | 'admin';
 
 export interface UsersItem extends ItemBase {
   type: UsersType;

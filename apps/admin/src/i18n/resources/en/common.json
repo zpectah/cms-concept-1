@@ -47,7 +47,12 @@
     "clone": "Clone",
     "change": "Change",
     "edit": "Edit",
-    "markRead": "Mark as read"
+    "markRead": "Mark as read",
+    "returnToHome": "Back to the introduction",
+    "approve": "Approve",
+    "approved": "Approved",
+    "approveSelected": "Approve selected",
+    "markReadSelected": "Mark selected as read"
   },
   "label": {
     "yesterday": "Yesterday",
@@ -131,7 +136,9 @@
       "unknownFileExt": "Unknown file extension '{{value}}'",
       "logoutError": "There was a problem logging out, please try again.",
       "incorrectPassword": "Incorrect password",
-      "fileUpload": "There is problem with upload, try again"
+      "fileUpload": "There is problem with upload, try again",
+      "404": "The content you are looking for probably no longer exists or has been moved.",
+      "403": "You do not have sufficient access to view this section."
     }
   }
 }

@@ -10,6 +10,7 @@ export interface ArticlesItem extends ItemBase {
   categories: number[];
   tags: number[];
   attachments: number[];
+  approved: boolean;
 
   // Event
   event_address?: Address;

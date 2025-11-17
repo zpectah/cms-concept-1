@@ -17,7 +17,7 @@
   "accessRights": {
     "none": "None",
     "redactor": "Redactor",
-    "chiefRedactor": "Chief Redactor",
+    "manager": "Manager",
     "admin": "Admin"
   },
 

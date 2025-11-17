@@ -20,6 +20,7 @@ import {
   DebugFormModel,
   GpsPickerField,
   FormContent,
+  SwitchField,
 } from '../../../components';
 import { useUserActions } from '../../../hooks';
 import { TagsPickerField } from '../../Tags';
@@ -35,7 +36,8 @@ const ArticlesDetailForm = () => {
 
   const { t } = useTranslation(['common', 'form']);
   const { articles: modelActions } = useUserActions();
-  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = useArticlesDetailForm();
+  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions, detailData } =
+    useArticlesDetailForm();
 
   const type = useWatch({ name: registeredFormFields.type, control: form.control });
   const startDate = useWatch({ name: registeredFormFields.event_start, control: form.control });
@@ -50,7 +52,15 @@ const ArticlesDetailForm = () => {
         actions={
           <FormDetailActions detailId={detailId} listPath={`/${routes.articles.path}`} modelActions={modelActions} />
         }
-        sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
+        sidebar={
+          <FormDetailSidebar detailId={detailId} created={created} updated={updated}>
+            <SwitchField
+              name={registeredFormFields.approved}
+              fieldProps={{ label: t('form:label.approved') }}
+              isDisabled={detailData?.approved || !modelActions.approve}
+            />
+          </FormDetailSidebar>
+        }
         actionbar={
           isComments && <CommentsManager isEnabled={isComments} contentType={modelKeys.articles} contentId={detailId} />
         }

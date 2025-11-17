@@ -48,7 +48,8 @@
     "eventEnd": "Event end",
     "newPassword": "New password",
     "confirmPassword": "Confirm password",
-    "fullName": "Full name"
+    "fullName": "Full name",
+    "approved": "Approved"
   },
   "message": {
     "error": {

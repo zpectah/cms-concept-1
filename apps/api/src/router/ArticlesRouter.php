@@ -66,6 +66,10 @@ class ArticlesRouter extends Router {
                 $response = $articles -> delete($data);
                 break;
 
+              case 'approve':
+                $response = $articles -> approve($data);
+                break;
+
             }
             break;
 

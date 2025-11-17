@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { articlesTypeDefault, getFormattedString, ArticlesDetail, ArticlesDetailLocale } from '@common';
+import { ModelActions } from '../../../types';
 import { getModelLocales } from '../../../utils';
 import { addressFormDefaults } from '../../../constants';
 import { IArticlesDetailForm } from './types';
@@ -49,12 +50,22 @@ export const getCloneArticlesDetailFormMapper = (data: ArticlesDetail): IArticle
     ...localData,
     id: 0,
     name: `clone-${localData.name}`,
+    approved: false,
   };
 };
 
-export const getArticlesDetailFormMapperToMaster = (data: IArticlesDetailForm): IArticlesDetailForm => {
-  return Object.assign({
+export const getArticlesDetailFormMapperToMaster = (
+  data: IArticlesDetailForm,
+  actions: ModelActions
+): IArticlesDetailForm => {
+  const master: IArticlesDetailForm = Object.assign({
     ...data,
     name: getFormattedString(data.name),
   });
+
+  if (actions.selfApprove) {
+    master.approved = true;
+  }
+
+  return master;
 };

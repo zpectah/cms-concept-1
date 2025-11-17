@@ -19,7 +19,9 @@ export const useArticlesList = () => {
   const { articles: modelActions } = useUserActions();
   const { addToast } = useAppStore();
   const { setSelected } = useModelListStore();
-  const { articlesQuery, articlesDeleteMutation, articlesToggleMutation } = useArticlesQuery({});
+  const { articlesQuery, articlesDeleteMutation, articlesToggleMutation, articlesApproveMutation } = useArticlesQuery(
+    {}
+  );
   const { categoriesQuery } = useCategoriesQuery({});
   const { tagsQuery } = useTagsQuery({});
 
@@ -74,6 +76,26 @@ export const useArticlesList = () => {
     });
   };
 
+  const approveSelectedHandler = (ids: number[]) => {
+    if (!modelActions.modify) return;
+    if (!ids || ids.length === 0) return;
+
+    articlesApproveMutation.mutate(ids, {
+      onSuccess: (res) => {
+        // TODO: results
+        console.log('articlesApproveMutation res', res);
+        addToast(
+          ids.length === 1 ? t('message.success.updateRow') : t('message.success.updateSelected'),
+          'success',
+          TOAST_SUCCESS_TIMEOUT_DEFAULT
+        );
+        setSelected(modelKeys.articles, []);
+        refetch();
+      },
+      onError,
+    });
+  };
+
   const cloneItemHandler = (id: number) =>
     navigate(`/${routes.articles.path}/${newItemKey}?${CLONE_PATH_ATTRIBUTE_NAME}=${id}`);
 
@@ -89,6 +111,7 @@ export const useArticlesList = () => {
     tags,
     onDeleteSelected: deleteSelectedHandler,
     onDisableSelected: disableSelectedHandler,
+    onApproveSelected: approveSelectedHandler,
     onClone: cloneItemHandler,
   };
 };

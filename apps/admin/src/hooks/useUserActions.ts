@@ -222,7 +222,7 @@ export const useUserActions = () => {
           },
         });
 
-      case usersAccessKeys.chiefRedactor:
+      case usersAccessKeys.manager:
         return deepMerge(baseActions, {
           articles: {
             view: true,

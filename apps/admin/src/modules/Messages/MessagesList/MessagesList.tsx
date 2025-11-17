@@ -58,7 +58,7 @@ const MessagesList = () => {
           onClick={() => onMarkSelected(selected)}
           disabled={selected.length === 0}
         >
-          Mark as read
+          {t('button.markReadSelected')}
         </Button>
       )}
       renderRowActions={(row) => (

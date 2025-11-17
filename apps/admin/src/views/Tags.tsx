@@ -4,6 +4,7 @@ import { newItemKey } from '@common';
 import { getConfig } from '../utils';
 import { ViewLayout, LinkButton } from '../components';
 import { useUserActions } from '../hooks';
+import Error from './Error';
 
 const TagsView = () => {
   const {
@@ -12,14 +13,20 @@ const TagsView = () => {
   const { t } = useTranslation();
   const { tags } = useUserActions();
 
-  if (!tags.view) return;
+  if (!tags.view) return <Error code={403} disableFooter />;
 
   return (
     <ViewLayout
       id="tags-view"
       type="list"
       titleAction={
-        <LinkButton variant="contained" color="success" size="large" to={`/${routes.tags.path}/${newItemKey}`}>
+        <LinkButton
+          variant="contained"
+          color="success"
+          size="large"
+          to={`/${routes.tags.path}/${newItemKey}`}
+          disabled={!tags.create}
+        >
           {t('button.new.tags')}
         </LinkButton>
       }
