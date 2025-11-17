@@ -33,7 +33,7 @@ const CategoriesDetailForm = () => {
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
         actions={
-          <FormDetailActions detailId={detailId} listPath={`/${routes.articles.path}`} modelActions={modelActions} />
+          <FormDetailActions detailId={detailId} listPath={`/${routes.categories.path}`} modelActions={modelActions} />
         }
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
       >

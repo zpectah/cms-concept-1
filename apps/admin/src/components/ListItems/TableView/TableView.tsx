@@ -12,16 +12,15 @@ import {
   Stack,
   SvgIconProps,
 } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import FileOpenIcon from '@mui/icons-material/FileOpen';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { ItemBase } from '@common';
 import { IconButtonPlus, IconButtonPlusProps } from '../../Button';
 import { FavoritesStar } from '../../favorites';
 import { TableViewProps } from '../types';
 import { checkboxStateKeys } from '../enums';
-import { muiCommonColorVariantKeys } from '../../../enums';
 
 const TableView = <T extends ItemBase>({
   pathPrefix,
@@ -56,17 +55,17 @@ const TableView = <T extends ItemBase>({
         ...buttonCommonProps,
         onClick: () => onDelete(id),
         tooltip: t('button.delete'),
-        children: <DeleteIcon {...iconProps} />,
-        color: muiCommonColorVariantKeys.error,
+        children: <DeleteOutlineIcon {...iconProps} />,
+        // color: muiCommonColorVariantKeys.error,
         disabled: !modelActions.delete,
         hidden: false,
       },
       {
         ...buttonCommonProps,
         onClick: () => onDisable(id),
-        tooltip: t('button.disable'),
-        children: active ? <VisibilityOffIcon fontSize="inherit" /> : <VisibilityIcon fontSize="inherit" />,
-        color: muiCommonColorVariantKeys.warning,
+        tooltip: active ? t('button.disable') : t('button.active'),
+        children: active ? <VisibilityIcon fontSize="inherit" /> : <VisibilityOffIcon fontSize="inherit" />,
+        // color: muiCommonColorVariantKeys.warning,
         disabled: !modelActions.modify,
         hidden: false,
       },
@@ -74,8 +73,8 @@ const TableView = <T extends ItemBase>({
         ...buttonCommonProps,
         onClick: () => onDetail(id),
         tooltip: t('button.detail'),
-        children: <FileOpenIcon {...iconProps} />,
-        color: muiCommonColorVariantKeys.primary,
+        children: <ArrowOutwardIcon {...iconProps} />,
+        // color: muiCommonColorVariantKeys.primary,
         disabled: !modelActions.view,
         hidden: false,
       },

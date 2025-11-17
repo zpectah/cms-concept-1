@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardActions, Typography, Stack } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import FileOpenIcon from '@mui/icons-material/FileOpen';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { AttachmentsItem, ItemBase } from '@common';
 import { AttachmentsViewItemProps } from '../types';
 import { listItemsViewKeys } from '../enums';
@@ -65,6 +65,7 @@ const AttachmentsViewItem = <T extends ItemBase>({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          borderBottom: `1px solid ${palette.divider}`,
         })}
       >
         <Typography variant="button" onClick={() => onDetail(attachment.id)} sx={{ cursor: 'pointer', zIndex: 99 }}>
@@ -96,7 +97,14 @@ const AttachmentsViewItem = <T extends ItemBase>({
       >
         {renderContent()}
       </CardContent>
-      <CardActions sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <CardActions
+        sx={({ palette }) => ({
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderTop: `1px solid ${palette.divider}`,
+        })}
+      >
         <Stack direction="row" gap={1}>
           <IconButtonPlus tooltip={t('button.select')} onClick={() => onSelect(item.id)} size="small">
             {isSelected ? (
@@ -112,16 +120,16 @@ const AttachmentsViewItem = <T extends ItemBase>({
             tooltip={t('button.delete')}
             onClick={() => onDelete(item.id)}
             size="small"
-            color="error"
+            // color="error"
             disabled={!modelActions.delete}
           >
-            <DeleteIcon fontSize="small" />
+            <DeleteOutlineIcon fontSize="small" />
           </IconButtonPlus>
           <IconButtonPlus
-            tooltip={t('button.disable')}
+            tooltip={item.active ? t('button.disable') : t('button.active')}
             onClick={() => onDisable(item.id)}
             size="small"
-            color="warning"
+            // color="warning"
             disabled={!modelActions.modify}
           >
             {item.active ? <VisibilityIcon fontSize="small" /> : <VisibilityOffIcon fontSize="small" />}
@@ -130,10 +138,10 @@ const AttachmentsViewItem = <T extends ItemBase>({
             tooltip={t('button.detail')}
             onClick={() => onDetail(item.id)}
             size="small"
-            color="primary"
+            // color="primary"
             disabled={!modelActions.view}
           >
-            <FileOpenIcon fontSize="small" />
+            <ArrowOutwardIcon fontSize="small" />
           </IconButtonPlus>
         </Stack>
       </CardActions>

@@ -96,7 +96,7 @@ export const useAttachmentsDetailForm = () => {
       } else if (detailData) {
         if (form.formState.isDirty) return;
 
-        setTitle(detailData.name);
+        setTitle(detailData.file_name);
         form.reset(getAttachmentsDetailFormMapper(detailData));
       }
     }

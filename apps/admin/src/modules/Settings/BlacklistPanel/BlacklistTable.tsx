@@ -5,7 +5,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ClearIcon from '@mui/icons-material/Clear';
 import { IconButtonPlus, Search, ValueDate } from '../../../components';
-import { muiCommonColorVariantKeys } from '../../../enums';
 import { useBlacklist } from './useBlacklist';
 
 const BlacklistTable = () => {
@@ -55,7 +54,7 @@ const BlacklistTable = () => {
                   <Stack direction="row" gap={1} sx={{ display: 'inline-flex' }}>
                     <IconButtonPlus
                       size="small"
-                      color={muiCommonColorVariantKeys.error}
+                      // color={muiCommonColorVariantKeys.error}
                       onClick={() => onRowDelete(row.id)}
                       tooltip={t('button.delete')}
                     >
@@ -63,9 +62,9 @@ const BlacklistTable = () => {
                     </IconButtonPlus>
                     <IconButtonPlus
                       size="small"
-                      color={muiCommonColorVariantKeys.warning}
+                      // color={muiCommonColorVariantKeys.warning}
                       onClick={() => onRowToggle(row.id)}
-                      tooltip={t('button.disable')}
+                      tooltip={row.active ? t('button.disable') : t('button.active')}
                     >
                       {row.active ? <VisibilityIcon fontSize="inherit" /> : <VisibilityOffIcon fontSize="inherit" />}
                     </IconButtonPlus>

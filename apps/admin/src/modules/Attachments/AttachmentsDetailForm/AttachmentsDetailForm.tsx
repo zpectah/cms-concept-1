@@ -34,7 +34,12 @@ const AttachmentsDetailForm = () => {
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
         actions={
-          <FormDetailActions detailId={detailId} listPath={`/${routes.tags.path}`} modelActions={modelActions} />
+          <FormDetailActions
+            detailId={detailId}
+            listPath={`/${routes.attachments.path}`}
+            modelActions={modelActions}
+            disableResetButton
+          />
         }
         sidebar={
           <FormDetailSidebar
@@ -50,7 +55,7 @@ const AttachmentsDetailForm = () => {
           />
         }
       >
-        <Literal label={t('form:label.name')} value={fileName} />
+        <Literal label={t('form:label.name')} value={name} />
         <Literal label={t('form:label.type')} value={getOptionValue(type, 'model')} />
         <Stack alignItems="center" justifyContent="center" sx={{}}>
           {getElementByType(type as AttachmentsType, {

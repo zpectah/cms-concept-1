@@ -52,7 +52,8 @@
     "approve": "Approve",
     "approved": "Approved",
     "approveSelected": "Approve selected",
-    "markReadSelected": "Mark selected as read"
+    "markReadSelected": "Mark selected as read",
+    "active": "Active"
   },
   "label": {
     "yesterday": "Yesterday",

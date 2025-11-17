@@ -42,6 +42,10 @@ const UsersList = () => {
           isTitle: true,
         },
         {
+          value: registeredFormFields.access_rights,
+          renderValue: (row) => row.access_rights,
+        },
+        {
           value: registeredFormFields.type,
           renderValue: (row) => <ValueType value={row.type} />,
         },

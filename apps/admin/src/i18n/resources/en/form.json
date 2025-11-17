@@ -22,6 +22,8 @@
     "password_again": "Password again",
     "firstName": "First name",
     "lastName": "Surname",
+    "first_name": "First name",
+    "last_name": "Surname",
     "accessLevel": "Access level",
     "address": "Address",
     "sender": "Sender",
@@ -49,7 +51,8 @@
     "newPassword": "New password",
     "confirmPassword": "Confirm password",
     "fullName": "Full name",
-    "approved": "Approved"
+    "approved": "Approved",
+    "access_rights": "Access rights"
   },
   "message": {
     "error": {

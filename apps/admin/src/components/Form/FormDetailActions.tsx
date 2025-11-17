@@ -1,17 +1,25 @@
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { newItemKey, WithChildren } from '@common';
+import { ModelActions } from '../../types';
 import { LinkButton, SecondaryButton, SubmitButton } from '../Button';
-import { ListItemsModelActions } from '../ListItems';
 
 type FormDetailActionsProps = Partial<WithChildren> & {
   detailId?: string;
   listPath: string;
   disableActions?: boolean;
-  modelActions: ListItemsModelActions;
+  disableResetButton?: boolean;
+  modelActions: ModelActions;
 };
 
-const FormDetailActions = ({ children, detailId, listPath, disableActions, modelActions }: FormDetailActionsProps) => {
+const FormDetailActions = ({
+  children,
+  detailId,
+  listPath,
+  disableActions,
+  disableResetButton,
+  modelActions,
+}: FormDetailActionsProps) => {
   const { t } = useTranslation();
   const form = useForm();
 
@@ -24,9 +32,11 @@ const FormDetailActions = ({ children, detailId, listPath, disableActions, model
           ) : (
             <SubmitButton disabled={!modelActions.modify}>{t('button.update')}</SubmitButton>
           )}
-          <SecondaryButton size="large" onClick={() => form.reset()}>
-            {t('button.reset')}
-          </SecondaryButton>
+          {!disableResetButton && (
+            <SecondaryButton size="large" onClick={() => form.reset()}>
+              {t('button.reset')}
+            </SecondaryButton>
+          )}
         </>
       )}
       <LinkButton size="large" to={listPath}>

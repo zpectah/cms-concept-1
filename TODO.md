@@ -6,7 +6,7 @@
 * [] Refactoring komponenty 'ListItems' ?
 * [OK] U objektů (users, members) - nechat field name podle vyplněného jména a přijmení, jinak vygenerovat náhodný
 * [OK] Instalace jazyka - vytvoření tabulek ...
-* [] Sjednotit tlačítka v tabulce - jednotnou barvu, obrátit ten active stav
+* [OK] Sjednotit tlačítka v tabulce - jednotnou barvu, obrátit ten active stav
 * [OK] Heslo - users/members
 * [OK] User account - login
 * [OK] User account - lost password
@@ -30,4 +30,5 @@
 * [OK] Klonování 'Articles' - vytvoření nové položky s existujícími daty
 * [OK] - Přidat údaje pro email smtp službu do tabulky s nastavení, heslo zašifrovat a uložit. Při použití hesla odšifrovat
 * [] - Upravit response výstup z analýzy a mazání permanentně ...
+* [] - Opravit 'Reset' button ve formulářích detailu ...
 
