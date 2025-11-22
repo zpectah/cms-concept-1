@@ -55,6 +55,11 @@ class Attachments extends Model {
     $sourceHeight = $imageInfo[1];
     $mime = $imageInfo['mime'];
 
+    if ($mime === 'image/webp' && !function_exists('imagecreatefromwebp')) {
+      // Pokud je WebP a chybí podpora, vrátí chybu.
+      return false;
+    }
+
     $sourceImage = @imagecreatefromstring($sourceImageData);
 
     if ($sourceImage === false) {
@@ -76,8 +81,8 @@ class Attachments extends Model {
 
     $newImage = imagecreatetruecolor($newWidth, $newHeight);
 
-    // Keep transparency for PNG and GIF
-    if ($mime === 'image/png' || $mime === 'image/gif') {
+    // Keep transparency for PNG, GIF and WEBP
+    if ($mime === 'image/png' || $mime === 'image/gif' || $mime === 'image/webp') {
       imagealphablending($newImage, false);
       imagesavealpha($newImage, true);
       $transparent = imagecolorallocatealpha($newImage, 255, 255, 255, 127);
@@ -105,6 +110,10 @@ class Attachments extends Model {
 
       case 'image/gif':
         $success = @imagegif($newImage, $destinationImagePath);
+        break;
+
+      case 'image/webp':
+        $success = @imagewebp($newImage, $destinationImagePath, 90);
         break;
 
       default:
