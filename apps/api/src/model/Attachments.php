@@ -401,6 +401,15 @@ class Attachments extends Model {
       if (file_exists($filePath)) {
         if (unlink($filePath)) {
           $deletedFilesCount++;
+
+          // Also remove thumbnail
+          if ($file['type'] === 'image') {
+            $thumbnailPath = rtrim($uploadsPath, '/') . '/' . $file['type'] . '/thumbnail/' . $file['file_name'];
+
+            if (file_exists($thumbnailPath)) {
+              if (unlink($thumbnailPath)) $deletedFilesCount++;
+            }
+          }
         } else {
           $errors[] = "Chyba při mazání souboru: " . $filePath;
         }

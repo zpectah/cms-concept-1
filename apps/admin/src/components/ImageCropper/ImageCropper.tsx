@@ -8,7 +8,7 @@ import { ImageCropperProps } from './type';
 
 import 'react-advanced-cropper/dist/style.css';
 
-const ImageCropper = ({ open, onClose, cropSource, onSave }: ImageCropperProps) => {
+const ImageCropper = ({ open, onClose, cropSource, onSave, cropperProps }: ImageCropperProps) => {
   const [source, setSource] = useState<string | undefined>(undefined);
   const [image, setImage] = useState<string | undefined>(undefined);
 
@@ -73,6 +73,7 @@ const ImageCropper = ({ open, onClose, cropSource, onSave }: ImageCropperProps) 
             style={{
               maxHeight: '50vh',
             }}
+            {...cropperProps}
           />
         </Box>
       }

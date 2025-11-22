@@ -12,8 +12,10 @@ export const AttachmentsQueueItemSchema = z.object({
   uid: formFieldsSchemas.required_string,
 });
 
+const AttachmentsQueueSchema = z.array(AttachmentsQueueItemSchema);
+
 export const AttachmentsCreateFormSchema = z.object({
-  queue: z.array(AttachmentsQueueItemSchema),
+  queue: AttachmentsQueueSchema,
   options: z.object({
     path: formFieldsSchemas.string.optional(),
     context: formFieldsSchemas.string.optional(),

@@ -119,3 +119,34 @@ export const getFormattedString = (...args: string[]): string => {
 
   return dashedString.toLowerCase();
 };
+
+export const getShortenedFilename = (filename: string, maxLength: number, placeholder = '...'): string => {
+  if (filename.length <= maxLength) {
+    return filename;
+  }
+
+  const lastDotIndex = filename.lastIndexOf('.');
+
+  if (lastDotIndex === -1 || lastDotIndex === 0) {
+    const start = maxLength - placeholder.length;
+
+    return filename.substring(0, start) + placeholder;
+  }
+
+  const extension = filename.substring(lastDotIndex);
+  const name = filename.substring(0, lastDotIndex);
+
+  const maxNameLength = maxLength - placeholder.length - extension.length;
+
+  const prefixLength = Math.floor(maxNameLength / 2);
+  const suffixLength = maxNameLength - prefixLength;
+
+  if (prefixLength < 1 || suffixLength < 1) {
+    return name.substring(0, 1) + placeholder + extension;
+  }
+
+  const prefix = name.substring(0, prefixLength);
+  const suffix = name.substring(name.length - suffixLength);
+
+  return prefix + placeholder + suffix + extension;
+};

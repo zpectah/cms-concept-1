@@ -6,7 +6,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { AttachmentsItem, ItemBase } from '@common';
+import { AttachmentsItem, getShortenedFilename, ItemBase } from '@common';
 import { AttachmentsViewItemProps } from '../types';
 import { listItemsViewKeys } from '../enums';
 import { IconButtonPlus } from '../../Button';
@@ -69,7 +69,7 @@ const AttachmentsViewItem = <T extends ItemBase>({
         })}
       >
         <Typography variant="button" onClick={() => onDetail(attachment.id)} sx={{ cursor: 'pointer', zIndex: 99 }}>
-          {attachment.file_name}
+          {getShortenedFilename(attachment.file_name, 20)}
         </Typography>
         {!disableFavorites && <FavoritesStar model={listItemsViewKeys.attachments} id={item.id} />}
       </CardContent>

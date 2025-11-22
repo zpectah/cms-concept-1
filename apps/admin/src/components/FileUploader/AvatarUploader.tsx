@@ -96,26 +96,22 @@ const AvatarUploader = ({
               {t('button.delete')}
             </Button>
           </>
-        ) : (
+        ) : result?.content ? (
           <>
-            {result?.content ? (
-              <>
-                <img src={result.content} alt={name} loading="lazy" />
-                <Button variant="contained" color="secondary" component="label" size="small">
-                  {t('button.change')}
-                  {inputElement}
-                </Button>
-                <Button variant="contained" color="error" size="small" onClick={() => setResult(null)}>
-                  {t('button.delete')}
-                </Button>
-              </>
-            ) : (
-              <Button variant="contained" color="secondary" component="label" size="small">
-                {t('button.select')}
-                {inputElement}
-              </Button>
-            )}
+            <img src={result.content} alt={name} loading="lazy" />
+            <Button variant="contained" color="secondary" component="label" size="small">
+              {t('button.change')}
+              {inputElement}
+            </Button>
+            <Button variant="contained" color="error" size="small" onClick={() => setResult(null)}>
+              {t('button.delete')}
+            </Button>
           </>
+        ) : (
+          <Button variant="contained" color="secondary" component="label" size="small">
+            {t('button.select')}
+            {inputElement}
+          </Button>
         )}
       </Box>
       <ImageCropper
@@ -134,6 +130,12 @@ const AvatarUploader = ({
           setOpen(false);
         }}
         cropSource={{ source: result?.content, index: 0 }}
+        cropperProps={{
+          aspectRatio: {
+            minimum: 1,
+            maximum: 1,
+          },
+        }}
       />
     </>
   );

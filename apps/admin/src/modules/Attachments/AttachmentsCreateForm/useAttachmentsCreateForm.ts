@@ -12,7 +12,7 @@ import { fileUploaderQueueItemContextKeys, registeredFormFields } from '../../..
 import { useUserActions } from '../../../hooks';
 import { IAttachmentsCreateForm } from './types';
 import { AttachmentsCreateFormSchema } from './schema';
-import { getAttachmentsCreateFormDefaultValues } from './helpers';
+import { getAttachmentsCreateFormDefaultValues, sanitizeQueueFileNames } from './helpers';
 
 export const useAttachmentsCreateForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,7 +40,7 @@ export const useAttachmentsCreateForm = () => {
     if (!modelActions.create) return;
 
     const master = Object.assign({
-      queue: data.queue,
+      queue: sanitizeQueueFileNames(data.queue as FileUploaderQueue),
       options: {
         path: uploadsPath,
         context: fileUploaderQueueItemContextKeys.attachments,
