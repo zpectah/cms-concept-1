@@ -23,7 +23,7 @@ class Attachments extends Model {
 
     if (isset($data['uid'])) {
       $item = [
-        ...$item,
+        ...$data,
         'type' => $data['type'],
         'name' => $data['uid'],
         'file_name' => $data['name'] . '.' . $data['extension'],
@@ -35,7 +35,7 @@ class Attachments extends Model {
       ];
     } else {
       $item = [
-        ...$item,
+        ...$data,
         'active' => $data['active'] ? 1 : 0,
         'deleted' => $data['deleted'] ? 1 : 0,
       ];
@@ -297,6 +297,7 @@ class Attachments extends Model {
 
     return [
       'rows' => $stmt -> rowCount(),
+      $data,
     ];
   }
 
