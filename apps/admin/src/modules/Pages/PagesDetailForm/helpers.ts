@@ -1,5 +1,5 @@
 import { pagesTypeDefault, getFormattedString, PagesDetail, PagesDetailLocale } from '@common';
-import { getModelLocales } from '../../../utils';
+import { getModelLocales } from '../../../helpers';
 import { IPagesDetailForm } from './types';
 
 export const getPagesDetailFormDefaultValues = (locales: string[]): IPagesDetailForm => {

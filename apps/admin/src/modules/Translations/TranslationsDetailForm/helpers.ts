@@ -1,5 +1,5 @@
 import { translationsTypeDefault, getFormattedString, TranslationsDetail, TranslationsDetailLocale } from '@common';
-import { getModelLocales } from '../../../utils';
+import { getModelLocales } from '../../../helpers';
 import { ITranslationsDetailForm } from './types';
 
 export const getTranslationsDetailFormDefaultValues = (locales: string[]): ITranslationsDetailForm => {

@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { articlesTypeDefault, getFormattedString, ArticlesDetail, ArticlesDetailLocale } from '@common';
 import { ModelActions } from '../../../types';
-import { getModelLocales } from '../../../utils';
+import { getModelLocales } from '../../../helpers';
 import { addressFormDefaults } from '../../../constants';
 import { IArticlesDetailForm } from './types';
 

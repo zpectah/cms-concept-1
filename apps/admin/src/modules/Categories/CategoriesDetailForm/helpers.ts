@@ -1,5 +1,5 @@
 import { categoriesTypeDefault, getFormattedString, CategoriesDetail, CategoriesDetailLocale } from '@common';
-import { getModelLocales } from '../../../utils';
+import { getModelLocales } from '../../../helpers';
 import { ICategoriesDetailForm } from './types';
 
 export const getCategoriesDetailFormDefaultValues = (locales: string[]): ICategoriesDetailForm => {
