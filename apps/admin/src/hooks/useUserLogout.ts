@@ -1,13 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { getConfig } from '../utils';
+import { getConfig } from '../config';
 import { useUserQuery } from '../hooks-query';
 import { useAppStore } from '../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../constants';
 
 export const useUserLogout = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation(['common', 'modules']);
   const { addToast, openConfirmDialog } = useAppStore();

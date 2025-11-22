@@ -1,15 +1,13 @@
 import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@mui/material';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { ControlledForm, FormDetailSidebar, FormDetailActions, FormLayout, Literal } from '../../../components';
 import { useUserActions } from '../../../hooks';
 import { useMessagesDetailForm } from './useMessagesDetailForm';
 
 const MessagesDetailForm = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation(['common', 'form']);
   const { messages: modelActions } = useUserActions();

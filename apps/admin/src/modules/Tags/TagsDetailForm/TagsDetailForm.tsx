@@ -2,7 +2,7 @@ import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { tagsColorDefault, tagsTypeDefault } from '@common';
 import { registeredFormFields } from '../../../enums';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import {
   ControlledForm,
   FormDetailSidebar,
@@ -16,9 +16,7 @@ import { useUserActions } from '../../../hooks';
 import { useTagsDetailForm } from './useTagsDetailForm';
 
 const TagsDetailForm = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation(['common', 'form']);
   const { tags: modelActions } = useUserActions();

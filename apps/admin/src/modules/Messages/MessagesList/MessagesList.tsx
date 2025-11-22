@@ -4,15 +4,13 @@ import MarkAsUnreadIcon from '@mui/icons-material/MarkAsUnread';
 import MarkunreadIcon from '@mui/icons-material/Markunread';
 import { modelKeys, MessagesItem } from '@common';
 import { ListItems, ValueType, ValueDate, IconButtonPlus } from '../../../components';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { registeredFormFields } from '../../../enums';
 import { useUserActions } from '../../../hooks';
 import { useMessagesList } from './useMessagesList';
 
 const MessagesList = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation(['common']);
   const { messages: modelActions } = useUserActions();

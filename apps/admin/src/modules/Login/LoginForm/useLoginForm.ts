@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { useUserQuery } from '../../../hooks-query';
 import { TOAST_ERROR_TIMEOUT_DEFAULT } from '../../../constants';
 import { useAppStore } from '../../../store';
@@ -12,9 +12,7 @@ import { ILoginForm } from './types';
 import { LoginFormDefaults } from './constants';
 
 export const useLoginForm = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const { t } = useTranslation(['common']);

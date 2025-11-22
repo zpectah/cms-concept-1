@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/material';
-import { getConfig } from '../../utils';
+import { getConfig } from '../../config';
 
 const Wrapper = styled('span')(({ theme }) => ({
   ...theme.typography.h4,
@@ -38,7 +38,8 @@ interface CmsLogoProps {
 
 const CmsLogo = ({ disableLink }: CmsLogoProps) => {
   const {
-    admin: { routes, meta },
+    routes,
+    admin: { meta },
   } = getConfig();
 
   if (disableLink) return <Wrapper>{meta.title}</Wrapper>;

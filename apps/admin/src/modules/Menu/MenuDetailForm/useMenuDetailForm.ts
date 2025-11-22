@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, MenuDetail } from '@common';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { useMenuHelpers, useSelectOptions } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
@@ -17,9 +17,7 @@ import { IMenuDetailForm } from './types';
 import { getMenuDetailFormDefaultValues, getMenuDetailFormMapper, getMenuDetailFormMapperToMaster } from './helpers';
 
 export const useMenuDetailForm = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation();
   const { id } = useParams();

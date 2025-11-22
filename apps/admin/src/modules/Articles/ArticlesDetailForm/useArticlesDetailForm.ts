@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
 import { modelKeys, newItemKey, ArticlesDetail } from '@common';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { useFormDetailControl, useSelectOptions, useArticlesHelpers } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { CLONE_PATH_ATTRIBUTE_NAME, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
@@ -22,9 +22,7 @@ import {
 } from './helpers';
 
 export const useArticlesDetailForm = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation();
   const { id } = useParams();

@@ -1,15 +1,13 @@
 import RemoveIcon from '@mui/icons-material/Remove';
 import { modelKeys, CategoriesItem } from '@common';
 import { ListItems, ValueType, ValueDate, ValueArray } from '../../../components';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { registeredFormFields } from '../../../enums';
 import { useUserActions } from '../../../hooks';
 import { useCategoriesList } from './useCategoriesList';
 
 const CategoriesList = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { categories: modelActions } = useUserActions();
   const { categories, isLoading, onDeleteSelected, onDisableSelected } = useCategoriesList();

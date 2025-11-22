@@ -6,13 +6,11 @@ import { useAppStore, useModelListStore } from '../../../store';
 import { CLONE_PATH_ATTRIBUTE_NAME, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useArticlesQuery, useCategoriesQuery, useTagsQuery } from '../../../hooks-query';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { useUserActions } from '../../../hooks';
 
 export const useArticlesList = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation(['common', 'modules']);
   const { setTitle } = useViewLayoutContext();

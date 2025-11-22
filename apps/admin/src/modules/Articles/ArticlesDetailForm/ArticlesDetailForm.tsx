@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Grid } from '@mui/material';
 import { articlesTypeDefault, modelKeys, newItemKey } from '@common';
 import { registeredFormFields } from '../../../enums';
-import { getTypedDate, getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
+import { getTypedDate } from '../../../utils';
 import {
   ControlledForm,
   FormDetailSidebar,
@@ -30,9 +31,7 @@ import { CommentsManager } from '../../Comments';
 import { useArticlesDetailForm } from './useArticlesDetailForm';
 
 const ArticlesDetailForm = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation(['common', 'form']);
   const { articles: modelActions } = useUserActions();

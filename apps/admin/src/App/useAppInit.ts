@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { useLocale, useTheme } from '../hooks';
-import { getConfig } from '../utils';
+import { getConfig } from '../config';
 
 export const useAppInit = (callback?: () => void) => {
   const {

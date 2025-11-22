@@ -1,5 +1,5 @@
 import { styled, Stack } from '@mui/material';
-import { getConfig } from '../../utils';
+import { getConfig } from '../../config';
 import { Container } from '../Container';
 
 const Wrapper = styled('footer')(({ theme }) => ({

@@ -1,15 +1,14 @@
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { newItemKey } from '@common';
-import { getConfig } from '../utils';
+import { getConfig } from '../config';
 import { ViewLayout, LinkButton } from '../components';
 import { useUserActions } from '../hooks';
 import Error from './Error';
 
 const MenuView = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
+
   const { t } = useTranslation();
   const { menu } = useUserActions();
 

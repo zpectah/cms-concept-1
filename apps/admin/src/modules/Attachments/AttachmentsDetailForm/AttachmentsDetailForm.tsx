@@ -3,16 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { Stack } from '@mui/material';
 import { formatBytes, AttachmentsType } from '@common';
 import { registeredFormFields } from '../../../enums';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { getEnvironmentVariables, getOptionValue, useAttachmentTypeElement } from '../../../helpers';
 import { ControlledForm, FormDetailSidebar, FormDetailActions, FormLayout, Literal } from '../../../components';
 import { useUserActions } from '../../../hooks';
 import { useAttachmentsDetailForm } from './useAttachmentsDetailForm';
 
 const AttachmentsDetailForm = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation(['common', 'form']);
   const { attachments: modelActions } = useUserActions();

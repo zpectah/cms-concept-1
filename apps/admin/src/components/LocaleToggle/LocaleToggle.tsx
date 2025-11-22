@@ -1,5 +1,5 @@
 import { useLocale } from '../../hooks';
-import { getConfig } from '../../utils';
+import { getConfig } from '../../config';
 
 const LocaleToggle = () => {
   const {

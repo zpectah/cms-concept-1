@@ -1,14 +1,12 @@
 import { modelKeys, MenuItem } from '@common';
 import { ListItems, ValueType, ValueDate } from '../../../components';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { registeredFormFields } from '../../../enums';
 import { useUserActions } from '../../../hooks';
 import { useMenuList } from './useMenuList';
 
 const MenuList = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { menu: modelActions } = useUserActions();
   const { menu, isLoading, onDeleteSelected, onDisableSelected } = useMenuList();

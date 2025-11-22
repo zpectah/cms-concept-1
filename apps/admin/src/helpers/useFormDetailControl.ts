@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getConfig } from '../utils';
+import { getConfig } from '../config';
 import { useSettingsQuery } from '../hooks-query';
 
 export const useFormDetailControl = () => {

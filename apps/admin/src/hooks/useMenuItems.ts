@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { getConfig } from '../utils';
+import { getConfig } from '../config';
 import { useUserActions } from './useUserActions';
 
 interface MenuItem {
@@ -11,9 +11,7 @@ interface MenuItem {
 }
 
 export const useMenuItems = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation(['common']);
   const { ...actions } = useUserActions();

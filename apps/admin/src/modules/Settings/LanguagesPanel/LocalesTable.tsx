@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import { SettingsLocales } from '@common';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 
 interface LocalesTableProps {
   onLocaleInstall: (locale: string) => void;

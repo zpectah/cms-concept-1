@@ -1,14 +1,12 @@
 import { modelKeys, TranslationsItem } from '@common';
 import { ListItems, ValueType, ValueDate } from '../../../components';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { registeredFormFields } from '../../../enums';
 import { useUserActions } from '../../../hooks';
 import { useTranslationsList } from './useTranslationsList';
 
 const TranslationsList = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { translations: modelActions } = useUserActions();
   const { translations, isLoading, onDeleteSelected, onDisableSelected } = useTranslationsList();

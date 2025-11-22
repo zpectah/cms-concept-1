@@ -1,14 +1,12 @@
 import { modelKeys, PagesItem } from '@common';
 import { ListItems, ValueType, ValueDate } from '../../../components';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { registeredFormFields } from '../../../enums';
 import { useUserActions } from '../../../hooks';
 import { usePagesList } from './usePagesList';
 
 const PagesList = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { pages: modelActions } = useUserActions();
   const { pages, isLoading, onDeleteSelected, onDisableSelected } = usePagesList();

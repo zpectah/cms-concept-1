@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Stack, Typography } from '@mui/material';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import {
   ControlledForm,
   EmailField,
@@ -14,9 +14,7 @@ import { registeredFormFields } from '../../../enums';
 import { useLoginForm } from './useLoginForm';
 
 const LoginForm = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation(['common', 'modules']);
   const { form, onSubmit, user } = useLoginForm();

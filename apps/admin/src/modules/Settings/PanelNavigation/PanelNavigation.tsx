@@ -2,7 +2,7 @@ import { useState, useEffect, SyntheticEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Tabs, Tab } from '@mui/material';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { useUserActions } from '../../../hooks';
 import { settingsPanelsKeys } from '../enums';
 import { SettingsPanelTabs } from '../types';
@@ -13,9 +13,7 @@ const PanelNavigation = () => {
   const { t } = useTranslation(['modules']);
   const { settings } = useUserActions();
   const { pathname } = useLocation();
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
   const navigate = useNavigate();
 
   const tabItems: SettingsPanelTabs[] = [

@@ -1,14 +1,12 @@
 import { modelKeys, AttachmentsItem } from '@common';
 import { ListItems, ValueType, ValueDate, listItemsViewKeys } from '../../../components';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { registeredFormFields } from '../../../enums';
 import { useUserActions } from '../../../hooks';
 import { useAttachmentsList } from './useAttachmentsList';
 
 const AttachmentsList = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { attachments: modelActions } = useUserActions();
   const { attachments, isLoading, onDeleteSelected, onDisableSelected } = useAttachmentsList();

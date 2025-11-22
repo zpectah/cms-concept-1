@@ -1,14 +1,12 @@
 import { modelKeys, UsersItem } from '@common';
 import { ListItems, ValueType, ValueDate } from '../../../components';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { registeredFormFields } from '../../../enums';
 import { useUserActions } from '../../../hooks';
 import { useUsersList } from './useUsersList';
 
 const UsersList = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { users: modelActions } = useUserActions();
   const { users, isLoading, onDeleteSelected, onDisableSelected } = useUsersList();

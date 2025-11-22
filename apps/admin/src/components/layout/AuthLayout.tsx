@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { getConfig } from '../../utils';
+import { getConfig } from '../../config';
 import { useUserQuery } from '../../hooks-query';
 
 const AuthLayout = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
   const navigate = useNavigate();
   const { userQuery } = useUserQuery();
 

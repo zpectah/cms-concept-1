@@ -5,16 +5,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useUserQuery } from '../../../hooks-query';
 import { useAppStore } from '../../../store';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { PasswordRecoveryTokenFormSchema } from './schema';
 import { IPasswordRecoveryTokenForm } from './types';
 
 export const usePasswordRecoveryTokenForm = () => {
   const [tokenError, setTokenError] = useState(false);
 
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();

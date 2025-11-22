@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useParams, Link } from 'react-router-dom';
 import { Breadcrumbs as MuiBreadcrumbs, Typography } from '@mui/material';
 import { newItemKey } from '@common';
-import { getConfig } from '../../utils';
+import { getConfig } from '../../config';
 
 interface BreadcrumbsProps {
   disabled?: boolean;
@@ -13,7 +13,7 @@ const Breadcrumbs = ({ disabled }: BreadcrumbsProps) => {
   const { t } = useTranslation(['common', 'modules']);
   const { id } = useParams();
   const { pathname } = useLocation();
-  const { admin } = getConfig();
+  const { admin, routes } = getConfig();
 
   const [isPanels, setIsPanels] = useState(false);
 
@@ -23,7 +23,7 @@ const Breadcrumbs = ({ disabled }: BreadcrumbsProps) => {
 
   const isId = id || subRouteName === newItemKey;
 
-  const route = (admin.routes as Record<string, { path: string; panels?: Record<string, unknown> }>)[routeName];
+  const route = (routes as Record<string, { path: string; panels?: Record<string, unknown> }>)[routeName];
 
   useEffect(() => {
     if (subRouteName) setIsPanels(!!route.panels);

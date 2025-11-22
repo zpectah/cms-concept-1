@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useAppStore } from '../store';
 import { CMS_LOCALES_KEY } from '../constants';
-import { getConfig } from '../utils';
+import { getConfig } from '../config';
 
 export const useLocale = () => {
   const { admin } = getConfig();

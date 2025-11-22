@@ -3,7 +3,7 @@ import { PaletteMode } from '@mui/material';
 import { getRandomId } from '@common';
 import { ToastsItem, ToastsItemSeverity, AnnouncementsItem, AnnouncementsItemSeverity } from '../types';
 import { toastsItemSeverityKeys } from '../enums';
-import { getConfig } from '../utils';
+import { getConfig } from '../config';
 import { CMS_LOCALES_KEY, CMS_THEME_MODE_KEY, FEEDBACK_COMMON_TIMEOUT_DEFAULT } from '../constants';
 import { ConfirmDialogBaseProps } from '../components';
 

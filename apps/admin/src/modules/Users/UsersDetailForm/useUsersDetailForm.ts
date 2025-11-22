@@ -12,7 +12,7 @@ import {
   UsersAccessRightsKeys,
   UsersDetail,
 } from '@common';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { getOptionValue, useSelectOptions, useUsersHelpers } from '../../../helpers';
 import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';

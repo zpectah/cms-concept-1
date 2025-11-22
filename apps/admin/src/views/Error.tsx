@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Stack, Typography } from '@mui/material';
 import { Footer, LinkButton } from '../components';
-import { getConfig } from '../utils';
+import { getConfig } from '../config';
 
 interface ErrorViewProps {
   code?: number;
@@ -9,9 +9,7 @@ interface ErrorViewProps {
 }
 
 const ErrorView = ({ code, disableFooter }: ErrorViewProps) => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation();
 

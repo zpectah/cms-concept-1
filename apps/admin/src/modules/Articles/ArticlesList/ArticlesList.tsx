@@ -4,16 +4,14 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 import NewReleasesIcon from '@mui/icons-material/NewReleases';
 import { modelKeys, ArticlesItem } from '@common';
 import { ListItems, ValueArray, ValueDate, ValueType, IconButtonPlus } from '../../../components';
-import { getConfig } from '../../../utils';
+import { getConfig } from '../../../config';
 import { registeredFormFields } from '../../../enums';
 import { useUserActions } from '../../../hooks';
 import { useArticlesList } from './useArticlesList';
 import { Button } from '@mui/material';
 
 const ArticlesList = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation(['common']);
   const { articles: modelActions } = useUserActions();

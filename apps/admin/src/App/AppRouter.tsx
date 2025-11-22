@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { RouterProvider, createBrowserRouter, Navigate } from 'react-router-dom';
 import { newItemKey } from '@common';
-import { getConfig } from '../utils';
+import { getConfig } from '../config';
 import { ToastList, AnnouncementsList, AccountFormDialog } from '../modules';
 import { AuthLayout, AppLayout, AppConfirmDialog } from '../components';
 import {
@@ -55,9 +55,7 @@ const UsersList = lazy(() => import('../modules/Users/UsersList/UsersList'));
 const UsersDetailForm = lazy(() => import('../modules/Users/UsersDetailForm/UsersDetailForm'));
 
 const AppRouter = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const router = createBrowserRouter([
     {
