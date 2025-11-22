@@ -7,11 +7,12 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { AttachmentsItem, getShortenedFilename, ItemBase } from '@common';
-import { AttachmentsViewItemProps } from '../types';
-import { listItemsViewKeys } from '../enums';
+import { getEnvironmentVariables } from '../../../config';
+import { useAttachmentTypeElement } from '../../../helpers';
 import { IconButtonPlus } from '../../Button';
 import { FavoritesStar } from '../../favorites';
-import { getEnvironmentVariables, useAttachmentTypeElement } from '../../../helpers';
+import { AttachmentsViewItemProps } from '../types';
+import { listItemsViewKeys } from '../enums';
 
 const AttachmentsViewItem = <T extends ItemBase>({
   item,
@@ -26,13 +27,14 @@ const AttachmentsViewItem = <T extends ItemBase>({
   pathPrefix,
   modelActions,
 }: AttachmentsViewItemProps<T>) => {
+  const { uploads } = getEnvironmentVariables();
+
   const { t } = useTranslation();
   const { getElementByType } = useAttachmentTypeElement();
-  const { uploadsSource } = getEnvironmentVariables();
 
   const attachment = item as unknown as AttachmentsItem;
 
-  const sourcePrefix = `${uploadsSource}${attachment.type}/thumbnail/`; // TODO
+  const sourcePrefix = `${uploads.source}${attachment.type}/thumbnail/`; // TODO
 
   const renderContent = () =>
     getElementByType(attachment.type, {

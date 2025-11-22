@@ -3,7 +3,10 @@ export const getEnvironmentVariables = () => {
 
   return {
     env,
-    uploadsPath: '../../../dist/uploads/', // TODO
-    uploadsSource: 'http://localhost:8080/', // TODO
+
+    uploads: {
+      target: '../../../dist/uploads/', // TODO
+      source: 'http://localhost:8080/', // TODO
+    },
   };
 };

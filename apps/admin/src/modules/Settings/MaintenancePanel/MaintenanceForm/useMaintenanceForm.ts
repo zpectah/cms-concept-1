@@ -4,7 +4,7 @@ import { useMaintenanceQuery } from '../../../../hooks-query';
 import { MaintenanceAnalyzeResults, MaintenanceDeleteResults } from '../../../../types';
 import { useAppStore } from '../../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../../constants';
-import { getEnvironmentVariables } from '../../../../helpers';
+import { getEnvironmentVariables } from '../../../../config';
 import { useUserActions } from '../../../../hooks';
 
 export const useMaintenanceForm = () => {
@@ -13,11 +13,12 @@ export const useMaintenanceForm = () => {
   const [rowsToDelete, setRowsToDelete] = useState<number>(0);
   const [deletedRows, setDeletedRows] = useState<number>(0);
 
+  const { uploads } = getEnvironmentVariables();
+
   const { t } = useTranslation(['common', 'modules']);
   const { settings } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { analyzeModelItemsMutation, deletePermanentModelItemsMutation } = useMaintenanceQuery();
-  const { uploadsPath } = getEnvironmentVariables();
 
   const { mutate: onAnalyzeModel } = analyzeModelItemsMutation;
   const { mutate: onProceedModel } = deletePermanentModelItemsMutation;
@@ -71,7 +72,7 @@ export const useMaintenanceForm = () => {
       {
         results: analyzedResults,
         options: {
-          uploadsPath,
+          uploadsPath: uploads.target,
         },
       },
       {

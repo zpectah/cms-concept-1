@@ -1,5 +1,5 @@
 import { styled, Box, Typography } from '@mui/material';
-import { getEnvironmentVariables } from '../../helpers';
+import { getEnvironmentVariables } from '../../config';
 
 const ImageContainer = styled(Box)(() => ({
   display: 'inline-flex',
@@ -25,10 +25,10 @@ interface ImageProps {
 }
 
 const Image = ({ src, alt, type, size }: ImageProps) => {
-  const { uploadsSource } = getEnvironmentVariables();
+  const { uploads } = getEnvironmentVariables();
 
   const pathBase =
-    type === 'local' ? `${uploadsSource}/image/` : type === 'local-avatar' ? `${uploadsSource}/avatar-user/` : '';
+    type === 'local' ? `${uploads.source}/image/` : type === 'local-avatar' ? `${uploads.source}/avatar-user/` : '';
   const fullPath = `${pathBase}${src}`;
 
   return (

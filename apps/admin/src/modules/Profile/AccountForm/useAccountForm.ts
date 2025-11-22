@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FileUploaderQueueItem } from '../../../types';
-import { getEnvironmentVariables } from '../../../helpers';
+import { getEnvironmentVariables } from '../../../config';
 import { fileUploaderQueueItemContextKeys, registeredFormFields } from '../../../enums';
 import { useUserQuery, useAttachmentsQuery } from '../../../hooks-query';
 import { FEEDBACK_COMMON_TIMEOUT_DEFAULT, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
@@ -17,6 +17,8 @@ export const useAccountForm = () => {
   const [avatar, setAvatar] = useState<FileUploaderQueueItem | null>(null);
   const [locked, setLocked] = useState(true);
 
+  const { uploads } = getEnvironmentVariables();
+
   const { t } = useTranslation(['common']);
   const { addToast } = useAppStore();
   const { profile } = useUserActions();
@@ -26,7 +28,6 @@ export const useAccountForm = () => {
     defaultValues: getAccountFormDefaultValues(),
     resolver: zodResolver(ProfileAccountFormSchema),
   });
-  const { uploadsPath } = getEnvironmentVariables();
 
   const { data: userData, refetch } = userQuery;
   const { mutate: onPatch } = userPatchMutation;
@@ -63,7 +64,7 @@ export const useAccountForm = () => {
         {
           queue: [avatar],
           options: {
-            path: uploadsPath,
+            path: uploads.target,
             context: fileUploaderQueueItemContextKeys['avatar-user'],
           },
         },

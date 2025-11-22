@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Button } from '@mui/material';
 import { fileUploaderQueueItemContextKeys } from '../../enums';
-import { getEnvironmentVariables } from '../../helpers';
+import { getEnvironmentVariables } from '../../config';
 import { ImageCropper } from '../ImageCropper';
 import { useAvatarUploader } from './useAvatarUploader';
 import { AvatarUploaderProps } from './types';
@@ -20,8 +20,9 @@ const AvatarUploader = ({
 }: AvatarUploaderProps) => {
   const [open, setOpen] = useState(false);
 
+  const { uploads } = getEnvironmentVariables();
+
   const { t } = useTranslation(['common']);
-  const { uploadsSource } = getEnvironmentVariables();
   const { result, inputElementRef, onInputChange, setResult, timestamp } = useAvatarUploader({
     onLoad,
     onLoadEnd,
@@ -72,7 +73,9 @@ const AvatarUploader = ({
         {isCurrent ? (
           <>
             <img
-              src={`${uploadsSource}${fileUploaderQueueItemContextKeys['avatar-user']}/${current}?${hash ?? timestamp}`}
+              src={`${uploads.source}${fileUploaderQueueItemContextKeys['avatar-user']}/${current}?${
+                hash ?? timestamp
+              }`}
               alt={name}
               loading="lazy"
             />

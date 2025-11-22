@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { getEnvironmentVariables } from '../../../config';
 import { useAppStore } from '../../../store';
 import { FEEDBACK_COMMON_TIMEOUT_DEFAULT, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext, useFileUploader } from '../../../components';
-import { getEnvironmentVariables, useAttachmentsHelpers } from '../../../helpers';
+import { useAttachmentsHelpers } from '../../../helpers';
 import { FileUploaderQueue, FileUploaderTransportQueueItem } from '../../../types';
 import { useAttachmentsQuery } from '../../../hooks-query';
 import { fileUploaderQueueItemContextKeys, registeredFormFields } from '../../../enums';
@@ -17,6 +18,8 @@ import { getAttachmentsCreateFormDefaultValues, sanitizeQueueFileNames } from '.
 export const useAttachmentsCreateForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isFileCreating, setIsFileCreating] = useState(false);
+
+  const { uploads } = getEnvironmentVariables();
 
   const { t } = useTranslation(['common', 'form']);
   const { setTitle } = useViewLayoutContext();
@@ -30,7 +33,6 @@ export const useAttachmentsCreateForm = () => {
     resolver: zodResolver(AttachmentsCreateFormSchema),
   });
   const queueFieldArray = useFieldArray({ control: form.control, name: registeredFormFields.queue });
-  const { uploadsPath } = getEnvironmentVariables();
 
   const { data: attachments } = attachmentsQuery;
   const { mutate: onFileCreate } = attachmentsFileCreateMutation;
@@ -42,7 +44,7 @@ export const useAttachmentsCreateForm = () => {
     const master = Object.assign({
       queue: sanitizeQueueFileNames(data.queue as FileUploaderQueue),
       options: {
-        path: uploadsPath,
+        path: uploads.target,
         context: fileUploaderQueueItemContextKeys.attachments,
       },
     });
