@@ -297,7 +297,6 @@ class Attachments extends Model {
 
     return [
       'rows' => $stmt -> rowCount(),
-      $data,
     ];
   }
 

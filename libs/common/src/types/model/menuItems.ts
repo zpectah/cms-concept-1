@@ -10,12 +10,17 @@ export interface MenuItemsItem extends ItemBase {
   menu_id: number;
   link_page?: number;
   link_url?: string;
+  item_order: number;
 }
 
 export type MenuItems = MenuItemsItem[];
 
-interface MenuItemsDetailLocale {
+export interface MenuItemsDetailLocale {
   label: string;
 }
 
 export interface MenuItemsDetail extends MenuItemsItem, ItemLocaleBase<MenuItemsDetailLocale> {}
+
+export interface MenuItemTreeItem extends MenuItemsItem {
+  children: MenuItemTreeItem[];
+}

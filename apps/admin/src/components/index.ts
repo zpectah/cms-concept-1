@@ -29,6 +29,7 @@ export * from './LocaleToggle';
 export * from './MainMenu';
 export * from './preloader';
 export * from './picker';
+export * from './portal';
 export * from './Section';
 export * from './ThemeToggle';
 export * from './UserMenu';

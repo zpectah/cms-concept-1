@@ -7,3 +7,5 @@ export const UI_SPACING = {
 };
 
 export const UI_HEADER_HEIGHT = '59px';
+
+export const CONFIRM_DIALOG_Z_INDEX = 99999;

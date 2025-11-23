@@ -11,11 +11,16 @@ interface useMenuItemsQueryProps {
 }
 
 export const useMenuItemsQuery = ({ id, menuId }: useMenuItemsQueryProps) => {
-  const menuItemsPath = menuId ? `${API_URL.menuItems}/menu/${menuId}` : API_URL.menuItems;
-
   const menuItemsQuery = useQuery<unknown, unknown, MenuItems>({
     queryKey: [QUERY_KEY_BASE],
-    queryFn: () => axios.get(menuItemsPath).then((response) => response.data),
+    queryFn: () => axios.get(API_URL.menuItems).then((response) => response.data),
+    enabled: false, // TODO - why and WHERE this is called?
+  });
+
+  const menuMenuItemsQuery = useQuery<unknown, unknown, MenuItems>({
+    queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-menu-${menuId}`],
+    queryFn: () => axios.get(`${API_URL.menuItems}/menu/${menuId}`).then((response) => response.data),
+    enabled: !!menuId && menuId !== newItemKey,
   });
 
   const menuItemsDetailQuery = useQuery<unknown, unknown, MenuItemsDetail>({
@@ -46,6 +51,7 @@ export const useMenuItemsQuery = ({ id, menuId }: useMenuItemsQueryProps) => {
 
   return {
     menuItemsQuery,
+    menuMenuItemsQuery,
     menuItemsDetailQuery,
     menuItemsCreateMutation,
     menuItemsPatchMutation,

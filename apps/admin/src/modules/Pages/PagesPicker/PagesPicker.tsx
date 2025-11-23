@@ -2,43 +2,42 @@ import { useMemo, forwardRef, ChangeEvent, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Chip, MenuItemProps } from '@mui/material';
 import { Select, SelectProps } from '../../../components';
-import { useMenuItemsQuery } from '../../../hooks-query';
+import { usePagesQuery } from '../../../hooks-query';
 
-type MenuItemsPickerProps = Omit<SelectProps, 'items'> & {
+type PagesPickerProps = Omit<SelectProps, 'items'> & {
   ignored?: number[];
-  menuId: string;
 };
 
-const MenuItemsPicker = forwardRef<HTMLSelectElement, MenuItemsPickerProps>((props, ref) => {
-  const { ignored = [], menuId, onChange, multiple, ...rest } = props;
+const PagesPicker = forwardRef<HTMLSelectElement, PagesPickerProps>((props, ref) => {
+  const { ignored = [], onChange, multiple, ...rest } = props;
 
   const { t } = useTranslation(['common']);
-  const { menuMenuItemsQuery } = useMenuItemsQuery({ menuId });
+  const { pagesQuery } = usePagesQuery({});
 
-  const { data: menuItemsData } = menuMenuItemsQuery;
+  const { data: pagesData } = pagesQuery;
 
-  const MenuItemsItems = useMemo(() => {
-    const MenuItems: MenuItemProps[] = [];
+  const pagesItems = useMemo(() => {
+    const pages: MenuItemProps[] = [];
 
     if (!multiple)
-      MenuItems.push({
+      pages.push({
         id: '0',
         value: 0,
         children: t('label.notSelected'),
       });
 
-    menuItemsData?.forEach((item) => {
-      if (ignored.includes(item.id)) return;
+    pagesData?.forEach((page) => {
+      if (ignored.includes(page.id)) return;
 
-      MenuItems.push({
-        id: String(item.id),
-        value: item.id,
-        children: item.name,
+      pages.push({
+        id: String(page.id),
+        value: page.id,
+        children: page.name,
       });
     });
 
-    return MenuItems.reverse();
-  }, [ignored, menuItemsData, multiple]);
+    return pages.reverse();
+  }, [ignored, pagesData, multiple]);
 
   const changeHandler = (
     event: ChangeEvent<HTMLInputElement> | (Event & { target: { value: unknown; name: string } }),
@@ -57,7 +56,7 @@ const MenuItemsPicker = forwardRef<HTMLSelectElement, MenuItemsPickerProps>((pro
       baseProps.renderValue = (selected) => (
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
           {(selected as number[]).map((value) => {
-            const categoryItem = menuItemsData?.find((item) => item.id === value);
+            const categoryItem = pagesData?.find((page) => page.id === value);
 
             return <Chip key={value} label={categoryItem?.name} color="secondary" variant="outlined" />;
           })}
@@ -66,9 +65,9 @@ const MenuItemsPicker = forwardRef<HTMLSelectElement, MenuItemsPickerProps>((pro
     }
 
     return baseProps;
-  }, [menuItemsData, multiple]);
+  }, [pagesData, multiple]);
 
-  return <Select ref={ref} items={MenuItemsItems} onChange={changeHandler} {...multipleProps} {...rest} />;
+  return <Select ref={ref} items={pagesItems} onChange={changeHandler} {...multipleProps} {...rest} />;
 });
 
-export default MenuItemsPicker;
+export default PagesPicker;

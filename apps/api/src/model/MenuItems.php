@@ -6,7 +6,7 @@ use PDO;
 
 class MenuItems extends Model {
 
-  static array $tableFields = ['type', 'name', 'parent_id', 'menu_id', 'link_page', 'link_url', 'active', 'deleted'];
+  static array $tableFields = ['type', 'name', 'parent_id', 'menu_id', 'link_page', 'link_url', 'item_order', 'active', 'deleted'];
   static array $tableLocaleFields = ['label'];
 
   private function dbToJsonDetailMapper($data, $localeData = false): array {
@@ -99,7 +99,7 @@ class MenuItems extends Model {
     foreach ($locales as $locale) {
       $tableName = 'menuitems_' . $locale;
 
-      $localeSql = "SELECT label FROM `{$tableName}` WHERE `id` = :id LIMIT 1";
+      $localeSql = "SELECT `label` FROM `{$tableName}` WHERE `id` = :id LIMIT 1";
       $localeStmt = $conn -> prepare($localeSql);
       $localeStmt -> bindParam(':id', $id, PDO::PARAM_INT);
       $localeStmt -> execute();
@@ -136,6 +136,7 @@ class MenuItems extends Model {
     $stmt -> bindParam(':menu_id', $data['menu_id'], PDO::PARAM_INT);
     $stmt -> bindParam(':link_page', $data['link_page'], PDO::PARAM_INT);
     $stmt -> bindParam(':link_url', $data['link_url']);
+    $stmt -> bindParam(':item_order', $data['item_order'], PDO::PARAM_INT);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
     $stmt -> execute();
@@ -199,6 +200,7 @@ class MenuItems extends Model {
     $stmt -> bindParam(':menu_id', $data['menu_id'], PDO::PARAM_INT);
     $stmt -> bindParam(':link_page', $data['link_page'], PDO::PARAM_INT);
     $stmt -> bindParam(':link_url', $data['link_url']);
+    $stmt -> bindParam(':item_order', $data['item_order'], PDO::PARAM_INT);
     $stmt -> bindParam(':active', $data['active'], PDO::PARAM_INT);
     $stmt -> bindParam(':deleted', $data['deleted'], PDO::PARAM_INT);
     $stmt -> bindParam(':id', $data['id'], PDO::PARAM_INT);

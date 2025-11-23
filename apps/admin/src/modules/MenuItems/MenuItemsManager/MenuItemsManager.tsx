@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { newItemKey } from '@common';
-import { useMenuItemsQuery } from '../../../hooks-query';
 import { MenuItemsList } from './MenuItemsList';
 import { MenuItemsDetailForm } from './MenuItemsDetailForm';
+import { MenuItemsManagerContextProvider } from './MenuItemsManager.context';
 
 interface MenuItemsManagerProps {
   isEnabled: boolean;
@@ -10,13 +10,7 @@ interface MenuItemsManagerProps {
 }
 
 const MenuItemsManager = ({ isEnabled, menuId }: MenuItemsManagerProps) => {
-  const { menuItemsQuery } = useMenuItemsQuery({ menuId });
-
-  const { data: items } = menuItemsQuery;
-
-  useEffect(() => {
-    console.log('items', items);
-  }, [items]);
+  const [detailId, setDetailId] = useState<number | typeof newItemKey | null>(null);
 
   if (!isEnabled) return null;
 
@@ -25,11 +19,15 @@ const MenuItemsManager = ({ isEnabled, menuId }: MenuItemsManagerProps) => {
   }
 
   return (
-    <div>
-      ...MenuItemsManager...menu id #{menuId}...
-      <MenuItemsList items={items ?? []} />
-      <MenuItemsDetailForm open />
-    </div>
+    <MenuItemsManagerContextProvider
+      value={{
+        detailId,
+        setDetailId: setDetailId,
+      }}
+    >
+      <MenuItemsList menuId={menuId} />
+      <MenuItemsDetailForm menuId={menuId} />
+    </MenuItemsManagerContextProvider>
   );
 };
 

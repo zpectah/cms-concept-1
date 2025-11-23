@@ -1,7 +1,4 @@
 {
-  "default": "Default",
-  "event": "Event",
-
   "model": {
     "default": "Default",
     "event": "Event",
@@ -11,16 +8,15 @@
     "audio": "Audio",
     "video": "Video",
     "document": "Document",
-    "archive": "Archive"
+    "archive": "Archive",
+    "external": "External"
   },
-
   "accessRights": {
     "none": "None",
     "redactor": "Redactor",
     "manager": "Manager",
     "admin": "Admin"
   },
-
   "robots": {
     "all": "All",
     "index": "Index",
@@ -32,7 +28,6 @@
     "noarchive": "No archive",
     "nocache": "No cache"
   },
-
   "color": {
     "none": "None",
     "red": "Red",

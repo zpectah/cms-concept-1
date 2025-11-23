@@ -11,7 +11,7 @@
 * [OK] User account - login
 * [OK] User account - lost password
 * [OK] User account - správa
-* [] Menu items picker !!!
+* [OK] Menu items picker !!!
 * [] Comments manager !!!
 * [] Attachments picker - update/rozšíření
 * [OK] Settings - languages - při instalaci otevřít potvrzovací okno ...
@@ -31,4 +31,5 @@
 * [OK] - Přidat údaje pro email smtp službu do tabulky s nastavení, heslo zašifrovat a uložit. Při použití hesla odšifrovat
 * [] - Upravit response výstup z analýzy a mazání permanentně ...
 * [] - Opravit 'Reset' button ve formulářích detailu ...
+* [] - Menu a MenuItems - potvrzení smazaní - ConfirmDialog
 

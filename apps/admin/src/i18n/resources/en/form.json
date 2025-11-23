@@ -52,7 +52,12 @@
     "confirmPassword": "Confirm password",
     "fullName": "Full name",
     "approved": "Approved",
-    "access_rights": "Access rights"
+    "access_rights": "Access rights",
+    "item_order": "Order",
+    "parent_id": "Parent",
+    "link_page": "Page",
+    "link_url": "Url",
+    "label": "Label"
   },
   "message": {
     "error": {

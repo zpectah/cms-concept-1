@@ -4,6 +4,7 @@ export * from './Categories';
 export * from './Dashboard';
 export * from './Demo';
 export * from './Login';
+export * from './Pages';
 export * from './PasswordRecovery';
 export * from './Profile';
 export * from './Settings';

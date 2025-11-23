@@ -43,6 +43,7 @@
     "cropImage": "Crop image",
     "saveAndExit": "Save and exit",
     "newRecord": "New record",
+    "newItem": "New item",
     "logOut": "Log out",
     "clone": "Clone",
     "change": "Change",
@@ -53,7 +54,8 @@
     "approved": "Approved",
     "approveSelected": "Approve selected",
     "markReadSelected": "Mark selected as read",
-    "active": "Active"
+    "active": "Active",
+    "toggle": "Toggle"
   },
   "label": {
     "yesterday": "Yesterday",
@@ -61,7 +63,10 @@
     "tomorrow": "Tomorrow",
     "loading": "Loading",
     "or": "or",
-    "newRecord": "New record"
+    "newRecord": "New record",
+    "notSelected": "Not selected",
+    "noItemsCreated": "No items created",
+    "createNewItem": "Create new item"
   },
   "routes": {
     "articles": "Articles",
