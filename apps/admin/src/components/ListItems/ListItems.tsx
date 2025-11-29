@@ -37,6 +37,7 @@ const ListItems = <T extends ItemBase>({
   renderSelectedActions,
   renderRowActions,
   modelActions,
+  disableToggleAction,
 }: ListItemsProps<T>) => {
   const { t } = useTranslation();
   const {
@@ -135,6 +136,7 @@ const ListItems = <T extends ItemBase>({
             disableFavorites={disableFavorites}
             renderRowActions={renderRowActions}
             modelActions={modelActions}
+            disableToggleAction={disableToggleAction}
           />
         );
 
@@ -154,6 +156,7 @@ const ListItems = <T extends ItemBase>({
             disableFavorites={disableFavorites}
             renderRowActions={renderRowActions}
             modelActions={modelActions}
+            disableToggleAction={disableToggleAction}
           />
         );
 
@@ -177,6 +180,7 @@ const ListItems = <T extends ItemBase>({
             disableFavorites={disableFavorites}
             renderRowActions={renderRowActions}
             modelActions={modelActions}
+            disableToggleAction={disableToggleAction}
           />
         );
     }

@@ -38,6 +38,7 @@ export interface ListItemsProps<T extends ItemBase> extends ListItemsBase<T>, Li
   orderKeys: (keyof T)[];
   searchKeys: (keyof T)[];
   modelActions: ModelActions;
+  disableToggleAction?: boolean;
 
   /**
    * Custom render actions in controls for selected items
@@ -116,6 +117,7 @@ interface ViewBaseProps<T extends ItemBase> extends ListItemsInitialProps {
   selected: ListItemsSelected;
   renderRowActions?: (row: T) => ReactNode;
   modelActions: ModelActions;
+  disableToggleAction?: boolean;
 }
 
 export interface TableViewProps<T extends ItemBase> extends ViewBaseProps<T> {

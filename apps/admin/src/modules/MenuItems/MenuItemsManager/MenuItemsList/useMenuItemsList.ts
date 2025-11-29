@@ -14,7 +14,7 @@ interface useMenuItemsListProps {
 export const useMenuItemsList = ({ menuId }: useMenuItemsListProps) => {
   const { t } = useTranslation(['common']);
   const { menuItems: modelActions } = useUserActions();
-  const { addToast } = useAppStore();
+  const { addToast, openConfirmDialog } = useAppStore();
   const { setDetailId } = useMenuItemsManagerContext();
   const { menuMenuItemsQuery, menuItemsToggleMutation, menuItemsDeleteMutation } = useMenuItemsQuery({ menuId });
 
@@ -63,10 +63,7 @@ export const useMenuItemsList = ({ menuId }: useMenuItemsListProps) => {
     console.warn(err);
   };
 
-  const deleteSelectedHandler = (ids: number[]) => {
-    if (!modelActions.delete) return;
-    if (!ids || ids.length === 0) return;
-
+  const deleteSelectedConfirmHandler = (ids: number[]) =>
     onDelete(ids, {
       onSuccess: (res) => {
         addToast(
@@ -77,6 +74,16 @@ export const useMenuItemsList = ({ menuId }: useMenuItemsListProps) => {
         refetch();
       },
       onError,
+    });
+
+  const deleteSelectedHandler = (ids: number[]) => {
+    if (!modelActions.delete) return;
+    if (!ids || ids.length === 0) return;
+
+    openConfirmDialog({
+      title: t('message.confirm.deleteRow.title'),
+      content: t('message.confirm.deleteRow.content'),
+      onConfirm: () => deleteSelectedConfirmHandler?.(ids),
     });
   };
 

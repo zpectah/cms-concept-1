@@ -9,7 +9,8 @@
     "video": "Video",
     "document": "Document",
     "archive": "Archive",
-    "external": "External"
+    "external": "External",
+    "section": "Section"
   },
   "accessRights": {
     "none": "None",

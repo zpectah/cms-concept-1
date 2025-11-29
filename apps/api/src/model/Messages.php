@@ -196,7 +196,7 @@ class Messages extends Model {
 
     $placeholders = self::getUpdatePlaceholders($data);
 
-    $sql = "UPDATE `messages` SET `read` = 1 WHERE `id` IN ({$placeholders})";
+    $sql = "UPDATE `messages` SET `read` = NOT `read` WHERE `id` IN ({$placeholders})";
     $stmt = $conn -> prepare($sql);
     $stmt -> execute($data);
 

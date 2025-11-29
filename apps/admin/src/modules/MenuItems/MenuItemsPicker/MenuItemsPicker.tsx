@@ -30,10 +30,12 @@ const MenuItemsPicker = forwardRef<HTMLSelectElement, MenuItemsPickerProps>((pro
     menuItemsData?.forEach((item) => {
       if (ignored.includes(item.id)) return;
 
+      const prefix = `[${item.type[0].toUpperCase()}]`;
+
       MenuItems.push({
         id: String(item.id),
         value: item.id,
-        children: item.name,
+        children: `${prefix} ${item.name}`,
       });
     });
 

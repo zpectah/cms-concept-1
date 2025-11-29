@@ -53,6 +53,7 @@ const MembersList = () => {
       onRowDelete={(id) => onDeleteSelected([id])}
       onRowDisable={(id) => onDisableSelected([id])}
       modelActions={modelActions}
+      disableFavorites
     />
   );
 };

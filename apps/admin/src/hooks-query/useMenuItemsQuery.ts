@@ -11,11 +11,10 @@ interface useMenuItemsQueryProps {
 }
 
 export const useMenuItemsQuery = ({ id, menuId }: useMenuItemsQueryProps) => {
-  const menuItemsQuery = useQuery<unknown, unknown, MenuItems>({
-    queryKey: [QUERY_KEY_BASE],
-    queryFn: () => axios.get(API_URL.menuItems).then((response) => response.data),
-    enabled: false, // TODO - why and WHERE this is called?
-  });
+  // const menuItemsQuery = useQuery<unknown, unknown, MenuItems>({
+  //   queryKey: [QUERY_KEY_BASE],
+  //   queryFn: () => axios.get(API_URL.menuItems).then((response) => response.data),
+  // });
 
   const menuMenuItemsQuery = useQuery<unknown, unknown, MenuItems>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-menu-${menuId}`],
@@ -50,7 +49,7 @@ export const useMenuItemsQuery = ({ id, menuId }: useMenuItemsQueryProps) => {
   });
 
   return {
-    menuItemsQuery,
+    // menuItemsQuery,
     menuMenuItemsQuery,
     menuItemsDetailQuery,
     menuItemsCreateMutation,

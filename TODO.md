@@ -31,5 +31,6 @@
 * [OK] - Přidat údaje pro email smtp službu do tabulky s nastavení, heslo zašifrovat a uložit. Při použití hesla odšifrovat
 * [] - Upravit response výstup z analýzy a mazání permanentně ...
 * [] - Opravit 'Reset' button ve formulářích detailu ...
-* [] - Menu a MenuItems - potvrzení smazaní - ConfirmDialog
+* [OK] - Menu a MenuItems - potvrzení smazaní - ConfirmDialog
+* [] - Opravit a připravit onReset() na místo klasicého reset u formuláře
 

@@ -48,7 +48,6 @@ const MessagesList = () => {
       onDisableSelected={onDisableSelected}
       onRowDelete={(id) => onDeleteSelected([id])}
       onRowDisable={(id) => onDisableSelected([id])}
-      disableFavorites
       renderSelectedActions={(selected) => (
         <Button
           variant="contained"
@@ -61,7 +60,7 @@ const MessagesList = () => {
       )}
       renderRowActions={(row) => (
         <IconButtonPlus
-          tooltip={t('button.markRead')}
+          tooltip={row.read ? t('button.markUnread') : t('button.markRead')}
           onClick={() => onMarkSelected([row.id])}
           disabled={!modelActions.modify}
         >
@@ -69,6 +68,8 @@ const MessagesList = () => {
         </IconButtonPlus>
       )}
       modelActions={modelActions}
+      disableFavorites
+      disableToggleAction
     />
   );
 };

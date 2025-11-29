@@ -22,6 +22,12 @@ interface MenuItemsListProps {
 const RecursiveMenuListItem = ({ onDetail, onDelete, onToggle, ...item }: RecursiveMenuListItemProps) => {
   const { t } = useTranslation(['common']);
 
+  const label = {
+    [menuItemsTypeKeys.default]: `Page #${item.link_page}`,
+    [menuItemsTypeKeys.external]: item.link_url,
+    [menuItemsTypeKeys.section]: `-`,
+  };
+
   return (
     <>
       <ListItem
@@ -46,7 +52,16 @@ const RecursiveMenuListItem = ({ onDetail, onDelete, onToggle, ...item }: Recurs
         </ListItemAvatar>
         <ListItemText
           primary={item.name}
-          secondary={item.type === menuItemsTypeKeys.external ? item.link_url : `${item.type}: ${item.link_page}`}
+          secondary={label[item.type]}
+          onClick={() => onDetail(item.id)}
+          slotProps={{
+            primary: {
+              sx: { cursor: 'pointer' },
+            },
+            secondary: {
+              sx: { cursor: 'pointer' },
+            },
+          }}
         />
       </ListItem>
       {item.children.length > 0 && (

@@ -39,6 +39,7 @@ const TableView = <T extends ItemBase>({
   disableFavorites,
   renderRowActions,
   modelActions,
+  disableToggleAction,
 }: TableViewProps<T>) => {
   const { t } = useTranslation(['common', 'form']);
 
@@ -56,7 +57,6 @@ const TableView = <T extends ItemBase>({
         onClick: () => onDelete(id),
         tooltip: t('button.delete'),
         children: <DeleteOutlineIcon {...iconProps} />,
-        // color: muiCommonColorVariantKeys.error,
         disabled: !modelActions.delete,
         hidden: false,
       },
@@ -65,16 +65,14 @@ const TableView = <T extends ItemBase>({
         onClick: () => onDisable(id),
         tooltip: active ? t('button.disable') : t('button.active'),
         children: active ? <VisibilityIcon fontSize="inherit" /> : <VisibilityOffIcon fontSize="inherit" />,
-        // color: muiCommonColorVariantKeys.warning,
         disabled: !modelActions.modify,
-        hidden: false,
+        hidden: disableToggleAction ?? false,
       },
       {
         ...buttonCommonProps,
         onClick: () => onDetail(id),
         tooltip: t('button.detail'),
         children: <ArrowOutwardIcon {...iconProps} />,
-        // color: muiCommonColorVariantKeys.primary,
         disabled: !modelActions.view,
         hidden: false,
       },
