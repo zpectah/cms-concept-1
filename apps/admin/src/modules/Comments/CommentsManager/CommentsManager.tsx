@@ -1,71 +1,90 @@
-import { useEffect, useState } from 'react';
-import { Button, Accordion, AccordionSummary, AccordionDetails, AccordionActions, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Button, Collapse, Stack, Badge } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Model } from '@common';
+import { newItemKey, Model } from '@common';
 import { useCommentsQuery } from '../../../hooks-query';
+import { Section } from '../../../components';
 import { CommentsList } from './CommentsList';
 import { CommentsDetailForm } from './CommentsDetailForm';
+import { CommentsManagerContextProvider } from './CommentsManager.context';
 
 interface CommentsManagerProps {
   isEnabled: boolean;
   contentType: Model;
-  contentId?: string;
+  contentId: number;
 }
 
 const CommentsManager = ({ isEnabled, contentType, contentId }: CommentsManagerProps) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [detailId, setDetailId] = useState<number | typeof newItemKey | null>(null);
+  const [replyTo, setReplyTo] = useState<number | null>(null);
 
-  const { commentsQuery } = useCommentsQuery({ contentType, contentId: Number(contentId) });
+  const { commentsQuery } = useCommentsQuery({ contentType, contentId });
 
   const { data: comments, isLoading } = commentsQuery;
 
-  useEffect(() => {
-    console.log('comments', comments);
-  }, [comments]);
-
-  if (!comments || !isEnabled) return null;
+  if (!isEnabled) return null;
 
   return (
-    <>
+    <CommentsManagerContextProvider
+      value={{
+        detailId,
+        setDetailId: setDetailId,
+        replyTo,
+        setReplyTo,
+      }}
+    >
       {isLoading && <>Is loading ... please wait</>}
 
-      <Accordion
-        sx={{ mt: 1 }}
-        slotProps={{
-          root: {
-            variant: 'outlined',
-          },
-        }}
+      <Section
+        title={
+          <Badge badgeContent={comments?.length} color="primary">
+            Comments
+          </Badge>
+        }
+        action={
+          <Button onClick={() => setExpanded(!expanded)} variant="outlined" color="inherit" size="small">
+            Expand &nbsp;
+            <ExpandMoreIcon />
+          </Button>
+        }
       >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="comments-manager-content"
-          id="comments-manager-header"
-        >
-          <Typography component="span" variant="h6">
-            Comments ({comments?.length})
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          {comments && (
+        <Collapse in={expanded}>
+          <Stack direction="column" gap={2} alignItems="center">
             <CommentsList
-              comments={comments}
-              onReact={(parentId) => {
-                setDialogOpen(true);
-                console.log('react to comment with id', parentId);
+              comments={comments ?? []}
+              onReply={(parent) => {
+                setDetailId(newItemKey);
+                setReplyTo(parent);
+                console.log('react to comment with id', parent);
+              }}
+              onDetail={(id) => {
+                setDetailId(id);
+                setReplyTo(null);
+                console.log('detail id', id);
               }}
             />
-          )}
-        </AccordionDetails>
-        <AccordionActions>
-          <Button variant="contained" color="secondary" onClick={() => setDialogOpen(true)}>
-            New comment
-          </Button>
-        </AccordionActions>
-      </Accordion>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                setDetailId(newItemKey);
+                setReplyTo(null);
+              }}
+            >
+              New comment
+            </Button>
+          </Stack>
+        </Collapse>
+      </Section>
 
-      <CommentsDetailForm open={dialogOpen} onClose={() => setDialogOpen(false)} />
-    </>
+      <CommentsDetailForm
+        open={!!detailId}
+        onClose={() => setDetailId(null)}
+        contentType={contentType}
+        contentId={contentId}
+      />
+    </CommentsManagerContextProvider>
   );
 };
 

@@ -12,3 +12,5 @@ export const modelKeys = {
   translations: 'translations',
   users: 'users',
 } as const;
+
+export const modelKeysArray = [...Object.keys(modelKeys)] as [string, ...string[]];

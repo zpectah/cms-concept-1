@@ -12,17 +12,16 @@ interface useCommentsQueryProps {
 }
 
 export const useCommentsQuery = ({ id, contentType, contentId }: useCommentsQueryProps) => {
-  const commentsPath = contentType && contentId ? `${API_URL.comments}/${contentType}/${contentId}` : API_URL.comments;
-
   const commentsQuery = useQuery<unknown, unknown, Comments>({
     queryKey: [QUERY_KEY_BASE],
-    queryFn: () => axios.get(commentsPath).then((response) => response.data),
+    queryFn: () => axios.get(`${API_URL.comments}/${contentType}/${contentId}`).then((response) => response.data),
+    enabled: !!(contentType && contentId),
   });
 
   const commentsDetailQuery = useQuery<unknown, unknown, CommentsDetail>({
     queryKey: [QUERY_KEY_BASE, `${QUERY_KEY_BASE}-${id}`],
     queryFn: () => axios.get(`${API_URL.comments}/id/${id}`).then((response) => response.data),
-    enabled: !!id && id !== newItemKey,
+    enabled: !!id && id !== newItemKey && id !== '0',
   });
 
   const commentsCreateMutation = useMutation<{ id: number }, unknown, CommentsDetail>({
