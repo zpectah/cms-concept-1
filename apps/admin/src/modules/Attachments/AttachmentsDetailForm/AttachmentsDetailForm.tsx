@@ -15,7 +15,7 @@ const AttachmentsDetailForm = () => {
 
   const { t } = useTranslation(['common', 'form']);
   const { attachments: modelActions } = useUserActions();
-  const { detailId, form, onSubmit } = useAttachmentsDetailForm();
+  const { detailId, detailExtension, form, onSubmit } = useAttachmentsDetailForm();
   const { getElementByType } = useAttachmentTypeElement();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
@@ -61,6 +61,8 @@ const AttachmentsDetailForm = () => {
             alt: name,
             imgStyle: { maxWidth: '100%', height: 'auto' },
             iconProps: { sx: { fontSize: '350%' } },
+            extension: detailExtension,
+            player: true,
           })}
         </Stack>
       </FormLayout>

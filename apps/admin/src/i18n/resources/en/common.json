@@ -67,7 +67,10 @@
     "newRecord": "New record",
     "notSelected": "Not selected",
     "noItemsCreated": "No items created",
-    "createNewItem": "Create new item"
+    "createNewItem": "Create new item",
+    "errorWhileLoading": "Error while loading",
+    "noFileToLoad": "No file to load",
+    "preparing": "Preparing"
   },
   "routes": {
     "articles": "Articles",
@@ -132,7 +135,9 @@
     },
     "info": {
       "expiredSession": "Your login has expired and you have been logged out.",
-      "nothingUpdated": "No changes were saved"
+      "nothingUpdated": "No changes were saved",
+      "audioNotSupported": "Your browser does not support audio",
+      "videoNotSupported": "Your browser does not support video"
     },
     "warning": {},
     "error": {

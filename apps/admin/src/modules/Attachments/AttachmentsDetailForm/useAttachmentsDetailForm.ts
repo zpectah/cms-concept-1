@@ -110,6 +110,7 @@ export const useAttachmentsDetailForm = () => {
     detailData,
     detailQuery,
     detailId: id,
+    detailExtension: detailData?.file_ext,
     isSubmitting: false,
   };
 };

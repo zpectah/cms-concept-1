@@ -33,4 +33,5 @@
 * [] - Opravit 'Reset' button ve formulářích detailu ...
 * [OK] - Menu a MenuItems - potvrzení smazaní - ConfirmDialog
 * [] - Opravit a připravit onReset() na místo klasicého reset u formuláře
+* [OK] - Přidat přehrávače/zobrazovače pro detaily příloh
 

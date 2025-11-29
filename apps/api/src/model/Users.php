@@ -99,7 +99,8 @@ class Users extends Model {
     }
 
     $data = self::jsonToDbDetailMapper($data);
-    $password = password_hash($data['password'], PASSWORD_ARGON2ID);
+    $trimmedPassword = trim($data['password']);
+    $password = password_hash($trimmedPassword, PASSWORD_ARGON2ID);
     $params = self::getColumnsAndValuesForQuery([ ...self::$tableFields, 'password' ]);
     $columns = $params['columns'];
     $values = $params['values'];
@@ -151,7 +152,10 @@ class Users extends Model {
 
     $data = self::jsonToDbDetailMapper($data);
     $setParts = self::getQueryParts($data, $fields);
-    if (isset($data['password'])) $password = password_hash($data['password'], PASSWORD_ARGON2ID);
+    if (isset($data['password'])) {
+      $trimmedPassword = trim($data['password']);
+      $password = password_hash($trimmedPassword, PASSWORD_ARGON2ID);
+    }
 
     $sql = "UPDATE `users` SET " . implode(', ', $setParts) . " WHERE `id` = :id";
     $stmt = $conn -> prepare($sql);
@@ -229,7 +233,8 @@ class Users extends Model {
 
   public function checkPassword($data): array {
     $email = $data['email'];
-    $password = $data['password'];
+    $rawPassword = $data['password'];
+    $password = trim($rawPassword);
 
     $user = self::getDetail(null, $email, true);
     $hash = $user['password'];
@@ -253,7 +258,8 @@ class Users extends Model {
     }
 
     $email = $data['email'];
-    $password = password_hash($data['password'], PASSWORD_ARGON2ID);
+    $trimmedPassword = trim($data['password']);
+    $password = password_hash($trimmedPassword, PASSWORD_ARGON2ID);
 
     $sql = "UPDATE `users` SET `password` = :password WHERE `email` = :email";
     $stmt = $conn -> prepare($sql);
