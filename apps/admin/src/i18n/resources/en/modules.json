@@ -21,7 +21,12 @@
   },
   "menu": {
     "listTitle": "Menu",
-    "newDetailTitle": "New menu"
+    "newDetailTitle": "New menu",
+    "message": {
+      "warning": {
+        "createMenuFirst": "You must create menu before adding menu items"
+      }
+    }
   },
   "menuItems": {
     "listTitle": "Menu items",

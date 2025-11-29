@@ -1,6 +1,6 @@
 import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { menuTypeDefault } from '@common';
+import { menuTypeDefault, newItemKey } from '@common';
 import { registeredFormFields } from '../../../enums';
 import { getConfig } from '../../../config';
 import {
@@ -19,7 +19,7 @@ import { useMenuDetailForm } from './useMenuDetailForm';
 const MenuDetailForm = () => {
   const { routes } = getConfig();
 
-  const { t } = useTranslation(['common', 'form']);
+  const { t } = useTranslation(['common', 'form', 'modules']);
   const { menu: modelActions } = useUserActions();
   const { detailId, form, onSubmit, fieldOptions } = useMenuDetailForm();
 
@@ -45,6 +45,7 @@ const MenuDetailForm = () => {
             fieldProps={{ defaultValue: menuTypeDefault, sx: { width: { xs: '100%', md: '33%' } } }}
           />
           <div id={dynamicSlotId} style={{ marginTop: '1rem' }} />
+          {detailId === newItemKey && <div>{t('modules:menu.message.warning.createMenuFirst')}</div>}
         </FormLayout>
       </ControlledForm>
 

@@ -13,10 +13,7 @@ const MenuItemsManager = ({ isEnabled, menuId }: MenuItemsManagerProps) => {
   const [detailId, setDetailId] = useState<number | typeof newItemKey | null>(null);
 
   if (!isEnabled) return null;
-
-  if (menuId === newItemKey) {
-    return <div>You must create menu before adding menu items</div>;
-  }
+  if (menuId === newItemKey) return null;
 
   return (
     <MenuItemsManagerContextProvider
