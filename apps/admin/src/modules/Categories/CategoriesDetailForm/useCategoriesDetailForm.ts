@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -122,20 +122,33 @@ export const useCategoriesDetailForm = () => {
     }
   };
 
-  useEffect(() => {
-    if (id) {
-      if (id === newItemKey) {
-        setTitle(t('button.new.categories'));
-        form.reset(getCategoriesDetailFormDefaultValues(locales));
-      } else if (detailData) {
-        if (form.formState.isDirty) return;
-
-        setTitle(detailData.name);
-        form.reset(getCategoriesDetailFormMapper(detailData));
-      }
+  const resetHandler = useCallback(() => {
+    if (id === newItemKey) {
+      setTitle(t('button.new.categories'));
+      form.reset(getCategoriesDetailFormDefaultValues(locales));
+    } else if (detailData) {
+      setTitle(detailData.name);
+      form.reset(getCategoriesDetailFormMapper(detailData));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, detailData, form, locales]);
+
+  useEffect(() => {
+    if (id) {
+      // if (id === newItemKey) {
+      //   setTitle(t('button.new.categories'));
+      //   form.reset(getCategoriesDetailFormDefaultValues(locales));
+      // } else if (detailData) {
+      //   if (form.formState.isDirty) return;
+      //
+      //   setTitle(detailData.name);
+      //   form.reset(getCategoriesDetailFormMapper(detailData));
+      // }
+
+      resetHandler();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, detailData]);
 
   return {
     form,
@@ -143,6 +156,7 @@ export const useCategoriesDetailForm = () => {
       type: getTypeFieldOptions(modelKeys.categories),
     },
     onSubmit: form.handleSubmit(submitHandler),
+    onReset: resetHandler,
     detailData,
     detailQuery,
     detailId: id,

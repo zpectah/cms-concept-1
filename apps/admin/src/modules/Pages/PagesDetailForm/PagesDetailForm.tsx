@@ -22,7 +22,7 @@ const PagesDetailForm = () => {
 
   const { t } = useTranslation(['common', 'form']);
   const { pages: modelActions } = useUserActions();
-  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = usePagesDetailForm();
+  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions, onReset } = usePagesDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
@@ -31,7 +31,12 @@ const PagesDetailForm = () => {
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
         actions={
-          <FormDetailActions detailId={detailId} listPath={`/${routes.pages.path}`} modelActions={modelActions} />
+          <FormDetailActions
+            detailId={detailId}
+            listPath={`/${routes.pages.path}`}
+            modelActions={modelActions}
+            onReset={onReset}
+          />
         }
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
       >

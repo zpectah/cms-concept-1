@@ -10,6 +10,7 @@ type FormDetailActionsProps = Partial<WithChildren> & {
   disableActions?: boolean;
   disableResetButton?: boolean;
   modelActions: ModelActions;
+  onReset?: () => void;
 };
 
 const FormDetailActions = ({
@@ -19,6 +20,7 @@ const FormDetailActions = ({
   disableActions,
   disableResetButton,
   modelActions,
+  onReset,
 }: FormDetailActionsProps) => {
   const { t } = useTranslation();
   const form = useForm();
@@ -33,7 +35,7 @@ const FormDetailActions = ({
             <SubmitButton disabled={!modelActions.modify}>{t('button.update')}</SubmitButton>
           )}
           {!disableResetButton && (
-            <SecondaryButton size="large" onClick={() => form.reset()}>
+            <SecondaryButton size="large" onClick={() => (onReset ? onReset() : form.reset())}>
               {t('button.reset')}
             </SecondaryButton>
           )}

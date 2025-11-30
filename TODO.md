@@ -35,4 +35,6 @@
 * [] - Opravit a připravit onReset() na místo klasicého reset u formuláře
 * [OK] - Přidat přehrávače/zobrazovače pro detaily příloh
 * [OK] - Nastavit u vytváření/editaci uživatele aby nemohl přidávat práva než je on sám 
+* [] - Members - chyba při otevírání nového - zůstavájí fragmenty z původních dat
+* [] - Articles - když mám u nějakého detailu komentáře a přepnu na 'Nový Article' -> zůstanou mi tam původní formuláře  
 

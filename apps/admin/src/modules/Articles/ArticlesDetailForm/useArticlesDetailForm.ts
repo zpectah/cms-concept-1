@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -138,31 +138,49 @@ export const useArticlesDetailForm = () => {
     }
   };
 
-  const isCommentsActive = useMemo(() => {
-    return !!settings?.comments.active;
-  }, [settings]);
+  const isCommentsActive = useMemo(() => !!settings?.comments.active, [settings]);
+
+  const resetHandler = useCallback(() => {
+    if (id === newItemKey) {
+      if (cloneId && cloneDetailData) {
+        const cloneDetail = getCloneArticlesDetailFormMapper(cloneDetailData);
+
+        setTitle(cloneDetail.name);
+        form.reset(cloneDetail);
+      } else {
+        setTitle(t('button.new.articles'));
+        form.reset(getArticlesDetailFormDefaultValues(locales));
+      }
+    } else if (detailData) {
+      setTitle(detailData.name);
+      form.reset(getArticlesDetailFormMapper(detailData));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, detailData, cloneId, cloneDetailData, form, locales]);
 
   useEffect(() => {
     if (id) {
-      if (id === newItemKey) {
-        if (cloneId && cloneDetailData) {
-          const cloneDetail = getCloneArticlesDetailFormMapper(cloneDetailData);
+      // if (id === newItemKey) {
+      //   if (cloneId && cloneDetailData) {
+      //     const cloneDetail = getCloneArticlesDetailFormMapper(cloneDetailData);
+      //
+      //     setTitle(cloneDetail.name);
+      //     form.reset(cloneDetail);
+      //   } else {
+      //     setTitle(t('button.new.articles'));
+      //     form.reset(getArticlesDetailFormDefaultValues(locales));
+      //   }
+      // } else if (detailData) {
+      //   if (form.formState.isDirty) return;
+      //
+      //   setTitle(detailData.name);
+      //   form.reset(getArticlesDetailFormMapper(detailData));
+      // }
 
-          setTitle(cloneDetail.name);
-          form.reset(cloneDetail);
-        } else {
-          setTitle(t('button.new.articles'));
-          form.reset(getArticlesDetailFormDefaultValues(locales));
-        }
-      } else if (detailData) {
-        if (form.formState.isDirty) return;
-
-        setTitle(detailData.name);
-        form.reset(getArticlesDetailFormMapper(detailData));
-      }
+      resetHandler();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, cloneId, detailData, cloneDetailData, form, locales]);
+  }, [id, cloneId, detailData, cloneDetailData]);
 
   return {
     form,
@@ -170,6 +188,7 @@ export const useArticlesDetailForm = () => {
       type: getTypeFieldOptions(modelKeys.articles),
     },
     onSubmit: form.handleSubmit(submitHandler),
+    onReset: resetHandler,
     detailData,
     detailQuery,
     detailId: id,

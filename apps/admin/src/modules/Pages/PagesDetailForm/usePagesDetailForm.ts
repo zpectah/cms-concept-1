@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -117,20 +117,37 @@ export const usePagesDetailForm = () => {
     }
   };
 
+  const resetHandler = useCallback(() => {
+    if (id === newItemKey) {
+      setTitle(t('button.new.pages'));
+      form.reset(getPagesDetailFormDefaultValues(locales));
+    } else if (detailData) {
+      setTitle(detailData.name);
+      form.reset(getPagesDetailFormMapper(detailData));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, detailData, locales]);
+
   useEffect(() => {
     if (id) {
-      if (id === newItemKey) {
-        setTitle(t('button.new.pages'));
-        form.reset(getPagesDetailFormDefaultValues(locales));
-      } else if (detailData) {
-        if (form.formState.isDirty) return;
+      // if (id === newItemKey) {
+      //   setTitle(t('button.new.pages'));
+      //   form.reset(getPagesDetailFormDefaultValues(locales));
+      // } else if (detailData) {
+      //   if (form.formState.isDirty) return;
+      //
+      //   setTitle(detailData.name);
+      //   form.reset(getPagesDetailFormMapper(detailData));
+      // }
 
-        setTitle(detailData.name);
-        form.reset(getPagesDetailFormMapper(detailData));
+      if (form.formState.isDirty) {
+        return;
+      } else {
+        resetHandler();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, detailData, form, locales]);
+  }, [id, detailData]);
 
   return {
     form,
@@ -138,6 +155,7 @@ export const usePagesDetailForm = () => {
       type: getTypeFieldOptions(modelKeys.pages),
     },
     onSubmit: form.handleSubmit(submitHandler),
+    onReset: resetHandler,
     detailData,
     detailQuery,
     detailId: id,

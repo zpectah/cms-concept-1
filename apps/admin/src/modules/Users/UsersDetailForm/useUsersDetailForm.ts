@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -43,7 +43,7 @@ export const useUsersDetailForm = () => {
   });
   const { isAttributeUnique } = useUsersHelpers();
 
-  const { data: users, refetch } = usersQuery;
+  const { data: users, refetch, isLoading } = usersQuery;
   const { data: detailData, ...detailQuery } = usersDetailQuery;
   const { mutate: onCreate } = usersCreateMutation;
   const { mutate: onPatch } = usersPatchMutation;
@@ -152,6 +152,17 @@ export const useUsersDetailForm = () => {
     return tmpItems;
   };
 
+  const resetHandler = useCallback(() => {
+    if (id === newItemKey) {
+      setTitle(t('button.new.users'));
+      form.reset(getUsersDetailFormDefaultValues());
+    } else if (detailData) {
+      setTitle(detailData.name);
+      form.reset(getUsersDetailFormMapper(detailData));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, detailData]);
+
   useEffect(() => {
     if (id === newItemKey && (firstNameValue || lastNameValue)) {
       form.setValue('name', getFormattedString(firstNameValue ?? '', lastNameValue ?? ''));
@@ -160,18 +171,24 @@ export const useUsersDetailForm = () => {
 
   useEffect(() => {
     if (id) {
-      if (id === newItemKey) {
-        setTitle(t('button.new.users'));
-        form.reset(getUsersDetailFormDefaultValues());
-      } else if (detailData) {
-        if (form.formState.isDirty) return;
+      // if (id === newItemKey) {
+      //   setTitle(t('button.new.users'));
+      //   form.reset(getUsersDetailFormDefaultValues());
+      // } else if (detailData) {
+      //   if (form.formState.isDirty) return;
+      //
+      //   setTitle(detailData.name);
+      //   form.reset(getUsersDetailFormMapper(detailData));
+      // }
 
-        setTitle(detailData.name);
-        form.reset(getUsersDetailFormMapper(detailData));
+      if (form.formState.isDirty) {
+        return;
+      } else {
+        resetHandler();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, detailData, form]);
+  }, [id, detailData]);
 
   return {
     form,
@@ -180,9 +197,11 @@ export const useUsersDetailForm = () => {
       accessRights: getAccessRightsFieldOptions(),
     },
     onSubmit: form.handleSubmit(submitHandler),
+    onReset: resetHandler,
     detailData,
     detailQuery,
     detailId: id,
     isSubmitting: false,
+    isLoading,
   };
 };

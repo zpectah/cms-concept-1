@@ -20,7 +20,7 @@ const TagsDetailForm = () => {
 
   const { t } = useTranslation(['common', 'form']);
   const { tags: modelActions } = useUserActions();
-  const { detailId, form, onSubmit, fieldOptions } = useTagsDetailForm();
+  const { detailId, form, onSubmit, fieldOptions, onReset } = useTagsDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
@@ -29,7 +29,12 @@ const TagsDetailForm = () => {
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
         actions={
-          <FormDetailActions detailId={detailId} listPath={`/${routes.tags.path}`} modelActions={modelActions} />
+          <FormDetailActions
+            detailId={detailId}
+            listPath={`/${routes.tags.path}`}
+            modelActions={modelActions}
+            onReset={onReset}
+          />
         }
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
       >

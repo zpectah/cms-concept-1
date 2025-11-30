@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -86,20 +86,33 @@ export const useAttachmentsDetailForm = () => {
     patchHandler(master);
   };
 
-  useEffect(() => {
-    if (id) {
-      if (id === newItemKey) {
-        setTitle(t('button.new.attachments'));
-        form.reset(getAttachmentsDetailFormDefaultValues());
-      } else if (detailData) {
-        if (form.formState.isDirty) return;
-
-        setTitle(detailData.file_name);
-        form.reset(getAttachmentsDetailFormMapper(detailData));
-      }
+  const resetHandler = useCallback(() => {
+    if (id === newItemKey) {
+      setTitle(t('button.new.attachments'));
+      form.reset(getAttachmentsDetailFormDefaultValues());
+    } else if (detailData) {
+      setTitle(detailData.file_name);
+      form.reset(getAttachmentsDetailFormMapper(detailData));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, detailData, form]);
+
+  useEffect(() => {
+    if (id) {
+      // if (id === newItemKey) {
+      //   setTitle(t('button.new.attachments'));
+      //   form.reset(getAttachmentsDetailFormDefaultValues());
+      // } else if (detailData) {
+      //   if (form.formState.isDirty) return;
+      //
+      //   setTitle(detailData.file_name);
+      //   form.reset(getAttachmentsDetailFormMapper(detailData));
+      // }
+
+      resetHandler();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, detailData]);
 
   return {
     form,
@@ -107,6 +120,7 @@ export const useAttachmentsDetailForm = () => {
       type: getTypeFieldOptions(modelKeys.attachments),
     },
     onSubmit: form.handleSubmit(submitHandler),
+    onReset: resetHandler,
     detailData,
     detailQuery,
     detailId: id,

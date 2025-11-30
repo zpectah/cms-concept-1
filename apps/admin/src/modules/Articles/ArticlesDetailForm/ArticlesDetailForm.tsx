@@ -35,8 +35,18 @@ const ArticlesDetailForm = () => {
 
   const { t } = useTranslation(['common', 'form']);
   const { articles: modelActions } = useUserActions();
-  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions, detailData, isCommentsActive } =
-    useArticlesDetailForm();
+  const {
+    detailId,
+    form,
+    locale,
+    locales,
+    onSubmit,
+    onLocaleChange,
+    fieldOptions,
+    detailData,
+    isCommentsActive,
+    onReset,
+  } = useArticlesDetailForm();
 
   const dynamicSlotId = `portal-transport-articles-${detailId}-comments`;
 
@@ -50,7 +60,12 @@ const ArticlesDetailForm = () => {
       <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
         <FormLayout
           actions={
-            <FormDetailActions detailId={detailId} listPath={`/${routes.articles.path}`} modelActions={modelActions} />
+            <FormDetailActions
+              detailId={detailId}
+              listPath={`/${routes.articles.path}`}
+              modelActions={modelActions}
+              onReset={onReset}
+            />
           }
           sidebar={
             <FormDetailSidebar detailId={detailId} created={created} updated={updated}>

@@ -22,7 +22,8 @@ const CategoriesDetailForm = () => {
 
   const { t } = useTranslation(['common', 'form']);
   const { categories: modelActions } = useUserActions();
-  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = useCategoriesDetailForm();
+  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions, onReset } =
+    useCategoriesDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
@@ -31,7 +32,12 @@ const CategoriesDetailForm = () => {
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
       <FormLayout
         actions={
-          <FormDetailActions detailId={detailId} listPath={`/${routes.categories.path}`} modelActions={modelActions} />
+          <FormDetailActions
+            detailId={detailId}
+            listPath={`/${routes.categories.path}`}
+            modelActions={modelActions}
+            onReset={onReset}
+          />
         }
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
       >

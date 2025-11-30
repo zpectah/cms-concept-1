@@ -20,7 +20,8 @@ const TranslationsDetailForm = () => {
 
   const { t } = useTranslation(['common', 'form']);
   const { translations: modelActions } = useUserActions();
-  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions } = useTranslationsDetailForm();
+  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions, onReset } =
+    useTranslationsDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
@@ -33,6 +34,7 @@ const TranslationsDetailForm = () => {
             detailId={detailId}
             listPath={`/${routes.translations.path}`}
             modelActions={modelActions}
+            onReset={onReset}
           />
         }
         sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
