@@ -12,7 +12,7 @@
 * [OK] User account - lost password
 * [OK] User account - správa
 * [OK] Menu items picker !!!
-* [] Comments manager !!!
+* [OK] Comments manager !!!
 * [] Attachments picker - update/rozšíření
 * [OK] Settings - languages - při instalaci otevřít potvrzovací okno ...
 * [OK] Settings - maintenance - pouštění scriptů
@@ -34,4 +34,5 @@
 * [OK] - Menu a MenuItems - potvrzení smazaní - ConfirmDialog
 * [] - Opravit a připravit onReset() na místo klasicého reset u formuláře
 * [OK] - Přidat přehrávače/zobrazovače pro detaily příloh
+* [OK] - Nastavit u vytváření/editaci uživatele aby nemohl přidávat práva než je on sám 
 

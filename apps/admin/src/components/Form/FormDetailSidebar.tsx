@@ -14,6 +14,8 @@ type FormDetailSidebarProps = Partial<WithChildren> & {
   detailId?: string;
   disableActions?: boolean;
   cardContent?: ReactNode;
+  disableActive?: boolean;
+  disableDelete?: boolean;
 };
 
 const FormDetailSidebar = ({
@@ -23,6 +25,8 @@ const FormDetailSidebar = ({
   updated,
   disableActions,
   cardContent,
+  disableActive,
+  disableDelete,
 }: FormDetailSidebarProps) => {
   const { t } = useTranslation(['form']);
 
@@ -37,11 +41,15 @@ const FormDetailSidebar = ({
       </HiddenCard>
       {!disableActions && (
         <Stack>
-          <SwitchField name={registeredFormFields.active} fieldProps={{ label: t('form:label.active') }} />
+          <SwitchField
+            name={registeredFormFields.active}
+            fieldProps={{ label: t('form:label.active') }}
+            isDisabled={disableActive}
+          />
           <SwitchField
             name={registeredFormFields.deleted}
             fieldProps={{ label: t('form:label.deleted'), inputProps: { color: 'warning' } }}
-            isDisabled={detailId === newItemKey}
+            isDisabled={detailId === newItemKey || disableDelete}
           />
         </Stack>
       )}

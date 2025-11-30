@@ -13,18 +13,26 @@ import {
   EmailField,
   PasswordField,
 } from '../../../components';
-import { useUserActions } from '../../../hooks';
+import { useUser, useUserActions } from '../../../hooks';
 import { useUsersDetailForm } from './useUsersDetailForm';
+import { useMemo } from 'react';
 
 const UsersDetailForm = () => {
   const { routes } = getConfig();
 
   const { t } = useTranslation(['common', 'form']);
+  const { user } = useUser();
   const { users: modelActions } = useUserActions();
-  const { detailId, form, onSubmit, fieldOptions } = useUsersDetailForm();
+  const { detailId, form, onSubmit, fieldOptions, detailData } = useUsersDetailForm();
 
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
+
+  const canUpdateHigher = useMemo(() => {
+    const accessRights = detailData?.access_rights ?? 0;
+
+    return accessRights > user.access_rights;
+  }, [detailData, user]);
 
   return (
     <ControlledForm key={detailId} form={form} formProps={{ onSubmit }}>
@@ -32,7 +40,15 @@ const UsersDetailForm = () => {
         actions={
           <FormDetailActions detailId={detailId} listPath={`/${routes.users.path}`} modelActions={modelActions} />
         }
-        sidebar={<FormDetailSidebar detailId={detailId} created={created} updated={updated} />}
+        sidebar={
+          <FormDetailSidebar
+            detailId={detailId}
+            created={created}
+            updated={updated}
+            disableActive={canUpdateHigher}
+            disableDelete={canUpdateHigher}
+          />
+        }
       >
         <EmailField name={registeredFormFields.email} label={t('form:label.email')} isRequired />
         <PasswordField

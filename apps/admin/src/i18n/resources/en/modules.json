@@ -163,7 +163,7 @@
             }
           },
           "email": {
-            "title": "Email",
+            "title": "Email server",
             "subtitle": "Setting up an external email service for secure email distribution",
             "label": {
               "host": "Host",

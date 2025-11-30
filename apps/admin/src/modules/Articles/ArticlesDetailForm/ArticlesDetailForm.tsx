@@ -35,7 +35,7 @@ const ArticlesDetailForm = () => {
 
   const { t } = useTranslation(['common', 'form']);
   const { articles: modelActions } = useUserActions();
-  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions, detailData } =
+  const { detailId, form, locale, locales, onSubmit, onLocaleChange, fieldOptions, detailData, isCommentsActive } =
     useArticlesDetailForm();
 
   const dynamicSlotId = `portal-transport-articles-${detailId}-comments`;
@@ -44,8 +44,6 @@ const ArticlesDetailForm = () => {
   const startDate = useWatch({ name: registeredFormFields.event_start, control: form.control });
   const created = useWatch({ name: registeredFormFields.created, control: form.control });
   const updated = useWatch({ name: registeredFormFields.updated, control: form.control });
-
-  const isComments = detailId !== newItemKey;
 
   return (
     <>
@@ -63,7 +61,7 @@ const ArticlesDetailForm = () => {
               />
             </FormDetailSidebar>
           }
-          actionbar={<div id={dynamicSlotId} style={{ marginTop: '1rem' }} />}
+          actionbar={isCommentsActive && <div id={dynamicSlotId} style={{ marginTop: '1rem' }} />}
         >
           <InputField name={registeredFormFields.name} label={t('form:label.name')} isRequired />
           <SelectField
@@ -137,7 +135,7 @@ const ArticlesDetailForm = () => {
       {/* We must render out of the main form due to context conflict */}
       <DynamicPortal targetId={dynamicSlotId}>
         <CommentsManager
-          isEnabled={isComments}
+          isEnabled={isCommentsActive}
           contentType={modelKeys.articles}
           contentId={detailId !== newItemKey ? Number(detailId) : 0}
         />

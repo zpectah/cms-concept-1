@@ -16,7 +16,7 @@ const BlacklistPanel = () => {
         title={t('modules:settings.tabs.blacklist.section.title')}
         subtitle={t('modules:settings.tabs.blacklist.section.subtitle')}
         cardContent
-        titleSlot={<BlacklistNewItemDialog />}
+        action={<BlacklistNewItemDialog />}
       >
         <BlacklistTable />
       </Section>

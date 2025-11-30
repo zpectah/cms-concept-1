@@ -1,13 +1,9 @@
 import { useMemo } from 'react';
 import { deepMerge, usersAccessKeys } from '@common';
-import { useUserQuery } from '../hooks-query';
+import { useUser } from './useUser';
 
 export const useUserActions = () => {
-  const { userQuery } = useUserQuery();
-
-  const { data } = userQuery;
-
-  const user = data?.user;
+  const { user } = useUser();
 
   const baseActions = {
     articles: {
@@ -114,7 +110,7 @@ export const useUserActions = () => {
   };
 
   const actions = useMemo(() => {
-    const level = user?.access_rights ?? 0;
+    const level = user.access_rights;
 
     switch (level) {
       case usersAccessKeys.admin:

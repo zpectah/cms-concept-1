@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -9,7 +9,7 @@ import { useFormDetailControl, useSelectOptions, useArticlesHelpers } from '../.
 import { useAppStore } from '../../../store';
 import { CLONE_PATH_ATTRIBUTE_NAME, TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
-import { useArticlesQuery } from '../../../hooks-query';
+import { useArticlesQuery, useSettingsQuery } from '../../../hooks-query';
 import { useModelFavorites, useUserActions } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { ArticlesDetailFormSchema } from './schema';
@@ -34,6 +34,7 @@ export const useArticlesDetailForm = () => {
 
   const cloneId = searchParams.get(CLONE_PATH_ATTRIBUTE_NAME);
 
+  const { settingsQuery } = useSettingsQuery();
   const {
     articlesQuery,
     articlesDetailQuery,
@@ -53,6 +54,7 @@ export const useArticlesDetailForm = () => {
   });
   const { isAttributeUnique } = useArticlesHelpers();
 
+  const { data: settings } = settingsQuery;
   const { data: articles, refetch } = articlesQuery;
   const { data: detailData, ...detailQuery } = articlesDetailQuery;
   const { data: cloneDetailData } = articlesCloneDetailQuery;
@@ -136,6 +138,10 @@ export const useArticlesDetailForm = () => {
     }
   };
 
+  const isCommentsActive = useMemo(() => {
+    return !!settings?.comments.active;
+  }, [settings]);
+
   useEffect(() => {
     if (id) {
       if (id === newItemKey) {
@@ -171,5 +177,6 @@ export const useArticlesDetailForm = () => {
     locale,
     onLocaleChange,
     isSubmitting: false,
+    isCommentsActive,
   };
 };

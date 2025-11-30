@@ -18,20 +18,19 @@ import { useAppStore } from '../../../store';
 import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../constants';
 import { useViewLayoutContext } from '../../../components';
 import { useUsersQuery } from '../../../hooks-query';
-import { useModelFavorites, useUserActions } from '../../../hooks';
+import { useModelFavorites, useUser, useUserActions } from '../../../hooks';
 import { registeredFormFields } from '../../../enums';
 import { UsersDetailFormSchema } from './schema';
 import { IUsersDetailForm } from './types';
 import { getUsersDetailFormDefaultValues, getUsersDetailFormMapper, getUsersDetailFormMapperToMaster } from './helpers';
 
 export const useUsersDetailForm = () => {
-  const {
-    admin: { routes },
-  } = getConfig();
+  const { routes } = getConfig();
 
   const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useUser();
   const { users: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { setTitle } = useViewLayoutContext();
@@ -146,6 +145,7 @@ export const useUsersDetailForm = () => {
       tmpItems.push({
         value,
         children: getOptionValue(String(item), 'accessRights'),
+        disabled: value > user.access_rights,
       });
     });
 

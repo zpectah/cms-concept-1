@@ -96,6 +96,22 @@ const ClientPanelForm = () => {
           </Grid>
         </Section>
 
+        <Section
+          title={t('modules:settings.tabs.client.section.states.title')}
+          subtitle={t('modules:settings.tabs.client.section.states.subtitle')}
+          cardContent
+          contentSpacing="form"
+        >
+          <SwitchField
+            name={`${registeredFormFields.state}.${registeredFormFields.debug}`}
+            fieldProps={{ label: t('modules:settings.tabs.client.section.states.label.debugMode') }}
+          />
+          <SwitchField
+            name={`${registeredFormFields.state}.${registeredFormFields.maintenance}`}
+            fieldProps={{ label: t('modules:settings.tabs.client.section.states.label.maintenanceMode') }}
+          />
+        </Section>
+
         <Section title={t('modules:settings.tabs.client.section.comments.title')} cardContent contentSpacing="form">
           <SwitchField
             name={`${registeredFormFields.comments}.${registeredFormFields.active}`}
@@ -114,22 +130,6 @@ const ClientPanelForm = () => {
           <SwitchField
             name={`${registeredFormFields.messages}.${registeredFormFields.active}`}
             fieldProps={{ label: t('modules:settings.tabs.client.section.messages.label.active') }}
-          />
-        </Section>
-
-        <Section
-          title={t('modules:settings.tabs.client.section.states.title')}
-          subtitle={t('modules:settings.tabs.client.section.states.subtitle')}
-          cardContent
-          contentSpacing="form"
-        >
-          <SwitchField
-            name={`${registeredFormFields.state}.${registeredFormFields.debug}`}
-            fieldProps={{ label: t('modules:settings.tabs.client.section.states.label.debugMode') }}
-          />
-          <SwitchField
-            name={`${registeredFormFields.state}.${registeredFormFields.maintenance}`}
-            fieldProps={{ label: t('modules:settings.tabs.client.section.states.label.maintenanceMode') }}
           />
         </Section>
 
