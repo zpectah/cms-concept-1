@@ -1,6 +1,6 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost:4200");
-header("Access-Control-Allow-Methods: GET, OPTIONS"); // Přidána OPTIONS
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -10,10 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 $requested_uri = $_SERVER['REQUEST_URI'];
 
+$query_pos = strpos($requested_uri, '?');
+
+if ($query_pos !== false) {
+  $requested_uri = substr($requested_uri, 0, $query_pos);
+}
+
 $relative_path = ltrim($requested_uri, '/');
-
 $full_path = realpath(__DIR__ . '/../dist/uploads/' . $relative_path);
-
 $uploads_dir = realpath(__DIR__ . '/../dist/uploads');
 
 if ($full_path && str_starts_with($full_path, $uploads_dir) && is_file($full_path)) {

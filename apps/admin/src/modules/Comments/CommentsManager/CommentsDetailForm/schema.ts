@@ -11,7 +11,7 @@ export const CommentsItemDetailFormSchema = z.object({
   content_id: formFieldsSchemas.number,
   parent: formFieldsSchemas.number,
   subject: formFieldsSchemas.required_string,
-  content: formFieldsSchemas.string.optional(),
+  content: formFieldsSchemas.required_string,
   active: formFieldsSchemas.boolean.optional(),
   deleted: formFieldsSchemas.boolean.optional(),
   created: formFieldsSchemas.string.optional(),

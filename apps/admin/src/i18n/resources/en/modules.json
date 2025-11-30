@@ -13,7 +13,14 @@
   },
   "comments": {
     "listTitle": "Comments",
-    "newDetailTitle": "New comment"
+    "newDetailTitle": "New comment",
+    "label": {
+      "comments": "Comments",
+      "noCommentsAdded": "No comments added yet"
+    },
+    "button": {
+      "addComment": "Add comment"
+    }
   },
   "members": {
     "listTitle": "Members",

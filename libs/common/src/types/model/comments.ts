@@ -13,7 +13,7 @@ export interface CommentsItem extends ItemBase {
   content_id: number;
   parent: number;
   subject: string;
-  content?: string;
+  content: string;
 }
 
 export type Comments = CommentsItem[];

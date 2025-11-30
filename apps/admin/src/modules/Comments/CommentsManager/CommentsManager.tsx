@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { Button, Collapse, Stack, Badge } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Button, Collapse, Stack, Badge, CircularProgress, Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { newItemKey, Model } from '@common';
 import { useCommentsQuery } from '../../../hooks-query';
 import { Section } from '../../../components';
@@ -19,6 +21,7 @@ const CommentsManager = ({ isEnabled, contentType, contentId }: CommentsManagerP
   const [detailId, setDetailId] = useState<number | typeof newItemKey | null>(null);
   const [replyTo, setReplyTo] = useState<number | null>(null);
 
+  const { t } = useTranslation(['common', 'modules']);
   const { commentsQuery } = useCommentsQuery({ contentType, contentId });
 
   const { data: comments, isLoading } = commentsQuery;
@@ -29,58 +32,41 @@ const CommentsManager = ({ isEnabled, contentType, contentId }: CommentsManagerP
     <CommentsManagerContextProvider
       value={{
         detailId,
-        setDetailId: setDetailId,
         replyTo,
+        setDetailId,
         setReplyTo,
       }}
     >
-      {isLoading && <>Is loading ... please wait</>}
+      {isLoading && <CircularProgress />}
 
       <Section
         title={
           <Badge badgeContent={comments?.length} color="primary">
-            Comments
+            {t('modules:comments.label.comments')}
           </Badge>
         }
         action={
           <Button onClick={() => setExpanded(!expanded)} variant="outlined" color="inherit" size="small">
-            Expand &nbsp;
-            <ExpandMoreIcon />
+            {expanded ? t('button.collapse') : t('button.expand')}&nbsp;
+            {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </Button>
         }
       >
         <Collapse in={expanded}>
           <Stack direction="column" gap={2} alignItems="center">
-            <CommentsList
-              comments={comments ?? []}
-              onReply={(parent) => {
-                setDetailId(newItemKey);
-                setReplyTo(parent);
-                console.log('react to comment with id', parent);
-              }}
-              onDetail={(id) => {
-                setDetailId(id);
-                setReplyTo(null);
-                console.log('detail id', id);
-              }}
-            />
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                setDetailId(newItemKey);
-                setReplyTo(null);
-              }}
-            >
-              New comment
-            </Button>
+            <Box sx={{ width: '100%' }}>
+              <CommentsList comments={comments ?? []} contentType={contentType} contentId={contentId} />
+            </Box>
           </Stack>
         </Collapse>
       </Section>
 
       <CommentsDetailForm
         open={!!detailId}
-        onClose={() => setDetailId(null)}
+        onClose={() => {
+          setDetailId(null);
+          setReplyTo(null);
+        }}
         contentType={contentType}
         contentId={contentId}
       />

@@ -2,6 +2,7 @@ import { commentsTypeDefault, getRandomString, CommentsDetail, CommentsItem } fr
 import { ICommentsItemDetailForm } from './types';
 
 type GetCommentsDefaultValuesProps = Pick<CommentsItem, 'sender' | 'content_type' | 'content_id' | 'parent'>;
+
 export const getCommentsDefaultValues = ({
   sender,
   content_id,

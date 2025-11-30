@@ -1,17 +1,18 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from '@mui/material';
-import { Model } from '@common';
+import { Button, Stack, Paper, Typography } from '@mui/material';
+import { newItemKey, Model } from '@common';
 import {
   DialogBase,
   ControlledForm,
-  DebugFormModel,
   FormContent,
   InputField,
-  EmailField,
   TextareaField,
   SubmitButton,
+  Literal,
 } from '../../../../components';
 import { registeredFormFields } from '../../../../enums';
+import { getFormattedDateString } from '../../../../utils';
 import { useCommentsManagerContext } from '../CommentsManager.context';
 import { useCommentsDetailForm } from './useCommentsDetailForm';
 
@@ -23,14 +24,26 @@ interface CommentsDetailFormProps {
 }
 
 const CommentsDetailForm = ({ open, onClose, contentType, contentId }: CommentsDetailFormProps) => {
-  const { t } = useTranslation(['common']);
+  const { t } = useTranslation(['common', 'modules', 'form']);
   const { detailId, replyTo } = useCommentsManagerContext();
-  const { form, onSubmit } = useCommentsDetailForm({
-    id: detailId === null ? 0 : detailId, // TODO
-    parent: replyTo === null ? 0 : replyTo, // TODO
+  const { form, onSubmit, repliedDetailData } = useCommentsDetailForm({
+    id: detailId === null ? 0 : detailId,
+    parent: replyTo === null ? 0 : replyTo,
     contentType,
     contentId,
   });
+
+  const name = form.watch(registeredFormFields.name);
+  const sender = form.watch(registeredFormFields.sender);
+  const subject = form.watch(registeredFormFields.subject);
+
+  const dialogTitle = detailId === newItemKey ? t('modules:comments.newDetailTitle') : name;
+
+  useEffect(() => {
+    if (repliedDetailData && subject === '') {
+      form.setValue(registeredFormFields.subject, `Re: ${repliedDetailData?.subject}`);
+    }
+  }, [subject, repliedDetailData]);
 
   return (
     <DialogBase
@@ -39,28 +52,39 @@ const CommentsDetailForm = ({ open, onClose, contentType, contentId }: CommentsD
       dialogProps={{
         maxWidth: 'md',
         fullWidth: true,
-        keepMounted: true,
       }}
-      title="New comment / Edit comment"
+      title={dialogTitle}
       actions={
         <>
-          <SubmitButton form="CommentsDetailForm">Submit or create</SubmitButton>
+          <SubmitButton form="CommentsDetailForm">
+            {detailId === newItemKey ? t('button.create') : t('button.update')}
+          </SubmitButton>
           <Button variant="outlined" color="inherit" onClick={onClose}>
-            Cancel
+            {t('button.cancel')}
           </Button>
         </>
       }
       content={
-        <ControlledForm form={form} formProps={{ onSubmit, id: 'CommentsDetailForm' }}>
-          <FormContent>
-            <InputField name={registeredFormFields.name} label={t('form:label.name')} isRequired />
-            <EmailField name="sender" label="Sender" />
-            <InputField name="subject" label="Subject" />
-            <TextareaField name="content" label="Content" />
-          </FormContent>
-
-          <DebugFormModel name="CommentsDetailForm" />
-        </ControlledForm>
+        <>
+          {repliedDetailData && (
+            <Paper variant="outlined" sx={{ p: 2, mb: 2 }}>
+              <Stack direction="column" gap={1}>
+                <Typography variant="h4">{repliedDetailData.subject}</Typography>
+                <Typography variant="caption">
+                  {repliedDetailData.sender} | {getFormattedDateString(repliedDetailData.created)}
+                </Typography>
+                <Typography variant="body1">{repliedDetailData.content}</Typography>
+              </Stack>
+            </Paper>
+          )}
+          <ControlledForm form={form} formProps={{ onSubmit, id: 'CommentsDetailForm' }}>
+            <FormContent>
+              <Literal label={t('form:label.sender')} value={sender} hidden={detailId === newItemKey} />
+              <InputField name={registeredFormFields.subject} label={t('form:label.subject')} />
+              <TextareaField name={registeredFormFields.content} label={t('form:label.content')} />
+            </FormContent>
+          </ControlledForm>
+        </>
       }
     />
   );

@@ -1,6 +1,9 @@
-import { Box, Button, Paper, Typography, Stack } from '@mui/material';
-import { useCommentsList } from './useCommentsList';
+import { useTranslation } from 'react-i18next';
+import { Box, Button, Paper, Typography, Stack, Alert } from '@mui/material';
+import { newItemKey } from '@common';
+import { getFormattedDateString } from '../../../../utils';
 import { CommentsListItemProps, CommentsListProps } from '../types';
+import { useCommentsList } from './useCommentsList';
 
 const CommentsListItem = ({
   id,
@@ -8,33 +11,38 @@ const CommentsListItem = ({
   content,
   onReply,
   onDetail,
+  onToggle,
+  onDelete,
   children,
   sender,
   name,
   created,
+  active,
 }: CommentsListItemProps) => {
+  const { t } = useTranslation(['common']);
+
   return (
     <Box id={name} sx={{ mb: 1.5 }}>
       <Paper variant="outlined" sx={{ p: 2 }}>
         <Stack direction="column" gap={1}>
           <Typography variant="h4">{subject}</Typography>
           <Typography variant="caption">
-            {sender} | {created}
+            {sender} | {getFormattedDateString(created)}
           </Typography>
           <Typography variant="body1">{content}</Typography>
         </Stack>
         <Stack direction="row" alignItems="center" justifyContent="start" gap={1} sx={{ mt: 2 }}>
           <Button onClick={() => onReply(id)} variant="outlined" size="small">
-            Reply
+            {t('button.reply')}
           </Button>
           <Button onClick={() => onDetail(id)} variant="outlined" size="small">
-            Edit
+            {t('button.edit')}
           </Button>
-          <Button variant="outlined" size="small" color="warning">
-            Disable
+          <Button onClick={() => onToggle(id)} variant="outlined" size="small" color="warning">
+            {active ? t('button.disable') : t('button.active')}
           </Button>
-          <Button variant="outlined" size="small" color="error">
-            Delete
+          <Button onClick={() => onDelete(id)} variant="outlined" size="small" color="error">
+            {t('button.delete')}
           </Button>
         </Stack>
       </Paper>
@@ -49,17 +57,32 @@ const CommentsListItem = ({
   );
 };
 
-const CommentsList = ({ comments, onReply, onDetail }: CommentsListProps) => {
-  const { formattedComments } = useCommentsList(comments, onReply, onDetail);
-
-  if (comments.length === 0) return <div>Alert: No comments added yet ...</div>;
+const CommentsList = ({ comments, contentType, contentId }: CommentsListProps) => {
+  const { t } = useTranslation(['common', 'modules']);
+  const { formattedComments, onDetail } = useCommentsList({
+    rawComments: comments,
+    contentType,
+    contentId,
+  });
 
   return (
-    <div>
+    <Stack direction="column" gap={2}>
+      {comments.length === 0 && <Alert severity="info">{t('modules:comments.label.noCommentsAdded')}</Alert>}
+      <div>
+        <Button
+          variant="contained"
+          color="success"
+          onClick={() => {
+            onDetail(newItemKey);
+          }}
+        >
+          {t('modules:comments.button.addComment')}
+        </Button>
+      </div>
       {formattedComments?.map(({ ...comment }) => {
         return <CommentsListItem key={comment.id} {...comment} />;
       })}
-    </div>
+    </Stack>
   );
 };
 

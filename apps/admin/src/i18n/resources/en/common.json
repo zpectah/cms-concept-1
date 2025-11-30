@@ -56,7 +56,10 @@
     "approveSelected": "Approve selected",
     "markReadSelected": "Mark selected as read",
     "active": "Active",
-    "toggle": "Toggle"
+    "toggle": "Toggle",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "reply": "Reply"
   },
   "label": {
     "yesterday": "Yesterday",

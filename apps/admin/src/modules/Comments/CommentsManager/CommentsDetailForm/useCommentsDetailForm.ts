@@ -6,14 +6,14 @@ import { newItemKey, CommentsContentType, CommentsDetail } from '@common';
 import { useCommentsQuery, useUserQuery } from '../../../../hooks-query';
 import { useUserActions } from '../../../../hooks';
 import { useAppStore } from '../../../../store';
+import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../../constants';
+import { useCommentsManagerContext } from '../CommentsManager.context';
 import { ICommentsItemDetailForm } from './types';
 import { getCommentsDefaultValues, getCommentsDetailFormMapper, getCommentsDetailFormMapperToMaster } from './helpers';
 import { CommentsItemDetailFormSchema } from './schema';
-import { useCommentsManagerContext } from '../CommentsManager.context';
-import { TOAST_SUCCESS_TIMEOUT_DEFAULT } from '../../../../constants';
 
 interface UseCommentsDetailFormProps {
-  id: number | 'new'; // ID detailu komentáře
+  id: number | typeof newItemKey;
   parent: number;
   contentType: CommentsContentType;
   contentId: number;
@@ -27,26 +27,32 @@ export const useCommentsDetailForm = ({ id, parent, contentId, contentType }: Us
     contentId,
     contentType,
   });
+  const { commentsDetailQuery: commentsRepliedDetailQuery } = useCommentsQuery({
+    id: String(parent),
+    contentId,
+    contentType,
+  });
   const { comments: modelActions } = useUserActions();
   const { addToast, openConfirmDialog } = useAppStore();
   const { userQuery } = useUserQuery();
   const form = useForm<ICommentsItemDetailForm>({
     defaultValues: getCommentsDefaultValues({
-      sender: '', // TODO
-      content_id: contentId, // TODO
-      content_type: contentType, // TODO
-      parent: parent, // TODO
+      sender: '',
+      content_id: contentId,
+      content_type: contentType,
+      parent: parent,
     }),
     resolver: zodResolver(CommentsItemDetailFormSchema),
   });
 
-  const { data } = userQuery;
+  const { data: userData } = userQuery;
   const { refetch } = commentsQuery;
   const { data: detailData, isLoading } = commentsDetailQuery;
+  const { data: repliedDetailData } = commentsRepliedDetailQuery;
   const { mutate: onCreate } = commentsCreateMutation;
   const { mutate: onPatch } = commentsPatchMutation;
 
-  const user = data?.user;
+  const user = userData?.user;
   const sender = user?.email as string;
 
   const onError = (err: unknown) => {
@@ -117,10 +123,10 @@ export const useCommentsDetailForm = ({ id, parent, contentId, contentType }: Us
     if (id === newItemKey) {
       form.reset(
         getCommentsDefaultValues({
-          sender: sender, // TODO
-          content_id: contentId, // TODO
-          content_type: contentType, // TODO
-          parent: parent, // TODO
+          sender: sender,
+          content_id: contentId,
+          content_type: contentType,
+          parent: parent,
         })
       );
     } else if (detailData) {
@@ -139,6 +145,7 @@ export const useCommentsDetailForm = ({ id, parent, contentId, contentType }: Us
     onSubmit: form.handleSubmit(submitHandler),
     onReset: resetHandler,
     detailData,
+    repliedDetailData,
     isSubmitting: false,
     isLoading,
   };
